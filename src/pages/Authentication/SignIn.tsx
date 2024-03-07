@@ -1,30 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import LogoDark from '../../images/logo/logo-dark.svg';
-import Logo from '../../images/logo/logo.svg';
-import DefaultLayout from '../../layout/DefaultLayout';
+// import Logo1 from '../../images/logo/logo.svg';
+import Logo from '../../images/logo/logo.png';
+import DarkModeSwitcher from '../../components/Header/DarkModeSwitcher';
+
+
+// import DefaultLayout from '../../layout/DefaultLayout';
 
 const SignIn: React.FC = () => {
   return (
-    <DefaultLayout>
-      <Breadcrumb pageName="Sign In" />
+    <>
 
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="flex flex-wrap items-center">
+      <div className="rounded-sm border h-max  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+   <div style={{float:'right',}} className='m-5 hidden  xl:block '><DarkModeSwitcher  /></div>   
+
+        <div className="flex flex-wrap items-center  justify-center">
           <div className="hidden w-full xl:block xl:w-1/2">
-            <div className="py-17.5 px-26 text-center">
+            <div className="px-26 text-center">
+
               <Link className="mb-5.5 inline-block" to="/">
                 <img className="hidden dark:block" src={Logo} alt="Logo" />
-                <img className="dark:hidden" src={LogoDark} alt="Logo" />
+                <img className="dark:hidden" src={Logo} alt="Logo" />
               </Link>
 
               <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
+                School Management System
               </p>
 
-              <span className="mt-15 inline-block">
+              {/* <span className="mt-15 inline-block">
                 <svg
                   width="350"
                   height="350"
@@ -145,15 +148,16 @@ const SignIn: React.FC = () => {
                     fill="#1C2434"
                   />
                 </svg>
-              </span>
+              </span> */}
             </div>
           </div>
 
-          <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+          <div className="w-full border-stroke h-screen pt-5 dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-              <span className="mb-1.5 block font-medium">Start for free</span>
+            <img className="xl:hidden p-6" src={Logo} alt="Logo" />
+              <span className="mb-1.5 block font-medium">Welcome</span>
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign In to TailAdmin
+                Sign In 
               </h2>
 
               <form>
@@ -163,6 +167,7 @@ const SignIn: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
+                    required 
                       type="email"
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -190,12 +195,13 @@ const SignIn: React.FC = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
+                     Password
                   </label>
                   <div className="relative">
                     <input
+                    required
                       type="password"
-                      placeholder="6+ Characters, 1 Capital letter"
+                      placeholder="Enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -222,6 +228,7 @@ const SignIn: React.FC = () => {
                     </span>
                   </div>
                 </div>
+                <Link to="/dashboard" className="text-primary">
 
                 <div className="mb-5">
                   <input
@@ -231,7 +238,9 @@ const SignIn: React.FC = () => {
                   />
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                </Link>
+
+                {/* <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"
@@ -266,13 +275,13 @@ const SignIn: React.FC = () => {
                     </svg>
                   </span>
                   Sign in with Google
-                </button>
+                </button> */}
 
                 <div className="mt-6 text-center">
                   <p>
-                    Don’t have any account?{' '}
-                    <Link to="/auth/signup" className="text-primary">
-                      Sign Up
+                    Forgot Password?{' '}
+                    <Link to="/auth/forgotPassword" className="text-primary">
+                      Click here
                     </Link>
                   </p>
                 </div>
@@ -281,7 +290,7 @@ const SignIn: React.FC = () => {
           </div>
         </div>
       </div>
-    </DefaultLayout>
+    </>
   );
 };
 
