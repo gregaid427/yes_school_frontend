@@ -47,7 +47,7 @@ const NewStaff = () => {
                         First Name
                       </label>
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
@@ -64,7 +64,7 @@ const NewStaff = () => {
                         Last Name
                       </label>
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
@@ -83,7 +83,7 @@ const NewStaff = () => {
                         Other Names
                       </label>
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
@@ -139,7 +139,7 @@ const NewStaff = () => {
                         Phone Number 1
                       </label>
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
@@ -156,7 +156,7 @@ const NewStaff = () => {
                         Phone Number 2
                       </label>
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
@@ -176,7 +176,7 @@ const NewStaff = () => {
                     <div className="relative">
                       <span className="absolute  top-4"></span>
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-3  px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border border-stroke bg-gray py-2  px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
@@ -195,7 +195,7 @@ const NewStaff = () => {
                     <div className="relative">
                       <span className="absolute  top-4"></span>
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-3  px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border border-stroke bg-gray py-2  px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
@@ -213,7 +213,7 @@ const NewStaff = () => {
                     </label>
                     <div className="relative">
                       <textarea
-                        className="w-full rounded border border-stroke bg-gray py-3  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border border-stroke bg-gray py-2  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         name="bio"
                         id="bio"
                         rows={2}

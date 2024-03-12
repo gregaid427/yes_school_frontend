@@ -213,3 +213,36 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+.small-font{
+  font-size: 12px;
+  /* color: red; */
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 70px;
+  background-color: #24303F;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  font-size: 11px;
+
+
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  right: 105%;
+
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

@@ -81,11 +81,11 @@ Class Statistics      </h4>
        
 
 
-            <div className="hidden justify-center p-1 sm:flex xl:p-5">
+            <div className="hidden justify-center p-1 sm:flex xl:p-1">
               <p className="text-black dark:text-white">{brand.name}</p>
             </div>
 
-            <div className="hidden  justify-center p-1 sm:flex xl:p-5">
+            <div className="hidden  justify-center p-2 sm:flex xl:p-2">
               <p className="text-meta-5">{brand.conversion}</p>
             </div>
           </div>

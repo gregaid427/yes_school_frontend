@@ -45,7 +45,7 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Muller
+            Cyril Sey
           </span>
           <span className="block text-xs">Staff</span>
         </span>

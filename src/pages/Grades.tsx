@@ -65,18 +65,17 @@ const columns = [
 ]
 
 
-const Expense = () => {
+const Grades = () => {
 
-  const [age, setAge] = useState<string>('');
  
 
   return (
     <DefaultLayout>
 
-    <Table rows={rows} columns={columns} rowsPerPage={10} hideSearchInput={true} searchColumnName = {'name'}  tableWidth ={"sm:w-12/12"}  sideComponent={< ExpenseSideElement/>}/>
+    <Table rows={rows} columns={columns} rowsPerPage={10} hideSearchInput={true} searchColumnName = {'name'}  tableWidth ={"w-8/12"}  sideComponent={''}/>
 
   </DefaultLayout>
   );
 };
 
-export default Expense;
+export default Grades;

@@ -25,7 +25,16 @@ import Teachers from './pages/teachers';
 import Examination from './pages/Examination';
 import NewStaff from './pages/Newstaff';
 import NewStudents from './pages/Newstudent';
-
+import UserStudents from './pages/UserStudents';
+import Grades from './pages/Grades';
+import Marks from './pages/Marks';
+import Promotion from './pages/Promotion';
+import AddExpense from './pages/AddExpense';
+import ManageExpense from './pages/ManageExpense';
+import Section from './pages/section';
+import Subject from './pages/Subject';
+import GeneralSettings from './pages/GeneralSettings';
+import Session from './pages/session';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -44,12 +53,12 @@ function App() {
   ) : (
     <>
       <Routes>
-      <Route
+        <Route
           index
           element={
             <>
-              <PageTitle title="Dashboard Dashboard | " />
-              <Dashboard />
+              <PageTitle title="Authentication | " />
+              <SignIn />
             </>
           }
         />
@@ -63,7 +72,7 @@ function App() {
           }
         />
         <Route
-          path="/class"
+          path="/academics/class"
           element={
             <>
               <PageTitle title="Calendar | " />
@@ -71,7 +80,79 @@ function App() {
             </>
           }
         />
+               <Route
+          path="/academics/promotion"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <Promotion />
+            </>
+          }
+        />
+         <Route
+          path="/academics/section"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <Section />
+            </>
+          }
+        />     
+          <Route
+        path="/academics/subjects"
+        element={
+          <>
+            <PageTitle title="Calendar | " />
+            <Subject />
+          </>
+        }
+      /> 
+            <Route
+          path="/student/admission"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <NewStudents />
+            </>
+          }
+        />{' '}
+      <Route
+          path="/student/cartegory"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <NewStudents />
+            </>
+          }
+        />{' '}
+              <Route
+          path="/student/details"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <Students />
+            </>
+          }
+        />{' '}
+        <Route
+          path="/settings/general"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <GeneralSettings />
+            </>
+          }
+        />{' '}
                 <Route
+          path="/settings/session"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <Session />
+            </>
+          }
+        />{' '}
+             <Route
           path="/fees"
           element={
             <>
@@ -79,23 +160,70 @@ function App() {
               <Fees />
             </>
           }
-        />        <Route
-        path="/expense"
-        element={
-          <>
-            <PageTitle title="Calendar | " />
-            <Expense />
-          </>
-        }
-      />        <Route
-      path="/examination"
-      element={
-        <>
-          <PageTitle title="Calendar | " />
-          <Examination />
-        </>
-      }
-    />
+        />{' '}
+        <Route
+          path="/expense/list"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <Expense />
+            </>
+          }
+        />
+                <Route
+          path="/expense/add"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <AddExpense />
+            </>
+          }
+        />
+                <Route
+          path="/expense/manage"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <ManageExpense />
+            </>
+          }
+        />
+        <Route
+          path="/exam/examination"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <Examination />
+            </>
+          }
+        />
+        <Route
+          path="/exam/grades"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <Grades />
+            </>
+          }
+        />
+               <Route
+          path="/exam/marks"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <Marks />
+            </>
+          }
+        />
+                <Route
+          path="/exam/promotion"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <Promotion />
+            </>
+          }
+        />
         <Route
           path="/profile"
           element={
@@ -123,7 +251,7 @@ function App() {
             </>
           }
         />
-               <Route
+        <Route
           path="/tables"
           element={
             <>
@@ -132,7 +260,7 @@ function App() {
             </>
           }
         />
-            <Route
+        <Route
           path="/students"
           element={
             <>
@@ -141,12 +269,21 @@ function App() {
             </>
           }
         />
-             <Route
+        <Route
           path="/newstudent"
           element={
             <>
               <PageTitle title="Students | " />
               <NewStudents />
+            </>
+          }
+        />
+        <Route
+          path="/users/student"
+          element={
+            <>
+              <PageTitle title="Students | " />
+              <UserStudents />
             </>
           }
         />
@@ -159,7 +296,7 @@ function App() {
             </>
           }
         />
-          <Route
+        <Route
           path="/newstaff"
           element={
             <>
@@ -168,7 +305,7 @@ function App() {
             </>
           }
         />
-           <Route
+        <Route
           path="/teachers"
           element={
             <>
@@ -231,7 +368,7 @@ function App() {
             </>
           }
         />
-                <Route
+        <Route
           path="/auth/newuser"
           element={
             <>

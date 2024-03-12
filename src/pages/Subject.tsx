@@ -48,21 +48,23 @@ const packageData = [
 ];
 
 const rows = [
-  { id: 1, class: 'Class 1', section: 'A', instructor: 'Frank Addo' },
-  { id: 2, class: 'Class 2', section: 'B', instructor: 'Frank Addo' },
-  { id: 3, class: 'Class 3', section: 'A', instructor: 'Frank Addo' },
-  { id: 4, class: 'Class 4', section: 'B', instructor: 'Frank Addo' },
-  { id: 5, class: 'Class 5', section: 'A', instructor: 'Frank Addo' },
-  { id: 6, class: 'Class 5', section: 'A', instructor: 'Frank Addo' },
+  { id: 1, subject: 'English', code: '00111', type: 'Theory' },
+  { id: 2, subject: 'English', code: '00111', type: 'Theory' },
 
-  { id: 7, class: 'Class 5', section: 'A', instructor: 'Frank Addo' },
+  { id: 3, subject: 'English', code: '00111', type: 'Theory' },
+
+  { id: 4, subject: 'English', code: '00111', type: 'Theory' },
+
+  { id: 5, subject: 'English', code: '00111', type: 'Theory' },
+
+
 
 ];
 const columns = [
   { columnTitle: 'id' },
-  { columnTitle: 'class' },
-  { columnTitle: 'section' },
-  { columnTitle: 'instructor' },
+  { columnTitle: 'subject' },
+  { columnTitle: 'code' },
+  { columnTitle: 'type' },
   {
     columnTitle: 'actions',
     format: (value) => (
@@ -87,7 +89,7 @@ const columns = [
   },
 ];
 
-const Class = () => {
+const Subject = () => {
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
 
@@ -112,19 +114,20 @@ const Class = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Add Class
+                  Add Subject
                 </h3>
               </div>
               <div className="p-7">
                 <form action="#">
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                
 
-                    <div className="w-full mb-4 sm:w-2/2">
+                    <div className="w-full sm:w-2/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="phoneNumber"
                       >
-                        Class Name
+                        Subject Name
                       </label>
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -135,13 +138,15 @@ const Class = () => {
                         defaultValue=""
                       />
                     </div>
+                    
+                  </div>
 
-                  <div className="w-full sm:w-2/2">
+                  <div className="w-full sm:w-2/2 mb-6">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="phoneNumber"
                       >
-                        Class Instructor <span className='small-font'>(optional)</span>
+                        Subject Code
                       </label>
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -152,26 +157,24 @@ const Class = () => {
                         defaultValue=""
                       />
                     </div>
+                    
+                  
+            
 
                   <div className="pb-10">
                     <CheckboxOne
-                      title="A"
+                      title="Theory"
                       isChecked={isChecked1}
                       toggle={setIsChecked1}
                       id="checkboxLabelOne"
                     />
                     <CheckboxOne
-                      title="B"
+                      title="Practicals"
                       isChecked={isChecked2}
                       toggle={setIsChecked2}
                       id="checkboxLabelOne1"
                     />
-                    <CheckboxOne
-                      title="C"
-                      isChecked={isChecked2}
-                      toggle={setIsChecked2}
-                      id="checkboxLabelOne1"
-                    />
+            
                   </div>
 
                   <div className="flex justify-end gap-4.5">
@@ -199,4 +202,4 @@ const Class = () => {
   );
 };
 
-export default Class;
+export default Subject;

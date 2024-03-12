@@ -1,63 +1,131 @@
-import { Link } from 'react-router-dom';
+import CheckboxFive from './../components/Checkboxes/CheckboxFive';
+import CheckboxFour from './../components/Checkboxes/CheckboxFour';
+import CheckboxOne from '../components/Checkboxes/CheckboxOne';
+import CheckboxThree from './../components/Checkboxes/CheckboxThree';
+import CheckboxTwo from './../components/Checkboxes/CheckboxTwo';
+import SwitcherFour from './../components/Switchers/SwitcherFour';
+import SwitcherOne from './../components/Switchers/SwitcherOne';
+import SwitcherThree from './../components/Switchers/SwitcherThree';
+import SwitcherTwo from './../components/Switchers/SwitcherTwo';
+import DatePickerOne from './../components/Forms/DatePicker/DatePickerOne';
+import DatePickerTwo from './../components/Forms/DatePicker/DatePickerTwo';
+import SelectGroupTwo from './../components/Forms/SelectGroup/SelectGroupTwo';
+import MultiSelect from './../components/Forms/MultiSelect';
 import DefaultLayout from '../layout/DefaultLayout';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+
 
 
 const packageData = [
   {
-    name: 'Grade 1',
+    name: 'Greg Elson',
     price: 0.0,
-    invoiceDate: `Mr. Elson Frank`,
-    status: 'Paid',
+    invoiceDate: `1234567`,
+    status: 'Male',
   },
   {
-    name: 'Grade 1',
+    name: 'Greg Elson',
     price: 59.0,
-    invoiceDate: `Mr. Elson Frank`,
-    status: 'Paid',
+    invoiceDate: `1234567`,
+    status: 'Male',
   },
   {
-    name: 'Grade 1',
+    name: 'Greg Elson',
     price: 99.0,
-    invoiceDate: `Mr. Elson Frank`,
-    status: 'Unpaid',
+    invoiceDate: `1234567`,
+    status: 'Male',
   },
   {
-    name: 'Grade 1',
+    name: 'Greg Elson',
     price: 59.0,
-    invoiceDate: `Mr. Elson Frank`,
-    status: 'Pending',
+    invoiceDate: `1234567`,
+    status: 'Male',
   },
 ];
 
+const UserStudents = () => {
+  const [age, setAge] = useState<string>('');
 
-const Staff = () => {
   return (
     <DefaultLayout>
-      <div className="rounded-sm border w-10/12 border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+
+
+      <div className="rounded-sm border w-10/12 border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-6">
         <div className="max-w-full overflow-x-auto">
-          <Link to={'/newstaff'} >
-            <button className="btn float-right flex justify-center rounded my-2 bg-primary py-1 px-3 font-medium text-gray hover:shadow-1"
+          <div className="w-full sm:w-4/4 flex gap-3">
+            <div className="w-full sm:w-1/3">
+              <label
+                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                htmlFor="fullName"
+              >
+                Class
+              </label>
+
+              <div className="relative z-20 bg-white dark:bg-form-input">
+                <SelectGroupTwo
+                  values={['Grade1', 'Grade 2']}
+                  setSelectedOption={setAge}
+                  selectedOption={age}
+
+                />
+              </div>
+            </div>
+
+            <div className="w-full sm:w-1/3">
+              <label
+                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                htmlFor="phoneNumber"
+              >
+                Section{' '}
+              </label>
+              <div className="relative z-20 bg-white dark:bg-form-input">
+                <SelectGroupTwo
+                  values={['A', 'B']}
+                  setSelectedOption={setAge}
+                  selectedOption={age}
+
+                />
+              </div>
+            </div>
+            <div className="w-full sm:w-1/3 flex flex-col justify-end ">
+           
+
+              <button className="btn sm:w-2/3    flex justify-center rounded  bg-black py-3 px-4 font-medium text-gray hover:shadow-1"
               type="submit" >
-              + New Staff
+              Search
             </button>
-          </Link>
+            </div>
+          
+            <div className="w-full sm:w-1/3 flex flex-col t  justify-end">
+            <Link to={'/newstudent'} >
+            <button className="btn sm:w-2/3  float-right  flex justify-center rounded  bg-primary py-3 px-4 font-medium text-gray hover:shadow-1"
+              type="submit" >
+              Search
+            </button>
+            </Link>
+            </div>
+          </div>
+      
 
         </div>
       </div>
+
       <div className="rounded-sm w-10/12 border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto">
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                <th className="min-w-[200px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                   ID
+                <th className="min-w-[10px] py-4 px-4 font-medium text-black dark:text-white">
+                  Id              </th>
+                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white ">
+                  Name
                 </th>
-                <th className="min-w-[200px] py-4 px-4 font-medium text-black dark:text-white">
-                  Name             
-                  </th>
-                  <th className="min-w-[200px] py-4 px-4 font-medium text-black dark:text-white">
-                  Email             
-                  </th>
+                <th className="min-w-[80px] py-4 px-4 font-medium text-black dark:text-white ">
+                  Gender
+                </th>
+
+
                 <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Actions
                 </th>
@@ -66,21 +134,24 @@ const Staff = () => {
             <tbody>
               {packageData.map((packageItem, key) => (
                 <tr key={key}>
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white">
+                      {packageItem.invoiceDate}
+                    </p>
+                  </td>     
+                  <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark ">
                     <h5 className="font-medium text-black dark:text-white">
-                      {packageItem.price}
+                      {packageItem.name}
                     </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
-                      {packageItem.invoiceDate}
-                    </p>
+                  <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark ">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {packageItem.status}
+                    </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
-                      {packageItem.invoiceDate}
-                    </p>
-                  </td>
+                  
+
 
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex items-center space-x-3.5">
@@ -159,8 +230,12 @@ const Staff = () => {
       </div>
 
 
+
+
+
+
     </DefaultLayout>
   );
 };
 
-export default Staff;
+export default UserStudents;

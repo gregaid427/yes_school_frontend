@@ -15,8 +15,6 @@ import DefaultLayout from '../layout/DefaultLayout';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
-
-
 const packageData = [
   {
     name: 'Greg Elson',
@@ -49,8 +47,6 @@ const Students = () => {
 
   return (
     <DefaultLayout>
-
-
       <div className="rounded-sm border w-10/12 border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-6">
         <div className="max-w-full overflow-x-auto">
           <div className="w-full sm:w-4/4 flex gap-3">
@@ -67,7 +63,6 @@ const Students = () => {
                   values={['Grade1', 'Grade 2']}
                   setSelectedOption={setAge}
                   selectedOption={age}
-
                 />
               </div>
             </div>
@@ -84,30 +79,27 @@ const Students = () => {
                   values={['A', 'B']}
                   setSelectedOption={setAge}
                   selectedOption={age}
-
                 />
               </div>
             </div>
             <div className="w-full sm:w-1/3 flex flex-col justify-end ">
-           
-
-              <button className="btn sm:w-2/3    flex justify-center rounded  bg-black py-3 px-4 font-medium text-gray hover:shadow-1"
-              type="submit" >
-              Search
-            </button>
+              <button
+                className="btn sm:w-2/3    flex justify-center rounded  bg-black py-3 px-4 font-medium text-gray hover:shadow-1"
+                type="submit"
+              >
+                Search
+              </button>
             </div>
-          
+
             <div className="w-full sm:w-1/3 flex flex-col t  justify-end">
             <Link to={'/newstudent'} >
             <button className="btn sm:w-2/3  float-right  flex justify-center rounded  bg-primary py-3 px-4 font-medium text-gray hover:shadow-1"
               type="submit" >
-              Search
+              + New Student
             </button>
             </Link>
             </div>
           </div>
-      
-
         </div>
       </div>
 
@@ -117,11 +109,11 @@ const Students = () => {
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="min-w-[10px] py-4 px-4 font-medium text-black dark:text-white">
-                  Std Id              </th>
+                  Std Id{' '}
+                </th>
                 <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white ">
                   Name
                 </th>
-
 
                 <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Actions
@@ -131,18 +123,16 @@ const Students = () => {
             <tbody>
               {packageData.map((packageItem, key) => (
                 <tr key={key}>
-
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
                       {packageItem.invoiceDate}
                     </p>
-                  </td>     <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark ">
+                  </td>{' '}
+                  <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark ">
                     <h5 className="font-medium text-black dark:text-white">
                       {packageItem.name}
                     </h5>
                   </td>
-
-
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex items-center space-x-3.5">
                       <button className="hover:text-primary">
@@ -218,12 +208,6 @@ const Students = () => {
           </table>
         </div>
       </div>
-
-
-
-
-
-
     </DefaultLayout>
   );
 };
