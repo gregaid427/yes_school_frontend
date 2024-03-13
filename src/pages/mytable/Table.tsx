@@ -65,11 +65,11 @@ export const  Table = ({ columns, rows, rowsPerPage, hideSearchInput, searchColu
       <div className={"rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-6 " }>
         <div className="max-w-full overflow-x-auto">
           <div className="w-full  flex justify-between ">
-            <div className="w-9/12 flex gap-3">
+            <div className="w-8/12 flex gap-3">
              {sideComponent}
             </div>
 
-            <div  className={" w-3/12 flex flex-col float-right " + (hideSearchInput ? "hidden " : "  " ) }>
+            <div  className={" w-4/12 flex flex-col float-right " + (hideSearchInput ? "hidden " : "  " ) }>
             
               <label
                 className="mb-3 block text-sm font-medium text-black dark:text-white"

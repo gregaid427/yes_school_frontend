@@ -11,6 +11,7 @@ import ViewSVG from '../components/Svgs/View';
 import DeleteSVG from '../components/Svgs/delete';
 import EditSVG from '../components/Svgs/edit';
 import CheckboxOne from '../components/Checkboxes/CheckboxOne';
+import ActiveButton from '../components/buttons/ActiveButton';
 
 const packageData = [
   {
@@ -48,26 +49,22 @@ const packageData = [
 ];
 
 const rows = [
-  { id: 1, session: 'A',  },
-  { id: 2, session: 'B',  },
-  { id: 3, session: 'c',  },
+  { id: 1, cartegory: 'Red', },
+  { id: 2, cartegory: 'Blue', status: false  },
+  { id: 3, cartegory: 'Green',  status: false },
 
 
 ];
 const columns = [
   { columnTitle: 'id' },
-  { columnTitle: 'session' },
+  { columnTitle: 'cartegory' },
+  
+
   {
     columnTitle: 'actions',
     format: (value) => (
       <>
-        <button
-          onMouseDown={() => {
-            console.log(value);
-          }}
-        >
-          <ViewSVG />
-        </button>{' '}
+      
         <EditSVG />
         <button
           onMouseDown={() => {
@@ -81,7 +78,7 @@ const columns = [
   },
 ];
 
-const Section = () => {
+const StudentCartegory = () => {
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
 
@@ -95,7 +92,7 @@ const Section = () => {
           columns={columns}
           rowsPerPage={10}
           hideSearchInput={true}
-          searchColumnName={'session'}
+          searchColumnName={'name'}
           tableWidth={'w-7/12'}
           sideComponent={''}
         />
@@ -105,7 +102,7 @@ const Section = () => {
               <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                   <h3 className="font-medium text-black dark:text-white">
-                    Add Class Section
+                    Add Cartegory
                   </h3>
                 </div>
                 <div className="p-7">
@@ -116,7 +113,7 @@ const Section = () => {
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="phoneNumber"
                         >
-                          Section Name
+                          Cartegory 
                         </label>
                         <input
                           className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -157,4 +154,4 @@ const Section = () => {
   );
 };
 
-export default Section;
+export default StudentCartegory;

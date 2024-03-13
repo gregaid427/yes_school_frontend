@@ -33,7 +33,7 @@ const ExpenseSideElement = () => {
         </button>
       </div>
 
-      <div className="w-full sm:w-1/3 flex flex-col t  justify-end">
+      {/* <div className="w-full sm:w-1/3 flex flex-col t  justify-end">
         <Link to={'/expense/add'}>
           <button
             className="btn sm:w-2/3  float-right  flex justify-center rounded  bg-primary py-2 px-2 font-medium text-gray hover:shadow-1"
@@ -42,7 +42,7 @@ const ExpenseSideElement = () => {
             + Add Expense
           </button>
         </Link>
-      </div>
+      </div> */}
     </>
   );
 };

@@ -33,7 +33,7 @@ const Users = () => {
                         className="btn float-right flex justify-center rounded bg-primary py-1 px-3 font-small text-gray hover:shadow-1"
                         type="submit"
                       >
-                        Edit
+                        Select
                       </button>
                     </Link>
                   </div>
@@ -46,14 +46,14 @@ const Users = () => {
                   </h5>
                 </td>
 
-                <td className="border-b border-[#eee] py-3 px-4 dark:border-strokedark">
+                <td className="border-b border-[#eee] py-2 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
                     <Link to="/parent">
                       <button
                         className="btn float-right flex justify-center rounded bg-primary py-1 px-3 font-small text-gray hover:shadow-1"
                         type="submit"
                       >
-                        Edit
+                        Select
                       </button>
                     </Link>
                   </div>
@@ -73,7 +73,7 @@ const Users = () => {
                         className="btn float-right flex justify-center rounded bg-primary py-1 px-3 font-small text-gray hover:shadow-1"
                         type="submit"
                       >
-                        Edit{' '}
+                        Select{' '}
                       </button>
                     </Link>
                   </div>
@@ -93,7 +93,7 @@ const Users = () => {
                         className="btn float-right flex justify-center rounded bg-primary py-1 px-3 font-small text-gray hover:shadow-1"
                         type="submit"
                       >
-                        Edit
+                        Select
                       </button>
                     </Link>
                   </div>

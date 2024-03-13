@@ -35,6 +35,8 @@ import Section from './pages/section';
 import Subject from './pages/Subject';
 import GeneralSettings from './pages/GeneralSettings';
 import Session from './pages/session';
+import StudentCartegory from './pages/StudentCartegory';
+import AddInventory from './pages/AddInventory';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -116,12 +118,13 @@ function App() {
             </>
           }
         />{' '}
+        
       <Route
           path="/student/cartegory"
           element={
             <>
               <PageTitle title="Calendar | " />
-              <NewStudents />
+              <StudentCartegory />
             </>
           }
         />{' '}
@@ -134,6 +137,33 @@ function App() {
             </>
           }
         />{' '}
+             <Route
+          path="/inventory/itemsupplier"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <StudentCartegory />
+            </>
+          }
+        />
+                    <Route
+          path="/inventory/additem"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <AddInventory />
+            </>
+          }
+        />
+                            <Route
+          path="/inventory/cartegory"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <StudentCartegory />
+            </>
+          }
+        />
         <Route
           path="/settings/general"
           element={
@@ -261,11 +291,29 @@ function App() {
           }
         />
         <Route
-          path="/students"
+          path="/student/info"
           element={
             <>
               <PageTitle title="Students | " />
               <Students />
+            </>
+          }
+        />
+                <Route
+          path="/student/info"
+          element={
+            <>
+              <PageTitle title="Students | " />
+              <Students />
+            </>
+          }
+        />
+        <Route
+          path="/student/admission"
+          element={
+            <>
+              <PageTitle title="Students | " />
+              <NewStudents />
             </>
           }
         />
