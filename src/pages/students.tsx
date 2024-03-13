@@ -16,10 +16,10 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Table } from './mytable/Table';
 import ExpenseSideElement from './ExpenseSideElement';
-import StudentSideElement from './studentSideElement';
 import ViewSVG from '../components/Svgs/View';
 import EditSVG from '../components/Svgs/edit';
 import DeleteSVG from '../components/Svgs/delete';
+import StudentSideElement from './StudentSideElement';
 
 const packageData = [
   {
@@ -73,7 +73,7 @@ const Students = () => {
   return (
     <DefaultLayout>
     
-      <Table rows={rows} columns={columns} rowsPerPage={10} hideSearchInput={false} searchColumnName = {'name'}  tableWidth ={"sm:w-12/12"}  sideComponent={< StudentSideElement/>}/>
+      <Table rows={rows} columns={columns} rowsPerPage={10} hideSearchInput={false} searchColumnName = {'name'}  tableWidth ={"sm:w-12/12"}  sideComponent={< StudentSideElement />}/>
 
     
     </DefaultLayout>
