@@ -363,7 +363,7 @@ function App() {
           }
         />
         <Route
-          path="/users"
+          path="/settings/users"
           element={
             <>
               <PageTitle title="Users | " />

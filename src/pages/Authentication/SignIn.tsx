@@ -11,11 +11,11 @@ const SignIn: React.FC = () => {
   return (
     <>
 
-      <div className="rounded-sm border h-max  border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-sm border pb-5  border-stroke bg-white shadow-default h-180 dark:border-strokedark  dark:bg-boxdark">
    <div style={{float:'right',}} className='m-5 hidden  xl:block '><DarkModeSwitcher  /></div>   
 
-        <div className="flex flex-wrap items-center  justify-center">
-          <div className="hidden w-full xl:block xl:w-1/2">
+        <div className="flex  flex-wrap items-center  justify-center">
+          <div className="hidden w-full  xl:block xl:w-1/2">
             <div className="px-26 text-center">
 
               <Link className="mb-5.5 inline-block" to="/">
@@ -277,7 +277,7 @@ const SignIn: React.FC = () => {
                   Sign in with Google
                 </button> */}
 
-                <div className="mt-6 text-center">
+                <div className="mt-6 text-center mb-10 ">
                   <p>
                     Forgot Password?{' '}
                     <Link to="/auth/forgotPassword" className="text-primary">

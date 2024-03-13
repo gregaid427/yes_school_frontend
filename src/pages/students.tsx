@@ -49,19 +49,18 @@ const packageData = [
 ];
 
 const rows = [
-  { id: 1, name: 'Notebooks For Staff', cartegory: 'Miscellenous', date: '01/01/2024', amount: '300.00' },
-  { id: 2, name: 'Notebooks For Staffll', cartegory: 'Miscellenous', date: '01/01/2024', amount: '300.00' },
-  { id: 3, name: 'Notebooks For Staff', cartegory: 'Miscellenous', date: '01/01/2024', amount: '300.00' },
-  { id: 4, name: 'Notebooks For Staff', cartegory: 'Miscellenous', date: '01/01/2024', amount: '300.00' },
-  { id: 5, name: 'Notebooks For Staff', cartegory: 'Miscellenous', date: '01/01/2024', amount: '300.00' },
+  { id: 1, name: 'Fred Thomson', Gender: 'Male', class: 'Grade 1', cartegory: 'blue' },
+  { id: 1, name: 'Fred Thomson', Gender: 'Male', class: 'Grade 1', cartegory: 'blue' },
+  { id: 1, name: 'Fred Thomson', Gender: 'Male', class: 'Grade 1', cartegory: 'blue' },
+
 
 ]
 const columns = [
   { columnTitle: 'id' },
   { columnTitle: 'name'},
-  { columnTitle: 'cartegory'},
-  { columnTitle: 'date' },
-  { columnTitle: 'amount' },
+  { columnTitle: 'Gender'},
+  { columnTitle: 'class' },
+  { columnTitle: 'cartegory' },
   { columnTitle: 'actions' ,format: (value) => (<><button  onMouseDown={()=>{console.log(value)}}><ViewSVG /></button> <EditSVG/><button  onMouseDown={()=>{console.log('click')}}><DeleteSVG /></button></>) },
 
 ]
