@@ -57,7 +57,6 @@ const columns = [
   { columnTitle: 'item' },
   { columnTitle: 'cartegory' },
   { columnTitle: 'quantity' },
-
   {
     columnTitle: 'actions',
     format: (value) => (
