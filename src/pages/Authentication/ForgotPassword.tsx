@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 // import Logo1 from '../../images/logo/logo.svg';
 import Logo from '../../images/logo/logo.png';
+import DarkModeSwitcher from '../../components/Header/DarkModeSwitcher';
 
 // import DefaultLayout from '../../layout/DefaultLayout';
 
@@ -11,6 +12,9 @@ const ForgotPassword: React.FC = () => {
     <>
 
       <div className="rounded-sm border h-180   border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div style={{ float: 'right' }} className="m-5 hidden  xl:block ">
+          <DarkModeSwitcher />
+        </div>
         <div className="flex flex-wrap items-center  justify-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
