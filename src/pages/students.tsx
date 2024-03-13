@@ -15,7 +15,6 @@ import DefaultLayout from '../layout/DefaultLayout';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Table } from './mytable/Table';
-import ExpenseSideElement from './ExpenseSideElement';
 import ViewSVG from '../components/Svgs/View';
 import EditSVG from '../components/Svgs/edit';
 import DeleteSVG from '../components/Svgs/delete';
