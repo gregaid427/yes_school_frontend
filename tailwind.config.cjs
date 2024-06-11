@@ -59,7 +59,7 @@ module.exports = {
         'title-lg': ['28px', '35px'],
         'title-md': ['24px', '30px'],
         'title-md2': ['26px', '30px'],
-        'title-sm': ['20px', '26px'],
+        'title-sm': ['12px', '20px'],
         'title-xsm': ['18px', '24px'],
       },
       spacing: {

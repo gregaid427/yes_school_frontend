@@ -48,9 +48,9 @@ const packageData = [
 ];
 
 const rows = [
-  { id: 1, session: 'A',  },
-  { id: 2, session: 'B',  },
-  { id: 3, session: 'c',  },
+  { id: 1, 'session': 'A',  },
+  { id: 2, 'session': 'B',  },
+  { id: 3, 'session': 'c',  },
 
 
 ];

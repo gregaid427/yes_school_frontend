@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 interface DropdownProps {
   values: Array<string>;
-  selectedOption:any
-  setSelectedOption:any
+  selectedOption: any;
+  setSelectedOption: any;
 }
 
-const SelectGroupTwo: React.FC<DropdownProps> = (props) => {
+
+const SelectGroupTwo = (props) => {
   const values = props.values;
 
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
+  const [cOptionSelected, setcOptionSelected] = useState<any>();
 
   const changeTextColor = () => {
     setIsOptionSelected(true);
@@ -16,27 +18,28 @@ const SelectGroupTwo: React.FC<DropdownProps> = (props) => {
 
   return (
     <div>
-   
-
       <div className="relative z-20 bg-white dark:bg-form-input">
-       
-
         <select
-          value={props.selectedOption}
+          value={cOptionSelected}
           onChange={(e) => {
-            props.setSelectedOption(e.target.value);
+            setcOptionSelected(e.target.value);
             changeTextColor();
+            props.setSelectedOption(e.target.value);
+
           }}
           className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-2 px-2 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
             isOptionSelected ? 'text-black dark:text-white' : ''
           }`}
         >
-       {values.map((val,index) => (
-                   
-          <option key={index} value={values[index]}  className="text-body dark:text-bodydark">
-           {values[index]}
-          </option> ))}
-    
+          {values.map((val, index) => (
+            <option
+              key={index}
+              value={values[index]}
+              className="text-body dark:text-bodydark"
+            >
+              {values[index]}
+            </option>
+          ))}
         </select>
 
         <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">

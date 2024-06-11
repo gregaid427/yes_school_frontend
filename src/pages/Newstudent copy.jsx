@@ -15,30 +15,99 @@ import DefaultLayout from '../layout/DefaultLayout';
 import userThree from '../images/user/user-03.png';
 import React, { useState, useEffect, useRef } from 'react';
 import flatpickr from 'flatpickr';
+import { useDispatch, useSelector } from "react-redux";
+import { CreatestudentAction  } from "../redux/slices/studentSlice";
+import { Toaster,toast } from 'react-hot-toast';
 
-const NewStudents = () => {
-  const [age, setAge] = useState<string>('');
-  const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<string>('');
 
-  useEffect(() => {
-    // Init flatpickr
-    flatpickr('.form-datepicker', {
-      mode: 'single',
-      static: true,
-      monthSelectorType: 'static',
-      dateFormat: 'M j, Y',
-      prevArrow:
-        '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
-      nextArrow:
-        '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
-    });
+const NewStudents = () => 
+{
+  const [age, setAge] = useState('');
+  const [isOptionSelected, setIsOptionSelected] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('');
+  const dispatch = useDispatch()
+const student = useSelector((state) => state?.student);
+const { loading , error ,CreateStudent } = student;
+
+
+  const [firstName,setfirstName] = useState("")
+  const [lastName, setlastName] = useState("")
+  const [otherName,setotherName] = useState("")
+const [contact1, setcontact1] = useState("")
+const [contact2,setcontact2] = useState("")
+const [gender, setgender] = useState("Male")
+const [password,setpassword] = useState("")
+const [classes, setclasses] = useState("Grade 1")
+const [religion,setreligion] = useState("Christianity")
+const [dateofbirth, setdateofbirth] = useState("01-01-2020")
+const [createdBy,setcreatedBy] = useState("")
+const [active, setactive] = useState("")
+const [section, setsection] = useState("A")
+
+
+const handleSubmit = (e) =>  {
+  e.preventDefault();
+ const data = {
+  "firstName": firstName,
+  "lastName": lastName,
+  "otherName": otherName,
+  "contact1": contact1,
+  "contact2": contact2,
+  "gender": gender,
+  "password": password,
+  "class": classes,
+  "religion": religion,
+  "dateofbirth": dateofbirth,
+  "section": section,
+  "createdBy": createdBy,
+  "active": active,
+  "role": "student",
+
+  }
+  dispatch(CreatestudentAction(data))
+
+}
+
+  // useEffect(() => {
+  //   // Init flatpickr
+  //   flatpickr('.form-datepicker', {
+  //     mode: 'single',
+  //     static: true,
+  //     enableTime:false,
+  //     monthSelectorType: 'static',
+  //     dateFormat: 'd M Y',
+ 
+  //     prevArrow:
+  //       '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><Clip-Path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
+  //     nextArrow:
+  //       '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><Clip-Path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
+  //   });
 
     
-  }, []);
+  // }, []);
+
+
+
+  useEffect(() => {
+    if (CreateStudent?.success === undefined) {
+    }
+    if (error) {
+      toast.error("Error Creating New Student");
+    }
+    if (CreateStudent?.success == 1) {
+      toast.success("New Student Added Successfully");
+    }
+    if (CreateStudent?.success == 0) {
+      toast.success(CreateStudent?.message);
+    }
+  
+
+  }, [CreateStudent]);
+  
 
   return (
     <DefaultLayout>
+   <Toaster position="top-center" reverseOrder={false} />
       <div className="mx-auto max-w-270">
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
@@ -49,7 +118,7 @@ const NewStudents = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <form action="#">
+                <form action="" onSubmit={ (e) => handleSubmit(e) } >
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-2/2">
                       <label
@@ -61,10 +130,11 @@ const NewStudents = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
+                        name=""
+                        id=""
+                      placeholder=""
                         defaultValue=""
+                        onChange={ (e)  => setfirstName(e.target.value)  }
                       />
                     </div>
 
@@ -78,10 +148,11 @@ const NewStudents = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
+                        name=""
+                        id=""
+                      placeholder=""
                         defaultValue=""
+                        onChange={ (e)  => setlastName(e.target.value)  }
                       />
                     </div>
                   </div>
@@ -97,17 +168,18 @@ const NewStudents = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
+                        name=""
+                        id=""
+                      placeholder=""
                         defaultValue=""
+                        onChange={ (e)  => setotherName(e.target.value)  }
                       />
                     </div>
                     <div className="w-full sm:w-2/4 flex gap-5">
                       <div className="w-full sm:w-1/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="fullName"
+                          htmlFor=""
                         >
                           Sex
                         </label>
@@ -115,8 +187,8 @@ const NewStudents = () => {
                         <div className="relative z-20 bg-white dark:bg-form-input">
                           <SelectGroupTwo
                             values={['Male', 'Female']}
-                            setSelectedOption={setAge}
-                            selectedOption={age}
+                            setSelectedOption={(val) => setgender(val)}
+                            selectedOption={gender}
 
                           />
                         </div>
@@ -125,16 +197,15 @@ const NewStudents = () => {
                       <div className="w-full sm:w-1/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="phoneNumber"
+                          htmlFor=""
                         >
                           Religion{' '}
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
                           <SelectGroupTwo
-                            values={['Christian', 'Muslim']}
-                            setSelectedOption={setAge}
-                            selectedOption={age}
-
+                            values={['Christian', 'Muslim','Other']}
+                            setSelectedOption={(val) => setreligion(val)}
+                            selectedOption={religion}
                           />
                         </div>
                       </div>
@@ -151,9 +222,19 @@ const NewStudents = () => {
                       </label>
 
                         <input
-                          className="form-datepicker w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-2 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                          placeholder="mm/dd/yyyy"
-                          data-class="flatpickr-right"
+                          className=" w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-2 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                          placeholder="dd/mm/yyyy"
+                          // data-class="flatpickr-right"
+                          name='dateofbirth'
+                          defaultValue={dateofbirth}
+                          type='date'
+                          
+                          onChange={
+                            (e) => {
+                              setdateofbirth(e.target.value)
+                              console.log(e.target.value)
+                          }}
+                         
                         />
 
                 
@@ -171,8 +252,8 @@ const NewStudents = () => {
                         <div className="relative z-20 bg-white dark:bg-form-input">
                           <SelectGroupTwo
                             values={['Grade 1', 'Grade 2']}
-                            setSelectedOption={setAge}
-                            selectedOption={age}
+                            setSelectedOption={(val)=>setclasses(val)}
+                            selectedOption={classes}
 
                           />
                         </div>
@@ -188,8 +269,8 @@ const NewStudents = () => {
                         <div className="relative z-20 bg-white dark:bg-form-input">
                           <SelectGroupTwo
                             values={['A', 'B']}
-                            setSelectedOption={setAge}
-                            selectedOption={age}
+                            setSelectedOption={(val)=>setsection(val)}
+                            selectedOption={section}
 
                           />
                         </div>
@@ -214,10 +295,12 @@ const NewStudents = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
+                        name=""
+                        id=""
+                      placeholder=""
                         defaultValue=""
+                        // onChange={ (e)  => set(e.target.value)  }
+                        
                       />
                     </div>
 
@@ -231,10 +314,11 @@ const NewStudents = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
+                        name=""
+                        id=""
+                      placeholder=""
                         defaultValue=""
+                        // onChange={ (e)  => setuser(e.target.value)  }
                       />
                     </div>
                   </div>
@@ -250,10 +334,11 @@ const NewStudents = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
+                        name=""
+                        id=""
+                      placeholder=""
                         defaultValue=""
+                        // onChange={ (e)  => setuser(e.target.value)  }
                       />
                     </div>
                     <div className="w-full sm:w-2/4 flex gap-5">
@@ -289,10 +374,11 @@ const NewStudents = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
+                        name=""
+                        id=""
+                      placeholder=""
                         defaultValue=""
+                        // onChange={ (e)  => setuser(e.target.value)  }
                       />
                     </div>
 
@@ -306,10 +392,11 @@ const NewStudents = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
+                        name=""
+                        id=""
+                      placeholder=""
                         defaultValue=""
+                        // onChange={ (e)  => setuser(e.target.value)  }
                       />
                     </div>
                   </div>
@@ -325,10 +412,11 @@ const NewStudents = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
+                        name=""
+                        id=""
+                      placeholder=""
                         defaultValue=""
+                        // onChange={ (e)  => setuser(e.target.value)  }
                       />
                     </div>
 
@@ -342,10 +430,11 @@ const NewStudents = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
+                        name=""
+                        id=""
+                      placeholder=""
                         defaultValue=""
+                        // onChange={ (e)  => setuser(e.target.value)  }
                       />
                     </div>
                   </div>
@@ -380,8 +469,9 @@ const NewStudents = () => {
                         name="bio"
                         id="bio"
                         rows={2}
-                        placeholder=""
+                      placeholder=""
                         defaultValue=""
+                        // onChange={ (e)  => setuser(e.target.value)  }
                       ></textarea>
                     </div>
                   </div>
@@ -399,8 +489,9 @@ const NewStudents = () => {
                         name="bio"
                         id="bio"
                         rows={2}
-                        placeholder=""
+                      placeholder=""
                         defaultValue=""
+                        // onChange={ (e)  => setuser(e.target.value)  }
                       ></textarea>
                     </div>
                   </div>

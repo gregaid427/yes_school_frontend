@@ -1,10 +1,10 @@
 import React from 'react';
 
-const DeleteSVG = () => {
+const DeleteSVG = (props) => {
   return (
-    <div className="tooltip">
-      <span className="tooltiptext">delete</span>{' '}
-      <svg
+    <button className='rounded   p-1' onClick={props.clickFunction}>
+      <p>delete</p>
+      {/* <svg
         className="fill-current"
         width="18"
         height="18"
@@ -28,8 +28,8 @@ const DeleteSVG = () => {
           d="M6.72245 9.67504C6.38495 9.70317 6.1037 10.0125 6.13182 10.35L6.3287 12.825C6.35683 13.1625 6.63808 13.4157 6.94745 13.4157C6.97558 13.4157 6.97558 13.4157 7.0037 13.4157C7.3412 13.3875 7.62245 13.0782 7.59433 12.7407L7.39745 10.2657C7.39745 9.90004 7.08808 9.64692 6.72245 9.67504Z"
           fill=""
         />
-      </svg>
-    </div>
+      </svg> */}
+      </button>
   );
 };
 

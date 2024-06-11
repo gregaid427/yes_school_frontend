@@ -1,11 +1,10 @@
 import React from 'react'
 
-const ViewSVG = () => {
+const ViewSVG = (props) => {
   return (
-    <div className='tooltip'>
-          <span className="tooltiptext">view</span>
-
-        <svg
+    <button className='rounded   p-1' onClick={props.clickFunction}>
+<p>view</p>
+        {/* <svg
                           className="fill-current"
                           width="18"
                           height="18"
@@ -21,8 +20,8 @@ const ViewSVG = () => {
                             d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
                             fill=""
                           />
-                        </svg>
-    </div>
+                        </svg> */}
+    </button>
   )
 }
 

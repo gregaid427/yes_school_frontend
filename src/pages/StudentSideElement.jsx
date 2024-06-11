@@ -72,7 +72,7 @@ const StudentSideElement = () => {
 
   return (
     <>
-    <div className="w-full sm:w-1/3">
+    <div className="w-full ">
          <label
            className="mb-3 block text-sm font-medium text-black dark:text-white"
            htmlFor="fullName"

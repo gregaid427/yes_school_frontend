@@ -246,3 +246,17 @@ span.flatpickr-weekday,
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+.toast-message {
+  background: #36010a !important;
+  color: white !important;
+  font-weight: bold;
+}
+.toast-message1 {
+  background: #072447 !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+.tblrow :hover{
+  color: aliceblue;
+}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const SelectGroupOne: React.FC = () => {
+const SelectGroupOne  = () => {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 

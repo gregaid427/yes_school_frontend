@@ -14,11 +14,92 @@ import MultiSelect from '../components/Forms/MultiSelect';
 import DefaultLayout from '../layout/DefaultLayout';
 import userThree from '../images/user/user-03.png';
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import flatpickr from 'flatpickr';
+import { CreateUserAction  } from "../redux/slices/usersSlice";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const NewStaff = () => {
   const [age, setAge] = useState<string>('');
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string>('');
+  const dispatch = useDispatch()
+const user = useSelector((state) => state?.user);
+const { loading , error ,CreateUser } = user;
+
+
+  const [firstName,setfirstName] = useState("")
+  const [lastName, setlastName] = useState("")
+  const [otherName,setotherName] = useState("")
+const [contact1, setcontact1] = useState("")
+const [contact2,setcontact2] = useState("")
+const [gender, setgender] = useState("Male")
+const [password,setpassword] = useState("")
+const [email, setemail] = useState("")
+const [religion,setreligion] = useState("Christianity")
+const [createdBy,setcreatedBy] = useState("")
+const [active, setactive] = useState("")
+const [address, setaddress] = useState("")
+
+
+const handleSubmit = (e) =>  {
+  e.preventDefault();
+ const data = {
+  "firstName": firstName,
+  "lastName": lastName,
+  "otherName": otherName,
+  "contact1": contact1,
+  "contact2": contact2,
+  "gender": gender,
+  "password": password,
+  "email": email,
+  "religion": religion,
+  "address": address,
+  "createdBy": createdBy,
+  "active": active,
+  "role": "staff",
+
+  }
+  dispatch(CreateUserAction(data))
+
+}
+
+  // useEffect(() => {
+  //   // Init flatpickr
+  //   flatpickr('.form-datepicker', {
+  //     mode: 'single',
+  //     static: true,
+  //     enableTime:false,
+  //     monthSelectorType: 'static',
+  //     dateFormat: 'd M Y',
+ 
+  //     prevArrow:
+  //       '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><Clip-Path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
+  //     nextArrow:
+  //       '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><Clip-Path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
+  //   });
+
+    
+  // }, []);
+
+
+
+  useEffect(() => {
+    if (CreateUser?.success === undefined) {
+    }
+    if (error) {
+      toast.error("Error Creating New User",);
+    }
+    if (CreateUser?.success == 1) {
+      toast.success("New User created Successfully");
+    }
+    if (CreateUser?.success == 0) {
+      toast.error("Email Already Taken");
+    }
+
+  }, [CreateUser]);
+  
 
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
@@ -27,6 +108,8 @@ const NewStaff = () => {
 
   return (
     <DefaultLayout>
+         <Toaster position="top-center" reverseOrder={false} />
+
       <div className="mx-auto max-w-270">
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
@@ -37,7 +120,7 @@ const NewStaff = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <form action="#">
+              <form action="" onSubmit={ (e) => handleSubmit(e) } >
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-2/2">
                       <label
@@ -49,8 +132,8 @@ const NewStaff = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
+                        onChange={ (e)  => setfirstName(e.target.value)  }
+
                         placeholder=""
                         defaultValue=""
                       />
@@ -66,8 +149,8 @@ const NewStaff = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
+                        onChange={ (e)  => setlastName(e.target.value)  }
+
                         placeholder=""
                         defaultValue=""
                       />
@@ -85,8 +168,8 @@ const NewStaff = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
+                        onChange={ (e)  => setotherName(e.target.value)  }
+
                         placeholder=""
                         defaultValue=""
                       />
@@ -141,8 +224,8 @@ const NewStaff = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
+                        onChange={ (e)  => setcontact1(e.target.value)  }
+
                         placeholder=""
                         defaultValue=""
                       />
@@ -158,8 +241,8 @@ const NewStaff = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
+                        onChange={ (e)  => setcontact2(e.target.value)  }
+
                         placeholder=""
                         defaultValue=""
                       />
@@ -182,6 +265,8 @@ const NewStaff = () => {
                         id="emailAddress"
                         placeholder=""
                         defaultValue=""
+                        onChange={ (e)  => setemail(e.target.value)  }
+
                       />
                     </div>
                   </div>
@@ -196,9 +281,9 @@ const NewStaff = () => {
                       <span className="absolute  top-4"></span>
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2  px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="email"
-                        name="emailAddress"
-                        id="emailAddress"
+                        type="text"
+                        onChange={ (e)  => setpassword(e.target.value)  }
+
                         placeholder=""
                         defaultValue=""
                       />
@@ -217,6 +302,8 @@ const NewStaff = () => {
                         name="bio"
                         id="bio"
                         rows={2}
+                                                onChange={ (e)  => setaddress(e.target.value)  }
+
                         placeholder=""
                         defaultValue=""
                       ></textarea>
