@@ -5,12 +5,12 @@ import axios from "axios";
 
 axios.defaults.headers.common = {'Authorization': `Bearer ${localStorage.getItem('token')}` ,   'Content-Type': 'application/json'  }
 
-export const CreatesClassAction = createAsyncThunk(
-  "new/NewClass",
+export const CreatesSubjectAction = createAsyncThunk(
+  "new/NewSubject",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/class/`,payload
+        `http://localhost:5000/api/subject/`,payload
         
       );
 
@@ -24,12 +24,12 @@ export const CreatesClassAction = createAsyncThunk(
   }
 );
 
-export const fetchBulkStudentAction = createAsyncThunk(
-  "fetch/allstudent",
+export const fetchSubjectAction = createAsyncThunk(
+  "fetch/allsubject",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/student/`
+        `http://localhost:5000/api/subject/`
         
       );
 
@@ -42,12 +42,12 @@ export const fetchBulkStudentAction = createAsyncThunk(
     }
   }
 );
-export const fetchAllClassAction = createAsyncThunk(
-  "fetch/AllClass",
+export const UpdateSubjectAction = createAsyncThunk(
+  "subject/update",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axios.get(
-        `http://localhost:5000/api/class/all`
+      const { data } = await axios.patch(
+        `http://localhost:5000/api/subject/`,payload
         
       );
 
@@ -151,24 +151,6 @@ export const updateClassAction = createAsyncThunk(
     }
   }
 );
-export const updateSectionAction = createAsyncThunk(
-  "section/Update",
-  async (payload, { rejectWithValue, getState, dispatch }) => {
-    try {
-      const { data } = await axios.patch(
-        `http://localhost:5000/api/class/section`, payload
-        
-      );
-
-      return data;
-    } catch (error) {
-      if (!error?.response) {
-        throw error;
-      }
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
 export const  createSectionAction = createAsyncThunk(
   "password/reset",
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -229,93 +211,73 @@ export const  deleteSingleClassAction = createAsyncThunk(
 
 
 
-const ClassSlices = createSlice({
-  name: "Class",
+const SubjectSlices = createSlice({
+  name: "Subject",
   initialState: {},
   reducers: {
   
-    resetcreateClass(state) {
-      state.CreateClasses = null
+    resetcreatesubject(state) {
+      state.CreateSubject = null
     },
-    resetcreatesection(state) {
-      state.createClassSection = null
-    }
-,
-    resetUdateClass(state) {
-      state.updatesingleclass = false
+ 
+    resetUdateSubject(state) {
+      state.updateSubject = null
     } ,
-    resetdeleteclass(state) {
+    resetdeleteSubject(state) {
       state.deletesectionbyclass = null
     } ,
   },
   extraReducers: builder => {
-    builder.addCase(CreatesClassAction.pending, (state, action) => {
-      state.CreateClassesloading = true;
-      state.CreateClasses = false;
+    builder.addCase(CreatesSubjectAction.pending, (state, action) => {
+      state.CreateSubjectloading = true;
+      state.CreateSubject = false;
 
     });
-    builder.addCase(CreatesClassAction.fulfilled, (state, action) => {
-      state.CreateClasses = action?.payload;
-      state.CreateClassesloading = false;
+    builder.addCase(CreatesSubjectAction.fulfilled, (state, action) => {
+      state.CreateSubject = action?.payload;
+      state.CreateSubjectloading = false;
       state.error = undefined;
     });
-    builder.addCase(CreatesClassAction.rejected, (state, action) => {
-      state.CreateClassesloading = false;
+    builder.addCase(CreatesSubjectAction.rejected, (state, action) => {
+      state.CreateSubjectloading = false;
       state.error = action.payload;
-      state.CreateClasses = undefined;
+      state.CreateSubject = undefined;
     });
 
-    
 
-    builder.addCase(updateSectionAction.pending, (state, action) => {
-      state.updateSectionloading = true;
-      state.updateSection = false;
+
+    builder.addCase(fetchSubjectAction.pending, (state, action) => {
+      state.fetchAllSubjectloading = true;
+      state.fetchAllSubject = false;
       
     });
-    builder.addCase(updateSectionAction.fulfilled, (state, action) => {
-      state.updateSection = action?.payload;
-      state.updateSectionloading = false;
+    builder.addCase(fetchSubjectAction.fulfilled, (state, action) => {
+      state.fetchAllSubject = action?.payload;
+      state.fetchAllSubjectloading = false;
       state.error = undefined;
     });
-    builder.addCase(updateSectionAction.rejected, (state, action) => {
+    builder.addCase(fetchSubjectAction.rejected, (state, action) => {
       state.error = action.payload;
-      state.updateSection = undefined;
-      state.updateSectionloading = undefined;
+      state.fetchAllSubject = undefined;
+      state.fetchAllSubjectloading = undefined;
 
     });
 
-    builder.addCase(fetchAllClassAction.pending, (state, action) => {
-      state.fetchAllClassloading = true;
-      state.fetchAllClass = false;
+
+    builder.addCase(UpdateSubjectAction.pending, (state, action) => {
+      state.updateSubjectloading = true;
+      state.updateSubject = null;
       
     });
-    builder.addCase(fetchAllClassAction.fulfilled, (state, action) => {
-      state.fetchAllClass = action?.payload;
-      state.fetchAllClassloading = false;
+    builder.addCase(UpdateSubjectAction.fulfilled, (state, action) => {
+      state.updateSubject = action?.payload;
+      state.updateSubjectnloading = false;
       state.error = undefined;
     });
-    builder.addCase(fetchAllClassAction.rejected, (state, action) => {
-      state.error = action.payload;
-      state.fetchAllClass = undefined;
-      state.fetchAllClassloading = undefined;
-
-    });
-
-
-    builder.addCase(fetchSectionbyclassAction.pending, (state, action) => {
-      state.sectionbyclassloading = true;
-      state.sectionbyclass = false;
-      
-    });
-    builder.addCase(fetchSectionbyclassAction.fulfilled, (state, action) => {
-      state.sectionbyclass = action?.payload;
-      state.sectionbyclassloading = false;
-      state.error = undefined;
-    });
-    builder.addCase(fetchSectionbyclassAction.rejected, (state, action) => {
-      state.error = action.payload;
-      state.sectionbyclass = undefined;
-      state.sectionbyclass = undefined;
+    builder.addCase(UpdateSubjectAction.rejected, (state, action) => {
+      state.updateSubjectError = action.payload;
+      state.updateSubject = false;
+      state.updateSubjectloading = undefined;
 
     });
 
@@ -454,8 +416,8 @@ const ClassSlices = createSlice({
 });
 
 
-export const { resetcreateClass,resetUdateClass,resetdeleteclass ,resetcreatesection } = ClassSlices.actions
+export const { resetcreatesubject,resetUdateSubject,resetdeleteSection  } = SubjectSlices.actions
 
-export default ClassSlices.reducer;
+export default SubjectSlices.reducer;
 
 

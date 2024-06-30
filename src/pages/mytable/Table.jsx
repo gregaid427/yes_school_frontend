@@ -12,7 +12,7 @@ export const Table = ({
   sideComponent,
   tableWidth,
 }) => {
-  const [age, setAge] = useState<string>('');
+  const [age, setAge] = useState('');
 
   const [activePage, setActivePage] = useState(1);
   const [filters, setFilters] = useState({});

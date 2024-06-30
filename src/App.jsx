@@ -43,6 +43,14 @@ import { useDispatch } from 'react-redux';
 import { fetchAllClassAction, fetchAllSectionAction } from './redux/slices/classSlice';
 import StudentCredential from './pages/Studentscredential';
 import { Toaster } from 'react-hot-toast';
+import SingleStudent from './pages/SingleStudent';
+import SingleStudentEdit from './pages/SingleStudentEdit';
+import SingleClassEdit from './pages/SingleClassEdit';
+import SingleSectionEdit from './pages/SingleSectionedit';
+import SingleSubjectEdit from './pages/SingleSubjectEdit';
+import AddInventoryStock from './pages/AddInventoryStock';
+import AddInventoryCartegory from './pages/AddInventoryCartegory';
+import EditInventoryCartegory from './pages/EditInventorycartegory';
 
   
 function App() {
@@ -114,6 +122,15 @@ function App() {
                 </>
               }
             />
+              <Route
+              path="/academics/class/editclass"
+              element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <SingleClassEdit />
+                </>
+              }
+            />
         
           <Route
             path="/academics/promotion"
@@ -133,6 +150,25 @@ function App() {
               </>
             }
           />
+          t
+          <Route
+            path="/academics/subject/editsubject"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <SingleSubjectEdit />
+              </>
+            }
+          />
+             <Route
+            path="/academics/section/edit"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <SingleSectionEdit />
+              </>
+            }
+          />
           <Route
             path="/academics/subjects"
             element={
@@ -148,6 +184,24 @@ function App() {
               <>
                 <PageTitle title="Calendar | " />
                 <NewStudents  />
+              </>
+            }
+          />{' '}
+            <Route
+            path="/student/editinfo"
+            element={
+              <>
+                <PageTitle title="Student | Edit " />
+                <SingleStudentEdit  />
+              </>
+            }
+          />{' '}
+              <Route
+            path="/student/singlestudent"
+            element={
+              <>
+                <PageTitle title="student | " />
+                <SingleStudent  />
               </>
             }
           />{' '}
@@ -187,12 +241,30 @@ function App() {
               </>
             }
           />
-          <Route
-            path="/inventory/cartegory"
+               <Route
+            path="/inventory/addstock"
             element={
               <>
                 <PageTitle title="Calendar | " />
-                <StudentCartegory />
+                <AddInventoryStock />
+              </>
+            }
+          />
+               <Route
+            path="/inventory/addcartegory"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <AddInventoryCartegory/>
+              </>
+            }
+          />
+             <Route
+            path="/inventory/editcartegory"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <EditInventoryCartegory/>
               </>
             }
           />

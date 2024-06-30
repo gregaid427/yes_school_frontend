@@ -16,7 +16,6 @@ const StudentCredential = () => {
   const { data } = Successfetch;
   useEffect(() => {
     // setTimeout(() => toast.success('New Student Added Successfully'), 900);
-    console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj')
    if(data == undefined )
    navigate("/student/admission")
   }, []);
@@ -264,7 +263,7 @@ const StudentCredential = () => {
                 className="flex w-full justify-center rounded bg-primary py-2 px-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                 type=""
                 onClick={(e) => {
-                  Navigate('/student/admission');
+                  navigate('/student/admission');
                 }}
               >
                 Add New Student

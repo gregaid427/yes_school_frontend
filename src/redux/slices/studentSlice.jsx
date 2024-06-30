@@ -53,7 +53,7 @@ export const fetchBulkStudent = createAsyncThunk(
 
 
 export const fetchSingleStudent = createAsyncThunk(
-  "fetch/singlestudent",
+  "fetch/singlestudents",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
@@ -70,6 +70,25 @@ export const fetchSingleStudent = createAsyncThunk(
     }
   }
 );
+
+// export const fetchSingleStudentbiodata = createAsyncThunk(
+//   "fetch/single",
+//   async (payload, { rejectWithValue, getState, dispatch }) => {
+//     try {
+//       const { data } = await axios.get(
+//         `http://localhost:5000/api/student/singlebiodata/${payload}`,
+        
+//       );
+
+//       return data;
+//     } catch (error) {
+//       if (!error?.response) {
+//         throw error;
+//       }
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
 
 export const fetchStudentsClassAction = createAsyncThunk(
   "fetch/studentClass",
@@ -109,12 +128,12 @@ export const fetchCustomStudentsClassAction = createAsyncThunk(
   }
 );
 
-export const adloginUserAction = createAsyncThunk(
-  "adlogin/User",
+export const UpdatestudentAction = createAsyncThunk(
+  "update/User",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axios.post(
-        `https://api-optimum.seedogh.com/api/admin/login `, payload
+      const { data } = await axios.patch(
+        `http://localhost:5000/api/student/`, payload
         
       );
 
@@ -210,13 +229,18 @@ const StudentSlices = createSlice({
   name: "student",
   initialState: {
     Successfetch : false,
-    CreateStudent : null
+    CreateStudent : null,
+    updateStudent: null
   },
   reducers: {
     reset(state) {
       state.CreateStudent = null
-
+    },
+    resetUdateStudent(state) {
+      state.updateStudent = null
     }
+
+    
   },
   extraReducers: builder => {
     builder.addCase(CreatestudentAction.pending, (state, action) => {
@@ -244,9 +268,6 @@ const StudentSlices = createSlice({
     // });
     
 
-
-
-
     builder.addCase(fetchBulkStudent.pending, (state, action) => {
       state.loading = true;
       state.fetchStudent = false;
@@ -263,9 +284,6 @@ const StudentSlices = createSlice({
       state.loading = undefined;
 
     });
-
-
-
 
     builder.addCase(fetchCustomStudentsClassAction.pending, (state, action) => {
       state.fetchStudentcustomloading = true;
@@ -313,15 +331,35 @@ const StudentSlices = createSlice({
     });
     builder.addCase(fetchSingleStudent.rejected, (state, action) => {
       state.error = action.payload;
-      state.fetchSingleStudent = undefined;
+      state.singleStudent = undefined;
       state.studentloading = undefined;
 
     });  
 
+
+
+
+    builder.addCase(UpdatestudentAction.pending, (state, action) => {
+      state.updateStudentloading = true;
+      state.updateStudent = false;
+      
+    });
+    builder.addCase(UpdatestudentAction.fulfilled, (state, action) => {
+      state.updateStudent = action?.payload;
+      state.updateStudentloading = false;
+      state.updateStudenterror = undefined;
+    });
+    builder.addCase(UpdatestudentAction.rejected, (state, action) => {
+      state.updateStudenterror = action.payload;
+      state.updateStudent = undefined;
+      state.updateStudentloading = undefined;
+
+    });
+
   },
 });
 
-export const { reset} = StudentSlices.actions
+export const { reset,resetUdateStudent} = StudentSlices.actions
 export default StudentSlices.reducer;
 
 

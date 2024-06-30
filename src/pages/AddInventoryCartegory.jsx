@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
 import DefaultLayout from '../layout/DefaultLayout';
-import { Link, useNavigate } from 'react-router-dom';;
+import { Link, useNavigate } from 'react-router-dom';
 import ViewSVG from '../components/Svgs/View';
 import DeleteSVG from '../components/Svgs/delete';
 import EditSVG from '../components/Svgs/edit';
@@ -23,35 +23,40 @@ import autoTable from 'jspdf-autotable';
 
 import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
-import { CreatesClassAction, createSectionAction, fetchAllClassAction, fetchAllSectionAction, fetchSingleClassAction, resetcreateClass, resetcreatesection } from '../redux/slices/classSlice';
+import {
+  CreatesSubjectAction,
+  fetchSubjectAction,
+  resetcreatesubject,
+  fetchAllSectionAction,
+  fetchSingleClassAction,
+} from '../redux/slices/subjectSlice';
+import InventNewCartegory from '../components/inventNewCartegory';
+import { fetchInventCartegoryAction } from '../redux/slices/InventorySlice';
 
-const Section = () => {
+const AddInventoryCartegory = () => {
   const [pagesval, setpagesval] = useState(30);
   const [classs, setClasss] = useState([]);
 
   const [loader, setLoader] = useState(true);
+  const [sections, setsections] = useState([]);
 
   const [isChecked1, setIsChecked1] = useState(false);
-  const [sectionTitle, setsectionTitle] = useState("");
-  const [classInstructor, setClassInstructor] = useState("");
+  const [sectionTitle, setsectionTitle] = useState('');
+  const [type, setType] = useState('Theory');
 
-  const [sections, setsections] = useState([]);
+  const [subjectName, setSubjectName] = useState([]);
 
   const [nodes, setdata] = useState([]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const clad = useSelector((state) => state?.classes);
+  const sub = useSelector((state) => state?.inventory);
+  const { cartegory } = sub;
 
-  const {createClassSection, fetchAllClassloading, fetchAllClass, sectionloading, fetchSection, CreateClasses,CreateClassesloading } =
-    clad;
-
-  // useEffect(() => {
-  //     dispatch(fetchAllClass());
-  //     dispatch(fetchAllClass());
-
-  // }, []);
+  useEffect(() => {
+    dispatch(fetchInventCartegoryAction());
+  }, []);
 
   // useEffect(() => {
   //   if (fetchSection?.success == 1) {
@@ -67,39 +72,10 @@ const Section = () => {
   // }, [sectionloading]);
 
   useEffect(() => {
-    if (createClassSection?.success == 0) {
-      toast.error("Error - Section Name Already Exists");
-       dispatch(resetcreatesection())
-      // dispatch(fetchAllClassAction())
-
-
-      }
-    if (createClassSection?.success == 1) {
-      toast.success('New Section Added Successfully');
-       dispatch(resetcreatesection())
-       dispatch(fetchAllSectionAction())
-
-
-      }
-    
-
-    // if (fetchAllClass?.success == 1) {
-    //   let i = 0;
-    //   let arr = [];
-    //   while (i < clad?.fetchAllClass?.data.length) {
-    //     arr.push(clad?.fetchAllClass?.data[i].title);
-    //     i++;
-    //   }
-
-    //   setClasss(arr);
-    // }
-  }, [createClassSection]);
-
-  useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (fetchSection?.success == 1) {
-      let data = fetchSection?.data;
+    if (cartegory?.success == 1) {
+      let data = cartegory?.data;
       setdata(data);
     }
     // if (loading == false) {
@@ -108,7 +84,7 @@ const Section = () => {
 
     // }
     // datas = data;
-  }, [fetchSection]);
+  }, [cartegory]);
 
   let data = { nodes };
 
@@ -125,7 +101,7 @@ const Section = () => {
       padding: 5px 0px;
     }
   `,
-        BaseCell: `
+      BaseCell: `
         font-size: 15px;
         color:white;
       //   border-bottom: 1px solid #313D4A !important;
@@ -155,59 +131,56 @@ const Section = () => {
   function onPaginationChange(action, state) {}
 
   const [search, setSearch] = useState('');
-
-
-
+  console.log(data);
   data = {
     nodes: data.nodes.filter((item) =>
-      item.sectionName.toLowerCase().includes(search.toLowerCase()),
+      item.cartegoryname.toLowerCase().includes(search.toLowerCase()),
     ),
   };
 
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
-    dispatch(fetchSingleClassAction({"classId":value.classId,"sectionTitle":value.title}));
-    navigate('/academics/class/editclass', {
-      state: { action: 1, sectionId: value },
+ 
+    navigate('/inventory/editcartegory', {
+      state: {action:2, info: value },
     });
   };
   const handleEditbtn = (value) => {
-    navigate('/academics/section/edit', {
-      state: { sectionName: value.sectionName, sectionId: value.id },
+    console.log(value.type);
+    navigate('/inventory/editcartegory', {
+      state: {action:1, info: value },
     });
   };
   const handleviewdeletbtn = (value) => {
-    dispatch(fetchSingleClassAction({"classId":value}));
+    dispatch(fetchSingleClassAction({ classId: value }));
     navigate('academic/class/editclass', { state: { action: 1 } });
   };
 
-  const classdata = {
-    sectionName: sectionTitle.toUpperCase(),
+  const subdata = {
+    type: type,
+    subjectName: subjectName,
     createdBy: 'Asante',
   };
   const handlecreateSection = (e) => {
-    if (sectionTitle == '') {
-      toast.error('Error - Section Name Cannot Be Empty');
+    if (subjectName == '') {
+      toast.error('Error - subject Name Cannot Be Empty');
     } else {
-      dispatch(createSectionAction(classdata));
+      dispatch(CreatesSubjectAction(subdata));
     }
   };
-
-
-  
 
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
 
     autoTable(doc, { html: '#my-table' });
 
-    doc.save(`All-Classes-List`);
+    doc.save(`All-Subject-List`);
   };
 
   const csvConfig = mkConfig({
     useKeysAsHeaders: true,
-    filename: `All-Classes-List`,
+    filename: `All-Subject-List`,
   });
 
   const handleDownloadCSV = async () => {
@@ -219,8 +192,8 @@ const Section = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-      <div className={'flex gap-2  w-full'}>
-        <div className="w-6/12 flex-col">
+      <div className={'flex gap-1  w-full'}>
+        <div className="w-7/12 flex-col">
           <div
             className={
               'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
@@ -229,7 +202,7 @@ const Section = () => {
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
-                  All Sections
+                  Item Cartegory List
                 </h3>
               </div>
             </div>
@@ -273,7 +246,7 @@ const Section = () => {
                       className=" w-2/2 pt-2 block text-sm font-medium text-black dark:text-white"
                       htmlFor=" "
                     >
-                      Search Section{' '}
+                      Search Item{' '}
                     </label>
                   </div>
 
@@ -302,9 +275,8 @@ const Section = () => {
                   {(tableList) => (
                     <>
                       <Header>
-                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
-
-                          <HeaderCell>Section</HeaderCell>
+                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
+                          <HeaderCell>Cartegory Name</HeaderCell>
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
@@ -313,20 +285,16 @@ const Section = () => {
                       <Body>
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
-                           
-                            <Cell className="  ">
-                              {item.sectionName}
-                            </Cell>
-
-                    
+                            <Cell className="  ">{item.cartegoryname}</Cell>
 
                             <Cell>
                               <div className="gap-2 flex">
-                               
+                                <ViewSVG
+                                  clickFunction={() => handleViewbtn(item)}
+                                />
                                 <EditSVG
                                   clickFunction={() => handleEditbtn(item)}
                                 />
-
                                 <DeleteSVG
                                   clickFunction={() => handleviewbtn(item.id)}
                                 />
@@ -393,8 +361,10 @@ const Section = () => {
                   {(tableList) => (
                     <>
                       <Header>
-                        <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                          <HeaderCell>Section</HeaderCell>
+                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
+                        <HeaderCell>Cartegory Name</HeaderCell>
+
+<HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
                       </Header>
 
@@ -405,9 +375,8 @@ const Section = () => {
                             item={item}
                             className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                           >
-                           
+                            <Cell className="  ">{item.cartegoryname}</Cell>
 
-                          
                           </Row>
                         ))}
                       </Body>
@@ -418,126 +387,12 @@ const Section = () => {
             </div>
           </div>{' '}
         </div>
-        <div className="w-4/12 mr-5">
-          <div className="grid  gap-8">
-            <div className="col-span-12">
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                  <h3 className="font-medium text-black dark:text-white">
-                    Add New Section
-                  </h3>
-                </div>
-                <div className="p-7">
-                  <form action="#">
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-small text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Section Name
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue=""
-                        onChange={(e) => setsectionTitle(e.target.value)}
-                      />
-                    </div>
-
-                
-
-                  {/* <div className="pb-10 mt-3">
-                 <div className='flex my-5 justify-between align-middle'>
-                 <label className=' block text-sm align-middle font-medium text-black dark:text-white'>Class Sections</label>
-                 <button
-                        className="flex w-7/12 justify-center rounded-full  bg-black  px-1 font-[6px] text-muted hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          // handlecreateSection();
-                        }}
-                      >
-                        Create New Section
-                      </button>
-                  </div>  
-                   { sections.map((item) => (
-                     <div className="mb-2 flex   sm:flex-row">
-                    <div className=" flex  sm:w-full">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="checkboxLabelOne"
-                      >
-                        - {item.name}{' '}
-                      </label>
-                    </div>
-
-                    <div className="flex justify-start sm:w-2/4">
-                      <label
-                        htmlFor={item.name}
-                        className="flex cursor-pointer select-none "
-                      >
-                        <div className="relative ">
-                          <input
-                            key={item.id}
-
-                            title={item.name}
-                            isChecked={isChecked1}
-                            toggle={setIsChecked1}
-                            type="checkbox"
-                            id={item.name}
-                            className="sr-only"
-                            onChange={() => {
-                              setIsChecked1(!isChecked1);
-                            }}
-                          />
-                          <div
-                            className={` flex h-5 w-5 items-center justify-center rounded border ${
-                              isChecked1 &&
-                              'border-primary bg-gray dark:bg-transparent'
-                            }`}
-                          >
-                            <span
-                              className={`h-2.5 w-2.5 rounded-sm ${isChecked1 && 'bg-primary'}`}
-                            ></span>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-))}
-
-                  </div> */}
-
-                    <div className="flex justify-end mt-5 gap-4.5">
-                      <button
-                        className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault()
-                          handlecreateSection();
-                        }}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                        type="reset"
-                      >
-                        Reset
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="w-2/12 mr-5">
+         <InventNewCartegory close={setClasss} />
         </div>
       </div>{' '}
     </DefaultLayout>
   );
 };
 
-export default Section;
+export default AddInventoryCartegory;

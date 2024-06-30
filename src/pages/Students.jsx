@@ -3,7 +3,7 @@ import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
 import userThree from '../images/user/user-03.png';
 import DefaultLayout from '../layout/DefaultLayout';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import ViewSVG from '../components/Svgs/View';
 import DeleteSVG from '../components/Svgs/delete';
 import EditSVG from '../components/Svgs/edit';
@@ -71,22 +71,17 @@ const Student = () => {
   const classes = useSelector((state) => state?.classes);
 
 
-  const { loading, error, fetchStudent, fetchStudentcustom, fetchcustom, fetchStudentcustomloading, fetchcustomloading } = student;
-  const {
-    fetchAllClassloading,
-    sectionloading,
-    fetchAllClass,
-    fetchSection,
-  } = classes;
+  const { loading, error, fetchStudent, fetchStudentcustom, fetchcustom, fetchStudentcustomloading, fetchcustomloading,singleStudent, singleStudentloading } = student;
+  
+  const {fetchAllClassloading,fetchAllClass}= classes
 
-
+  
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
     if (fetchcustom?.success == 1) {
       let data = fetchcustom?.data;
-      console.log('called')
       setdata(data);
     }
 
@@ -109,13 +104,19 @@ const Student = () => {
     if (fetchStudentcustom?.success == 1) {
       let data = fetchStudentcustom?.data;
       setdata(data);
-      console.log('called1')
 
     }
 
   
 
   }, [ fetchStudentcustomloading ]);
+
+  useEffect(() => {
+   
+    setdata([])
+  
+
+  }, []);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -126,27 +127,56 @@ const Student = () => {
     }
   }, [loading]);
 
-  useEffect(() => {
+  // useEffect(() => {
    
-    if (fetchSection?.success == 1) {
-     let arrr = ['All Sections']
-      let i = 0;
-      while (i < classes?.fetchSection?.data.length) {
-        arrr.push(classes?.fetchSection?.data[i]?.sectionName
-          );
-        i++;
-      }
+  //   if (fetchSection?.success == 1) {
+  //    let arrr = ['All Sections']
+  //     let i = 0;
+  //     while (i < classes?.fetchSection?.data.length) {
+  //       arrr.push(classes?.fetchSection?.data[i]?.sectionName
+  //         );
+  //       i++;
+  //     }
 
-      setsections(arrr);
-      setsectionzz(arrr[0])
-    }
-  }, [sectionloading]);
+  //     setsections(arrr);
+  //     setsectionzz(arrr[0])
+  //   }
+  // }, [sectionloading]);
 
 
   let data = { nodes };
 
-  let vv = '#eaf5fd';
-  const theme = useTheme([getTheme(), {}]);
+ const theme = useTheme([
+    {
+      // HeaderRow: `
+      // background-color: #313D4A;
+      // border-bottom: 1px solid #fff !important;
+
+      // `,
+      HeaderRow: `
+    .th {
+      border-bottom: 1px solid #a0a8ae;
+      padding: 5px 0px;
+    }
+  `,
+         BaseCell: `
+        font-size: 15px;
+        color:white;
+      //   border-bottom: 1px solid #313D4A !important;
+      //   //  background-color: #24303F;
+
+       `,
+      Row: `
+  &:nth-of-type(odd) {
+    background-color: #24303F;
+  }
+
+  &:nth-of-type(even) {
+    background-color: #202B38;
+  }
+`,
+    },
+  ]);
 
   const pagination = usePagination(data, {
     state: {
@@ -160,10 +190,21 @@ const Student = () => {
 
   var data2;
   const [search, setSearch] = useState('');
+ const navigate = useNavigate()
 
   const handleviewbtn = (value) => {
-    show('top');
+    navigate('/student/singlestudent', {state:{action: 1,value:value.student_id}})
+
+  };
+  const handleEditbtn = (value) => {
     dispatch(fetchSingleStudent(value.student_id));
+    navigate("/student/editinfo", {state:{action: 2,value:value.student_id}})
+
+  };
+  const handleviewdeletbtn = (value) => {
+    dispatch(fetchSingleStudent(value.student_id));
+    navigate("/student/editinfo", {state:{action: 1}})
+
   };
 
   data = {
@@ -175,7 +216,7 @@ const Student = () => {
           : item.student_id.toLowerCase().includes(search.toLowerCase()),
     ),
   };
-console.log(clazz)
+
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
 
@@ -202,11 +243,13 @@ console.log(clazz)
     }
     console.log(data)
     if(sectionzz == "All Sections"){
+      setclazz(clazz)
       dispatch(fetchStudentsClassAction(data))
       console.log('all')
 
     }
     if(sectionzz != "All Sections"){
+      setsectionzz(sectionzz)
       dispatch(fetchCustomStudentsClassAction(data))
       console.log('custom')
 
@@ -241,8 +284,8 @@ console.log(clazz)
         headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
         visible={visible}
         className=""
-        position={'top'}
-        style={{ width: '60vw', color: 'white' }}
+        position={'top-right'}
+        style={{ width: 'w-12/12', color: 'white' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
@@ -393,9 +436,9 @@ console.log(clazz)
                     <Body>
                       {tableList.map((item) => (
                         <Row
-                          key={item.id}
+                          key={item.student_id}
                           item={item}
-                          className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
+                          className=""
                         >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
@@ -421,11 +464,11 @@ console.log(clazz)
                                 clickFunction={() => handleviewbtn(item)}
                               />
                               <EditSVG
-                                clickFunction={() => handleviewbtn(item.id)}
+                                clickFunction={() => handleEditbtn(item)}
                               />
 
                               <DeleteSVG
-                                clickFunction={() => handleviewbtn(item.id)}
+                                clickFunction={() => handleviewbtn(item)}
                               />
                             </div>
                           </Cell>
@@ -502,7 +545,7 @@ console.log(clazz)
                     <Body>
                       {tableList.map((item) => (
                         <Row
-                          key={item.id}
+                          key={item.student_id}
                           item={item}
                           className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                         >

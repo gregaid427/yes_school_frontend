@@ -13,7 +13,6 @@ const SectionSelect2 = (props) => {
 
     useEffect(() => {
         props.setsectionprop(sectionzz)
-        console.log('triggered')
     }, [sectionzz]);
 
 

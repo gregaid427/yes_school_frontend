@@ -3,57 +3,41 @@ import DefaultLayout from '../layout/DefaultLayout';
 import userThree from '../images/user/user-03.png';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CreatestudentAction } from '../redux/slices/studentSlice';
-import { Toaster, toast } from 'react-hot-toast';
+import {
+  UpdatestudentAction,
+  fetchSingleStudent,
+  resetUdateStudent,
+} from '../redux/slices/studentSlice';
+import { toast } from 'react-hot-toast';
 
 import {
   fetchAllClassAction,
   fetchAllSectionAction,
-  
 } from '../redux/slices/classSlice';
-import {
-  reset
-} from '../redux/slices/studentSlice';
+import { reset } from '../redux/slices/studentSlice';
 import ClassSelect from '../components/ClassSelect';
 import SectionSelect2 from '../components/SectionsSelect2';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import StudentCredential from './Studentscredential';
+import Loader from '../common/Loader';
 // import { useHistory } from 'react-router-dom';
 
-const NewStudents = () => {
-  const formRef1 = useRef();
-  const formRef2 = useRef();
-  const formRef3 = useRef();
-  const formRef4 = useRef();
+const SingleStudentEdit  = () => {
+  const [PageAction, setPageAction] = useState();
 
-// const history = useHistory()
-// history.listen((location, action) =>{
-//   if(location.pathname="/student/admission"){
-//     setButton()
-
-//   }
-// })
-
-    //  useEffect(() => {
-    //   setButton()
-    //   // Return the function to unsubscribe from the event so it gets removed on unmount
-
-    //  }, [location.pathname ]);
-   function checkbuttonState(){
-     return buttonState
-    }
-
-    function setButton(){
-      
-      setButonState(1)
-      console.log(buttonState)
-    }
+  const location = useLocation();
+  const { action, value } = location?.state;
 
   const [isChecked, setIsChecked] = useState(false);
 
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
- 
+  const { singleStudent, singleStudentloading, updateStudent } = student;
+
+  const [data, setData] = useState(null);
+  const [paramaction, setParamaction] = useState(1);
+  
+  const [studentID, setStudentID] = useState('');
 
   const [firstName, setStudentfirstName] = useState('');
   const [lastName, setStudentlastName] = useState('');
@@ -89,15 +73,45 @@ const NewStudents = () => {
   const [sectionzz, setsectionzz] = useState();
   const [feeArrears, setFeeArrears] = useState(0.0);
   const [feeCredit, setFeeCredit] = useState(0.0);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [loader, setLoader] = useState(true);
+  const [classs, setClasss] = useState([]);
 
+
+  useEffect(() => {
+
+
+console.log(singleStudent)
+    if (singleStudent == undefined) {
+      toast.error('Error To load Student Data');
+      navigate('/student/info');
+    }
+    //   // setTimeout(() => toast.success('New Student Added Successfully'), 900);
+    //  if(singleStudent?.data == undefined )
+    //  navigate("/student/info")
+  }, []);
+
+  useEffect(() => {
+    if (updateStudent?.success == 1) {
+      toast.success('Student Records Updated Successfully');
+      dispatch(resetUdateStudent());
+      toast.success('navigate to preview page to be done yet');
+
+    }
+    if (updateStudent?.success == 0) {
+      toast.error("Error Updating Student Info");
+    }
+    
+    //  navigate("/student/info")
+  }, [updateStudent]);
 
   const handleSubmit = (e) => {
-
-
     if (firstName == '') return toast.error('Please Fill Out Required Fields');
+ 
 
     const data = {
+      studentId: studentID,
+
       firstName: firstName,
       lastName: lastName,
       otherName: otherName,
@@ -106,7 +120,7 @@ const NewStudents = () => {
       contact3: gcontact3,
       contact4: gcontact4,
       gender: gender,
-      class: clazz,
+      classes: clazz,
       section: sectionzz,
       religion: religion,
       dateofbirth: dateofbirth,
@@ -128,22 +142,14 @@ const NewStudents = () => {
       feeArrears: feeArrears,
       feeCredit: feeCredit,
     };
-    dispatch(CreatestudentAction(data));
+      console.log(data)
+
+    dispatch(UpdatestudentAction(data));
+
   };
 
   function joinName(fn, on, ln) {
     return fn + ' ' + on + ' ' + ln;
-  }
-
-  function resetFormStates() {
-    // formRef.current.reset();
-    formRef1.current.reset();
-    formRef2.current.reset();
-    formRef3.current.reset();
-    formRef4.current.reset();
-    formRef5.current.reset();
-
-    setButonState(1);
   }
 
   function getFileInfo(event) {
@@ -157,45 +163,101 @@ const NewStudents = () => {
     );
     setPicture(formData);
   }
-  const { CreateStudentloading, error, CreateStudent ,Successfetch } = student;
+  const clad = useSelector((state) => state?.classes);
+
+  const {  sectionloading, fetchSection ,fetchAllClass} =  clad;
+
+
+
+
   useEffect(() => {
   
-    if (error) {
-      dispatch(reset())
 
-      toast.error('Error Creating New Student');
+    if (singleStudent?.success == 1) {
+      setData(singleStudent?.data);
+      setLoader(false);
+      let data = singleStudent?.data[0]
+      setStudentID(singleStudent?.data[0].student_id);
+      setStudentfirstName(singleStudent?.data[0].firstName);
+      setStudentlastName(singleStudent?.data[0].lastName);
+      setStudentotherName(singleStudent?.data[0].otherName);
+      setGender(singleStudent?.data[0].gender);
+      setPicture(singleStudent?.data[0].picture);
+      setgfName1(singleStudent?.data[0].g1fname);
+      setglName1(singleStudent?.data[0].g1lastname);
+      setgfName2(singleStudent?.data.g2fname);
+      setglName2(singleStudent?.data[0].g2lastname);
+      setgcontact1(singleStudent?.data[0].g1contact1);
+      setgcontact2(singleStudent?.data[0].g1contact2);
+      setgcontact3(singleStudent?.data[0].g2contact1);
+      setgcontact4(singleStudent?.data[0].g2contact2);
+      setemail1(singleStudent?.data[0].g1email);
+      setemail2(singleStudent?.data[0].g2email);
+      setgAddress1(singleStudent?.data[0].g1address);
+      setgAddress2(singleStudent?.data[0].g2address);
+      setgsex2(singleStudent?.data[0].g2sex);
+      setgsex1(singleStudent?.data[0].g1sex);
+      setRelation1(singleStudent?.data[0].g1relation);
+      setRelation2(singleStudent?.data[0].g2relation);
+      setreligion(singleStudent?.data[0].religion);
+      setdateofbirth(singleStudent?.data[0].dateofbirth);
+      setcreatedBy(singleStudent?.data[0].createdBy);
+      setclazz(singleStudent?.data[0].class);
+      setsectionzz(singleStudent?.data[0].section);
 
+
+
+
+      if (fetchSection?.success == 1) {
+        let arrr = [singleStudent?.data[0].section];
+        let i = 0;
+        while (i < clad?.fetchSection?.data.length) {
+          arrr.push(clad?.fetchSection?.data[i]?.sectionName);
+          i++;
+        }
+  
+        setsections(arrr);
+        // setsectionzz(arrr[0]);
+      
+      
+        if (fetchAllClass?.success == 1) {
+          let i = 0;
+          let arr = [singleStudent?.data[0].class];
+          while (i < clad?.fetchAllClass?.data.length) {
+            arr.push(clad?.fetchAllClass?.data[i].title);
+            i++;
+          }
+              
+          setClasss(arr);
+    
+        }
+      }
     }
-    if (CreateStudent?.success == 1 ) {
-      // dispatch(reset())
-      // setTimeout(() => setLoader(false), 1000);
-
-      navigate("/student/studentcredential")
-      //  dispatch(reset())
-
+    console.log(singleStudent)
+    if (singleStudent?.success == 0) {
+      toast.error('Unable To load Student Data');
     }
-    if (CreateStudent?.success == 0) {
-      dispatch(reset())
-      toast.error('Error : Unable to Add Student ');
-    }
-  }, [CreateStudent]);
+  }, [singleStudent]);
+
+  const [sections, setsections] = useState([]);
+
+
 
   function handleNextButton() {
     setButonState(buttonState + 1);
   }
 
   function handleBackButton() {
-    setButonState(buttonState - 1);
+    navigate(-1);
   }
 
-  return (
+  return loader ? (
+    <Loader />
+  ) : (
     <DefaultLayout>
       <div className="mx-auto w-full">
-        <div
-          className="flex flex-row w-full  gap-3"
-          style={{ display: checkbuttonState() == 1 ? 'flex' : 'none' }}
-        >
-          <div className="w-4/6 ">
+        <div className="flex flex-row w-full  gap-0" style={{}}>
+          <div className="w-4/6  ">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
@@ -203,7 +265,7 @@ const NewStudents = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <form ref={formRef1}>
+                <form>
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-2/2">
                       <label
@@ -218,11 +280,10 @@ const NewStudents = () => {
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue=""
+                        defaultValue={data[0]?.firstName}
                         onChange={(e) => setStudentfirstName(e.target.value)}
                       />
                     </div>
-
                     <div className="w-full sm:w-2/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -236,7 +297,7 @@ const NewStudents = () => {
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue=""
+                        defaultValue={data[0]?.lastName}
                         onChange={(e) => setStudentlastName(e.target.value)}
                       />
                     </div>
@@ -256,7 +317,7 @@ const NewStudents = () => {
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue=""
+                        defaultValue={data[0]?.otherName}
                         onChange={(e) => setStudentotherName(e.target.value)}
                       />
                     </div>
@@ -271,7 +332,7 @@ const NewStudents = () => {
 
                         <div className="relative z-20 bg-white dark:bg-form-input">
                           <SelectGroupTwo
-                            values={['Male', 'Female']}
+                            values={[data[0]?.gender, 'Male', 'Female']}
                             setSelectedOption={(val) => setGender(val)}
                             selectedOption={gender}
                           />
@@ -287,7 +348,12 @@ const NewStudents = () => {
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
                           <SelectGroupTwo
-                            values={['Christian', 'Muslim', 'Other']}
+                            values={[
+                              data[0]?.religion,
+                              'Christian',
+                              'Muslim',
+                              'Other',
+                            ]}
                             setSelectedOption={(val) => setreligion(val)}
                             selectedOption={religion}
                           />
@@ -310,7 +376,7 @@ const NewStudents = () => {
                         placeholder="12/10/2021"
                         // data-class="flatpickr-right"
                         name="dateofbirth"
-                        defaultValue={dateofbirth}
+                        defaultValue={data[0]?.dateofbirth}
                         type="date"
                         onChange={(e) => {
                           setdateofbirth(e.target.value);
@@ -328,7 +394,12 @@ const NewStudents = () => {
                           Class
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
-                          <ClassSelect setsectionprop={setclazz} />
+                          {/* <ClassSelect setsectionprop={setclazz} /> */}
+                          <SelectGroupTwo
+                            values={classs}
+                            setSelectedOption={(val) => setclazz(val)}
+                            selectedOption={clazz}
+                          />
                         </div>
                       </div>
 
@@ -340,7 +411,12 @@ const NewStudents = () => {
                           Section{' '}
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
-                          <SectionSelect2 setsectionprop={setsectionzz} />
+                          {/* <SectionSelect2 setsectionprop={setsectionzz} /> */}
+                          <SelectGroupTwo
+                            values={sections}
+                            setSelectedOption={(val) => setsectionzz(val)}
+                            selectedOption={sectionzz}
+                          />
                         </div>
                       </div>
                     </div>
@@ -357,7 +433,7 @@ const NewStudents = () => {
                     />
                   </div>
                 </form>
-                <div className="flex mt-10 justify-end gap-4.5">
+                {/* <div className="flex mt-10 justify-end gap-4.5">
                   <button
                     className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                     type=""
@@ -365,24 +441,24 @@ const NewStudents = () => {
                   >
                     Next
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
-          {/* <div className="w-2/6">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
+          <div className="w-1/6  ">
+            <div className="rounded-sm ml-2 border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke py-4 px-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
                   Student Picture
                 </h3>
               </div>
-              <div className="p-7">
+              <div className="px-4">
                 <form action="#">
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="h-14 w-14 rounded-full">
+                    <div className=" w-40">
                       <img src={userThree} alt="User" />
                     </div>
-                    <div>
+                    {/* <div>
                       <span className="mb-1.5 text-black dark:text-white">
                         Edit your photo
                       </span>
@@ -394,10 +470,10 @@ const NewStudents = () => {
                           Update
                         </button>
                       </span>
-                    </div>
+                    </div> */}
                   </div>
 
-                  <div
+                  {/* <div
                     id="FileUpload"
                     className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5"
                   >
@@ -442,9 +518,9 @@ const NewStudents = () => {
                       <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
                       <p>(max, 800 X 800px)</p>
                     </div>
-                  </div>
+                  </div> */}
 
-                  <div className="flex justify-end gap-4.5">
+                  {/* <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="submit"
@@ -457,17 +533,14 @@ const NewStudents = () => {
                     >
                       Save
                     </button>
-                  </div>
+                  </div> */}
                 </form>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
 
-        <div
-          className="flex flex-row w-full   gap-3"
-          style={{ display: buttonState == 2 ? 'flex' : 'none' }}
-        >
+        <div className="flex flex-row w-4/6   gap-3" style={{}}>
           <div className="w-full ">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
@@ -475,10 +548,10 @@ const NewStudents = () => {
                   Student's Guardian/Parent Information
                 </h3>
               </div>
-              <div className="flex flex-row">
-                <div className=" w-3/6">
+              <div className="flex flex-col">
+                <div className=" w-full">
                   <div className="p-7">
-                    <form ref={formRef2}>
+                    <form>
                       <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
                         <div className="w-full sm:w-2/2">
                           <label
@@ -493,7 +566,7 @@ const NewStudents = () => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                            defaultValue={data[0]?.g1fname}
                             onChange={(e) => setgfName1(e.target.value)}
                           />
                         </div>
@@ -511,7 +584,7 @@ const NewStudents = () => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                            defaultValue={data[0]?.g1lastname}
                             onChange={(e) => setglName1(e.target.value)}
                           />
                         </div>
@@ -531,7 +604,7 @@ const NewStudents = () => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                            defaultValue={data[0]?.g1email}
                             onChange={(e) => setemail1(e.target.value)}
                           />
                         </div>
@@ -566,12 +639,13 @@ const NewStudents = () => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                              defaultValue={data[0]?.g1relation}
                               onChange={(e) => setRelation1(e.target.value)}
                             />
                           </div>
                         </div>
                       </div>
+
 
                       <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
                         <div className="w-full sm:w-2/2">
@@ -587,7 +661,7 @@ const NewStudents = () => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                            defaultValue={data[0]?.g1contact1}
                             onChange={(e) => setgcontact1(e.target.value)}
                           />
                         </div>
@@ -605,12 +679,11 @@ const NewStudents = () => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                            defaultValue={data[0]?.g1contact2}
                             onChange={(e) => setgcontact2(e.target.value)}
                           />
                         </div>
                       </div>
-
                       <div className="w-full ">
                         <label
                           className=" block text-sm font-medium text-black dark:text-white"
@@ -625,6 +698,7 @@ const NewStudents = () => {
                             id="bio"
                             rows={1}
                             placeholder=""
+                            defaultValue={data[0]?.g1address}
                             // defaultValue={data?.gAddress}
                             onChange={(e) => setgAddress1(e.target.value)}
                           ></textarea>
@@ -634,9 +708,9 @@ const NewStudents = () => {
                   </div>
                 </div>
 
-                <div className=" w-3/6">
+                <div className=" w-full">
                   <div className="p-7">
-                    <form ref={formRef3}>
+                    <form>
                       <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
                         <div className="w-full sm:w-2/2">
                           <label
@@ -651,7 +725,7 @@ const NewStudents = () => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                            defaultValue={data[0]?.g2fname}
                             onChange={(e) => setgfName2(e.target.value)}
                           />
                         </div>
@@ -669,7 +743,7 @@ const NewStudents = () => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                            defaultValue={data[0]?.g2lastname}
                             onChange={(e) => setglName2(e.target.value)}
                           />
                         </div>
@@ -689,7 +763,7 @@ const NewStudents = () => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                            defaultValue={data[0]?.g2email}
                             onChange={(e) => setemail2(e.target.value)}
                           />
                         </div>
@@ -705,8 +779,8 @@ const NewStudents = () => {
                             <div className="relative z-20 bg-white dark:bg-form-input">
                               <SelectGroupTwo
                                 values={['Male', 'Female']}
-                                setSelectedOption={(val) => setgsex2(val)}
-                                selectedOption={gsex2}
+                                setSelectedOption={(val) => setgsex1(val)}
+                                selectedOption={'Female'}
                               />
                             </div>
                           </div>
@@ -724,7 +798,7 @@ const NewStudents = () => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                              defaultValue={data[0]?.g2relation}
                               onChange={(e) => setRelation2(e.target.value)}
                             />
                           </div>
@@ -745,7 +819,7 @@ const NewStudents = () => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                            defaultValue={data[0]?.g2contact2}
                             onChange={(e) => setgcontact3(e.target.value)}
                           />
                         </div>
@@ -763,7 +837,7 @@ const NewStudents = () => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                            defaultValue={data[0]?.g2contact2}
                             onChange={(e) => setgcontact4(e.target.value)}
                           />
                         </div>
@@ -783,6 +857,7 @@ const NewStudents = () => {
                             id="bio"
                             rows={1}
                             placeholder=""
+                            defaultValue={data[0]?.g2address}
                             // defaultValue={data?.gAddress}
                             onChange={(e) => setgAddress2(e.target.value)}
                           ></textarea>
@@ -792,7 +867,7 @@ const NewStudents = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex w-4/12 mx-8 pb-5   gap-4.5">
+              {/* <div className="flex w-4/12 mx-8 pb-5   gap-4.5">
                 <button
                   className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                   type=""
@@ -807,20 +882,15 @@ const NewStudents = () => {
                 >
                   Next
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
 
         {/* Fees Management info */}
 
-        <div
-          className="flex flex-row w-full    gap-3"
-          style={{
-            display: buttonState == 3 ? 'flex' : 'none',
-          }}
-        >
-          <div className="w-4/6 ">
+        <div className="flex flex-row w-4/6    gap-3" style={{}}>
+          <div className="w-full ">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
@@ -828,14 +898,14 @@ const NewStudents = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <form ref={formRef4}>
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                <form>
+                  {/* <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-2/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="fullName"
                       >
-                        Fee Arrears
+                        Account Balance
                       </label>
                       <input
                         className="w-full required rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -843,7 +913,7 @@ const NewStudents = () => {
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue=''
+                        defaultValue={data[0]?.accountBalance}
                         onChange={(e) => setFeeArrears(e.target.value)}
                       />
                     </div>
@@ -853,7 +923,7 @@ const NewStudents = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="phoneNumber"
                       >
-                        Fees Credit
+                        Status
                       </label>
                       <input
                         className="w-full required rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -861,7 +931,9 @@ const NewStudents = () => {
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue=""
+                        defaultValue={
+                          (data[0]?.accountBalance) > -1 ? 'Credit' : 'Owing'
+                        }
                         onChange={(e) => setFeeCredit(e.target.value)}
                       />
                     </div>
@@ -876,7 +948,7 @@ const NewStudents = () => {
                         Scholarships
                       </label>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="mb-2 flex   sm:flex-row">
                     <div className=" flex  sm:w-2/4">
@@ -1006,20 +1078,16 @@ const NewStudents = () => {
                     type=""
                     onClick={(e) => handleSubmit()}
                   >
-                    Save
+                    Save{' '}
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-
-      
-</div>
-         
+      </div>
     </DefaultLayout>
   );
 };
 
-export default NewStudents;
+export default SingleStudentEdit ;
