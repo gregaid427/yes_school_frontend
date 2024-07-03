@@ -2,7 +2,7 @@ import React from 'react'
 
 const ViewSVG = (props) => {
   return (
-    <button  className='rounded  bg-[#99e03c3a] text-xs mx-1 my-1 font-bold  py-0 px-4' onClick={props.clickFunction}>
+    <button  className='rounded-full  bg-[#99e03c3a] text-xs mx-0 my-1 font-  py-1 px-3' onClick={props.clickFunction}>
 View
         {/* <svg
                           className="fill-current"

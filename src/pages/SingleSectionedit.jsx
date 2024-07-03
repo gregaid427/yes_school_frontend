@@ -9,8 +9,11 @@ import {
   fetchAllClassAction,
   fetchSectionbyclassAction,
   resetUdateClass,
+  resetUpdateSection,
   resetdeleteclass,
   updateClassAction,
+  updateSectionAction,
+  fetchAllSectionAction
 } from '../redux/slices/classSlice';
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -31,7 +34,8 @@ const SingleSectionEdit = () => {
     singleclass,
     deletesectionbyclass,
     sectionbyclass,
-    updatesingleclass
+    updatesingleclass,
+    updateSection
   } = clad;
 
   const [data, setData] = useState();
@@ -73,19 +77,21 @@ const SingleSectionEdit = () => {
   }, [deletesectionbyclass]);
  
   useEffect(() => {
-    if (updatesingleclass?.success == 1) {
-      toast.success('Class Data Updated Successfully');
-      dispatch(fetchAllClassAction());
+    if (updateSection?.success == 1) {
+      toast.success('Section Data Updated Successfully');
+      dispatch(fetchAllSectionAction());
 
-      dispatch(resetUdateClass());
+      dispatch(resetUpdateSection());
     }
-    if (updatesingleclass?.success == 0) {
-      toast.error('Error Updating Class Data');
-      dispatch(resetUdateClass());
+    if (updateSection?.success == 0) {
+      toast.error('Error Updating Section Data');
+      dispatch(fetchAllSectionAction());
+      dispatch(resetUpdateSection());
+
 
     }
     //  navigate("/student/info")
-  }, [updatesingleclass]);
+  }, [updateSection]);
  
   useEffect(() => {
     if (singleclass?.success == 1) {
@@ -115,7 +121,7 @@ const SingleSectionEdit = () => {
 
     };
 console.log(data)
-    dispatch(updateClassAction(data));
+    dispatch(updateSectionAction(data));
   };
 
   

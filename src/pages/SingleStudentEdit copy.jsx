@@ -421,7 +421,7 @@ const SingleStudentEdit = () => {
                   </div>
                   <div className="w-full">
                     <label className="mb-3 block text-black dark:text-white">
-                      Student Image
+                      Student Imagen
                     </label>
                     <input
                       onChange={(event) => getFileInfo(event)}

@@ -429,7 +429,7 @@ console.log(singleStudent)
                       onChange={(event) => getFileInfo(event)}
                       type="file"
                       accept="image/*"
-                      className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
+                      className="w-full rounded border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
                     />
                   </div>
                 </form>
@@ -446,7 +446,7 @@ console.log(singleStudent)
             </div>
           </div>
           <div className="w-1/6  ">
-            <div className="rounded-sm ml-2 border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className=" ml-2 border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
                   Student Picture

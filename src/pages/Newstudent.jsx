@@ -167,7 +167,7 @@ const NewStudents = () => {
 
     }
     if (CreateStudent?.success == 1 ) {
-      // dispatch(reset())
+       dispatch(reset())
       // setTimeout(() => setLoader(false), 1000);
 
       navigate("/student/studentcredential")
@@ -839,11 +839,11 @@ const NewStudents = () => {
                       </label>
                       <input
                         className="w-full required rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
+                        type="number"
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue=''
+                        defaultValue='0'
                         onChange={(e) => setFeeArrears(e.target.value)}
                       />
                     </div>
@@ -857,11 +857,11 @@ const NewStudents = () => {
                       </label>
                       <input
                         className="w-full required rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
+                        type="number"
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue=""
+                        defaultValue="0"
                         onChange={(e) => setFeeCredit(e.target.value)}
                       />
                     </div>

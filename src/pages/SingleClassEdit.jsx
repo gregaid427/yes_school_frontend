@@ -21,7 +21,7 @@ const SingleClassEdit = () => {
   const [PageAction, setPageAction] = useState();
 
   const location = useLocation();
-  const { action, classId } = location?.state;
+  const { action, value } = location?.state;
 
   const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ const SingleClassEdit = () => {
   const [loader, setLoader] = useState(true);
   const [classtitle, setclasstitle] = useState('');
   const [sectiondata, setSectionData] = useState([]);
-  const [classIdd, setclassid] = useState();
+  const [classIdd, setclassid] = useState(value.classId);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -99,7 +99,6 @@ const SingleClassEdit = () => {
     if (singleclass?.success == 1) {
       setData(singleclass);
       setSectionData(singleclass?.data);
-      setclassid(singleclass?.data[0].classId);
       setclasstitle(singleclass?.data[0].title)
       setinstructorName(singleclass?.data[0].instructor)
       dispatch(resetUdateClass());

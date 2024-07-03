@@ -51,6 +51,7 @@ import SingleSubjectEdit from './pages/SingleSubjectEdit';
 import AddInventoryStock from './pages/AddInventoryStock';
 import AddInventoryCartegory from './pages/AddInventoryCartegory';
 import EditInventoryCartegory from './pages/EditInventorycartegory';
+import EditInventoryitem from './pages/EditInventoryitem';
 
   
 function App() {
@@ -150,13 +151,22 @@ function App() {
               </>
             }
           />
-          t
+          
           <Route
             path="/academics/subject/editsubject"
             element={
               <>
                 <PageTitle title="Calendar | " />
                 <SingleSubjectEdit />
+              </>
+            }
+          />
+                <Route
+            path="/inventory/editinventory"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <EditInventoryitem />
               </>
             }
           />

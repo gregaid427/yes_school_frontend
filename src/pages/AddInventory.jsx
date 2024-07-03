@@ -65,13 +65,13 @@ const AddInventory = () => {
   const [loader, setLoader] = useState(true);
   const [quantity, setQuantity] = useState(0);
 
-  const [supName, setSupName] = useState();
-  const [supContact1, setSupContact1] = useState();
-  const [supContact2, setSupContact2] = useState();
-  const [supInfo, setSupInfo] = useState();
-  const [desc, setDesc] = useState();
+  const [supName, setSupName] = useState('');
+  const [supContact1, setSupContact1] = useState('');
+  const [supContact2, setSupContact2] = useState('');
+  const [supInfo, setSupInfo] = useState('');
+  const [desc, setDesc] = useState('');
 
-  const [cart, setcart] = useState();
+  const [cart, setcart] = useState('');
   const [type, setType] = useState('Theory');
 
   const [subjectName, setSubjectName] = useState([]);
@@ -202,24 +202,20 @@ const AddInventory = () => {
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
-    dispatch();
-    // fetchSingleClassAction({
-    //   classId: value.classId,
-    //   sectionTitle: value.title,
-    // }),
-    navigate('/academics/class/editclass', {
-      state: { action: 1, classId: value },
+ 
+    navigate('/inventory/editinventory', {
+      state: { action: 2, info: value },
     });
   };
   const handleEditbtn = (value) => {
     console.log(value.type);
-    navigate('/academics/subject/editsubject', {
-      state: { info: value },
+    navigate('/inventory/editinventory', {
+      state: { action: 1, info: value },
     });
   };
   const handleviewdeletbtn = (value) => {
     dispatch(fetchSingleClassAction({ classId: value }));
-    navigate('academic/class/editclass', { state: { action: 1 } });
+    navigate('/class/editclass', { state: { action: 1 } });
   };
 
   const subdata = {
@@ -277,8 +273,8 @@ const AddInventory = () => {
     <DefaultLayout>
       <Dialog
         visible={visible}
-        position={'bottom-right'}
-        style={{ height:'auto',width:'auto',marginRight:'30px' }}
+        position={'top'}
+        style={{ height: 'auto', width: 'auto', marginRight: '30px' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
@@ -287,9 +283,7 @@ const AddInventory = () => {
         draggable={false}
         resizable={false}
       >
-      
-
-<InventNewCartegory close={setVisible} />
+        <InventNewCartegory close={setVisible} />
       </Dialog>
       <div className={'flex gap-1  w-full'}>
         <div className="w-8/12 flex-col">
@@ -393,7 +387,7 @@ const AddInventory = () => {
                             <Cell>
                               <div className="gap-2 flex">
                                 <ViewSVG
-                                  clickFunction={() => handleEditbtn(item)}
+                                  clickFunction={() => handleViewbtn(item)}
                                 />
                                 <EditSVG
                                   clickFunction={() => handleEditbtn(item)}
@@ -465,11 +459,11 @@ const AddInventory = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
-                        <HeaderCell>Item</HeaderCell>
+                          <HeaderCell>Item</HeaderCell>
 
-<HeaderCell>Quantity</HeaderCell>
+                          <HeaderCell>Quantity</HeaderCell>
 
-<HeaderCell>Actions</HeaderCell>
+                          <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
                       </Header>
 
@@ -544,7 +538,7 @@ const AddInventory = () => {
                       </div>
 
                       <div className="relative z-20 bg-white dark:bg-form-input">
-                        <InvencartegorySelect setsectionprop={setcart} />
+                        <InvencartegorySelect setsectionprop={setcart}  default={'NONE'}/>
                       </div>
                     </div>
                     <div className="w-full mb-3 sm:w-2/2">

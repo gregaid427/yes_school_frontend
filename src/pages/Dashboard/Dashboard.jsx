@@ -1,19 +1,67 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CardDataStats from '../../components/CardDataStats';
-import ChartOne from '../../components/Charts/ChartOne';
-import ChartThree from '../../components/Charts/ChartThree';
+
 import ChartTwo from '../../components/Charts/ChartTwo';
-import ChatCard from '../../components/Chat/ChatCard';
-import MapOne from '../../components/Maps/MapOne';
+
 import TableOne from '../../components/Tables/TableOne';
 import DefaultLayout from '../../layout/DefaultLayout';
+import { useDispatch, useSelector } from 'react-redux';
+import { classStatAction, studentStatAction, subjectStatAction, teacherStatAction } from '../../redux/slices/statisticsSlice';
 
 const Dashboard  = () => {
+const dispatch = useDispatch()
+
+const statistics = useSelector((state) => state?.statistics);
+const { studentStat,classStat, teacherStat,subjectStat } = statistics;
+
+
+  useEffect(() => {
+  
+    dispatch(studentStatAction());
+    dispatch(classStatAction());
+    dispatch(subjectStatAction());
+    dispatch(teacherStatAction());
+   // dispatch(());
+
+  }, []);
+
+  const [student, setStudent] = useState('loading...');
+  const [classes, setClasses] = useState('loading...');
+
+  const [teachers, setTeachers] = useState('loading...');
+  const [subjects, setSubjects] = useState('loading...');
+
+
+
+  useEffect(() => {
+    if (studentStat?.success == 1) {
+     setStudent(studentStat?.data[0].noStudent)
+    }
+  }, [studentStat]);
+
+  useEffect(() => {
+    if (classStat?.success == 1) {
+     setClasses(classStat?.data[0].noclass)
+    }
+  }, [classStat]);
+
+  useEffect(() => {
+    if (teacherStat?.success == 1) {
+     setTeachers(teacherStat?.data[0].noStaff)
+    }
+  }, [teacherStat]);
+
+  useEffect(() => {
+    if (subjectStat?.success == 1) {
+     setSubjects(subjectStat?.data[0].nosubject)
+    }
+  }, [subjectStat]);
+  
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
    
-        <CardDataStats title="Total Students" total="350"  >
+        <CardDataStats title="Total Students" total={student}  >
         <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -36,7 +84,7 @@ const Dashboard  = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Classes" total="20"  >
+        <CardDataStats title="Classes" total={classes}  >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -55,7 +103,7 @@ const Dashboard  = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Teachers" total="20"  >
+        <CardDataStats title="Teachers" total={teachers}  >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -79,7 +127,7 @@ const Dashboard  = () => {
           </svg>
           
         </CardDataStats>
-        <CardDataStats title="Total Subjects" total="15"  >
+        <CardDataStats title="Total Subjects" total={subjects}  >
         <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -102,10 +150,10 @@ const Dashboard  = () => {
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         {/* <ChartOne /> */}
-        <div className="col-span-12 xl:col-span-5">
+        {/* <div className="col-span-12 xl:col-span-5">
           <TableOne />
-        </div>
-        <div  className="col-span-12 xl:col-span-7">
+        </div> */}
+        <div  className="col-span-12 ">
         <ChartTwo  />
 
         </div>

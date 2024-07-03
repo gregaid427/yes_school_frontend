@@ -244,6 +244,9 @@ const ClassSlices = createSlice({
     resetUdateClass(state) {
       state.updatesingleclass = false
     } ,
+    resetUpdateSection(state) {
+      state.updateSection = false
+    } ,
     resetdeleteclass(state) {
       state.deletesectionbyclass = null
     } ,
@@ -454,7 +457,7 @@ const ClassSlices = createSlice({
 });
 
 
-export const { resetcreateClass,resetUdateClass,resetdeleteclass ,resetcreatesection } = ClassSlices.actions
+export const { resetUpdateSection,resetcreateClass,resetUdateClass,resetdeleteclass ,resetcreatesection } = ClassSlices.actions
 
 export default ClassSlices.reducer;
 

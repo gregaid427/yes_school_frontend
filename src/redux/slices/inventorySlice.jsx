@@ -24,6 +24,26 @@ export const CreatesInventoryAction = createAsyncThunk(
   }
 );
 
+export const CreatesInventoryStockAction = createAsyncThunk(
+  "new/NewInventorystock",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `http://localhost:5000/api/inventory/addstock`,payload
+        
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 
 export const CreatesInventoryCartegoryAction = createAsyncThunk(
   "new/NewInventorycart",
@@ -68,6 +88,24 @@ export const fetchAllInventoryAction = createAsyncThunk(
     try {
       const { data } = await axios.get(
         `http://localhost:5000/api/inventory/`
+        
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const fetchInventoryStockAction = createAsyncThunk(
+  "fetch/Inventorystock",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5000/api/inventory/getstock`
         
       );
 
@@ -153,6 +191,7 @@ export const fetchInventCartegoryAction = createAsyncThunk(
     }
   }
 );
+
 export const updateInventoryAction = createAsyncThunk(
   "Inventory/Update",
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -172,6 +211,24 @@ export const updateInventoryAction = createAsyncThunk(
   }
 );
 
+export const updateInventoryItemAction = createAsyncThunk(
+  "InventoryItem/Update",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.patch(
+        `http://localhost:5000/api/inventory/item`, payload
+        
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 
 export const updateCartegoryAction = createAsyncThunk(
@@ -262,8 +319,14 @@ const InventorySlices = createSlice({
     },
     resetcreatecart(state) {
       state.CreateInventorycart = null
+    },
+    resetcreatestock(state) {
+      state.CreateInventorystock = null
     }
-,
+,   
+    resetUpdateInventoryItem(state) {
+      state.updateInventoryItem = null
+    } ,
     resetUpdateInventory(state) {
       state.updateCartegory = null
     } ,
@@ -288,6 +351,7 @@ const InventorySlices = createSlice({
       state.CreateInventory = undefined;
     });
 
+    
 
     builder.addCase(CreatesInventoryCartegoryAction.pending, (state, action) => {
       state.CreateInventorycartloading = true;
@@ -305,6 +369,23 @@ const InventorySlices = createSlice({
       state.CreateInventorycart = undefined;
     });
 
+    builder.addCase(CreatesInventoryStockAction.pending, (state, action) => {
+      state.CreateInventorystockloading = true;
+      state.CreateInventorystock = false;
+
+    });
+    builder.addCase(CreatesInventoryStockAction.fulfilled, (state, action) => {
+      state.CreateInventorystock = action?.payload;
+      state.CreateInventorystockloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(CreatesInventoryStockAction.rejected, (state, action) => {
+      state.CreateInventorystockloading = false;
+      state.error = action.payload;
+      state.CreateInventorystock = undefined;
+    });
+
+
     
 
     builder.addCase(updateCartegoryAction.pending, (state, action) => {
@@ -321,6 +402,45 @@ const InventorySlices = createSlice({
       state.error = action.payload;
       state.updateCartegory = undefined;
       state.updateCartegorynloading = undefined;
+
+    });
+
+
+
+
+    builder.addCase(updateInventoryItemAction.pending, (state, action) => {
+      state.updateInventoryItemloading = true;
+      state.updateInventoryItem = false;
+      
+    });
+    builder.addCase(updateInventoryItemAction.fulfilled, (state, action) => {
+      state.updateInventoryItem = action?.payload;
+      state.updateInventoryItemloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(updateInventoryItemAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.updateInventoryItem = undefined;
+      state.updateInventoryItemloading = undefined;
+
+    });
+
+    
+
+    builder.addCase(fetchInventoryStockAction.pending, (state, action) => {
+      state.fetchInventoryStockloading = true;
+      state.fetchInventoryStock = false;
+      
+    });
+    builder.addCase(fetchInventoryStockAction.fulfilled, (state, action) => {
+      state.fetchInventoryStock = action?.payload;
+      state.fetchInventoryStockloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(fetchInventoryStockAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.fetchInventoryStock = undefined;
+      state.fetchInventoryStockloading = undefined;
 
     });
 
@@ -494,7 +614,7 @@ const InventorySlices = createSlice({
 });
 
 
-export const { resetcreateInventory,resetUpdateInventory,resetdeleteinventory ,resetcreatecart } = InventorySlices.actions
+export const {resetcreatestock, resetUpdateInventoryItem,resetcreateInventory,resetUpdateInventory,resetdeleteinventory ,resetcreatecart } = InventorySlices.actions
 
 export default InventorySlices.reducer;
 

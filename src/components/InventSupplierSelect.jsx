@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
-const InvencartegorySelect = (props) => {
+const InventSupplierSelect = (props) => {
   const [cart, setcart] = useState([]);
   const [cartzz, setcartzz] = useState();
 
   const inventory = useSelector((state) => state?.inventory);
 
-  const { cartegory ,CreateInventorycart} =
+  const { cartegory ,CreateInventorycart,fetchAllInventory} =
   inventory;
 
     useEffect(() => {
@@ -17,18 +17,19 @@ const InvencartegorySelect = (props) => {
 
 
   useEffect(() => {
+    console.log(cartegory)
     if (cartegory?.success == 1) {
       let arrr = [props.default];
       let i = 0;
-      while (i < inventory?.cartegory?.data.length) {
-        arrr.push(inventory?.cartegory?.data[i]?.cartegoryname);
+      while (i < inventory?.fetchAllInventory?.data.length) {
+        arrr.push(inventory?.fetchAllInventory?.data[i]?.supplier);
         i++;
       }
 
       setcart(arrr);
       setcartzz(arrr[0]);
     }
-  }, [cartegory]);
+  }, [fetchAllInventory]);
 
   return (
     <>
@@ -41,4 +42,4 @@ const InvencartegorySelect = (props) => {
   );
 };
 
-export default InvencartegorySelect;
+export default InventSupplierSelect;

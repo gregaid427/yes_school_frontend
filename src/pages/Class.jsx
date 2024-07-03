@@ -169,13 +169,13 @@ const Class = () => {
   const handleViewbtn = (value) => {
     dispatch(fetchSingleClassAction({"classId":value.classId,"classTitle":value.title}));
     navigate('/academics/class/editclass', {
-      state: { action: 1, classId: value },
+      state: { action: 1, value: value },
     });
   };
   const handleEditbtn = (value) => {
     dispatch(fetchSingleClassAction({"classId":value.classId,"classTitle":value.title}));
     navigate('/academics/class/editclass', {
-      state: { action: 2, classId: value },
+      state: { action: 2, value: value },
     });
   };
   const handleviewdeletbtn = (value) => {
@@ -188,7 +188,7 @@ const Class = () => {
     createdBy: 'Asante',
     instructor: classInstructor,
   };
-  const handlecreateClass = (e) => {
+  const handlecreateClass = () => {
     if (classTitle == '') {
       toast.error('Error - Class Name Cannot Be Empty');
     } else {
@@ -542,7 +542,7 @@ const Class = () => {
                       <button
                         className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                         type=""
-                        onClick={(e) => {
+                        onClick={() => {
                           handlecreateClass();
                         }}
                       >

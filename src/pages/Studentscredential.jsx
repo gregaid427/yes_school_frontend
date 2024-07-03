@@ -33,8 +33,8 @@ const StudentCredential = () => {
 
     if (
       data[0]?.studentName != '' &&
-      data[1]?.guardian1Name == '' &&
-      data[2]?.guardian2Name == ''
+      data[1]?.guardian1Name == null &&
+      data[2]?.guardian2Name == null
     ) {
       doc.setFontSize(10);
       doc.text(`Student Name : ${data[0]?.studentName} `, 20, 20);
@@ -44,8 +44,8 @@ const StudentCredential = () => {
     }
     if (
       data[0]?.studentName != '' &&
-      data[1]?.guardian1Name != '' &&
-      data[2]?.guardian2Name == ''
+      data[1]?.guardian1Name != null &&
+      data[2]?.guardian2Name == null
     ) {
       doc.setFontSize(10);
       doc.text(`Student Name : ${data[0]?.studentName} `, 20, 20);
@@ -60,8 +60,8 @@ const StudentCredential = () => {
 
     if (
       data[0]?.studentName != '' &&
-      data[1]?.guardian1Name != '' &&
-      data[2]?.guardian2Name != ''
+      data[1]?.guardian1Name != null &&
+      data[2]?.guardian2Name != null
     ) {
       doc.setFontSize(10);
       doc.text(`Student Name : ${data[0]?.studentName} `, 20, 20);
@@ -83,7 +83,7 @@ const StudentCredential = () => {
 
   return (
     <DefaultLayout>
-      <div className=" ">
+      <div className=" w-8/12">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
@@ -105,7 +105,7 @@ const StudentCredential = () => {
 
 
 
-          <div className="p-7 w-8/12">
+          <div className="p-7 w-12/12">
             <form ref={formRef5}>
               <div className="mb-5.5 flex gap-4 sm:flex-col">
                 <div className="w-full  sm:w-5/6">
@@ -154,7 +154,7 @@ const StudentCredential = () => {
                 </div>
                 <div
                   style={{
-                    display: data == undefined ? "": (data[1]?.guardian1Name != ' ' ? '' : 'none'),
+                    display: data == undefined ? "": (data[1]?.guardian1Name != null ? '' : 'none'),
                   }}
                   className="w-full   sm:w-5/6"
                 >
@@ -203,7 +203,7 @@ const StudentCredential = () => {
                 </div>
                 <div
                   style={{
-                    display:data == undefined ? "":( data[2]?.guardian2Name != ' ' ? '' : 'none'),
+                    display:data == undefined ? "":( data[2]?.guardian2Name != null ? '' : 'none'),
                   }}
                   className="w-full  sm:w-5/6"
                 >
@@ -258,7 +258,7 @@ const StudentCredential = () => {
 
 
           </Print>
-          <div className="flex px-8 pb-5 w-8/12 justify-end gap-4.5">
+          <div className="flex px-8 pb-5 w-12/12 justify-end gap-4.5">
               <button
                 className="flex w-full justify-center rounded bg-primary py-2 px-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                 type=""
