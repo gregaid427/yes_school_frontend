@@ -5,7 +5,6 @@ import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import ForgotPassword from './pages/Authentication/ForgotPassword';
-import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
 import Dashboard from './pages/Dashboard/Dashboard';
 import FormElements from './pages/Form/FormElements';
@@ -52,6 +51,9 @@ import AddInventoryStock from './pages/AddInventoryStock';
 import AddInventoryCartegory from './pages/AddInventoryCartegory';
 import EditInventoryCartegory from './pages/EditInventorycartegory';
 import EditInventoryitem from './pages/EditInventoryitem';
+import AddExpenseHead from './pages/addExpenseHead';
+import SearchExpense from './pages/SearchExpense';
+import AddExpenses from './pages/AddExpense';
 
   
 function App() {
@@ -309,7 +311,7 @@ function App() {
                    <Route element={<RequireAuth allowedRoles={[roles.test]} />}>
 
           <Route
-            path="/expense/list"
+            path="/expense/addlist"
             element={
               <>
                 <PageTitle title="Calendar | " />
@@ -319,20 +321,30 @@ function App() {
           />         
           </Route> 
           <Route
-            path="/expense/add"
+            path="/expense/addexpense"
             element={
               <>
                 <PageTitle title="Calendar | " />
-                <AddExpense />
+                <AddExpenses />
+              </>
+            }
+          />
+          
+              <Route
+            path="/expense/search"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <SearchExpense />
               </>
             }
           />
           <Route
-            path="/expense/manage"
+            path="/expense/addexpensehead"
             element={
               <>
                 <PageTitle title="Calendar | " />
-                <ManageExpense />
+                <AddExpenseHead />
               </>
             }
           />
@@ -345,6 +357,9 @@ function App() {
               </>
             }
           />
+
+          
+      
           <Route
             path="/exam/grades"
             element={

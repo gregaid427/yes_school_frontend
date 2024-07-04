@@ -6,6 +6,8 @@ import classes from "../slices/classSlice";
 import subject from "../slices/subjectSlice";
 import inventory from "../slices/InventorySlice";
 import statistics from "../slices/statisticsSlice";
+import expense from "../slices/expenseSlice";
+
 
 
 
@@ -17,7 +19,9 @@ const store = configureStore({
     classes: classes,
     inventory: inventory,
     subject: subject,
-    statistics: statistics
+    statistics: statistics,
+    expense: expense
+
 
   },
 });

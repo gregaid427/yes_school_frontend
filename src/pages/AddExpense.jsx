@@ -1,296 +1,609 @@
-import { useEffect, useState } from 'react';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
+import { useEffect, useRef, useState } from 'react';
 import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
-import userThree from '../images/user/user-03.png';
 import DefaultLayout from '../layout/DefaultLayout';
-import { Link } from 'react-router-dom';
-import flatpickr from 'flatpickr';
-import CheckboxOne from '../components/Checkboxes/CheckboxOne';
+import { Link, useNavigate } from 'react-router-dom';
+import ViewSVG from '../components/Svgs/View';
+import DeleteSVG from '../components/Svgs/delete';
+import EditSVG from '../components/Svgs/edit';
+import { useTheme } from '@table-library/react-table-library/theme';
+import { usePagination } from '@table-library/react-table-library/pagination';
+import { Toast } from 'primereact/toast';
 
-const packageData = [
-  {
-    name: '1',
-    price: '01/01/2024',
-    invoiceDate: `Notebooks For Staff`,
-    status: 'Miscellenous',
-  },
-  {
-    name: '1',
-    price: '01/01/2024',
-    invoiceDate: `Notebooks For Staff`,
-    status: 'Miscellenous',
-  },
-  {
-    name: '1',
-    price: '01/01/2024',
-    invoiceDate: `Notebooks For Staff`,
-    status: 'Miscellenous',
-  },
-  {
-    name: '1',
-    price: '01/01/2024',
-    invoiceDate: `Notebooks For Staff`,
-    status: 'Miscellenous',
-  },
-];
+import {
+  Table,
+  Header,
+  HeaderRow,
+  Body,
+  Row,
+  HeaderCell,
+  Cell,
+} from '@table-library/react-table-library/table';
+import { useDispatch, useSelector } from 'react-redux';
+import { mkConfig, generateCsv, download } from 'export-to-csv';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
+import Loader from '../common/Loader';
+import toast from 'react-hot-toast';
+import {
+  CreatesClassAction,
+  fetchAllClassAction,
+  fetchSingleClassAction,
+  resetcreateClass,
+} from '../redux/slices/classSlice';
+import {
+  CreatesExpenseAction,
+  FetchExpenseHeadAction,
+  fetchAllExpenseAction,
+  resetcreateExpense,
+} from '../redux/slices/expenseSlice';
+import InvencartegorySelect from '../components/InvencartegorySelect';
+import ExpenseHeadSelect from '../components/ExpenseHeadSelect';
+
 const AddExpense = () => {
+  const [pagesval, setpagesval] = useState(30);
+  const [amount, setAmount] = useState([]);
+
+  const [loader, setLoader] = useState(true);
+
+  const [name, setName] = useState(false);
+  const [date, setDate] = useState('');
+  const [desc, setDesc] = useState('');
+  const [invoice, setInvoice] = useState('');
+  const [expensehead, SetExpenseHead] = useState('');
+
+  const [nodes, setdata] = useState([]);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const expense = useSelector((state) => state?.expense);
+
+  const { CreateExpense, fetchAllExpense } = expense;
 
   useEffect(() => {
-    // Init flatpickr
-    flatpickr('.form-datepicker', {
-      mode: 'single',
-      static: true,
-      monthSelectorType: 'static',
-      dateFormat: 'M j, Y',
-      prevArrow:
-        '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
-      nextArrow:
-        '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
-    });
-
-    
+    dispatch(fetchAllExpenseAction());
+    dispatch(FetchExpenseHeadAction());
   }, []);
 
-  const [age, setAge] = useState<string>('');
- 
+  useEffect(() => {
+    if (CreateExpense?.success == 0) {
+      toast.error('Error - Creating Expense');
+      dispatch(resetcreateExpense());
+      dispatch(fetchAllExpenseAction());
+    }
+    if (CreateExpense?.success == 1) {
+      toast.success('New Class Added Successfully');
+      dispatch(resetcreateExpense());
+      dispatch(fetchAllExpenseAction());
+    }
+  }, [CreateExpense]);
 
-  return (
+  useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
+
+    if (fetchAllExpense?.success == 1) {
+      let data = fetchAllExpense?.data;
+      setdata(data);
+    }
+    // if (loading == false) {
+    //   dispatch(fetchBulkStudent());
+    // }
+
+    // }
+    // datas = data;
+  }, [fetchAllExpense]);
+
+  let data = { nodes };
+
+  const theme = useTheme([
+    {
+      // HeaderRow: `
+      // background-color: #313D4A;A
+      // border-bottom: 1px solid #fff !important;
+
+      // `,
+      HeaderRow: `
+    .th {
+      border-bottom: 1px solid #a0a8ae;
+      padding: 5px 0px;
+    }
+  `,
+      BaseCell: `
+        font-size: 15px;
+        color:white;
+      //   border-bottom: 1px solid #313D4A !important;
+      //   //  background-color: #24303F;
+
+      `,
+      Row: `
+  &:nth-of-type(odd) {
+    background-color: #24303F;
+  }
+
+  &:nth-of-type(even) {
+    background-color: #202B38;
+  }
+`,
+    },
+  ]);
+
+  const pagination = usePagination(data, {
+    state: {
+      page: 0,
+      size: 30,
+    },
+    onChange: onPaginationChange,
+  });
+
+  function onPaginationChange(action, state) {}
+
+  const [search, setSearch] = useState('');
+
+  data = {
+    nodes: data.nodes.filter((item) =>
+      item.name.toLowerCase().includes(search.toLowerCase()),
+    ),
+  };
+
+  function onPaginationChange(action, state) {}
+
+  const handleViewbtn = (value) => {
+    dispatch(
+      fetchSingleClassAction({
+        classId: value.classId,
+        classTitle: value.title,
+      }),
+    );
+    navigate('/academics/class/editclass', {
+      state: { action: 1, value: value },
+    });
+  };
+  const handleEditbtn = (value) => {
+    dispatch(
+      fetchSingleClassAction({
+        classId: value.classId,
+        classTitle: value.title,
+      }),
+    );
+    navigate('/academics/class/editclass', {
+      state: { action: 2, value: value },
+    });
+  };
+  const handleviewdeletbtn = (value) => {
+    dispatch(fetchSingleClassAction({ classId: value }));
+    navigate('academic/class/editclass', { state: { action: 1 } });
+  };
+
+  const classdata = {
+    name: name,
+    createdby: 'Asante',
+    amount: amount,
+    invoice: invoice,
+    description: desc,
+    expensehead: expensehead,
+    date: date,
+  };
+  const toast = useRef(null);
+
+  const handleSubmit = () => {
+    if (name == '') {
+      toast.current.show({ severity: 'error', summary: 'Info', detail: 'Message Content', baseZIndex:'9999999999999999'});
+
+     return toast.error('Error - Name Cannot Be Empty');
+     
+    }
+    if (date == '') {
+     return toast.error('Error - Date Cannot Be Empty');
+    } 
+    if (amount == '') {
+    return  toast.error('Error - Amount Cannot Be Empty');
+    }  else {
+      dispatch(CreatesExpenseAction(classdata));
+    }
+  };
+
+  const handleDownloadPdf = async () => {
+    const doc = new jsPDF();
+
+    autoTable(doc, { html: '#my-table' });
+
+    doc.save(`All-Classes-List`);
+  };
+
+  const csvConfig = mkConfig({
+    useKeysAsHeaders: true,
+    filename: `All-Classes-List`,
+  });
+
+  const handleDownloadCSV = async () => {
+    const csv = generateCsv(csvConfig)(nodes);
+    download(csvConfig)(csv);
+  };
+
+  return loader ? (
+    <Loader />
+  ) : (
     <DefaultLayout>
-      <div className="mx-auto flex gap-5">
-        <div className="w-8/12">
-          <div className="col-span-5 xl:col-span-3">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-5 px-7 flex justify-between items-center dark:border-strokedark">
-                <h3 className="font-medium  text-black dark:text-white">
-                  Add Expenses
+                  <Toast ref={toast} />
+
+      <div className={'flex gap-2  w-full'}>
+        <div className="w-8/12 flex-col">
+          <div
+            className={
+              'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
+            }
+          >
+            <div className="max-w-full overflow-x-auto">
+              <div className="w-full  flex justify-between  ">
+                <h3 className="font-medium text-black py-3 dark:text-white">
+                  Expense List
                 </h3>
-           
-              </div>
-              <div className="p-7">
-                <form action="#">
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="fullName"
-                      >
-                        Expense Cartegory
-                      </label>
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                          <SelectGroupTwo
-                            values={['Miscellanous', 'Transport']}
-                            setSelectedOption={setAge}
-                            selectedOption={age}
-
-                          />
-                        </div>
-                    </div>
-
-                    <div className="w-full sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
-                      >
-                        Invoice Number <span className='small-font' >(optional)</span>  
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
-                        defaultValue=""
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full sm:w-4/4">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
-                      >
-                        Expense Name
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
-                        defaultValue=""
-                      />
-                    </div>
-                    
-                  </div>
-
-
-
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="fullName"
-                      >
-                        Date
-                      </label>
-                  <div className="relative">
-                        <input
-                          className="form-datepicker w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-2 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                          placeholder="mm/dd/yyyy"
-                          data-class="flatpickr-right"
-                        />
-
-                        <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 18 18"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M15.7504 2.9812H14.2879V2.36245C14.2879 2.02495 14.0066 1.71558 13.641 1.71558C13.2754 1.71558 12.9941 1.99683 12.9941 2.36245V2.9812H4.97852V2.36245C4.97852 2.02495 4.69727 1.71558 4.33164 1.71558C3.96602 1.71558 3.68477 1.99683 3.68477 2.36245V2.9812H2.25039C1.29414 2.9812 0.478516 3.7687 0.478516 4.75308V14.5406C0.478516 15.4968 1.26602 16.3125 2.25039 16.3125H15.7504C16.7066 16.3125 17.5223 15.525 17.5223 14.5406V4.72495C17.5223 3.7687 16.7066 2.9812 15.7504 2.9812ZM1.77227 8.21245H4.16289V10.9968H1.77227V8.21245ZM5.42852 8.21245H8.38164V10.9968H5.42852V8.21245ZM8.38164 12.2625V15.0187H5.42852V12.2625H8.38164V12.2625ZM9.64727 12.2625H12.6004V15.0187H9.64727V12.2625ZM9.64727 10.9968V8.21245H12.6004V10.9968H9.64727ZM13.8379 8.21245H16.2285V10.9968H13.8379V8.21245ZM2.25039 4.24683H3.71289V4.83745C3.71289 5.17495 3.99414 5.48433 4.35977 5.48433C4.72539 5.48433 5.00664 5.20308 5.00664 4.83745V4.24683H13.0504V4.83745C13.0504 5.17495 13.3316 5.48433 13.6973 5.48433C14.0629 5.48433 14.3441 5.20308 14.3441 4.83745V4.24683H15.7504C16.0316 4.24683 16.2566 4.47183 16.2566 4.75308V6.94683H1.77227V4.75308C1.77227 4.47183 1.96914 4.24683 2.25039 4.24683ZM1.77227 14.5125V12.2343H4.16289V14.9906H2.25039C1.96914 15.0187 1.77227 14.7937 1.77227 14.5125ZM15.7504 15.0187H13.8379V12.2625H16.2285V14.5406C16.2566 14.7937 16.0316 15.0187 15.7504 15.0187Z"
-                              fill="#64748B"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="w-full sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
-                      >
-                        Amount
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder=""
-                        defaultValue=""
-                      />
-                    </div>
-                  </div>
-               
-                          <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
-                    >
-                      Documents
-                    </label>
-                    <div className="relative">
-                    <input
-                  type="file"
-                  className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
-                />
-                    </div>
-                  </div>
-
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
-                    >
-                      Notes
-                    </label>
-                    <div className="relative">
-                      <textarea
-                        className="w-full rounded border border-stroke bg-gray py-2  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        name="bio"
-                        id="bio"
-                        rows={2}
-                        placeholder=""
-                        defaultValue=""
-                      ></textarea>
-                    </div>
-                  </div>
-
-
-
-  
-
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                    >
-                      Save
-                    </button>
-                    <button
-                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="reset"
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </form>
               </div>
             </div>
           </div>
-      
-        </div>
-        <div className="w-4/12 mr-5">
-        <div className="grid  gap-8">
-          <div className="col-span-12">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Add Expense Cartegory
-                </h3>
-              </div>
-              <div className="p-7">
-                <form action="#">
-               
+          <div
+            className={
+              'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+            }
+          >
+            <div className="max-w-full overflow-x-auto">
+              <div className="w-full  flex justify-between ">
+                <div className=" flex w-7/12 gap-3">
+                  <div className="sm:w-2/5 ">
+                    <label
+                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                      style={{ color: '#A9B5B3' }}
+                      onClick={(e) => {
+                        handleDownloadPdf();
+                      }}
+                    >
+                      Download Page (PDF)
+                    </label>
+                  </div>
 
+                  <div className="w-full sm:w-2/5">
+                    <label
+                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                      style={{ color: '#A9B5B3' }}
+                      onClick={(e) => {
+                        handleDownloadCSV();
+                      }}
+                    >
+                      Download Page (Excel)
+                    </label>
+                  </div>
+                </div>
+
+                <div className={' w-5/12 flex flex-col float-right '}>
+                  <div className="flex justify-between align-middle mb-2">
+                    <label
+                      className=" w-2/2 pt-2 block text-sm font-medium text-black dark:text-white"
+                      htmlFor=" "
+                    >
+                      Search Class{' '}
+                    </label>
+                  </div>
+
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-2 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    key={1}
+                    type="search"
+                    placeholder={'type here'}
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
+                  />
+                  {/* <button onClick={() => toPDF()}>Download PDF</button> */}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className={
+              'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
+            }
+          >
+            <div className="flex gap-3  flex-col">
+              <div className="px-2">
+                <Table data={data} pagination={pagination} theme={theme}>
+                  {(tableList) => (
+                    <>
+                      <Header>
+                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
+                          <HeaderCell>Name</HeaderCell>
+                          <HeaderCell>Head</HeaderCell>
+                          <HeaderCell>Date</HeaderCell>
+                          <HeaderCell>Amount</HeaderCell>
+
+                          <HeaderCell>Actions</HeaderCell>
+                        </HeaderRow>
+                      </Header>
+
+                      <Body>
+                        {tableList.map((item) => (
+                          <Row key={item.id} item={item} className=" ">
+                            <Cell className="  ">{item.name}</Cell>
+
+                            <Cell className="  ">{item.expensehead}</Cell>
+                            <Cell className="  ">{item.date}</Cell>
+                            <Cell className="  ">{item.amount}</Cell>
+
+                            <Cell>
+                              <div className="gap-2 flex">
+                                <ViewSVG
+                                  clickFunction={() => handleViewbtn(item)}
+                                />
+                                <EditSVG
+                                  clickFunction={() => handleEditbtn(item)}
+                                />
+
+                                <DeleteSVG
+                                  clickFunction={() =>
+                                    handleviewbtn(item.classId)
+                                  }
+                                />
+                              </div>
+                            </Cell>
+                          </Row>
+                        ))}
+                      </Body>
+                    </>
+                  )}
+                </Table>
+              </div>
+              <div
+                className=" align-middle"
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <div className="flex">
+                  <span className="mt-2">
+                    Total Pages: {pagination.state.getTotalPages(data.nodes)}
+                  </span>
+                  <div className="flex  align-middle  flex-row mr-3">
+                    <span className="flex mt-2 ml-8 align-middle">
+                      Records Per Page:{' '}
+                    </span>
+                    <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
+                      <SelectGroupTwo
+                        values={[30, 50, 100, 200, 500, 'All']}
+                        setSelectedOption={(val) => setpagesval(val)}
+                        selectedOption={pagesval}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <span>
+                  Page:{' '}
+                  {pagination.state.getPages(data.nodes).map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      className="rounded"
+                      style={{
+                        color: pagination.state.page === index ? 'white' : '',
+                        width: '20px',
+                        margin: '0px 5px',
+                        padding: '2px',
+                        backgroundColor:
+                          pagination.state.page === index ? '#3C50E0' : '',
+                      }}
+                      onClick={() => pagination.fns.onSetPage(index)}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </span>
+              </div>
+              <div className="hidden">
+                <Table
+                  id="my-table"
+                  data={data}
+                  pagination={pagination}
+                  theme={theme}
+                >
+                  {(tableList) => (
+                    <>
+                      <Header>
+                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
+                          <HeaderCell>Name</HeaderCell>
+                          <HeaderCell>Head</HeaderCell>
+                          <HeaderCell>Date</HeaderCell>
+                          <HeaderCell>Amount</HeaderCell>
+
+                          <HeaderCell>Actions</HeaderCell>
+                        </HeaderRow>
+                      </Header>
+                      <Body>
+                        {tableList.map((item) => (
+                          <Row key={item.id} item={item} className=" ">
+                            <Cell className="  ">{item.name}</Cell>
+
+                            <Cell className="  ">{item.expensehead}</Cell>
+                            <Cell className="  ">{item.date}</Cell>
+                            <Cell className="  ">{item.amount}</Cell>
+
+                            <Cell>
+                              <div className="gap-2 flex">
+                                <ViewSVG
+                                  clickFunction={() => handleViewbtn(item)}
+                                />
+                                <EditSVG
+                                  clickFunction={() => handleEditbtn(item)}
+                                />
+
+                                <DeleteSVG
+                                  clickFunction={() =>
+                                    handleviewbtn(item.classId)
+                                  }
+                                />
+                              </div>
+                            </Cell>
+                          </Row>
+                        ))}
+                      </Body>
+                    </>
+                  )}
+                </Table>
+              </div>
+            </div>
+          </div>{' '}
+        </div>
+        <div className="w-2/12 mr-5">
+          <div className="grid  gap-8">
+            <div className="col-span-12">
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
+                  <h3 className="font-medium text-black dark:text-white">
+                    Add Expense
+                  </h3>
+                </div>
+                <div className="p-7">
+                  <form>
                     <div className="w-full mb-4 sm:w-2/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
+                        htmlFor=""
                       >
-                        Cartegory Name
+                        Expense Head
+                      </label>
+                      <div className="relative z-20 bg-white dark:bg-form-input">
+                        <ExpenseHeadSelect setsectionprop={SetExpenseHead} />
+                      </div>
+                    </div>
+                    <div className="w-full mb-4 sm:w-2/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        Name
                       </label>
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
+                        name=""
+                        id=""
                         placeholder=""
                         defaultValue=""
+                        onChange={(e) => setName(e.target.value)}
                       />
                     </div>
 
-               
+                    <div className="w-full mb-3 sm:w-2/2">
+                      <label
+                        className="mb-2 block text-sm font-medium text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        Invoice Number{' '}
+                      </label>
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="number"
+                        name=""
+                        id=""
+                        placeholder=""
+                        defaultValue=""
+                        onChange={(e) => setInvoice(e.target.value)}
+                      />
+                    </div>
+                    <div className="w-full mb-3 sm:w-2/2">
+                   
+                       <label
+                          className="mb-2 block text-sm font-medium text-black dark:text-white"
+                          htmlFor=""
+                        >
+                          Attach Document{' '}
+                        </label>
+                        <input
+                          onChange={(event) => getFileInfo(event)}
+                          type="file"
+                          accept="image/*"
+                          className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
+                        />
+                     
+                    </div>
+                    <div className="w-full flex gap-1">
+                      <div className="w-full mb-3 sm:w-1/2">
+                        <label
+                          className="mb-2 block text-sm font-medium text-black dark:text-white"
+                          htmlFor=""
+                        >
+                          Amount*{' '}
+                        </label>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="number"
+                          name=""
+                          id=""
+                          placeholder=""
+                          defaultValue=""
+                          onChange={(e) => setAmount(e.target.value)}
+                        />
+                      </div>
+                      <div className="w-full mb-3 sm:w-1/2">
+                        <label
+                          className="mb-2 block text-sm font-medium text-black dark:text-white"
+                          htmlFor=""
+                        >
+                          Date*{' '}
+                        </label>
+                        <input
+                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="date"
+                        name=""
+                        id=""
+                        placeholder=""
+                        defaultValue=""
+                        onChange={(e) => setDate(e.target.value)}
+                      />
+                      </div>
+                    </div>
 
-            
+                    <div className="mb-5.5">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="emailAddress"
+                      >
+                        Description/Notes
+                      </label>
+                      <div className="relative">
+                        <textarea
+                          className="w-full rounded border border-stroke bg-gray py-3  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          name="bio"
+                          id="bio"
+                          rows={2}
+                          placeholder=""
+                          onChange={(e) => setDesc(e.target.value)}
+                        ></textarea>
+                      </div>
+                    </div>
 
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                    >
-                      Save
-                    </button>
-                    <button
-                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="reset"
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </form>
+                    <div className="flex justify-end gap-4.5">
+                      <button
+                        className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSubmit(e);
+                        }}
+                      >
+                        Save
+                      </button>
+                      <button
+                        className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                        type="reset"
+                      >
+                        Reset
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      </div>
-
-    
+      </div>{' '}
     </DefaultLayout>
   );
 };
