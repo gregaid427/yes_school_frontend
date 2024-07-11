@@ -23,7 +23,7 @@ import autoTable from 'jspdf-autotable';
 
 import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
-import { CreatesClassAction, createSectionAction, fetchAllClassAction, fetchAllSectionAction, fetchSingleClassAction, resetcreateClass, resetcreatesection } from '../redux/slices/classSlice';
+import {  createSectionAction, deleteSectiongroupAction, fetchAllSectionAction, fetchSingleClassAction, resetcreatesection } from '../redux/slices/classSlice';
 
 const Section = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -77,7 +77,7 @@ const Section = () => {
     if (createClassSection?.success == 1) {
       toast.success('New Section Added Successfully');
        dispatch(resetcreatesection())
-       dispatch(fetchAllSectionAction())
+    //   dispatch(fetchAllSectionAction())
 
 
       }
@@ -166,20 +166,14 @@ const Section = () => {
 
   function onPaginationChange(action, state) {}
 
-  const handleViewbtn = (value) => {
-    dispatch(fetchSingleClassAction({"classId":value.classId,"sectionTitle":value.title}));
-    navigate('/academics/class/editclass', {
-      state: { action: 1, sectionId: value },
-    });
-  };
+ 
   const handleEditbtn = (value) => {
     navigate('/academics/section/edit', {
       state: { sectionName: value.sectionName, sectionId: value.id },
     });
   };
-  const handleviewdeletbtn = (value) => {
-    dispatch(fetchSingleClassAction({"classId":value}));
-    navigate('academic/class/editclass', { state: { action: 1 } });
+  const handledeletebtn = (value) => {
+    dispatch(deleteSectiongroupAction(value));
   };
 
   const classdata = {
@@ -328,7 +322,7 @@ const Section = () => {
                                 />
 
                                 <DeleteSVG
-                                  clickFunction={() => handleviewbtn(item.id)}
+                                  clickFunction={() => handledeletebtn(item.id)}
                                 />
                               </div>
                             </Cell>
@@ -515,8 +509,7 @@ const Section = () => {
                       <button
                         className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                         type=""
-                        onClick={(e) => {
-                          e.preventDefault()
+                        onClick={() => {
                           handlecreateSection();
                         }}
                       >

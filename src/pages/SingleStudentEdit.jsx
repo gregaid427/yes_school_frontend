@@ -43,7 +43,7 @@ const SingleStudentEdit  = () => {
   const [lastName, setStudentlastName] = useState('');
   const [otherName, setStudentotherName] = useState('');
   const [gender, setGender] = useState('Male');
-  const [picture, setPicture] = useState('');
+  const [picture, setPicture] = useState();
 
   const [gfName1, setgfName1] = useState('');
   const [glName1, setglName1] = useState('');
@@ -76,6 +76,10 @@ const SingleStudentEdit  = () => {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
   const [classs, setClasss] = useState([]);
+  const [file, setfileName] = useState();
+  const [link, setimagelink] = useState();
+
+  
 
 
   useEffect(() => {
@@ -83,7 +87,7 @@ const SingleStudentEdit  = () => {
 
 console.log(singleStudent)
     if (singleStudent == undefined) {
-      toast.error('Error To load Student Data');
+      toast.error('Error loading Student Data');
       navigate('/student/info');
     }
     //   // setTimeout(() => toast.success('New Student Added Successfully'), 900);
@@ -107,9 +111,11 @@ console.log(singleStudent)
 
   const handleSubmit = (e) => {
     if (firstName == '') return toast.error('Please Fill Out Required Fields');
- 
+  
+  
+    const data = new FormData();
 
-    const data = {
+    const Mydata = JSON.stringify({
       studentId: studentID,
 
       firstName: firstName,
@@ -138,31 +144,27 @@ console.log(singleStudent)
       gRelation2: gRelation2,
       gsex1: gsex1,
       gsex2: gsex2,
-      picture: picture,
       feeArrears: feeArrears,
       feeCredit: feeCredit,
-    };
-      console.log(data)
+      filename: file,
 
+    });
+    function hashgenerator() {
+      return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+    }
+    let customfile = hashgenerator()+file ;
+
+
+ data.append(customfile, picture);
+    data.append('data', Mydata);
+
+    console.log(Mydata)
     dispatch(UpdatestudentAction(data));
 
   };
 
-  function joinName(fn, on, ln) {
-    return fn + ' ' + on + ' ' + ln;
-  }
 
-  function getFileInfo(event) {
-    //NOTE THE ADDITION OF 'e' PARAMETER
-    const formData = new FormData();
-    //FILE INFO NAME WILL BE "my-image-file"
-    formData.append(
-      'my-image-file',
-      event.target.files[0],
-      event.target.files[0].name,
-    );
-    setPicture(formData);
-  }
+
   const clad = useSelector((state) => state?.classes);
 
   const {  sectionloading, fetchSection ,fetchAllClass} =  clad;
@@ -204,6 +206,8 @@ console.log(singleStudent)
       setcreatedBy(singleStudent?.data[0].createdBy);
       setclazz(singleStudent?.data[0].class);
       setsectionzz(singleStudent?.data[0].section);
+      setfileName(singleStudent?.data[0].filename);
+      setimagelink(singleStudent?.data[0].imagelink);
 
 
 
@@ -426,7 +430,10 @@ console.log(singleStudent)
                       Student Image
                     </label>
                     <input
-                      onChange={(event) => getFileInfo(event)}
+                       onChange={(event) => {
+                        setPicture(event.target.files[0]);
+                        setfileName(event.target.files[0].name);
+                      }}
                       type="file"
                       accept="image/*"
                       className="w-full rounded border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
@@ -455,14 +462,17 @@ console.log(singleStudent)
               <div className="px-4">
                 <form action="#">
                   <div className="mb-4 flex items-center gap-3">
-                    <div className=" w-40">
-                      <img src={userThree} alt="User" />
+                    <div className=" w-40 h-35 ">
+                      <img src={link} alt={'Image'} />
                     </div>
                     {/* <div>
                       <span className="mb-1.5 text-black dark:text-white">
                         Edit your photo
                       </span>
                       <span className="flex gap-2.5">
+
+
+                      
                         <button className="text-sm hover:text-primary">
                           Delete
                         </button>

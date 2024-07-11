@@ -164,10 +164,7 @@ const SearchExpense = () => {
       state: { action: 2, value: value.student_id },
     });
   };
-  const handleviewdeletbtn = (value) => {
-    dispatch(fetchSingleStudent(value.student_id));
-    navigate('/student/editinfo', { state: { action: 1 } });
-  };
+
 
   data = {
     nodes: data.nodes.filter((item) =>

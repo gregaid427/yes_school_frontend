@@ -73,6 +73,7 @@ const SingleStudentEdit = () => {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
   const [classs, setClasss] = useState([]);
+  
 
 
   useEffect(() => {
@@ -136,21 +137,6 @@ const SingleStudentEdit = () => {
     dispatch(UpdatestudentAction(data));
   };
 
-  function joinName(fn, on, ln) {
-    return fn + ' ' + on + ' ' + ln;
-  }
-
-  function getFileInfo(event) {
-    //NOTE THE ADDITION OF 'e' PARAMETER
-    const formData = new FormData();
-    //FILE INFO NAME WILL BE "my-image-file"
-    formData.append(
-      'my-image-file',
-      event.target.files[0],
-      event.target.files[0].name,
-    );
-    setPicture(formData);
-  }
   const clad = useSelector((state) => state?.classes);
 
   const {  sectionloading, fetchSection ,fetchAllClass} =  clad;
@@ -197,6 +183,8 @@ const SingleStudentEdit = () => {
       setcreatedBy(data?.createdBy);
       setclazz(data?.clazz);
       setsectionzz(data?.sectionzz);
+      setfileName(data?.clazz);
+      setimagelink(data?.sectionzz);
 
 
 

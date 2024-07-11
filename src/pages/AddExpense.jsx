@@ -7,7 +7,7 @@ import DeleteSVG from '../components/Svgs/delete';
 import EditSVG from '../components/Svgs/edit';
 import { useTheme } from '@table-library/react-table-library/theme';
 import { usePagination } from '@table-library/react-table-library/pagination';
-import { Toast } from 'primereact/toast';
+
 
 import {
   Table,
@@ -24,7 +24,6 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 import Loader from '../common/Loader';
-import toast from 'react-hot-toast';
 import {
   CreatesClassAction,
   fetchAllClassAction,
@@ -34,11 +33,13 @@ import {
 import {
   CreatesExpenseAction,
   FetchExpenseHeadAction,
+  deleteSingleExpenseAction,
   fetchAllExpenseAction,
   resetcreateExpense,
 } from '../redux/slices/expenseSlice';
 import InvencartegorySelect from '../components/InvencartegorySelect';
 import ExpenseHeadSelect from '../components/ExpenseHeadSelect';
+import toast from 'react-hot-toast';
 
 const AddExpense = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -51,6 +52,10 @@ const AddExpense = () => {
   const [desc, setDesc] = useState('');
   const [invoice, setInvoice] = useState('');
   const [expensehead, SetExpenseHead] = useState('');
+  const [file, setFile] = useState('');
+
+  const [filename, setFileName] = useState('');
+
 
   const [nodes, setdata] = useState([]);
 
@@ -73,7 +78,7 @@ const AddExpense = () => {
       dispatch(fetchAllExpenseAction());
     }
     if (CreateExpense?.success == 1) {
-      toast.success('New Class Added Successfully');
+      toast.success('New Expense Added Successfully');
       dispatch(resetcreateExpense());
       dispatch(fetchAllExpenseAction());
     }
@@ -170,12 +175,16 @@ const AddExpense = () => {
       state: { action: 2, value: value },
     });
   };
-  const handleviewdeletbtn = (value) => {
-    dispatch(fetchSingleClassAction({ classId: value }));
-    navigate('academic/class/editclass', { state: { action: 1 } });
+  const handledeletebtn = (value) => {
+    dispatch(deleteSingleExpenseAction(value));
   };
 
-  const classdata = {
+  function hashgenerator() {
+    return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+  }
+  let customfile = hashgenerator()+filename ;
+
+  const classdata = JSON.stringify({
     name: name,
     createdby: 'Asante',
     amount: amount,
@@ -183,10 +192,17 @@ const AddExpense = () => {
     description: desc,
     expensehead: expensehead,
     date: date,
-  };
-  const toast = useRef(null);
+    filename: filename,
+
+  });
 
   const handleSubmit = () => {
+    const data = new FormData();
+    data.append(customfile, file);
+    data.append('data', classdata);
+
+
+
     if (name == '') {
       toast.current.show({ severity: 'error', summary: 'Info', detail: 'Message Content', baseZIndex:'9999999999999999'});
 
@@ -199,7 +215,7 @@ const AddExpense = () => {
     if (amount == '') {
     return  toast.error('Error - Amount Cannot Be Empty');
     }  else {
-      dispatch(CreatesExpenseAction(classdata));
+      dispatch(CreatesExpenseAction(data));
     }
   };
 
@@ -225,7 +241,6 @@ const AddExpense = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-                  <Toast ref={toast} />
 
       <div className={'flex gap-2  w-full'}>
         <div className="w-8/12 flex-col">
@@ -340,7 +355,7 @@ const AddExpense = () => {
 
                                 <DeleteSVG
                                   clickFunction={() =>
-                                    handleviewbtn(item.classId)
+                                    handledeletebtn(item.id)
                                   }
                                 />
                               </div>
@@ -435,7 +450,7 @@ const AddExpense = () => {
 
                                 <DeleteSVG
                                   clickFunction={() =>
-                                    handleviewbtn(item.classId)
+                                    handledeletebtn(item.id)
                                   }
                                 />
                               </div>
@@ -516,9 +531,12 @@ const AddExpense = () => {
                           Attach Document{' '}
                         </label>
                         <input
-                          onChange={(event) => getFileInfo(event)}
+                          onChange={(event) => {
+                            setFile(event.target.files[0]);
+                            setFileName(event.target.files[0].name);
+                          }}
                           type="file"
-                          accept="image/*"
+                          // accept="image/*"
                           className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
                         />
                      

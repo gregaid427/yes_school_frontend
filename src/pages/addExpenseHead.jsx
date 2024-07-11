@@ -23,17 +23,9 @@ import autoTable from 'jspdf-autotable';
 
 import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
-import {
-  CreatesSubjectAction,
-  fetchSubjectAction,
-  resetcreatesubject,
-  fetchAllSectionAction,
-  fetchSingleClassAction,
-} from '../redux/slices/subjectSlice';
-import InventNewCartegory from '../components/inventNewCartegory';
-import { fetchInventCartegoryAction } from '../redux/slices/InventorySlice';
+
 import ExpenseHeadCom from '../components/ExpenseHeadCom';
-import { FetchExpenseHeadAction } from '../redux/slices/expenseSlice';
+import { deleteSingleExpenseHeadAction, FetchExpenseHeadAction } from '../redux/slices/expenseSlice';
 
 const AddExpenseHead = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -154,9 +146,8 @@ const AddExpenseHead = () => {
       state: {action:1, info: value },
     });
   };
-  const handleviewdeletbtn = (value) => {
-    dispatch(fetchSingleClassAction({ classId: value }));
-    navigate('academic/class/editclass', { state: { action: 1 } });
+  const handledeletebtn = (value) => {
+    dispatch(deleteSingleExpenseHeadAction(value));
   };
 
   const subdata = {
@@ -299,7 +290,7 @@ const AddExpenseHead = () => {
                                   clickFunction={() => handleEditbtn(item)}
                                 />
                                 <DeleteSVG
-                                  clickFunction={() => handleviewbtn(item.id)}
+                                  clickFunction={() => handledeletebtn(item.id)}
                                 />
                               </div>
                             </Cell>

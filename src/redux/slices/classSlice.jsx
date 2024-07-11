@@ -80,7 +80,7 @@ export const fetchAllSectionAction = createAsyncThunk(
 );
 
 export const deleteSectionByClass = createAsyncThunk(
-  "fetch/sectiondelete",
+  "delete/sectionbyclass",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
@@ -207,12 +207,33 @@ export const  deleteAllClassAction = createAsyncThunk(
   }
 );
 
+
+
 export const  deleteSingleClassAction = createAsyncThunk(
-  "class/deleteASingleClass",
+  "class/deleteSingleClass",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/class/`, payload
+        `http://localhost:5000/api/class/single/${payload}`, 
+        
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const  deleteSectiongroupAction = createAsyncThunk(
+  "delete/deleteSinglegroup",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:5000/api/class/sectiongroup/${payload}`, 
         
       );
 
@@ -227,6 +248,24 @@ export const  deleteSingleClassAction = createAsyncThunk(
 );
 
 
+export const truncateTableAction = createAsyncThunk(
+  'delete/allrecords',
+  async ( { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:5000/api/student/truncate`,
+        
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
 
 const ClassSlices = createSlice({
@@ -255,10 +294,13 @@ const ClassSlices = createSlice({
     builder.addCase(CreatesClassAction.pending, (state, action) => {
       state.CreateClassesloading = true;
       state.CreateClasses = false;
+      state.fetchAllClass = null;
+
 
     });
     builder.addCase(CreatesClassAction.fulfilled, (state, action) => {
       state.CreateClasses = action?.payload;
+      state.fetchAllClass = action?.payload;
       state.CreateClassesloading = false;
       state.error = undefined;
     });
@@ -408,24 +450,55 @@ const ClassSlices = createSlice({
     builder.addCase(createSectionAction.pending, (state, action) => {
       state.loading = true;
       state.createClassSection = undefined;
+      state.fetchSection = false;
+
     });
     builder.addCase(createSectionAction.fulfilled, (state, action) => {
       state.createClassSection = action?.payload;
       state.loading = false;
       state.error = undefined;
+      state.fetchSection = action?.payload;
+
     });
     builder.addCase(createSectionAction.rejected, (state, action) => {
       state.createSectionloading = false;
       state.error = action.payload;
       state.createClassSection = undefined;
+      state.fetchSection = undefined;
+
+    });
+
+    builder.addCase(deleteSectiongroupAction.pending, (state, action) => {
+      state.deletesectiongrouploading = true;
+      state.deletesectiongroup = undefined;
+      state.fetchSection = false;
+
+    });
+    builder.addCase(deleteSectiongroupAction.fulfilled, (state, action) => {
+      state.deletesectiongroup = action?.payload;
+      state.deletesectiongrouploading = false;
+      state.deletesectiongrouperror = undefined;
+      state.fetchSection = action?.payload;
+
+    });
+    builder.addCase(deleteSectiongroupAction.rejected, (state, action) => {
+      state.deletesectiongrouploading = false;
+      state.deletesectiongrouperror = action.payload;
+      state.deletesectiongroup = undefined;
+      state.fetchSection = undefined;
+
     });
     
 
     builder.addCase(deleteAllClassAction.pending, (state, action) => {
       state.deleteAllClassesloading = true;
+      state.fetchAllClass = null;
+
     });
     builder.addCase(deleteAllClassAction.fulfilled, (state, action) => {
       state.deleteAllClasses = action?.payload;
+      state.fetchAllClass = action?.payload;
+
       state.deleteClassloading = false;
       state.error = undefined;
     });
@@ -433,24 +506,51 @@ const ClassSlices = createSlice({
       state.deleteAllClassesloading = false;
       state.error = action.payload;
       state.deleteAllClasses = undefined;
+      state.fetchAllClass = undefined;
+
     });
+
+
 
 
     builder.addCase(deleteSingleClassAction.pending, (state, action) => {
-      state.deleteClassloading = true;
+      state.deleteSingleClassloading = true;
+      state.deleteSingleClass = false;
+      state.fetchAllClass = null;
+
     });
     builder.addCase(deleteSingleClassAction.fulfilled, (state, action) => {
-      state.deleteClasses = action?.payload;
-      state.deleteClassloading = false;
-      state.error = undefined;
+      state.deleteSingleClass = action?.payload;
+      state.deleteSingleClassloading = false;
+      state.deleteSingleClasserror = undefined;
+      state.fetchAllClass = action?.payload;
+
     });
     builder.addCase(deleteSingleClassAction.rejected, (state, action) => {
-      state.deleteClassloading = false;
-      state.error = action.payload;
-      state.deleteClasses = undefined;
+      state.deleteSingleClasserror = action.payload;
+      state.deleteSingleClass = undefined;
+      state.deleteSingleClassloading = undefined;
+      state.fetchAllClass = undefined;
+
     });
 
 
+
+    
+    builder.addCase(truncateTableAction.pending, (state, action) => {
+      state.truncateTableloading = true;
+      state.truncateTable = false;
+    });
+    builder.addCase(truncateTableAction.fulfilled, (state, action) => {
+      state.truncateTable = action?.payload;
+      state.truncateTableloading = false;
+      state.truncateTableerror = undefined;
+    });
+    builder.addCase(truncateTableAction.rejected, (state, action) => {
+      state.truncateTableerror = action.payload;
+      state.truncateTable = undefined;
+      state.truncateTableloading = undefined;
+    });
 
 
   },

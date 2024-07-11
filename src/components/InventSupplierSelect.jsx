@@ -17,8 +17,7 @@ const InventSupplierSelect = (props) => {
 
 
   useEffect(() => {
-    console.log(cartegory)
-    if (cartegory?.success == 1) {
+    if (fetchAllInventory?.success == 1) {
       let arrr = [props.default];
       let i = 0;
       while (i < inventory?.fetchAllInventory?.data.length) {

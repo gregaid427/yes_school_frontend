@@ -86,13 +86,15 @@ const SingleClassEdit = () => {
       dispatch(fetchAllClassAction());
 
       dispatch(resetUdateClass());
+      navigate(-1)
+
+      
     }
     if (updatesingleclass?.success == 0) {
       toast.error('Error Updating Class Data');
       dispatch(resetUdateClass());
 
     }
-    //  navigate("/student/info")
   }, [updatesingleclass]);
  
   useEffect(() => {

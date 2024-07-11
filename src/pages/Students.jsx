@@ -27,6 +27,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {
   
+  deleteSingleStudentAction,
   fetchBulkStudent,
   fetchCustomStudentsClassAction,
   fetchSingleStudent,
@@ -201,9 +202,8 @@ const Student = () => {
     navigate("/student/editinfo", {state:{action: 2,value:value.student_id}})
 
   };
-  const handleviewdeletbtn = (value) => {
-    dispatch(fetchSingleStudent(value.student_id));
-    navigate("/student/editinfo", {state:{action: 1}})
+  const handledeletbtn = (value) => {
+    dispatch(deleteSingleStudentAction(value));
 
   };
 
@@ -468,7 +468,7 @@ const Student = () => {
                               />
 
                               <DeleteSVG
-                                clickFunction={() => handleviewbtn(item)}
+                                clickFunction={() => handledeletbtn(item.student_id)}
                               />
                             </div>
                           </Cell>

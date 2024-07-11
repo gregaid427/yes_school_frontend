@@ -17,6 +17,8 @@ const InventItemSelect = (props) => {
 
 
   useEffect(() => {
+    console.log('kkkkkkkkkkkkkkkkkkkkkkk')
+    console.log(fetchAllInventory)
     if (fetchAllInventory?.success == 1) {
       let arrr = [];
       let i = 0;

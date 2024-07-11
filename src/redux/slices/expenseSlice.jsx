@@ -10,7 +10,13 @@ export const CreatesExpenseAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/expense/`,payload
+        `http://localhost:5000/api/expense/`,payload,
+        {
+          headers: {
+            'Content-type': "multipart/form-data"
+          }
+        }
+
         
       );
 
@@ -287,12 +293,12 @@ export const  deleteAllExpenseAction = createAsyncThunk(
   }
 );
 
-export const  deleteSingleExpenseAction = createAsyncThunk(
-  "Expense/deleteASingleExpense",
+export const  deleteSingleExpenseHeadAction = createAsyncThunk(
+  "delete/SingleExpenseHead",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/Expense/`, payload
+        `http://localhost:5000/api/expense/head/${payload}`, 
         
       );
 
@@ -307,6 +313,24 @@ export const  deleteSingleExpenseAction = createAsyncThunk(
 );
 
 
+export const  deleteSingleExpenseAction = createAsyncThunk(
+  "delete/deleteASingleExpense",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:5000/api/expense/${payload}`, 
+        
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 
 const ExpenseSlices = createSlice({
@@ -581,17 +605,49 @@ const ExpenseSlices = createSlice({
 
     builder.addCase(deleteSingleExpenseAction.pending, (state, action) => {
       state.deleteExpenseloading = true;
+      state.fetchAllExpense = false;
+
     });
     builder.addCase(deleteSingleExpenseAction.fulfilled, (state, action) => {
       state.deleteExpensees = action?.payload;
       state.deleteExpenseloading = false;
       state.error = undefined;
+      state.fetchAllExpense = action?.payload;
+
     });
     builder.addCase(deleteSingleExpenseAction.rejected, (state, action) => {
       state.deleteExpenseloading = false;
       state.error = action.payload;
       state.deleteExpensees = undefined;
+      state.fetchAllExpense = undefined;
+
     });
+
+
+
+
+    builder.addCase(deleteSingleExpenseHeadAction.pending, (state, action) => {
+      state.deleteExpenseheadloading = true;
+      state.fetchexpensehead = false;
+      state.deleteExpensesHead = false;
+
+
+    });
+    builder.addCase(deleteSingleExpenseHeadAction.fulfilled, (state, action) => {
+      state.deleteExpensesHead = action?.payload;
+      state.deleteExpenseheadloading = false;
+      state.error = undefined;
+      state.fetchexpensehead = action?.payload;
+
+    });
+    builder.addCase(deleteSingleExpenseHeadAction.rejected, (state, action) => {
+      state.deleteExpenseheadloading = false;
+      state.error = action.payload;
+      state.deleteExpensesHead = undefined;
+      state.fetchexpensehead = undefined;
+
+    });
+
 
 
 

@@ -23,7 +23,7 @@ import autoTable from 'jspdf-autotable';
 
 import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
-import { CreatesClassAction, fetchAllClassAction, fetchSingleClassAction, resetcreateClass } from '../redux/slices/classSlice';
+import { CreatesClassAction, deleteSingleClassAction, fetchAllClassAction, fetchSingleClassAction, resetcreateClass } from '../redux/slices/classSlice';
 
 const Class = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -53,46 +53,25 @@ const Class = () => {
 
   // }, []);
 
-  useEffect(() => {
-    if (fetchSection?.success == 1) {
-      let arrr = [{"name":'None',"id":0}];
-      let i = 0;
-      while (i < clad?.fetchSection?.data.length) {
-        arrr.push({"name":clad?.fetchSection?.data[i]?.sectionName,"id":clad?.fetchSection?.data[i]?.id});
-        i++;
-      }
-
-      setsections(arrr);
-    }
-  }, [sectionloading]);
+ 
 
   useEffect(() => {
     if (CreateClasses?.success == 0) {
       toast.error("Error - Class Name Already Exists");
       dispatch(resetcreateClass())
-      dispatch(fetchAllClassAction())
+   //   dispatch(fetchAllClassAction())
 
 
       }
     if (CreateClasses?.success == 1) {
       toast.success('New Class Added Successfully');
       dispatch(resetcreateClass())
-      dispatch(fetchAllClassAction())
+     // dispatch(fetchAllClassAction())
 
 
       }
     
 
-    if (fetchAllClass?.success == 1) {
-      let i = 0;
-      let arr = [];
-      while (i < clad?.fetchAllClass?.data.length) {
-        arr.push(clad?.fetchAllClass?.data[i].title);
-        i++;
-      }
-
-      setClasss(arr);
-    }
   }, [fetchAllClassloading,CreateClassesloading]);
 
   useEffect(() => {
@@ -102,13 +81,8 @@ const Class = () => {
       let data = fetchAllClass?.data;
       setdata(data);
     }
-    // if (loading == false) {
-    //   dispatch(fetchBulkStudent());
-    // }
-
-    // }
-    // datas = data;
-  }, [fetchAllClassloading]);
+  
+  }, [fetchAllClass ]);
 
   let data = { nodes };
 
@@ -178,9 +152,10 @@ const Class = () => {
       state: { action: 2, value: value },
     });
   };
-  const handleviewdeletbtn = (value) => {
-    dispatch(fetchSingleClassAction({"classId":value}));
-    navigate('academic/class/editclass', { state: { action: 1 } });
+  const handledeletbtn = (value) => {
+    dispatch(deleteSingleClassAction(value));
+   // dispatch(fetchAllClassAction());
+
   };
 
   const classdata = {
@@ -333,7 +308,7 @@ const Class = () => {
                                 />
 
                                 <DeleteSVG
-                                  clickFunction={() => handleviewbtn(item.classId)}
+                                  clickFunction={() => handledeletbtn(item.classId)}
                                 />
                               </div>
                             </Cell>

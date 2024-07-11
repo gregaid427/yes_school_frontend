@@ -16,7 +16,6 @@ import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import Class from './pages/Class';
 import Fees from './pages/Fees';
-import Expense from './pages/Expense';
 import Users from './pages/Users';
 import Staff from './pages/Staff';
 import Teachers from './pages/teachers';
@@ -54,6 +53,7 @@ import EditInventoryitem from './pages/EditInventoryitem';
 import AddExpenseHead from './pages/addExpenseHead';
 import SearchExpense from './pages/SearchExpense';
 import AddExpenses from './pages/AddExpense';
+import AdmissionCapture from './pages/Admiissioncamera';
 
   
 function App() {
@@ -199,6 +199,15 @@ function App() {
               </>
             }
           />{' '}
+          <Route
+            path="/student/admissioncapture"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <AdmissionCapture  />
+              </>
+            }
+          />{' '}
             <Route
             path="/student/editinfo"
             element={
@@ -310,7 +319,7 @@ function App() {
          
                    <Route element={<RequireAuth allowedRoles={[roles.test]} />}>
 
-          <Route
+          {/* <Route
             path="/expense/addlist"
             element={
               <>
@@ -318,7 +327,7 @@ function App() {
                 <Expense />
               </>
             }
-          />         
+          />          */}
           </Route> 
           <Route
             path="/expense/addexpense"

@@ -1,65 +1,81 @@
 import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
 import DefaultLayout from '../layout/DefaultLayout';
-import userThree from '../images/user/user-03.png';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CreatestudentAction } from '../redux/slices/studentSlice';
-import { Toaster, toast } from 'react-hot-toast';
+import {  toast } from 'react-hot-toast';
 
-import {
-  fetchAllClassAction,
-  fetchAllSectionAction,
-  
-} from '../redux/slices/classSlice';
-import {
-  reset
-} from '../redux/slices/studentSlice';
+
+import { reset } from '../redux/slices/studentSlice';
 import ClassSelect from '../components/ClassSelect';
 import SectionSelect2 from '../components/SectionsSelect2';
 import { useNavigate } from 'react-router-dom';
-import StudentCredential from './Studentscredential';
+
 // import { useHistory } from 'react-router-dom';
 
 const NewStudents = () => {
+  const webcamRef = React.useRef(null);
+  const [imgSrc, setImgSrc] = React.useState(null);
+
+  const capture = React.useCallback(async () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    setImgSrc(imageSrc);
+    console.log(imgSrc);
+
+    async function base64ToFile(base64) {
+      const res = await fetch(base64);
+      const buf = await res.arrayBuffer();
+      const file = new File([buf], 'capture_camera.png', {
+        type: 'image/png',
+      });
+      return file;
+    }
+    let file = await base64ToFile(await imgSrc);
+
+    props.setPicture(file);
+    props.setPicturename(file.name);
+
+    console.log(file);
+  }, [webcamRef, setImgSrc]);
+
   const formRef1 = useRef();
   const formRef2 = useRef();
   const formRef3 = useRef();
   const formRef4 = useRef();
 
-// const history = useHistory()
-// history.listen((location, action) =>{
-//   if(location.pathname="/student/admission"){
-//     setButton()
+  // const history = useHistory()
+  // history.listen((location, action) =>{
+  //   if(location.pathname="/student/admission"){
+  //     setButton()
 
-//   }
-// })
+  //   }
+  // })
 
-    //  useEffect(() => {
-    //   setButton()
-    //   // Return the function to unsubscribe from the event so it gets removed on unmount
+  //  useEffect(() => {
+  //   setButton()
+  //   // Return the function to unsubscribe from the event so it gets removed on unmount
 
-    //  }, [location.pathname ]);
-   function checkbuttonState(){
-     return buttonState
-    }
+  //  }, [location.pathname ]);
+  function checkbuttonState() {
+    return buttonState;
+  }
 
-    function setButton(){
-      
-      setButonState(1)
-      console.log(buttonState)
-    }
+  function setButton() {
+    setButonState(1);
+    console.log(buttonState);
+  }
 
   const [isChecked, setIsChecked] = useState(false);
 
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
- 
 
   const [firstName, setStudentfirstName] = useState('');
   const [lastName, setStudentlastName] = useState('');
   const [otherName, setStudentotherName] = useState('');
   const [gender, setGender] = useState('Male');
-  const [picture, setPicture] = useState('');
+  const [picture, setPicture] = useState();
+  const [picturename, setPicturename] = useState(null);
 
   const [gfName1, setgfName1] = useState('');
   const [glName1, setglName1] = useState('');
@@ -89,15 +105,23 @@ const NewStudents = () => {
   const [sectionzz, setsectionzz] = useState();
   const [feeArrears, setFeeArrears] = useState(0.0);
   const [feeCredit, setFeeCredit] = useState(0.0);
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
+    function hashgenerator() {
+      return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+    }
+    let date = new Date();
 
+    const data = new FormData();
+
+    // if(!picture) return console.log('no image')
 
     if (firstName == '') return toast.error('Please Fill Out Required Fields');
 
-    const data = {
+    let customfile = hashgenerator() + picturename;
+
+    let Mydata = JSON.stringify({
       firstName: firstName,
       lastName: lastName,
       otherName: otherName,
@@ -127,7 +151,11 @@ const NewStudents = () => {
       picture: picture,
       feeArrears: feeArrears,
       feeCredit: feeCredit,
-    };
+      filename: customfile,
+    });
+
+    data.append(customfile, picture);
+    data.append('data', Mydata);
     dispatch(CreatestudentAction(data));
   };
 
@@ -146,36 +174,22 @@ const NewStudents = () => {
     setButonState(1);
   }
 
-  function getFileInfo(event) {
-    //NOTE THE ADDITION OF 'e' PARAMETER
-    const formData = new FormData();
-    //FILE INFO NAME WILL BE "my-image-file"
-    formData.append(
-      'my-image-file',
-      event.target.files[0],
-      event.target.files[0].name,
-    );
-    setPicture(formData);
-  }
-  const { CreateStudentloading, error, CreateStudent ,Successfetch } = student;
+  const { CreateStudentloading, error, CreateStudent, Successfetch } = student;
   useEffect(() => {
-  
     if (error) {
-      dispatch(reset())
+      dispatch(reset());
 
       toast.error('Error Creating New Student');
-
     }
-    if (CreateStudent?.success == 1 ) {
-       dispatch(reset())
+    if (CreateStudent?.success == 1) {
+      dispatch(reset());
       // setTimeout(() => setLoader(false), 1000);
 
-      navigate("/student/studentcredential")
+      navigate('/student/studentcredential',{state:{pic:null,file:null}});
       //  dispatch(reset())
-
     }
     if (CreateStudent?.success == 0) {
-      dispatch(reset())
+      dispatch(reset());
       toast.error('Error : Unable to Add Student ');
     }
   }, [CreateStudent]);
@@ -314,7 +328,6 @@ const NewStudents = () => {
                         type="date"
                         onChange={(e) => {
                           setdateofbirth(e.target.value);
-                          console.log(e.target.value);
                         }}
                       />
                     </div>
@@ -349,12 +362,25 @@ const NewStudents = () => {
                     <label className="mb-3 block text-black dark:text-white">
                       Student Image
                     </label>
-                    <input
-                      onChange={(event) => getFileInfo(event)}
-                      type="file"
-                      accept="image/*"
-                      className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
-                    />
+                    <div className="flex gap-5">
+                      {' '}
+                      <input
+                        onChange={(event) => {
+                          setPicture(event.target.files[0]);
+                          setPicturename(event.target.files[0].name);
+                        }}
+                        type="file"
+                        accept="image/*"
+                        className="w-1/2 rounded-md border border-stroke p-1 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
+                      />{' '}
+                      <button
+                        className="flex w-1/2 justify-center rounded bg-black py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={(e) => navigate('/student/admissioncapture')}
+                      >
+                        Camera Capture
+                      </button>
+                    </div>
                   </div>
                 </form>
                 <div className="flex mt-10 justify-end gap-4.5">
@@ -369,99 +395,7 @@ const NewStudents = () => {
               </div>
             </div>
           </div>
-          {/* <div className="w-2/6">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Student Picture
-                </h3>
-              </div>
-              <div className="p-7">
-                <form action="#">
-                  <div className="mb-4 flex items-center gap-3">
-                    <div className="h-14 w-14 rounded-full">
-                      <img src={userThree} alt="User" />
-                    </div>
-                    <div>
-                      <span className="mb-1.5 text-black dark:text-white">
-                        Edit your photo
-                      </span>
-                      <span className="flex gap-2.5">
-                        <button className="text-sm hover:text-primary">
-                          Delete
-                        </button>
-                        <button className="text-sm hover:text-primary">
-                          Update
-                        </button>
-                      </span>
-                    </div>
-                  </div>
-
-                  <div
-                    id="FileUpload"
-                    className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5"
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
-                    />
-                    <div className="flex flex-col items-center justify-center space-y-3">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M1.99967 9.33337C2.36786 9.33337 2.66634 9.63185 2.66634 10V12.6667C2.66634 12.8435 2.73658 13.0131 2.8616 13.1381C2.98663 13.2631 3.1562 13.3334 3.33301 13.3334H12.6663C12.8431 13.3334 13.0127 13.2631 13.1377 13.1381C13.2628 13.0131 13.333 12.8435 13.333 12.6667V10C13.333 9.63185 13.6315 9.33337 13.9997 9.33337C14.3679 9.33337 14.6663 9.63185 14.6663 10V12.6667C14.6663 13.1971 14.4556 13.7058 14.0806 14.0809C13.7055 14.456 13.1968 14.6667 12.6663 14.6667H3.33301C2.80257 14.6667 2.29387 14.456 1.91879 14.0809C1.54372 13.7058 1.33301 13.1971 1.33301 12.6667V10C1.33301 9.63185 1.63148 9.33337 1.99967 9.33337Z"
-                            fill="#3C50E0"
-                          />
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M7.5286 1.52864C7.78894 1.26829 8.21106 1.26829 8.4714 1.52864L11.8047 4.86197C12.0651 5.12232 12.0651 5.54443 11.8047 5.80478C11.5444 6.06513 11.1223 6.06513 10.8619 5.80478L8 2.94285L5.13807 5.80478C4.87772 6.06513 4.45561 6.06513 4.19526 5.80478C3.93491 5.54443 3.93491 5.12232 4.19526 4.86197L7.5286 1.52864Z"
-                            fill="#3C50E0"
-                          />
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M7.99967 1.33337C8.36786 1.33337 8.66634 1.63185 8.66634 2.00004V10C8.66634 10.3682 8.36786 10.6667 7.99967 10.6667C7.63148 10.6667 7.33301 10.3682 7.33301 10V2.00004C7.33301 1.63185 7.63148 1.33337 7.99967 1.33337Z"
-                            fill="#3C50E0"
-                          />
-                        </svg>
-                      </span>
-                      <p>
-                        <span className="text-primary">Click to upload</span> or
-                        drag and drop
-                      </p>
-                      <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
-                      <p>(max, 800 X 800px)</p>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div> */}
+      
         </div>
 
         <div
@@ -843,7 +777,7 @@ const NewStudents = () => {
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue='0'
+                        defaultValue="0"
                         onChange={(e) => setFeeArrears(e.target.value)}
                       />
                     </div>
@@ -1013,11 +947,7 @@ const NewStudents = () => {
             </div>
           </div>
         </div>
-
-
-      
-</div>
-         
+      </div>
     </DefaultLayout>
   );
 };

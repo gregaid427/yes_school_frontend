@@ -28,6 +28,7 @@ import toast from 'react-hot-toast';
 import {
   CreatesInventoryAction,
   CreatesInventoryStockAction,
+  deleteSingleInventoryStockAction,
   fetchAllInventoryAction,
   fetchInventCartegoryAction,
   fetchInventoryStockAction,
@@ -138,7 +139,6 @@ const AddInventoryStock = () => {
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
-
     if (fetchInventoryStock?.success == 1) {
       let data = fetchInventoryStock?.data;
       setdata(data);
@@ -200,7 +200,8 @@ const AddInventoryStock = () => {
   function onPaginationChange(action, state) {}
 
   const [search, setSearch] = useState('');
-  console.log(data);
+ 
+
   data = {
     nodes: data.nodes.filter((item) =>
       item.item.toLowerCase().includes(search.toLowerCase()),
@@ -221,9 +222,8 @@ const AddInventoryStock = () => {
       state: { action: 1, info: value },
     });
   };
-  const handleviewdeletbtn = (value) => {
-    dispatch(fetchSingleClassAction({ classId: value }));
-    navigate('/class/editclass', { state: { action: 1 } });
+  const handledeletebtn = (value) => {
+    dispatch(deleteSingleInventoryStockAction(value));
   };
 
   const subdata = {
@@ -406,7 +406,7 @@ const AddInventoryStock = () => {
                                   clickFunction={() => handleEditbtn(item)}
                                 />
                                 <DeleteSVG
-                                  clickFunction={() => handleviewbtn(item.id)}
+                                  clickFunction={() => handledeletebtn(item.id)}
                                 />
                               </div>
                             </Cell>

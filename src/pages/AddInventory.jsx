@@ -27,6 +27,7 @@ import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
 import {
   CreatesInventoryAction,
+  deleteSingleInventoryAction,
   fetchAllInventoryAction,
   fetchInventCartegoryAction,
   resetcreateInventory,
@@ -111,7 +112,7 @@ const AddInventory = () => {
     if (CreateInventory?.success == 1) {
       toast.success('New Item Added Successfully');
       dispatch(resetcreateInventory());
-      dispatch(fetchAllInventoryAction());
+    //  dispatch(fetchAllInventoryAction());
     }
 
     // if (fetchAllClass?.success == 1) {
@@ -213,9 +214,8 @@ const AddInventory = () => {
       state: { action: 1, info: value },
     });
   };
-  const handleviewdeletbtn = (value) => {
-    dispatch(fetchSingleClassAction({ classId: value }));
-    navigate('/class/editclass', { state: { action: 1 } });
+  const handledeletebtn = (value) => {
+    dispatch(deleteSingleInventoryAction(value));
   };
 
   const subdata = {
@@ -393,7 +393,7 @@ const AddInventory = () => {
                                   clickFunction={() => handleEditbtn(item)}
                                 />
                                 <DeleteSVG
-                                  clickFunction={() => handleviewbtn(item.id)}
+                                  clickFunction={() => handledeletebtn(item.id)}
                                 />
                               </div>
                             </Cell>

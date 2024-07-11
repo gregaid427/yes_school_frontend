@@ -25,10 +25,9 @@ import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
 import {
   CreatesSubjectAction,
+  DeleteSingleSubjectAction,
   fetchSubjectAction,
   resetcreatesubject,
-  fetchAllSectionAction,
-  fetchSingleClassAction,
 } from '../redux/slices/subjectSlice';
 
 const Subject = () => {
@@ -77,26 +76,15 @@ const Subject = () => {
 
     if (CreateSubject?.success == 0) {
       toast.error('Error - Adding New Subject');
-    //   dispatch(resetcreatesubject());
-      // dispatch(fetchAllClassAction())
+      dispatch(resetcreatesubject());
     }
     if (CreateSubject?.success == 1) {
       
       toast.success('New Subject Added Successfully');
       dispatch(resetcreatesubject());
-      dispatch(fetchSubjectAction());
     }
 
-    // if (fetchAllClass?.success == 1) {
-    //   let i = 0;
-    //   let arr = [];
-    //   while (i < clad?.fetchAllClass?.data.length) {
-    //     arr.push(clad?.fetchAllClass?.data[i].title);
-    //     i++;
-    //   }
-
-    //   setClasss(arr);
-    // }
+ 
   }, [CreateSubject ]);
 
   useEffect(() => {
@@ -168,26 +156,14 @@ console.log(data)
 
   function onPaginationChange(action, state) {}
 
-  const handleViewbtn = (value) => {
-    dispatch(
-      fetchSingleClassAction({
-        classId: value.classId,
-        sectionTitle: value.title,
-      }),
-    );
-    navigate('/academics/class/editclass', {
-      state: { action: 1, classId: value },
-    });
-  };
+
   const handleEditbtn = (value) => {
-console.log(value.type)
     navigate('/academics/subject/editsubject', {
       state: { info: value },
     });
   };
-  const handleviewdeletbtn = (value) => {
-    dispatch(fetchSingleClassAction({ classId: value }));
-    navigate('academic/class/editclass', { state: { action: 1 } });
+  const handledeletebtn = (value) => {
+    dispatch(DeleteSingleSubjectAction( value));
   };
 
   const subdata = {
@@ -331,7 +307,7 @@ console.log(value.type)
                                 />
 
                                 <DeleteSVG
-                                  clickFunction={() => handleviewbtn(item.id)}
+                                  clickFunction={() => handledeletebtn(item.id)}
                                 />
                               </div>
                             </Cell>
