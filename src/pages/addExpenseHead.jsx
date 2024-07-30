@@ -25,7 +25,10 @@ import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
 
 import ExpenseHeadCom from '../components/ExpenseHeadCom';
-import { deleteSingleExpenseHeadAction, FetchExpenseHeadAction } from '../redux/slices/expenseSlice';
+import {
+  deleteSingleExpenseHeadAction,
+  FetchExpenseHeadAction,
+} from '../redux/slices/expenseSlice';
 
 const AddExpenseHead = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -135,15 +138,14 @@ const AddExpenseHead = () => {
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
- 
     navigate('/inventory/editcartegory', {
-      state: {action:2, info: value },
+      state: { action: 2, info: value },
     });
   };
   const handleEditbtn = (value) => {
     console.log(value.type);
     navigate('/inventory/editcartegory', {
-      state: {action:1, info: value },
+      state: { action: 1, info: value },
     });
   };
   const handledeletebtn = (value) => {
@@ -195,9 +197,8 @@ const AddExpenseHead = () => {
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
-  Expense Head List
-    
-                    </h3>
+                  Expense Head List
+                </h3>
               </div>
             </div>
           </div>
@@ -240,7 +241,7 @@ const AddExpenseHead = () => {
                       className=" w-2/2 pt-2 block text-sm font-medium text-black dark:text-white"
                       htmlFor=" "
                     >
-                      Search {' '}
+                      Search{' '}
                     </label>
                   </div>
 
@@ -270,7 +271,7 @@ const AddExpenseHead = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
-                        <HeaderCell>Expense Head</HeaderCell>
+                          <HeaderCell>Expense Head</HeaderCell>
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
@@ -356,9 +357,9 @@ const AddExpenseHead = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
-                        <HeaderCell>Expense Head</HeaderCell>
+                          <HeaderCell>Expense Head</HeaderCell>
 
-<HeaderCell>Actions</HeaderCell>
+                          <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
                       </Header>
 
@@ -369,8 +370,9 @@ const AddExpenseHead = () => {
                             item={item}
                             className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                           >
-                            <Cell className="  ">{item.cartegoryexpenseheadname}</Cell>
-
+                            <Cell className="  ">
+                              {item.cartegoryexpenseheadname}
+                            </Cell>
                           </Row>
                         ))}
                       </Body>
@@ -382,7 +384,7 @@ const AddExpenseHead = () => {
           </div>{' '}
         </div>
         <div className="w-2/12 mr-5">
-         <ExpenseHeadCom close={setClasss} />
+          <ExpenseHeadCom close={setClasss} />
         </div>
       </div>{' '}
     </DefaultLayout>

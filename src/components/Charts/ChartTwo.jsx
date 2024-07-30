@@ -1,8 +1,8 @@
 import { ApexOptions } from 'apexcharts';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const options: ApexOptions = {
+const options = {
   colors: ['#3C50E0', '#80CAEE'],
   chart: {
     fontFamily: 'Satoshi, sans-serif',
@@ -44,7 +44,20 @@ const options: ApexOptions = {
   },
 
   xaxis: {
-    categories: ['Jan', 'Feb', 'Mar', 'Apri', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    categories: [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apri',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ],
   },
   legend: {
     position: 'top',
@@ -62,36 +75,22 @@ const options: ApexOptions = {
   },
 };
 
-interface ChartTwoState {
-  series: {
-    name: string;
-    data: number[];
-  }[];
-}
+const ChartTwo = (props) => {
+  const [data1, setdata] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
-const ChartTwo  = () => {
-  const [state, setState] = useState<ChartTwoState>({
-    series: [
-      {
-        name: 'Revenue',
-        data: [13, 23, 20, 8, 13, 27, 15,13, 0, 0, 0, 0],
-      },
-    ],
-  });
-  
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-    }));
-  };
-  handleReset;  
+  useEffect(() => {
+    setdata(props.data);
+  }, [data1]);
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
       <div className="mb-4 justify-between gap-4 sm:flex">
-        <div>
+        <div className='flex align-middle gap-1 my-auto'>
           <h4 className="text-xl font-semibold text-black dark:text-white">
-Expenses          </h4>
+            Expenses {' '}
+          </h4> <h6 className="text-xs font-small align-middle my-auto text-black dark:text-white">
+            (Monthly){' '}
+          </h6>
         </div>
         <div>
           {/* <div className="relative z-20 inline-block">
@@ -131,7 +130,12 @@ Expenses          </h4>
         <div id="chartTwo" className="-ml-5 -mb-9">
           <ReactApexChart
             options={options}
-            series={state.series}
+            series={[
+              {
+                name: 'Expense',
+                data: data1,
+              },
+            ]}
             type="bar"
             height={350}
           />

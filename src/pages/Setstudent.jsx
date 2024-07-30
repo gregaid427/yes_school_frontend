@@ -26,6 +26,8 @@ import {
 } from '@table-library/react-table-library/table';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  
+  deleteSingleStudentAction,
   fetchBulkStudent,
   fetchCustomStudentsClassAction,
   fetchSingleStudent,
@@ -36,9 +38,10 @@ import StudentModal from '../components/StudentModal';
 
 import SectionSelect1 from '../components/SectionsSelect1';
 import ClassSelect from '../components/ClassSelect';
-import { GetCustomExpenseAction } from '../redux/slices/expenseSlice';
+import InactiveSVG from '../components/Svgs/Inactive';
+import RemoveSVG from '../components/Svgs/Remove';
 
-const SearchExpense = () => {
+const SetStudent = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
@@ -59,7 +62,7 @@ const SearchExpense = () => {
   const [searcher, setSearcher] = useState('firstName');
   const [isChecked2, setIsChecked2] = useState(false);
 
-  const [date, setDate] = useState('Today');
+  const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
   const [classs, setClasss] = useState();
   const [sections, setsections] = useState([]);
@@ -67,30 +70,68 @@ const SearchExpense = () => {
   const [sectionzz, setsectionzz] = useState();
 
   const dispatch = useDispatch();
-  const expense = useSelector((state) => state?.expense);
-  const {
-    GetCustomExpense,
-   
-  } = expense;
+  const student = useSelector((state) => state?.student);
+  const classes = useSelector((state) => state?.classes);
 
 
+  const { loading, error, fetchStudent, fetchStudentcustom, fetchcustom, fetchStudentcustomloading, fetchcustomloading,singleStudent, singleStudentloading } = student;
+  
+  const {fetchAllClassloading,fetchAllClass}= classes
 
+  
 
   useEffect(() => {
-    setdata([]);
+    setTimeout(() => setLoader(false), 1000);
+
+    if (fetchcustom?.success == 1) {
+      let data = fetchcustom?.data;
+      setdata(data);
+    }
+
+    if (fetchAllClass?.success == 1) {
+      let i = 0;
+      let arr = []
+      while (i < classes?.fetchAllClass?.data.length) {
+        arr.push(classes?.fetchAllClass?.data[i].title);
+        i++;
+      }
+      setClasss(arr);
+      setclazz(arr[0])
+    }
+
+  }, [fetchAllClassloading , fetchcustomloading ]);
+
+  useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
+
+    if (fetchStudentcustom?.success == 1) {
+      let data = fetchStudentcustom?.data;
+      setdata(data);
+
+    }
+
+  
+
+  }, [ fetchStudentcustomloading ]);
+
+  useEffect(() => {
+   
+    setdata([])
+  
+
   }, []);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (GetCustomExpense?.success == 1) {
-      let data = GetCustomExpense?.data;
+    if (fetchStudent?.success == 1) {
+      let data = fetchStudent?.data;
       setdata(data);
     }
-  }, [GetCustomExpense]);
+  }, [fetchStudent]);
 
   // useEffect(() => {
-
+   
   //   if (fetchSection?.success == 1) {
   //    let arrr = ['All Sections']
   //     let i = 0;
@@ -105,9 +146,10 @@ const SearchExpense = () => {
   //   }
   // }, [sectionloading]);
 
+
   let data = { nodes };
 
-  const theme = useTheme([
+ const theme = useTheme([
     {
       // HeaderRow: `
       // background-color: #313D4A;
@@ -120,7 +162,7 @@ const SearchExpense = () => {
       padding: 5px 0px;
     }
   `,
-      BaseCell: `
+         BaseCell: `
         font-size: 15px;
         color:white;
       //   border-bottom: 1px solid #313D4A !important;
@@ -151,24 +193,34 @@ const SearchExpense = () => {
 
   var data2;
   const [search, setSearch] = useState('');
-  const navigate = useNavigate();
+ const navigate = useNavigate()
 
   const handleviewbtn = (value) => {
-    navigate('/student/singlestudent', {
-      state: { action: 1, value: value.student_id },
-    });
+    navigate('/student/singlestudent', {state:{action: 1,value:value.student_id}})
+
   };
   const handleEditbtn = (value) => {
     dispatch(fetchSingleStudent(value.student_id));
-    navigate('/student/editinfo', {
-      state: { action: 2, value: value.student_id },
-    });
-  };
+    navigate("/student/editinfo", {state:{action: 2,value:value.student_id}})
 
+  };
+  const handledeletbtn = (value) => {
+    let data = {
+      "class" : clazz,
+      "section":sectionzz,
+      "id" : value
+    }
+    dispatch(deleteSingleStudentAction(data));
+
+  };
 
   data = {
     nodes: data.nodes.filter((item) =>
-         item.name.toLowerCase().includes(search.toLowerCase())
+      searchval === 'First Name'
+        ? item.firstName.toLowerCase().includes(search.toLowerCase())
+        : searchval == 'Last Name'
+          ? item.lastName.toLowerCase().includes(search.toLowerCase())
+          : item.student_id.toLowerCase().includes(search.toLowerCase()),
     ),
   };
 
@@ -183,24 +235,33 @@ const SearchExpense = () => {
     setVisible(false);
   }
 
-  const csvConfig = mkConfig({
-    useKeysAsHeaders: true,
-    filename: `${clazz} : ${sectionzz} `,
-  });
+  const csvConfig = mkConfig({ useKeysAsHeaders: true, filename:`${clazz} : ${sectionzz} `});
 
   const handleDownloadCSV = async () => {
     const csv = generateCsv(csvConfig)(nodes);
     download(csvConfig)(csv);
   };
-  function getData() {
+  function handleGetClassData() {
+    console.log(clazz)
+
     let data = {
-      date: date,
-    };
-    console.log(data);
+      "class" : clazz,
+      "section":sectionzz
+    }
+    console.log(data)
+    if(sectionzz == "All Sections"){
+      setclazz(clazz)
+      dispatch(fetchStudentsClassAction(data))
 
-    dispatch(GetCustomExpenseAction(data));
+    }
+    if(sectionzz != "All Sections"){
+      setsectionzz(sectionzz)
+      dispatch(fetchCustomStudentsClassAction(data))
+
+    }
+
+
   }
-
   const footerContent = (
     <div>
       <button
@@ -245,29 +306,19 @@ const SearchExpense = () => {
         >
           <div className="max-w-full overflow-x-auto">
             <div className="w-full  flex justify-between ">
-              <div className=" flex w-7/12 gap-3">
+              <div className=" flex w-8/12 gap-3">
                 <div className="sm:w-2/5 ">
                   <div>
                     <label
                       className="mb-2 block text-sm font-medium text-black dark:text-white"
                       htmlFor="fullName"
                     >
-                      Select Duration
+                      Class
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <SelectGroupTwo
-                        values={[
-                          'Today',
-                          'This Month',
-                          'Last Month',
-                          'Last Six Month',
-                          'This Year',
-                          'Last year',
-                          'All Records',
-                        ]}
-                        setSelectedOption={setDate}
-                        selectedOption={date}
+                      <ClassSelect setsectionprop={setclazz}
+                       
                       />
                     </div>
                   </div>
@@ -282,7 +333,7 @@ const SearchExpense = () => {
                   </label>
                 </div>
 
-                {/* <div className="w-full sm:w-2/5">
+                <div className="w-full sm:w-2/5">
                   <label
                     className="mb-2 block text-sm font-medium text-black dark:text-white"
                     htmlFor="phoneNumber"
@@ -302,7 +353,7 @@ const SearchExpense = () => {
                   >
                     Download Page (Excel)
                   </label>
-                </div> */}
+                </div>
                 <div className="w-full sm:w-2/5">
                   <label
                     className="mb-2 block text-sm font-medium  dark:text-black"
@@ -312,11 +363,22 @@ const SearchExpense = () => {
                   </label>
                   <div className="relative sm:w-1/5 z-20 bg-white dark:bg-form-input">
                     <button
-                      onClick={() => getData()}
-                      className="btn h-10    flex justify-center rounded  bg-black py-2 px-6 font-medium text-gray hover:shadow-1"
+                      onClick={() => handleGetClassData()
+                      }
+                      className="btn h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
                       Search
+                    </button>
+                  </div>
+                  <div className="relative sm:w-4/5 z-20 mt-2 bg-white dark:bg-form-input">
+                    <button
+                      onClick={() => navigate('/student/admission')
+                      }
+                      className="btn h-10 w-full   flex justify-center rounded  bg-primary py-2 px-3 font-medium text-gray hover:shadow-1"
+                      type="submit"
+                    >
+                      Add New Student
                     </button>
                   </div>
                 </div>
@@ -336,8 +398,15 @@ const SearchExpense = () => {
                     className="mb-3 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor=" "
                   >
-                    Search{' '}
+                    Search By{' '}
                   </label>
+                  <div className="relative  z-20 w-3/5 bg-white dark:bg-form-input">
+                    <SelectGroupTwo
+                      values={['First Name', 'Last Name', 'ID']}
+                      setSelectedOption={(val) => setSearchval(val)}
+                      selectedOption={searchval}
+                    />
+                  </div>
                 </div>
 
                 <input
@@ -361,15 +430,19 @@ const SearchExpense = () => {
         >
           <div className="flex gap-3  flex-col">
             <div>
-              <Table data={data} pagination={pagination} theme={theme}>
+              <Table
+                data={data}
+                pagination={pagination}
+                theme={theme}
+              >
                 {(tableList) => (
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
+                        <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Expense Head</HeaderCell>
-                        <HeaderCell>Date</HeaderCell>
-                        <HeaderCell>Amount</HeaderCell>
+                        <HeaderCell>Class (Section)</HeaderCell>
+                        <HeaderCell>Gender</HeaderCell>
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
@@ -377,33 +450,43 @@ const SearchExpense = () => {
 
                     <Body>
                       {tableList.map((item) => (
-                        <Row key={item.id} item={item} className="">
+                        <Row
+                          key={item.student_id}
+                          item={item}
+                          className=""
+                        >
                           <Cell className="  ">
-                            <span>{item.name}</span>
+                            <span>{item.student_id}</span>
+                          </Cell>
+                          <Cell className="capitalize">
+                            {item.firstName +
+                              ' ' +
+                              item.otherName +
+                              ' ' +
+                              item.lastName}
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.expensehead}</span>
-                          </Cell>
-
-                          <Cell className="  ">
-                            <span>{item.date}</span>
+                          <span>{item.class} ({item.section})</span>
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.amount}</span>
+                            <span>{item.gender}</span>
                           </Cell>
-                         
+                        
 
                           <Cell>
                             <div className="gap-2 flex">
-                              <ViewSVG
+                              {/* <ViewSVG
                                 clickFunction={() => handleviewbtn(item)}
-                              />
+                              /> */}
                               <EditSVG
                                 clickFunction={() => handleEditbtn(item)}
                               />
 
-                              <DeleteSVG
-                                clickFunction={() => handleviewbtn(item)}
+                              <InactiveSVG
+                                clickFunction={() => handledeletbtn(item.student_id)}
+                              />
+                               <RemoveSVG
+                                clickFunction={() => handledeletbtn(item.student_id)}
                               />
                             </div>
                           </Cell>
@@ -428,7 +511,7 @@ const SearchExpense = () => {
                   </span>
                   <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
                     <SelectGroupTwo
-                      values={[30, 50, 100, 200, 500, 'All']}
+                      values={[ 30, 50, 100, 200, 500, 'All']}
                       setSelectedOption={(val) => setpagesval(val)}
                       selectedOption={pagesval}
                     />
@@ -458,9 +541,10 @@ const SearchExpense = () => {
                 ))}
               </span>
             </div>
-            <div className="hidden">
+            <div className='hidden'>
               <Table
                 id="my-table"
+                
                 data={data}
                 pagination={pagination}
                 theme={theme}
@@ -494,11 +578,13 @@ const SearchExpense = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.section}</span>
+                            <span>{item.section} ({item.section})</span>
                           </Cell>
                           <Cell className="  ">
                             <span>{item.gender}</span>
                           </Cell>
+                        
+
                         </Row>
                       ))}
                     </Body>
@@ -513,4 +599,4 @@ const SearchExpense = () => {
   );
 };
 
-export default SearchExpense;
+export default SetStudent;

@@ -5,24 +5,28 @@ import {
 } from '../redux/slices/classSlice';
 import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
-const ClassSelect = (props) => {
+
+
+const SessionSelect = (props) => {
+
+  
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
-  const [clazz, setclazz] = useState(props.clazz);
+  const [clazz, setclazz] = useState();
 
-  const clad = useSelector((state) => state?.classes);
+  const session = useSelector((state) => state?.session);
 
  
-  const { fetchAllClassloading, fetchAllClass } =
-    clad;
+  const { fetchsession} =
+    session;
 
   useEffect(() => {
 
-    if (fetchAllClass?.success == 1) {
+    if (fetchsession?.success == 1) {
       let i = 0;
       let arr = [];
-      while (i < clad?.fetchAllClass?.data.length) {
-        arr.push(clad?.fetchAllClass?.data[i].title);
+      while (i < session?.fetchsession?.data.length) {
+        arr.push(session?.fetchsession?.data[i].sessionname);
         i++;
       }
 
@@ -34,7 +38,7 @@ const ClassSelect = (props) => {
 
     }
 
-  }, [fetchAllClassloading ]);
+  }, [fetchsession ]);
 
   useEffect(() => {
     props.setsectionprop(clazz)
@@ -55,4 +59,4 @@ const ClassSelect = (props) => {
   );
 };
 
-export default ClassSelect;
+export default SessionSelect;

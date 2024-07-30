@@ -26,6 +26,7 @@ import {
 } from '@table-library/react-table-library/table';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  deleteSingleStudentAction,
   fetchBulkStudent,
   fetchCustomStudentsClassAction,
   fetchSingleStudent,
@@ -36,9 +37,10 @@ import StudentModal from '../components/StudentModal';
 
 import SectionSelect1 from '../components/SectionsSelect1';
 import ClassSelect from '../components/ClassSelect';
-import { GetCustomExpenseAction } from '../redux/slices/expenseSlice';
+import GuardianSVG from '../components/Svgs/Guardian';
+import ManageGuardianSVG from '../components/Svgs/ManageGuard';
 
-const SearchExpense = () => {
+const SetGuardian = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
@@ -59,7 +61,7 @@ const SearchExpense = () => {
   const [searcher, setSearcher] = useState('firstName');
   const [isChecked2, setIsChecked2] = useState(false);
 
-  const [date, setDate] = useState('Today');
+  const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
   const [classs, setClasss] = useState();
   const [sections, setsections] = useState([]);
@@ -67,14 +69,51 @@ const SearchExpense = () => {
   const [sectionzz, setsectionzz] = useState();
 
   const dispatch = useDispatch();
-  const expense = useSelector((state) => state?.expense);
+  const student = useSelector((state) => state?.student);
+  const classes = useSelector((state) => state?.classes);
+
   const {
-    GetCustomExpense,
-   
-  } = expense;
+    loading,
+    error,
+    fetchStudent,
+    fetchStudentcustom,
+    fetchcustom,
+    fetchStudentcustomloading,
+    fetchcustomloading,
+    singleStudent,
+    singleStudentloading,
+  } = student;
 
+  const { fetchAllClassloading, fetchAllClass } = classes;
 
+  useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
 
+    if (fetchcustom?.success == 1) {
+      let data = fetchcustom?.data;
+      setdata(data);
+    }
+
+    if (fetchAllClass?.success == 1) {
+      let i = 0;
+      let arr = [];
+      while (i < classes?.fetchAllClass?.data.length) {
+        arr.push(classes?.fetchAllClass?.data[i].title);
+        i++;
+      }
+      setClasss(arr);
+      setclazz(arr[0]);
+    }
+  }, [fetchAllClassloading, fetchcustomloading]);
+
+  useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
+
+    if (fetchStudentcustom?.success == 1) {
+      let data = fetchStudentcustom?.data;
+      setdata(data);
+    }
+  }, [fetchStudentcustomloading]);
 
   useEffect(() => {
     setdata([]);
@@ -83,11 +122,11 @@ const SearchExpense = () => {
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (GetCustomExpense?.success == 1) {
-      let data = GetCustomExpense?.data;
+    if (fetchStudent?.success == 1) {
+      let data = fetchStudent?.data;
       setdata(data);
     }
-  }, [GetCustomExpense]);
+  }, [fetchStudent]);
 
   // useEffect(() => {
 
@@ -164,11 +203,29 @@ const SearchExpense = () => {
       state: { action: 2, value: value.student_id },
     });
   };
+  const handledeletbtn = (value) => {
+    let data = {
+      class: clazz,
+      section: sectionzz,
+      id: value,
+    };
+    dispatch(deleteSingleStudentAction(data));
+  };
 
+const handleNaviate = (item) => {
+  console.log(item)
+  navigate('/settings/newguardian', {
+    state: { value: item },
+  })
+}
 
   data = {
     nodes: data.nodes.filter((item) =>
-         item.name.toLowerCase().includes(search.toLowerCase())
+      searchval === 'First Name'
+        ? item.firstName.toLowerCase().includes(search.toLowerCase())
+        : searchval == 'Last Name'
+          ? item.lastName.toLowerCase().includes(search.toLowerCase())
+          : item.student_id.toLowerCase().includes(search.toLowerCase()),
     ),
   };
 
@@ -192,15 +249,23 @@ const SearchExpense = () => {
     const csv = generateCsv(csvConfig)(nodes);
     download(csvConfig)(csv);
   };
-  function getData() {
+  function handleGetClassData() {
+    console.log(clazz);
+
     let data = {
-      date: date,
+      class: clazz,
+      section: sectionzz,
     };
     console.log(data);
-
-    dispatch(GetCustomExpenseAction(data));
+    if (sectionzz == 'All Sections') {
+      setclazz(clazz);
+      dispatch(fetchStudentsClassAction(data));
+    }
+    if (sectionzz != 'All Sections') {
+      setsectionzz(sectionzz);
+      dispatch(fetchCustomStudentsClassAction(data));
+    }
   }
-
   const footerContent = (
     <div>
       <button
@@ -252,37 +317,16 @@ const SearchExpense = () => {
                       className="mb-2 block text-sm font-medium text-black dark:text-white"
                       htmlFor="fullName"
                     >
-                      Select Duration
+                      Class
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <SelectGroupTwo
-                        values={[
-                          'Today',
-                          'This Month',
-                          'Last Month',
-                          'Last Six Month',
-                          'This Year',
-                          'Last year',
-                          'All Records',
-                        ]}
-                        setSelectedOption={setDate}
-                        selectedOption={date}
-                      />
+                      <ClassSelect setsectionprop={setclazz} />
                     </div>
                   </div>
-                  <label
-                    className="pt-4 block text-sm font-medium text-ash dark:text-white"
-                    style={{ color: '#A9B5B3' }}
-                    onClick={(e) => {
-                      handleDownloadPdf();
-                    }}
-                  >
-                    Download Page (PDF)
-                  </label>
                 </div>
 
-                {/* <div className="w-full sm:w-2/5">
+                <div className="w-full sm:w-2/5">
                   <label
                     className="mb-2 block text-sm font-medium text-black dark:text-white"
                     htmlFor="phoneNumber"
@@ -290,19 +334,9 @@ const SearchExpense = () => {
                     Section{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SectionSelect1 setsectionprop={setsectionzz}
-                    />
+                    <SectionSelect1 setsectionprop={setsectionzz} />
                   </div>
-                  <label
-                    className="pt-4 block text-sm font-medium text-ash dark:text-white"
-                    style={{ color: '#A9B5B3' }}
-                    onClick={(e) => {
-                      handleDownloadCSV();
-                    }}
-                  >
-                    Download Page (Excel)
-                  </label>
-                </div> */}
+                </div>
                 <div className="w-full sm:w-2/5">
                   <label
                     className="mb-2 block text-sm font-medium  dark:text-black"
@@ -312,13 +346,23 @@ const SearchExpense = () => {
                   </label>
                   <div className="relative sm:w-1/5 z-20 bg-white dark:bg-form-input">
                     <button
-                      onClick={() => getData()}
-                      className="btn h-10    flex justify-center rounded  bg-black py-2 px-6 font-medium text-gray hover:shadow-1"
+                      onClick={() => handleGetClassData()}
+                      className="btn h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
                       Search
                     </button>
                   </div>
+                  {/* <div className="relative sm:w-4/5 z-20 mt-2 bg-white dark:bg-form-input">
+                    <button
+                      onClick={() => navigate('/settings/newguardian')
+                      }
+                      className="btn h-10 w-full   flex justify-center rounded  bg-primary py-2 px-3 font-medium text-gray hover:shadow-1"
+                      type="submit"
+                    >
+                      Add New Guardian
+                    </button>
+                  </div> */}
                 </div>
                 {/* <div className="w-full sm:w-1/3 flex  justify-end align-top  ">
                     <button onClick={(e)=>{handleDownloadPdf()}}
@@ -336,8 +380,15 @@ const SearchExpense = () => {
                     className="mb-3 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor=" "
                   >
-                    Search{' '}
+                    Search By{' '}
                   </label>
+                  <div className="relative  z-20 w-3/5 bg-white dark:bg-form-input">
+                    <SelectGroupTwo
+                      values={['First Name', 'Last Name', 'ID']}
+                      setSelectedOption={(val) => setSearchval(val)}
+                      selectedOption={searchval}
+                    />
+                  </div>
                 </div>
 
                 <input
@@ -366,10 +417,10 @@ const SearchExpense = () => {
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
+                        <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Expense Head</HeaderCell>
-                        <HeaderCell>Date</HeaderCell>
-                        <HeaderCell>Amount</HeaderCell>
+                        {/* <HeaderCell>Section</HeaderCell> */}
+                        <HeaderCell>Gender</HeaderCell>
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
@@ -377,33 +428,36 @@ const SearchExpense = () => {
 
                     <Body>
                       {tableList.map((item) => (
-                        <Row key={item.id} item={item} className="">
+                        <Row key={item.student_id} item={item} className="">
                           <Cell className="  ">
-                            <span>{item.name}</span>
+                            <span>{item.student_id}</span>
                           </Cell>
+                          <Cell className="capitalize">
+                            {item.firstName +
+                              ' ' +
+                              item.otherName +
+                              ' ' +
+                              item.lastName}
+                          </Cell>
+                          {/* <Cell className="  ">
+                            <span>{item.section}</span>
+                          </Cell> */}
                           <Cell className="  ">
-                            <span>{item.expensehead}</span>
+                            <span>{item.gender}</span>
                           </Cell>
-
-                          <Cell className="  ">
-                            <span>{item.date}</span>
-                          </Cell>
-                          <Cell className="  ">
-                            <span>{item.amount}</span>
-                          </Cell>
-                         
 
                           <Cell>
                             <div className="gap-2 flex">
-                              <ViewSVG
-                                clickFunction={() => handleviewbtn(item)}
-                              />
                               <EditSVG
-                                clickFunction={() => handleEditbtn(item)}
+                                clickFunction={(item) =>
+                                  navigate('/settings/newguardian', {
+                                    state: { value: item.student_id },
+                                  })
+                                }
                               />
-
-                              <DeleteSVG
-                                clickFunction={() => handleviewbtn(item)}
+                              <GuardianSVG
+                                clickFunction={() =>{ handleNaviate(item.student_id)
+                                }}
                               />
                             </div>
                           </Cell>
@@ -513,4 +567,4 @@ const SearchExpense = () => {
   );
 };
 
-export default SearchExpense;
+export default SetGuardian;

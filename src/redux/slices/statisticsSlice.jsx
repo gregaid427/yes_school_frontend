@@ -10,8 +10,7 @@ export const studentStatAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/statistics/1`,payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/1`,payload
       );
 
       return data;
@@ -30,7 +29,7 @@ export const classStatAction = createAsyncThunk(
     
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/statistics/3`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/3`,payload
         
       );
 
@@ -49,7 +48,7 @@ export const teacherStatAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/statistics/2`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/2`,payload
         
       );
 
@@ -68,7 +67,7 @@ export const subjectStatAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/statistics/4`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/4`,payload
         
       );
 
@@ -83,6 +82,43 @@ export const subjectStatAction = createAsyncThunk(
 );
 
 
+export const parentStatAction = createAsyncThunk(
+  "fetch/stat6",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/6`,payload
+        
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const chartStatAction = createAsyncThunk(
+  "fetch/stat7",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/5`,payload
+        
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const StatisticsSlices = createSlice({
   name: "Statistics",
@@ -145,7 +181,7 @@ const StatisticsSlices = createSlice({
       state.teacherStat = undefined;
     });
     
-
+    
     builder.addCase(subjectStatAction.pending, (state, action) => {
       state.subjectStatloading = true;
       state.subjectStat = false;
@@ -162,7 +198,39 @@ const StatisticsSlices = createSlice({
       state.subjectStat = undefined;
     });
     
+    builder.addCase(parentStatAction.pending, (state, action) => {
+      state.parentStatloading = true;
+      state.parentStat = false;
 
+    });
+    builder.addCase(parentStatAction.fulfilled, (state, action) => {
+      state.parentStat = action?.payload;
+      state.parentStatloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(parentStatAction.rejected, (state, action) => {
+      state.parentStatloading = false;
+      state.error = action.payload;
+      state.parentStat = undefined;
+    });
+
+
+
+    builder.addCase(chartStatAction.pending, (state, action) => {
+      state.parentStatloading = true;
+      state.chartStat = false;
+
+    });
+    builder.addCase(chartStatAction.fulfilled, (state, action) => {
+      state.chartStat = action?.payload;
+      state.parentStatloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(chartStatAction.rejected, (state, action) => {
+      state.parentStatloading = false;
+      state.error = action.payload;
+      state.chartStat = undefined;
+    });
   },
 });
 

@@ -13,7 +13,7 @@ const EditSVG = (props) => {
                                 </clipPath>
                               </defs>
                             </svg> */}
-                            Edit
+                            View / Edit
     </button>
   )
 }

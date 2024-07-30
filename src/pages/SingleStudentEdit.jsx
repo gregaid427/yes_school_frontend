@@ -4,6 +4,7 @@ import userThree from '../images/user/user-03.png';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  CreatestudentImageAction,
   UpdatestudentAction,
   fetchSingleStudent,
   resetUdateStudent,
@@ -22,7 +23,7 @@ import StudentCredential from './Studentscredential';
 import Loader from '../common/Loader';
 // import { useHistory } from 'react-router-dom';
 
-const SingleStudentEdit  = () => {
+const SingleStudentEdit = () => {
   const [PageAction, setPageAction] = useState();
 
   const location = useLocation();
@@ -36,7 +37,7 @@ const SingleStudentEdit  = () => {
 
   const [data, setData] = useState(null);
   const [paramaction, setParamaction] = useState(1);
-  
+
   const [studentID, setStudentID] = useState('');
 
   const [firstName, setStudentfirstName] = useState('');
@@ -44,6 +45,8 @@ const SingleStudentEdit  = () => {
   const [otherName, setStudentotherName] = useState('');
   const [gender, setGender] = useState('Male');
   const [picture, setPicture] = useState();
+  const [picturecam, setPicturecam] = useState();
+
 
   const [gfName1, setgfName1] = useState('');
   const [glName1, setglName1] = useState('');
@@ -54,6 +57,7 @@ const SingleStudentEdit  = () => {
   const [gcontact2, setgcontact2] = useState('');
   const [gcontact3, setgcontact3] = useState('');
   const [gcontact4, setgcontact4] = useState('');
+  const [ID, setID] = useState('');
 
   const [gemail1, setemail1] = useState('');
   const [gemail2, setemail2] = useState('');
@@ -78,17 +82,32 @@ const SingleStudentEdit  = () => {
   const [classs, setClasss] = useState([]);
   const [file, setfileName] = useState();
   const [link, setimagelink] = useState();
+  const [picturename, setPicturename] = useState();
 
-  
+  const [pictureurl, setPictureurl] = useState(null);
+
+
+  const pic= location.state.pic
+  const files= location.state.file
 
 
   useEffect(() => {
 
+    setPictureurl(pic)
+    setPicturecam(files)
+    setPicture(files)
+    setfileName(files?.name+'student')
 
-console.log(singleStudent)
+    setPicturename(files?.name)
+console.log(files)
+
+
+    console.log(singleStudent);
     if (singleStudent == undefined) {
       toast.error('Error loading Student Data');
       navigate('/student/info');
+
+
     }
     //   // setTimeout(() => toast.success('New Student Added Successfully'), 900);
     //  if(singleStudent?.data == undefined )
@@ -100,23 +119,23 @@ console.log(singleStudent)
       toast.success('Student Records Updated Successfully');
       dispatch(resetUdateStudent());
       toast.success('navigate to preview page to be done yet');
-
     }
     if (updateStudent?.success == 0) {
-      toast.error("Error Updating Student Info");
+      toast.error('Error Updating Student Info');
     }
-    
+
     //  navigate("/student/info")
   }, [updateStudent]);
 
   const handleSubmit = (e) => {
     if (firstName == '') return toast.error('Please Fill Out Required Fields');
-  
-  
+
     const data = new FormData();
+    let customfile = hashgenerator() + picturename;
 
     const Mydata = JSON.stringify({
       studentId: studentID,
+      ID:ID,
 
       firstName: firstName,
       lastName: lastName,
@@ -146,40 +165,46 @@ console.log(singleStudent)
       gsex2: gsex2,
       feeArrears: feeArrears,
       feeCredit: feeCredit,
-      filename: file,
-
+      filename: customfile,
     });
     function hashgenerator() {
       return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
     }
-    let customfile = hashgenerator()+file ;
 
-
- data.append(customfile, picture);
+    data.append(customfile, picture);
     data.append('data', Mydata);
-
-    console.log(Mydata)
+    console.log(Mydata);
     dispatch(UpdatestudentAction(data));
-
   };
 
+  const handlesubmit1 = () => {
+    const datay = new FormData();
+  
+    let Mydata = JSON.stringify({
+      id:  data[0]?.userId,
+      filename: customfile,
+  
+    
+    });
+    console.log(picturecam)
 
+    datay.append(customfile, picturecam);
+    datay.append('data', Mydata);
+    dispatch(CreatestudentImageAction(datay));
+  }
 
   const clad = useSelector((state) => state?.classes);
 
-  const {  sectionloading, fetchSection ,fetchAllClass} =  clad;
-
-
-
+  const { sectionloading, fetchSection, fetchAllClass } = clad;
 
   useEffect(() => {
-  
-
     if (singleStudent?.success == 1) {
       setData(singleStudent?.data);
       setLoader(false);
-      let data = singleStudent?.data[0]
+      let data = singleStudent?.data[0];
       setStudentID(singleStudent?.data[0].student_id);
+      setID(singleStudent?.data[0].userId);
+
       setStudentfirstName(singleStudent?.data[0].firstName);
       setStudentlastName(singleStudent?.data[0].lastName);
       setStudentotherName(singleStudent?.data[0].otherName);
@@ -209,9 +234,6 @@ console.log(singleStudent)
       setfileName(singleStudent?.data[0].filename);
       setimagelink(singleStudent?.data[0].imagelink);
 
-
-
-
       if (fetchSection?.success == 1) {
         let arrr = [singleStudent?.data[0].section];
         let i = 0;
@@ -219,11 +241,10 @@ console.log(singleStudent)
           arrr.push(clad?.fetchSection?.data[i]?.sectionName);
           i++;
         }
-  
+
         setsections(arrr);
         // setsectionzz(arrr[0]);
-      
-      
+
         if (fetchAllClass?.success == 1) {
           let i = 0;
           let arr = [singleStudent?.data[0].class];
@@ -231,13 +252,12 @@ console.log(singleStudent)
             arr.push(clad?.fetchAllClass?.data[i].title);
             i++;
           }
-              
+
           setClasss(arr);
-    
         }
       }
     }
-    console.log(singleStudent)
+    console.log(singleStudent);
     if (singleStudent?.success == 0) {
       toast.error('Unable To load Student Data');
     }
@@ -245,11 +265,15 @@ console.log(singleStudent)
 
   const [sections, setsections] = useState([]);
 
-
-
   function handleNextButton() {
     setButonState(buttonState + 1);
   }
+  function hashgenerator() {
+    return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+  }
+  let customfile = hashgenerator() + picturename;
+
+
 
   function handleBackButton() {
     navigate(-1);
@@ -260,7 +284,7 @@ console.log(singleStudent)
   ) : (
     <DefaultLayout>
       <div className="mx-auto w-full">
-        <div className="flex flex-row w-full  gap-0" style={{}}>
+        <div className="flex flex-row w-full  gap-1" style={{}}>
           <div className="w-4/6  ">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
@@ -425,21 +449,48 @@ console.log(singleStudent)
                       </div>
                     </div>
                   </div>
-                  <div className="w-full">
-                    <label className="mb-3 block text-black dark:text-white">
-                      Student Image
-                    </label>
-                    <input
-                       onChange={(event) => {
-                        setPicture(event.target.files[0]);
-                        setfileName(event.target.files[0].name);
-                      }}
-                      type="file"
-                      accept="image/*"
-                      className="w-full rounded border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
-                    />
-                  </div>
-                </form>
+                  <div className="border-b border-stroke py-6  dark:border-strokedark">
+                <h3 className="font-medium text-black dark:text-white">
+                  Login Credentials
+                </h3>
+              </div>
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    
+                    <div className="w-full sm:w-2/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="fullName"
+                      >
+                        Username
+                      </label>
+                      <input
+                        className="w-full required rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name=""
+                        id=""
+                        placeholder=""
+                        defaultValue={data[0]?.firstName}
+                        onChange={(e) => setStudentfirstName(e.target.value)}
+                      />
+                    </div>
+                    <div className="w-full sm:w-2/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="phoneNumber"
+                      >
+                        Password
+                      </label>
+                      <input
+                        className="w-full required rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name=""
+                        id=""
+                        placeholder=""
+                        defaultValue={data[0]?.lastName}
+                        onChange={(e) => setStudentlastName(e.target.value)}
+                      />
+                    </div>
+                  </div>                </form>
                 {/* <div className="flex mt-10 justify-end gap-4.5">
                   <button
                     className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
@@ -452,101 +503,80 @@ console.log(singleStudent)
               </div>
             </div>
           </div>
-          <div className="w-1/6  ">
-            <div className=" ml-2 border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
+          <div className="w-3/12  ">
+            <div className="rounded-sm border p-3 border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
+                <h3 className="font-medium text-black text-center dark:text-white">
                   Student Picture
                 </h3>
               </div>
-              <div className="px-4">
-                <form action="#">
-                  <div className="mb-4 flex items-center gap-3">
-                    <div className=" w-40 h-35 ">
-                      <img src={link} alt={'Image'} />
-                    </div>
-                    {/* <div>
-                      <span className="mb-1.5 text-black dark:text-white">
-                        Edit your photo
-                      </span>
-                      <span className="flex gap-2.5">
-
-
-                      
-                        <button className="text-sm hover:text-primary">
-                          Delete
-                        </button>
-                        <button className="text-sm hover:text-primary">
-                          Update
-                        </button>
-                      </span>
-                    </div> */}
-                  </div>
-
-                  {/* <div
-                    id="FileUpload"
-                    className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5"
+              <div className="p-2 ">
+                <div className="w-full flex justify-center items-center">
+                  <img
+                    src={pictureurl == null ? userThree : pictureurl}
+                    className="h-40"
+                  />
+                </div>
+              </div>
+              <div className="w-full ">
+                <label className="mb-3 block text-xs text-center text-black dark:text-white">
+                  Upload Student Picture
+                </label>
+                <div>
+                  <div
+                    className={
+                      pictureurl != null ? 'hidden' : 'flex flex-col gap-1'
+                    }
                   >
+                    {' '}
                     <input
+                      onChange={(event) => {
+                        setPicture(event.target.files[0]);
+                        setPicturename(event.target.files[0].name);
+                        setPictureurl(
+                          URL.createObjectURL(event.target.files[0]),
+                        );
+                      }}
                       type="file"
                       accept="image/*"
-                      className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
-                    />
-                    <div className="flex flex-col items-center justify-center space-y-3">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M1.99967 9.33337C2.36786 9.33337 2.66634 9.63185 2.66634 10V12.6667C2.66634 12.8435 2.73658 13.0131 2.8616 13.1381C2.98663 13.2631 3.1562 13.3334 3.33301 13.3334H12.6663C12.8431 13.3334 13.0127 13.2631 13.1377 13.1381C13.2628 13.0131 13.333 12.8435 13.333 12.6667V10C13.333 9.63185 13.6315 9.33337 13.9997 9.33337C14.3679 9.33337 14.6663 9.63185 14.6663 10V12.6667C14.6663 13.1971 14.4556 13.7058 14.0806 14.0809C13.7055 14.456 13.1968 14.6667 12.6663 14.6667H3.33301C2.80257 14.6667 2.29387 14.456 1.91879 14.0809C1.54372 13.7058 1.33301 13.1971 1.33301 12.6667V10C1.33301 9.63185 1.63148 9.33337 1.99967 9.33337Z"
-                            fill="#3C50E0"
-                          />
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M7.5286 1.52864C7.78894 1.26829 8.21106 1.26829 8.4714 1.52864L11.8047 4.86197C12.0651 5.12232 12.0651 5.54443 11.8047 5.80478C11.5444 6.06513 11.1223 6.06513 10.8619 5.80478L8 2.94285L5.13807 5.80478C4.87772 6.06513 4.45561 6.06513 4.19526 5.80478C3.93491 5.54443 3.93491 5.12232 4.19526 4.86197L7.5286 1.52864Z"
-                            fill="#3C50E0"
-                          />
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M7.99967 1.33337C8.36786 1.33337 8.66634 1.63185 8.66634 2.00004V10C8.66634 10.3682 8.36786 10.6667 7.99967 10.6667C7.63148 10.6667 7.33301 10.3682 7.33301 10V2.00004C7.33301 1.63185 7.63148 1.33337 7.99967 1.33337Z"
-                            fill="#3C50E0"
-                          />
-                        </svg>
-                      </span>
-                      <p>
-                        <span className="text-primary">Click to upload</span> or
-                        drag and drop
-                      </p>
-                      <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
-                      <p>(max, 800 X 800px)</p>
-                    </div>
-                  </div> */}
-
-                  {/* <div className="flex justify-end gap-4.5">
+                      className=" rounded-md border border-stroke p-1 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
+                    />{' '}
+                    <div className="text-center">or</div>
                     <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
+                      className="flex  justify-center rounded bg-black py-2 px- font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => navigate('/student/editcapture')}
                     >
-                      Cancel
+                      Camera Capture
                     </button>
+                  </div>
+                  <div className={pictureurl ?? 'hidden'}>
                     <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
+                      className="flex mt-2  w-full justify-center rounded bg-primary py-2 px- font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        handlesubmit1();
+                      }}
                     >
-                      Save
+                      Save{' '}
                     </button>
-                  </div> */}
-                </form>
+                  </div>
+                  <div className={pictureurl ?? 'hidden'}>
+                    <button
+                      className="flex mt-2  w-full justify-center rounded bg-black py-2 px- font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        setPictureurl(null);
+                      }}
+                    >
+                      Cancel{' '}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
+
+            
           </div>
         </div>
 
@@ -655,7 +685,6 @@ console.log(singleStudent)
                           </div>
                         </div>
                       </div>
-
 
                       <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
                         <div className="w-full sm:w-2/2">
@@ -1100,4 +1129,4 @@ console.log(singleStudent)
   );
 };
 
-export default SingleStudentEdit ;
+export default SingleStudentEdit;

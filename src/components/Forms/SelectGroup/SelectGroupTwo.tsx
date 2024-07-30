@@ -20,7 +20,7 @@ const SelectGroupTwo = (props) => {
     <div>
       <div className="relative z-20 bg-white dark:bg-form-input">
         <select
-          value={cOptionSelected}
+          value={props.selectedOption}
           onChange={(e) => {
             setcOptionSelected(e.target.value);
             changeTextColor();

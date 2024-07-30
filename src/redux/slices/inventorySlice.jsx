@@ -11,7 +11,7 @@ export const CreatesInventoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/inventory/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,
         payload,
       );
 
@@ -30,7 +30,7 @@ export const CreatesInventoryStockAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/inventory/addstock`,
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/addstock`,
         payload,
       );
 
@@ -49,7 +49,7 @@ export const CreatesInventoryCartegoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/inventory/cart`,
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/cart`,
         payload,
       );
 
@@ -67,7 +67,7 @@ export const fetchAllInventoryAction = createAsyncThunk(
   'fetch/AllInventory',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/inventory/`);
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/inventory/`);
 
       return data;
     } catch (error) {
@@ -83,7 +83,7 @@ export const fetchInventoryStockAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/inventory/getstock`,
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/getstock`,
       );
 
       return data;
@@ -101,7 +101,7 @@ export const fetchSingleInventoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/inventory/single/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/single/`,
         payload,
       );
 
@@ -119,7 +119,7 @@ export const fetchInventCartegoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/inventory/cart`,
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/cart`,
         payload,
       );
 
@@ -138,7 +138,7 @@ export const updateInventoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/api/inventory/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,
         payload,
       );
 
@@ -157,7 +157,7 @@ export const updateInventoryItemAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/api/inventory/item`,
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/item`,
         payload,
       );
 
@@ -176,7 +176,7 @@ export const updateCartegoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/inventory/editcartegory`,
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/editcartegory`,
         payload,
       );
 
@@ -195,7 +195,7 @@ export const deleteAllInventoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/inventory/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,
       );
 
       return data;
@@ -213,7 +213,7 @@ export const deleteSingleInventoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/Inventory/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/Inventory/${payload}`,
       );
 
       return data;
@@ -232,7 +232,7 @@ export const deleteSingleCartAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/Inventory/cartegory/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/Inventory/cartegory/${payload}`,
       );
 
       return data;
@@ -250,7 +250,7 @@ export const deleteSingleInventoryStockAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/Inventory/stock/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/Inventory/stock/${payload}`,
       );
 
       return data;

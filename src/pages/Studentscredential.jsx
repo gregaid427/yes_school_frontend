@@ -346,6 +346,7 @@ const handlesubmit = () => {
                     setPicture(event.target.files[0]);
                     setPicturename(event.target.files[0].name);
                     setPictureurl(URL.createObjectURL(event.target.files[0]));
+                    console.log(event.target.files[0].name)
                   }}
                   type="file"
                   accept="image/*"

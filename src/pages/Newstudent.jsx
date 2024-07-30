@@ -33,7 +33,7 @@ const NewStudents = () => {
     let file = await base64ToFile(await imgSrc);
 
     props.setPicture(file);
-    props.setPicturename(file.name);
+    props.setPicturename(file?.name);
 
     console.log(file);
   }, [webcamRef, setImgSrc]);
@@ -151,10 +151,10 @@ const NewStudents = () => {
       picture: picture,
       feeArrears: feeArrears,
       feeCredit: feeCredit,
-      filename: customfile,
+  
     });
 
-    data.append(customfile, picture);
+    //data.append(customfile, picture);
     data.append('data', Mydata);
     dispatch(CreatestudentAction(data));
   };
@@ -358,30 +358,7 @@ const NewStudents = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="w-full">
-                    <label className="mb-3 block text-black dark:text-white">
-                      Student Image
-                    </label>
-                    <div className="flex gap-5">
-                      {' '}
-                      <input
-                        onChange={(event) => {
-                          setPicture(event.target.files[0]);
-                          setPicturename(event.target.files[0].name);
-                        }}
-                        type="file"
-                        accept="image/*"
-                        className="w-1/2 rounded-md border border-stroke p-1 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
-                      />{' '}
-                      <button
-                        className="flex w-1/2 justify-center rounded bg-black py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => navigate('/student/admissioncapture')}
-                      >
-                        Camera Capture
-                      </button>
-                    </div>
-                  </div>
+              
                 </form>
                 <div className="flex mt-10 justify-end gap-4.5">
                   <button

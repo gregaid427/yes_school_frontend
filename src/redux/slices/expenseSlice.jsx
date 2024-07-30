@@ -10,7 +10,7 @@ export const CreatesExpenseAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/expense/`,payload,
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/`,payload,
         {
           headers: {
             'Content-type': "multipart/form-data"
@@ -35,7 +35,7 @@ export const CreatesExpenseHeadAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/expense/head`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/head`,payload
         
       );
 
@@ -56,7 +56,7 @@ export const CreatesExpenseCartegoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/Expense/cart`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/cart`,payload
         
       );
 
@@ -75,7 +75,7 @@ export const fetchBulkStudentAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/student/`
+        `${import.meta.env.VITE_APP_BASE_URL}/student/`
         
       );
 
@@ -93,7 +93,7 @@ export const fetchAllExpenseAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/expense/`
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/`
         
       );
 
@@ -111,7 +111,7 @@ export const fetchExpenseStockAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/Expense/getstock`
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/getstock`
         
       );
 
@@ -129,7 +129,7 @@ export const FetchExpenseHeadAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/expense/head`
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/head`
         
       );
 
@@ -148,7 +148,7 @@ export const deleteSectionByExpense = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/Expense/single/sectiondelete`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/single/sectiondelete`, payload
         
       );
 
@@ -166,7 +166,7 @@ export const fetchSingleExpenseAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/Expense/single/`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/single/`, payload
         
       );
 
@@ -184,7 +184,7 @@ export const fetchInventCartegoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/Expense/cart`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/cart`, payload
         
       );
 
@@ -203,7 +203,7 @@ export const updateExpenseAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/api/Expense/`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/`, payload
         
       );
 
@@ -222,7 +222,7 @@ export const updateExpenseItemAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/api/Expense/item`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/item`, payload
         
       );
 
@@ -242,7 +242,7 @@ export const GetCustomExpenseAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/expense/custom`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/custom`, payload
         
       );
 
@@ -260,7 +260,7 @@ export const  createSectionAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/Expense/section`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/section`, payload
         
       );
 
@@ -279,7 +279,7 @@ export const  deleteAllExpenseAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/Expense/`, 
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/`, 
         
       );
 
@@ -298,7 +298,7 @@ export const  deleteSingleExpenseHeadAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/expense/head/${payload}`, 
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/head/${payload}`, 
         
       );
 
@@ -318,7 +318,7 @@ export const  deleteSingleExpenseAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/expense/${payload}`, 
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/${payload}`, 
         
       );
 

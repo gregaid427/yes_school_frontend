@@ -10,7 +10,7 @@ export const CreatesClassAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/class/`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/class/`,payload
         
       );
 
@@ -29,7 +29,7 @@ export const fetchBulkStudentAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/student/`
+        `${import.meta.env.VITE_APP_BASE_URL}/student/`
         
       );
 
@@ -47,7 +47,7 @@ export const fetchAllClassAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/class/all`
+        `${import.meta.env.VITE_APP_BASE_URL}/class/all`
         
       );
 
@@ -65,7 +65,7 @@ export const fetchAllSectionAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/class/groupsection`
+        `${import.meta.env.VITE_APP_BASE_URL}/class/groupsection`
         
       );
 
@@ -84,7 +84,7 @@ export const deleteSectionByClass = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/class/single/sectiondelete`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/class/single/sectiondelete`, payload
         
       );
 
@@ -102,7 +102,7 @@ export const fetchSingleClassAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/class/single/`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/class/single/`, payload
         
       );
 
@@ -120,7 +120,7 @@ export const fetchSectionbyclassAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/class/sectionclass/`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/class/sectionclass/`, payload
         
       );
 
@@ -138,7 +138,7 @@ export const updateClassAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/api/class/`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/class/`, payload
         
       );
 
@@ -156,7 +156,7 @@ export const updateSectionAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/api/class/section`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/class/section`, payload
         
       );
 
@@ -174,7 +174,7 @@ export const  createSectionAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/class/section`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/class/section`, payload
         
       );
 
@@ -193,7 +193,7 @@ export const  deleteAllClassAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/class/`, 
+        `${import.meta.env.VITE_APP_BASE_URL}/class/`, 
         
       );
 
@@ -214,7 +214,7 @@ export const  deleteSingleClassAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/class/single/${payload}`, 
+        `${import.meta.env.VITE_APP_BASE_URL}/class/single/${payload}`, 
         
       );
 
@@ -233,7 +233,7 @@ export const  deleteSectiongroupAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/class/sectiongroup/${payload}`, 
+        `${import.meta.env.VITE_APP_BASE_URL}/class/sectiongroup/${payload}`, 
         
       );
 
@@ -253,7 +253,7 @@ export const truncateTableAction = createAsyncThunk(
   async ( { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/student/truncate`,
+        `${import.meta.env.VITE_APP_BASE_URL}/student/truncate`,
         
       );
 

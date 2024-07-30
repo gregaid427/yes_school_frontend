@@ -36,7 +36,7 @@ import StudentCartegory from './pages/StudentCartegory';
 import AddInventory from './pages/AddInventory';
 import RequireAuth from './pages/RequireAuth';
 import Layout from './pages/Layout';
-import Student from './pages/students';
+import Student from './pages/Students';
 import { useDispatch } from 'react-redux';
 import { fetchAllClassAction, fetchAllSectionAction } from './redux/slices/classSlice';
 import StudentCredential from './pages/Studentscredential';
@@ -54,6 +54,13 @@ import AddExpenseHead from './pages/addExpenseHead';
 import SearchExpense from './pages/SearchExpense';
 import AddExpenses from './pages/AddExpense';
 import AdmissionCapture from './pages/Admiissioncamera';
+import EditCamera from './pages/editCamera';
+import SetStudent from './pages/setstudent';
+import SetStaff from './pages/SetStaff';
+import SetGuardian from './pages/SetGuardian';
+import NewGuardian from './pages/NewGuardian';
+import ExamGroup from './pages/ExamGroup';
+import ExamResult from './pages/ExamResult';
 
   
 function App() {
@@ -107,6 +114,7 @@ function App() {
               </>
             }
           />
+          
           <Route
             path="/dashboard"
             element={
@@ -126,6 +134,15 @@ function App() {
               }
             />
               <Route
+            path="/student/editcapture"
+            element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <EditCamera />
+                </>
+              }
+            />
+             <Route
               path="/academics/class/editclass"
               element={
                 <>
@@ -134,7 +151,6 @@ function App() {
                 </>
               }
             />
-        
           <Route
             path="/academics/promotion"
             element={
@@ -298,6 +314,54 @@ function App() {
               </>
             }
           />{' '}
+              <Route
+            path="/settings/staff"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <SetStaff />
+              </>
+            }
+          />{' '}
+              <Route
+            path="/settings/guardian"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <SetGuardian />
+              </>
+            }
+          />{' '}
+              <Route
+            path="/settings/student"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <SetStudent />
+              </>
+            }
+            
+          />{' '}
+             <Route
+            path="/settings/newstaff"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <NewStaff />
+              </>
+            }
+            
+          />{' '}
+             <Route
+            path="/settings/newguardian"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <NewGuardian />
+              </>
+            }
+            
+          />{' '}
           <Route
             path="/settings/session"
             element={
@@ -363,6 +427,24 @@ function App() {
               <>
                 <PageTitle title="Calendar | " />
                 <Examination />
+              </>
+            }
+          />
+             <Route
+            path="/exam/examgroup"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <ExamGroup />
+              </>
+            }
+          />
+          <Route
+            path="/exam/result"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <ExamResult />
               </>
             }
           />

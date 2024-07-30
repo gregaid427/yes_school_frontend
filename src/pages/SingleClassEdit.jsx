@@ -1,7 +1,6 @@
 import DefaultLayout from '../layout/DefaultLayout';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-;
 import { toast } from 'react-hot-toast';
 
 import {
@@ -15,7 +14,6 @@ import {
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Loader from '../common/Loader';
-
 
 const SingleClassEdit = () => {
   const [PageAction, setPageAction] = useState();
@@ -31,7 +29,7 @@ const SingleClassEdit = () => {
     singleclass,
     deletesectionbyclass,
     sectionbyclass,
-    updatesingleclass
+    updatesingleclass,
   } = clad;
 
   const [data, setData] = useState();
@@ -65,7 +63,6 @@ const SingleClassEdit = () => {
     //  navigate("/student/info")
   }, [sectionbyclass]);
 
- 
   useEffect(() => {
     if (deletesectionbyclass?.success == 1) {
       toast.success('Section Deleted Successfully');
@@ -75,46 +72,41 @@ const SingleClassEdit = () => {
     if (deletesectionbyclass?.success == 0) {
       toast.error('Error Deleting Section');
       dispatch(resetdeleteclass());
-
     }
     //  navigate("/student/info")
   }, [deletesectionbyclass]);
- 
+
   useEffect(() => {
     if (updatesingleclass?.success == 1) {
       toast.success('Class Data Updated Successfully');
       dispatch(fetchAllClassAction());
 
       dispatch(resetUdateClass());
-      navigate(-1)
-
-      
+      navigate(-1);
     }
     if (updatesingleclass?.success == 0) {
       toast.error('Error Updating Class Data');
       dispatch(resetUdateClass());
-
     }
   }, [updatesingleclass]);
- 
+
   useEffect(() => {
     if (singleclass?.success == 1) {
       setData(singleclass);
       setSectionData(singleclass?.data);
-      setclasstitle(singleclass?.data[0].title)
-      setinstructorName(singleclass?.data[0].instructor)
+      setclasstitle(singleclass?.data[0].title);
+      setinstructorName(singleclass?.data[0].instructor);
       dispatch(resetUdateClass());
     }
     if (singleclass?.success == 0) {
       toast.error('Error Loadng Data');
       dispatch(resetUdateClass());
-
     }
     //  navigate("/student/info")
   }, [singleclass]);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (classtitle == '') return toast.error('Please Fill Out Required Fields');
 
     const data = {
@@ -122,18 +114,14 @@ const SingleClassEdit = () => {
       title: classtitle,
       instructor: instructor,
       updatedBy: 'Asante',
-
     };
-console.log(data)
+    console.log(data);
     dispatch(updateClassAction(data));
   };
 
-  
   const handlesectionDelete = (position, value) => {
     dispatch(deleteSectionByClass(value));
   };
-
-
 
   function handleBackButton() {
     navigate('/academics/class');
@@ -214,7 +202,10 @@ console.log(data)
                           className="mb-3 block sm:w-1/2 text-sm font-medium text-black dark:text-white"
                           htmlFor=""
                         >
-                          Sections <span className='muted font-thin'>( Not Editable )</span>
+                          Sections{' '}
+                          <span className="muted font-thin">
+                            ( Not Editable )
+                          </span>
                         </label>
                         <label
                           className="mb-3 block text-sm sm:w-1/2 font-medium text-black dark:text-white"
@@ -251,27 +242,28 @@ console.log(data)
                       </div>
                     </div>
                   </div>
-                <div className={action == 1 ? 'hidden' : 'block'} >  
-                  <div  className="flex mt-10 justify-end gap-4.5">
-                    <button
-                      className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type=""
-                      onClick={(e) => handleBackButton()}
-                    >
-                      Back
-                    </button>
-                    <button
-                      className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type=""
-                      onClick={(e) =>{    e.preventDefault()
-                       handleSubmit(e)}}
-                    >
-                      Save{' '}
-                    </button>
-                  </div>
+                  <div className={action == 1 ? 'hidden' : 'block'}>
+                    <div className="flex mt-10 justify-end gap-4.5">
+                      <button
+                        className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                        type=""
+                        onClick={(e) => handleBackButton()}
+                      >
+                        Back
+                      </button>
+                      <button
+                        className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSubmit(e);
+                        }}
+                      >
+                        Save{' '}
+                      </button>
+                    </div>
                   </div>
                 </form>
-        
               </div>
             </div>
           </div>

@@ -6,13 +6,15 @@ import ChartTwo from '../../components/Charts/ChartTwo';
 import TableOne from '../../components/Tables/TableOne';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { useDispatch, useSelector } from 'react-redux';
-import { classStatAction, studentStatAction, subjectStatAction, teacherStatAction } from '../../redux/slices/statisticsSlice';
+import { chartStatAction, classStatAction, studentStatAction, subjectStatAction, teacherStatAction } from '../../redux/slices/statisticsSlice';
+
 
 const Dashboard  = () => {
 const dispatch = useDispatch()
 
 const statistics = useSelector((state) => state?.statistics);
-const { studentStat,classStat, teacherStat,subjectStat } = statistics;
+const { studentStat,classStat, teacherStat,subjectStat,chartStat  } = statistics;
+
 
 
   useEffect(() => {
@@ -21,6 +23,8 @@ const { studentStat,classStat, teacherStat,subjectStat } = statistics;
     dispatch(classStatAction());
     dispatch(subjectStatAction());
     dispatch(teacherStatAction());
+    dispatch(chartStatAction());
+
    // dispatch(());
 
   }, []);
@@ -30,6 +34,22 @@ const { studentStat,classStat, teacherStat,subjectStat } = statistics;
 
   const [teachers, setTeachers] = useState('loading...');
   const [subjects, setSubjects] = useState('loading...');
+
+  const [n1, setn1] = useState(0);
+  const [n2, setn2] = useState(0);
+  const [n3, setn3] = useState(0);
+  const [n4, setn4] = useState(0);
+  const [n5, setn5] = useState(0);
+  const [n6, setn6] = useState(0);
+  const [n7, setn7] = useState(0);
+  const [n8, setn8] = useState(0);
+  const [n9, setn9] = useState(0);
+  const [n10, setn10] = useState(0);
+  const [n11, setn11] = useState(0);
+  const [n12, setn12] = useState(0);
+
+
+
 
 
 
@@ -56,12 +76,44 @@ const { studentStat,classStat, teacherStat,subjectStat } = statistics;
      setSubjects(subjectStat?.data[0].nosubject)
     }
   }, [subjectStat]);
-  
+
+  useEffect(() => {
+    if (chartStat?.success == 1) {
+      let i = 0;
+
+      let arr = chartStat?.data;
+      while (i < chartStat?.data.length) {
+        // console.log(arr[i]?.month)
+        // console.log(arr[i].total_value)
+
+
+      if(arr[i]?.month == 1) { setn1(arr[i].total_value)}
+      if(arr[i]?.month == 2) { setn2(arr[i].total_value)}
+      if(arr[i]?.month == 3) { setn3(arr[i].total_value)}
+      if(arr[i]?.month == 4) { setn4(arr[i].total_value)}
+      if(arr[i]?.month == 5) { setn5(arr[i].total_value)}
+      if(arr[i]?.month == 6) { setn6(arr[i].total_value)}
+      if(arr[i]?.month == 7) { setn7(arr[i].total_value)}
+      if(arr[i]?.month == 8) { setn8(arr[i].total_value)}
+      if(arr[i]?.month == 9) { setn9(arr[i].total_value)}
+      if(arr[i]?.month == 10) { setn10(arr[i].total_value)}
+      if(arr[i]?.month == 11) { setn11(arr[i].total_value)}
+      if(arr[i]?.month == 12) { setn12(arr[i].total_value)}
+
+
+      ///  arr.push(clad?.fetchAllClass?.data[i].title);
+        i++;
+      }
+    }
+  }, [chartStat]);
+
+console.log([n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12])
+
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
    
-        <CardDataStats title="Total Students" total={student}  >
+        <CardDataStats title="Students" total={student}  >
         <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -103,7 +155,7 @@ const { studentStat,classStat, teacherStat,subjectStat } = statistics;
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Teachers" total={teachers}  >
+        <CardDataStats title="Staff" total={teachers}  >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -127,7 +179,7 @@ const { studentStat,classStat, teacherStat,subjectStat } = statistics;
           </svg>
           
         </CardDataStats>
-        <CardDataStats title="Total Subjects" total={subjects}  >
+        <CardDataStats title="Subjects" total={subjects}  >
         <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -154,7 +206,7 @@ const { studentStat,classStat, teacherStat,subjectStat } = statistics;
           <TableOne />
         </div> */}
         <div  className="col-span-12 ">
-        <ChartTwo  />
+        <ChartTwo data={[n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12]} />
 
         </div>
         {/* <ChartThree /> */}

@@ -13,7 +13,7 @@ export const CreatestudentAction = createAsyncThunk(
     try {
 
       const { data } = await axios.post(
-        `http://localhost:5000/api/users/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/users/`,
         payload,
         {
           headers: {
@@ -44,7 +44,7 @@ export const CreatestudentImageAction = createAsyncThunk(
     try {
 
       const { data } = await axios.post(
-        `http://localhost:5000/api/users/picture`,
+        `${import.meta.env.VITE_APP_BASE_URL}/users/picture`,
         payload,
         {
           headers: {
@@ -90,7 +90,7 @@ export const fetchSingleStudent = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/student/single/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/student/single/${payload}`,
       );
 
       return data;
@@ -104,12 +104,37 @@ export const fetchSingleStudent = createAsyncThunk(
 );
 
 
+export const MasrkstudentWaiting = createAsyncThunk(
+  'update/studentWaiting',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/waiting`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Students Class Status Updated');
+      }
+
+      if (data == null) {
+        toast.error('Error');
+      }
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const fetchStudentsClassAction = createAsyncThunk(
   'fetch/studentClass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/student/custom`,
+        `${import.meta.env.VITE_APP_BASE_URL}/student/custom`,
         payload,
       );
 
@@ -128,7 +153,7 @@ export const fetchCustomStudentsClassAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/student/custom1`,
+        `${import.meta.env.VITE_APP_BASE_URL}/student/custom1`,
         payload,
       );
 
@@ -147,7 +172,7 @@ export const UpdatestudentAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/api/student/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/student/`,
         payload,
         {
           headers: {
@@ -170,10 +195,60 @@ export const deleteSingleStudentAction = createAsyncThunk(
   'delete/singlestudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axios.delete(
-        `http://localhost:5000/api/student/${payload}`,
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/delete`,payload
         
       );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const PromoteAllAction = createAsyncThunk(
+  'update/students',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/allpromote`,payload
+        
+      );
+      if (data?.success == 1) {
+        toast.success('Students Promoted Succesfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Promoting Student');
+      }
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const PromoteSelectedAction = createAsyncThunk(
+  'update/selectedstudents',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/selectedpromote`,payload
+        
+      );
+      if (data?.success == 1) {
+        toast.success('Students Promoted Succesfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Promoting Student');
+      }
 
       return data;
     } catch (error) {
@@ -191,7 +266,7 @@ export const truncateTableAction = createAsyncThunk(
   async ( { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/student/truncate`,
+        `${import.meta.env.VITE_APP_BASE_URL}/student/truncate`,
         
       );
 
@@ -221,6 +296,9 @@ const StudentSlices = createSlice({
     },
     resetcreateStudentimage(state) {
       state.studentImage = null;
+    },
+    resetPromote(state) {
+      state.studentPromote = null;
     },
   },
   extraReducers: (builder) => {
@@ -276,6 +354,38 @@ const StudentSlices = createSlice({
       state.studentImage = undefined;
       state.studentImageloading = undefined;
     });
+
+
+    builder.addCase(PromoteSelectedAction.pending, (state, action) => {
+      state.studentPromoteloading = true;
+      state.studentPromote = false;
+    });
+    builder.addCase(PromoteSelectedAction.fulfilled, (state, action) => {
+      state.studentPromote = action?.payload;
+      state.studentPromoteloading = false;
+      state.studentPromoterror = undefined;
+    });
+    builder.addCase(PromoteSelectedAction.rejected, (state, action) => {
+      state.studentPromoterror = action.payload;
+      state.studentPromote = undefined;
+      state.studentPromoteloading = undefined;
+    });
+
+    builder.addCase(PromoteAllAction.pending, (state, action) => {
+      state.studentPromoteloading = true;
+      state.studentPromote = false;
+    });
+    builder.addCase(PromoteAllAction.fulfilled, (state, action) => {
+      state.studentPromote = action?.payload;
+      state.studentPromoteloading = false;
+      state.studentPromoterror = undefined;
+    });
+    builder.addCase(PromoteAllAction.rejected, (state, action) => {
+      state.studentPromoterror = action.payload;
+      state.studentPromote = undefined;
+      state.studentPromoteloading = undefined;
+    });
+
 
     builder.addCase(fetchCustomStudentsClassAction.pending, (state, action) => {
       state.fetchStudentcustomloading = true;
@@ -346,16 +456,28 @@ const StudentSlices = createSlice({
     builder.addCase(deleteSingleStudentAction.pending, (state, action) => {
       state.deleteSingleStudentloading = true;
       state.deleteSingleStudent = false;
+      state.fetchcustom = false;
+      state.fetchStudent = false;
+
+
     });
     builder.addCase(deleteSingleStudentAction.fulfilled, (state, action) => {
       state.deleteSingleStudent = action?.payload;
       state.deleteSingleStudentloading = false;
       state.deleteSingleStudenterror = undefined;
+      state.fetchcustom = action?.payload;
+      state.fetchStudent = action?.payload;
+
+
     });
     builder.addCase(deleteSingleStudentAction.rejected, (state, action) => {
       state.deleteSingleStudenterror = action.payload;
       state.deleteSingleStudent = undefined;
       state.deleteSingleStudentloading = undefined;
+      state.fetchcustom = undefined;
+      state.fetchStudent = undefined;
+
+
     });
 
 
@@ -378,5 +500,5 @@ const StudentSlices = createSlice({
   },
 });
 
-export const { reset, resetUdateStudent,resetcreateStudentimage } = StudentSlices.actions;
+export const { reset, resetUdateStudent,resetcreateStudentimage,resetPromote } = StudentSlices.actions;
 export default StudentSlices.reducer;

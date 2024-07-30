@@ -5,10 +5,10 @@ import {
 } from '../redux/slices/classSlice';
 import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
-const ClassSelect = (props) => {
+const ClassSelect2 = (props) => {
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
-  const [clazz, setclazz] = useState(props.clazz);
+  const [clazz, setclazz] = useState();
 
   const clad = useSelector((state) => state?.classes);
 
@@ -55,4 +55,4 @@ const ClassSelect = (props) => {
   );
 };
 
-export default ClassSelect;
+export default ClassSelect2;

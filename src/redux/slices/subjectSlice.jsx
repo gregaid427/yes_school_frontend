@@ -10,7 +10,7 @@ export const CreatesSubjectAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/subject/`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/subject/`,payload
         
       );
 
@@ -29,7 +29,7 @@ export const fetchSubjectAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/subject/`
+        `${import.meta.env.VITE_APP_BASE_URL}/subject/`
         
       );
 
@@ -47,7 +47,7 @@ export const UpdateSubjectAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/api/subject/`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/subject/`,payload
         
       );
 
@@ -66,7 +66,7 @@ export const DeleteSingleSubjectAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/subject/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/subject/${payload}`,
         
       );
 

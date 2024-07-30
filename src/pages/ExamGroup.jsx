@@ -40,7 +40,7 @@ import InvencartegorySelect from '../components/InvencartegorySelect';
 import ExpenseHeadSelect from '../components/ExpenseHeadSelect';
 import toast from 'react-hot-toast';
 
-const Marks = () => {
+const ExamGroup = () => {
   const [pagesval, setpagesval] = useState(30);
   const [amount, setAmount] = useState([]);
 
@@ -250,7 +250,7 @@ const Marks = () => {
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
-                  Grade List
+                  Exam Group List
                 </h3>
               </div>
             </div>
@@ -294,7 +294,7 @@ const Marks = () => {
                       className=" w-2/2 pt-2 block text-sm font-medium text-black dark:text-white"
                       htmlFor=" "
                     >
-                      Search {' '}
+                      Search{' '}
                     </label>
                   </div>
 
@@ -324,9 +324,8 @@ const Marks = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
+                          <HeaderCell>Name</HeaderCell>
                           <HeaderCell>Exam Type</HeaderCell>
-                          <HeaderCell>Grade Name</HeaderCell>
-                          <HeaderCell>Range %</HeaderCell>
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
@@ -416,9 +415,8 @@ const Marks = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
-                          <HeaderCell>Exam Type</HeaderCell>
-                          <HeaderCell>Grade Name</HeaderCell>
-                          <HeaderCell>Range %</HeaderCell>
+                        <HeaderCell>Name</HeaderCell>
+                        <HeaderCell>Exam Type</HeaderCell>
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
@@ -461,7 +459,7 @@ const Marks = () => {
               <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                   <h3 className="font-medium text-black dark:text-white">
-                    Add Grade
+                    Add Exam Group
                   </h3>
                 </div>
                 <div className="p-7">
@@ -471,18 +469,7 @@ const Marks = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor=""
                       >
-                        Exam Type
-                      </label>
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                        <ExpenseHeadSelect setsectionprop={SetExpenseHead} />
-                      </div>
-                    </div>
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Grade Name
+                        Name
                       </label>
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -493,48 +480,17 @@ const Marks = () => {
                         defaultValue=""
                         onChange={(e) => setName(e.target.value)}
                       />
+                     
                     </div>
-                    <label
+                    <div className="w-full mb-4 sm:w-2/2">
+                      <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor=""
                       >
-                        Grade Range
+                        Exam Type
                       </label>
-                    <div className="flex row gap-1">
-                     
-                      <div className="w-full mb-3 sm:w-2/2">
-                        <label
-                          className="mb-2 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                         Upper Limit % {' '}
-                        </label>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="number"
-                          name=""
-                          id=""
-                          placeholder=""
-                          defaultValue=""
-                          onChange={(e) => setInvoice(e.target.value)}
-                        />
-                      </div>
-                      <div className="w-full mb-3 sm:w-2/2">
-                        <label
-                          className="mb-2 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                           Lower Limit %{' '}
-                        </label>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="number"
-                          name=""
-                          id=""
-                          placeholder=""
-                          defaultValue=""
-                          onChange={(e) => setInvoice(e.target.value)}
-                        />
+                      <div className="relative z-20 bg-white dark:bg-form-input">
+                        <ExpenseHeadSelect setsectionprop={SetExpenseHead} />
                       </div>
                     </div>
 
@@ -586,4 +542,4 @@ const Marks = () => {
   );
 };
 
-export default Marks;
+export default ExamGroup;

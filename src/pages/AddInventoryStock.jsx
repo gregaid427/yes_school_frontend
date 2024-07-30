@@ -157,7 +157,7 @@ const AddInventoryStock = () => {
     
     {
       Table: `
-      --data-table-library_grid-template-columns:  35% 15% 17% 32%;
+      --data-table-library_grid-template-columns:  40% 20% 0% 40%;
     `,
       // HeaderRow: `
       // background-color: #313D4A;

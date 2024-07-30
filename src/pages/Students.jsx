@@ -86,16 +86,16 @@ const Student = () => {
       setdata(data);
     }
 
-    if (fetchAllClass?.success == 1) {
-      let i = 0;
-      let arr = []
-      while (i < classes?.fetchAllClass?.data.length) {
-        arr.push(classes?.fetchAllClass?.data[i].title);
-        i++;
-      }
-      setClasss(arr);
-      setclazz(arr[0])
-    }
+    // if (fetchAllClass?.success == 1) {
+    //   let i = 0;
+    //   let arr = []
+    //   while (i < classes?.fetchAllClass?.data.length) {
+    //     arr.push(classes?.fetchAllClass?.data[i].title);
+    //     i++;
+    //   }
+    //   setClasss(arr);
+    // //  setclazz(arr[0])
+    // }
 
   }, [fetchAllClassloading , fetchcustomloading ]);
 
@@ -126,7 +126,7 @@ const Student = () => {
       let data = fetchStudent?.data;
       setdata(data);
     }
-  }, [loading]);
+  }, [fetchStudent]);
 
   // useEffect(() => {
    
@@ -203,7 +203,12 @@ const Student = () => {
 
   };
   const handledeletbtn = (value) => {
-    dispatch(deleteSingleStudentAction(value));
+    let data = {
+      "class" : clazz,
+      "section":sectionzz,
+      "id" : value
+    }
+    dispatch(deleteSingleStudentAction(data));
 
   };
 
@@ -243,15 +248,13 @@ const Student = () => {
     }
     console.log(data)
     if(sectionzz == "All Sections"){
-      setclazz(clazz)
+    //  setclazz(clazz)
       dispatch(fetchStudentsClassAction(data))
-      console.log('all')
 
     }
     if(sectionzz != "All Sections"){
       setsectionzz(sectionzz)
       dispatch(fetchCustomStudentsClassAction(data))
-      console.log('custom')
 
     }
 
@@ -313,7 +316,7 @@ const Student = () => {
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
                       <ClassSelect setsectionprop={setclazz}
-                       
+                       clazz={clazz}
                       />
                     </div>
                   </div>
