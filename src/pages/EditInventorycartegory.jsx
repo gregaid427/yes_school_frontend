@@ -15,7 +15,7 @@ import {
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Loader from '../common/Loader';
-import { fetchAllInventoryAction ,updateCartegoryAction,resetUpdateInventory} from '../redux/slices/InventorySlice';
+import { fetchAllInventoryAction ,updateCartegoryAction,resetUpdateInventory} from '../redux/slices/inventSlice';
 
 
 const EditInventoryCartegory = () => {

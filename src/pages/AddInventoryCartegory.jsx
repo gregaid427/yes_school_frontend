@@ -25,7 +25,7 @@ import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
 
 import InventNewCartegory from '../components/inventNewCartegory';
-import { deleteSingleCartAction, fetchInventCartegoryAction } from '../redux/slices/InventorySlice';
+import { deleteSingleCartAction, fetchInventCartegoryAction } from '../redux/slices/inventSlice';
 
 const AddInventoryCartegory = () => {
   const [pagesval, setpagesval] = useState(30);

@@ -3,7 +3,7 @@ import {
   CreatesInventoryCartegoryAction,
   fetchInventCartegoryAction,
   resetcreatecart,
-} from '../redux/slices/InventorySlice';
+} from '../redux/slices/inventSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { MasrkstudentWaiting } from '../redux/slices/studentSlice';

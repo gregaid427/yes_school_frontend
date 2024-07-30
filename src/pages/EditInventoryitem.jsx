@@ -15,7 +15,7 @@ import {
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Loader from '../common/Loader';
-import { fetchAllInventoryAction ,updateCartegoryAction,resetUpdateInventory,resetUpdateInventoryItem, updateInventoryItemAction} from '../redux/slices/InventorySlice';
+import { fetchAllInventoryAction ,updateCartegoryAction,resetUpdateInventory,resetUpdateInventoryItem, updateInventoryItemAction} from '../redux/slices/inventSlice';
 import InvencartegorySelect from '../components/InvencartegorySelect';
 
 

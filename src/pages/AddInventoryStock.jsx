@@ -34,7 +34,7 @@ import {
   fetchInventoryStockAction,
   resetcreateInventory,
   resetcreatestock,
-} from '../redux/slices/InventorySlice';
+} from '../redux/slices/inventSlice';
 import InvencartegorySelect from '../components/InvencartegorySelect';
 import InventNewCartegory from '../components/inventNewCartegory';
 import InventItemSelect from '../components/inventItemSelect';
