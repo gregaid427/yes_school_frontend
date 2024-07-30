@@ -33,7 +33,7 @@ import {
   resetcreateInventory,
 } from '../redux/slices/inventSlice';
 import InvencartegorySelect from '../components/InvencartegorySelect';
-import InventNewCartegory from '../components/inventNewCartegory';
+import InventNewCartegory from '../components/InventNewCartegory';
 
 
 
