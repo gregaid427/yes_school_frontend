@@ -55,7 +55,7 @@ import SearchExpense from './pages/SearchExpense';
 import AddExpenses from './pages/AddExpense';
 import AdmissionCapture from './pages/Admiissioncamera';
 import EditCamera from './pages/editCamera';
-import SetStudent from './pages/setstudent';
+import SetStudent from './pages/Setstudent';
 import SetStaff from './pages/SetStaff';
 import SetGuardian from './pages/SetGuardian';
 import NewGuardian from './pages/NewGuardian';
