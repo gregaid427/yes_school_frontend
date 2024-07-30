@@ -1,6 +1,7 @@
 import { ApexOptions } from 'apexcharts';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { useSelector } from 'react-redux';
 
 const options = {
   colors: ['#3C50E0', '#80CAEE'],
@@ -78,9 +79,7 @@ const options = {
 const ChartTwo = (props) => {
   const [data1, setdata] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
-  useEffect(() => {
-    setdata(props.data);
-  }, [data1]);
+
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
@@ -133,7 +132,7 @@ const ChartTwo = (props) => {
             series={[
               {
                 name: 'Expense',
-                data: data1,
+                data: props.data,
               },
             ]}
             type="bar"
