@@ -36,7 +36,7 @@ import {
   resetcreatestock,
 } from '../redux/slices/inventSlice';
 import InvencartegorySelect from '../components/InvencartegorySelect';
-import InventNewCartegory from '../components/inventNewCartegory';
+import InventNewCartegory from '../components/InventNewCartegory';
 import InventItemSelect from '../components/inventItemSelect';
 import InventSupplierSelect from '../components/InventSupplierSelect';
 

@@ -24,7 +24,7 @@ import autoTable from 'jspdf-autotable';
 import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
 
-import InventNewCartegory from '../components/inventNewCartegory';
+import InventNewCartegory from '../components/InventNewCartegory';
 import { deleteSingleCartAction, fetchInventCartegoryAction } from '../redux/slices/inventSlice';
 
 const AddInventoryCartegory = () => {
