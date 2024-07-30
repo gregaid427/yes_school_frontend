@@ -35,7 +35,6 @@ import {
 } from '../redux/slices/sessionSlice';
 import SessionSelect from '../components/SessionSelect';
 import { Dialog } from 'primereact/dialog';
-import InventNewCartegory from '../components/inventNewCartegory';
 import SetSessionAlert from '../components/SetSessionAlert';
 
 const Session = () => {
