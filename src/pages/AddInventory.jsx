@@ -35,6 +35,8 @@ import {
 import InvencartegorySelect from '../components/InvencartegorySelect';
 import InventNewCartegory from '../components/inventNewCartegory';
 
+
+
 const AddInventory = () => {
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState('center');
@@ -90,24 +92,10 @@ const AddInventory = () => {
     dispatch(fetchInventCartegoryAction());
   }, []);
 
-  // useEffect(() => {
-  //   if (fetchSection?.success == 1) {
-  //     let arrr = [{"name":'None',"id":0}];
-  //     let i = 0;
-  //     while (i < clad?.fetchSection?.data.length) {
-  //       arrr.push({"name":clad?.fetchSection?.data[i]?.sectionName,"id":clad?.fetchSection?.data[i]?.id});
-  //       i++;
-  //     }
-
-  //     setsections(arrr);
-  //   }
-  // }, [sectionloading]);
-
   useEffect(() => {
     if (CreateInventory?.success == 0) {
       toast.error('Error - Adding New Item');
       dispatch(resetcreateInventory());
-      // dispatch(fetchAllClassAction())
     }
     if (CreateInventory?.success == 1) {
       toast.success('New Item Added Successfully');
@@ -115,16 +103,7 @@ const AddInventory = () => {
     //  dispatch(fetchAllInventoryAction());
     }
 
-    // if (fetchAllClass?.success == 1) {
-    //   let i = 0;
-    //   let arr = [];
-    //   while (i < clad?.fetchAllClass?.data.length) {
-    //     arr.push(clad?.fetchAllClass?.data[i].title);
-    //     i++;
-    //   }
-
-    //   setClasss(arr);
-    // }
+   
   }, [CreateInventory]);
   const formRef1 = useRef();
 
