@@ -54,6 +54,8 @@ export const loginUserAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/users/login`,
         payload,
       );
+console.log(import.meta.env.VITE_APP_BASE_URL)
+console.log(data)
 
       // if (data?.success == 0) {
       //   const toast = useRef(null);
@@ -65,6 +67,10 @@ export const loginUserAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log(error)
+      console.log(error?.response)
+
+
       if (!error?.response) {
         throw error;
       }
