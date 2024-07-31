@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 axios.defaults.headers.common = {
   Authorization: `Bearer ${localStorage.getItem('token')}`,
   'Content-Type': 'application/json',
-  'Access-Control-Allow-Origin': false,
+  'Access-Control-Allow-Origin': '*',
 };
 
 export const CreateUserAction = createAsyncThunk(
