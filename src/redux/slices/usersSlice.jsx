@@ -234,6 +234,32 @@ export const inactiveStaffAction = createAsyncThunk(
     }
   },
 );
+export const activeStaffAction = createAsyncThunk(
+  'active/userstaff',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/activestaff/${payload}`,
+      );
+      if (data?.success == 1) {
+        toast.success('Staff Marked Active Successfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Marking Active Staff');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const fetchschoolinfoAction = createAsyncThunk(
   'fetch/schoool',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -284,6 +310,37 @@ export const updateschoolinfoAction = createAsyncThunk(
   },
 );
 
+export const SchoollogoAction = createAsyncThunk(
+  'create/logo',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/logoschool`,
+        payload,
+        {
+          headers: {
+            'Content-type': 'multipart/form-data',
+          },
+        },
+      );
+      if (data?.success == 1) {
+        toast.success('Logo Uploaded Successfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Uploading Logo');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 const initialState = {};
 
 const UsersSlices = createSlice({
@@ -295,6 +352,10 @@ const UsersSlices = createSlice({
         ...initialState,
       };
     },
+      resetcreateGuardian(state) {
+      state.CreateUser = null
+    }
+
   },
   extraReducers: (builder) => {
     builder.addCase(CreateUserAction.pending, (state, action) => {
@@ -310,12 +371,16 @@ const UsersSlices = createSlice({
       state.error = action.payload;
       state.CreateUser = undefined;
     });
-
+    
     builder.addCase(CreateGuardianAction.pending, (state, action) => {
       state.loading = true;
+      state.createguard = false;
+
     });
     builder.addCase(CreateGuardianAction.fulfilled, (state, action) => {
       state.CreateUser = action?.payload;
+      state.createguard = action?.payload;
+      
       state.loading = false;
       state.error = undefined;
     });
@@ -323,6 +388,22 @@ const UsersSlices = createSlice({
       state.loading = false;
       state.error = action.payload;
       state.CreateUser = undefined;
+      state.createguard = undefined;
+
+    });
+
+    builder.addCase(SchoollogoAction.pending, (state, action) => {
+      state.logoloading = true;
+    });
+    builder.addCase(SchoollogoAction.fulfilled, (state, action) => {
+      state.logo = action?.payload;
+      state.logoloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(SchoollogoAction.rejected, (state, action) => {
+      state.logoloading = false;
+      state.error = action.payload;
+      state.logo = undefined;
     });
 
     builder.addCase(loginUserAction.pending, (state, action) => {
@@ -338,6 +419,21 @@ const UsersSlices = createSlice({
       state.loginloading = undefined;
       state.loginerror = action.payload;
       state.loginUser = false;
+    });
+    
+    builder.addCase(CreatesStaffAction.pending, (state, action) => {
+      state.allStaffloading = true;
+      state.allstaff = undefined;
+    });
+    builder.addCase(CreatesStaffAction.fulfilled, (state, action) => {
+      state.allstaff = action?.payload;
+      state.allStaffloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(CreatesStaffAction.rejected, (state, action) => {
+      state.allStaffloading = false;
+      state.allstafferror = action.payload;
+      state.allstaff = undefined;
     });
 
     builder.addCase(fetchAllstaffAction.pending, (state, action) => {
@@ -398,6 +494,20 @@ const UsersSlices = createSlice({
       state.allstafferror = action.payload;
       state.allstaff = undefined;
     });
+    builder.addCase(activeStaffAction.pending, (state, action) => {
+      state.allStaffloading = true;
+      state.allstaff = undefined;
+    });
+    builder.addCase(activeStaffAction.fulfilled, (state, action) => {
+      state.allstaff = action?.payload;
+      state.allStaffloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(activeStaffAction.rejected, (state, action) => {
+      state.allStaffloading = false;
+      state.allstafferror = action.payload;
+      state.allstaff = undefined;
+    });
 
     builder.addCase(passwordResetAction.pending, (state, action) => {
       state.loading = true;
@@ -443,6 +553,6 @@ const UsersSlices = createSlice({
     });
   },
 });
+export const { reset,resetcreateGuardian } = UsersSlices.actions;
 
 export default UsersSlices.reducer;
-export const { reset } = UsersSlices.actions;

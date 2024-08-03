@@ -49,14 +49,11 @@ const Subject = () => {
   const dispatch = useDispatch();
 
   const sub = useSelector((state) => state?.subject);
-  const { CreateSubject,fetchAllSubject,CreateSubjectloading } = sub;
-
-
+  const { CreateSubject, fetchAllSubject, CreateSubjectloading } = sub;
 
   useEffect(() => {
-      dispatch(fetchSubjectAction());
-
-   }, []);
+    dispatch(fetchSubjectAction());
+  }, []);
 
   // useEffect(() => {
   //   if (fetchSection?.success == 1) {
@@ -72,20 +69,15 @@ const Subject = () => {
   // }, [sectionloading]);
 
   useEffect(() => {
-   
-
     if (CreateSubject?.success == 0) {
       toast.error('Error - Adding New Subject');
       dispatch(resetcreatesubject());
     }
     if (CreateSubject?.success == 1) {
-      
       toast.success('New Subject Added Successfully');
       dispatch(resetcreatesubject());
     }
-
- 
-  }, [CreateSubject ]);
+  }, [CreateSubject]);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -117,6 +109,9 @@ const Subject = () => {
       padding: 5px 0px;
     }
   `,
+  Table: `
+  --data-table-library_grid-template-columns:  55% 20% 25%;
+`,
       BaseCell: `
         font-size: 15px;
         color:white;
@@ -147,7 +142,7 @@ const Subject = () => {
   function onPaginationChange(action, state) {}
 
   const [search, setSearch] = useState('');
-console.log(data)
+  console.log(data);
   data = {
     nodes: data.nodes.filter((item) =>
       item.subjectname.toLowerCase().includes(search.toLowerCase()),
@@ -156,14 +151,13 @@ console.log(data)
 
   function onPaginationChange(action, state) {}
 
-
   const handleEditbtn = (value) => {
     navigate('/academics/subject/editsubject', {
       state: { info: value },
     });
   };
   const handledeletebtn = (value) => {
-    dispatch(DeleteSingleSubjectAction( value));
+    dispatch(DeleteSingleSubjectAction(value));
   };
 
   const subdata = {
@@ -201,7 +195,147 @@ console.log(data)
     <Loader />
   ) : (
     <DefaultLayout>
-      <div className={'flex gap-2  w-full'}>
+      <div className={'flex gap-2 w-full'}>
+        <div className="flex w-4/12 gap-8">
+          <div className="w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Add New Subject
+              </h3>
+            </div>
+            <div className="p-7">
+              <form action="#">
+                <div className="w-full mb-4 ">
+                  <label
+                    className="mb-3 block text-sm font-small text-black dark:text-white"
+                    htmlFor=""
+                  >
+                    Subject Name
+                  </label>
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    type="text"
+                    name=""
+                    id=""
+                    placeholder=""
+                    defaultValue=""
+                    onChange={(e) => setSubjectName(e.target.value)}
+                  />
+                </div>
+
+                <div className=" mt-3">
+                  <div className="flex mt-5 mb-2 justify-between align-middle">
+                    <label className=" block text-sm align-middle font-medium text-black dark:text-white">
+                      Subject Type :
+                    </label>
+                  </div>
+                  <div className="flex w-full flex-col">
+                    <div className=" flex   sm:w-1/2">
+                      <div className=" flex  sm:w-full">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="checkboxLabelOne"
+                        >
+                          {'Theory'}
+                        </label>
+                      </div>
+
+                      <div className="flex justify-start sm:w-2/4">
+                        <label
+                          htmlFor={'type'}
+                          className="flex cursor-pointer select-none "
+                        >
+                          <div className="relative ">
+                            <input
+                              title={'type'}
+                              type="checkbox"
+                              id={'type'}
+                              className="sr-only"
+                              onChange={() => {
+                                setIsChecked1(!isChecked1);
+                                setType('Theory');
+                              }}
+                            />
+                            <div
+                              className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                !isChecked1 &&
+                                'border-primary bg-gray dark:bg-transparent'
+                              }`}
+                            >
+                              <span
+                                className={`h-2.5 w-2.5 rounded-sm ${!isChecked1 && 'bg-primary'}`}
+                              ></span>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="mb-2 flex   sm:w-1/2">
+                      <div className=" flex  sm:w-full">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="checkboxLabelOne"
+                        >
+                          {'Practical'}
+                        </label>
+                      </div>
+
+                      <div className="flex justify-start sm:w-2/4">
+                        <label
+                          htmlFor={'type2'}
+                          className="flex cursor-pointer select-none "
+                        >
+                          <div className="relative ">
+                            <input
+                              title={'type2'}
+                              type="checkbox"
+                              id={'type2'}
+                              className="sr-only"
+                              onChange={() => {
+                                setIsChecked1(!isChecked1);
+                                setType('Practical');
+                              }}
+                            />
+                            <div
+                              className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                isChecked1 &&
+                                'border-primary bg-gray dark:bg-transparent'
+                              }`}
+                            >
+                              <span
+                                className={`h-2.5 w-2.5 rounded-sm ${isChecked1 && 'bg-primary'}`}
+                              ></span>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end  gap-4.5">
+                  <button
+                    className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                    type=""
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlecreateSection();
+                    }}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    type="reset"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
         <div className="w-8/12 flex-col">
           <div
             className={
@@ -280,7 +414,7 @@ console.log(data)
           >
             <div className="flex gap-3  flex-col">
               <div className="px-2">
-                <Table data={data} pagination={pagination} theme={theme}>
+                <Table data={data} pagination={pagination} layout={{ custom: true }} theme={theme}>
                   {(tableList) => (
                     <>
                       <Header>
@@ -368,6 +502,7 @@ console.log(data)
                   data={data}
                   pagination={pagination}
                   theme={theme}
+                  layout={{ custom: true }}
                 >
                   {(tableList) => (
                     <>
@@ -401,160 +536,7 @@ console.log(data)
             </div>
           </div>{' '}
         </div>
-        <div className="w-2/12 mr-5">
-          <div className="grid  gap-8">
-            <div className="col-span-12">
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                  <h3 className="font-medium text-black dark:text-white">
-                    Add New Subject
-                  </h3>
-                </div>
-                <div className="p-7">
-                  <form action="#">
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-small text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Subject Name
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue=""
-                        onChange={(e) => setSubjectName(e.target.value)}
-                      />
-                    </div>
-
-                    <div className=" mt-3">
-                 <div className='flex my-5 justify-between align-middle'>
-                 <label className=' block text-sm align-middle font-medium text-black dark:text-white'>Subject Type</label>
-              
-                  </div>  
-                     <div className='flex w-full flex-col' >
-                     <div className="mb-2 flex   sm:w-1/2">
-                    <div className=" flex  sm:w-full">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="checkboxLabelOne"
-                      >
-                        {'Theory'}
-                      </label>
-                    </div>
-
-                    <div className="flex justify-start sm:w-2/4">
-                      <label
-                        htmlFor={'type'}
-                        className="flex cursor-pointer select-none "
-                      >
-                        <div className="relative ">
-                          <input
-
-                            title={'type'}
-                          
-                            type="checkbox"
-                            id={'type'}
-                            className="sr-only"
-                            onChange={() => {
-                              setIsChecked1(!isChecked1);
-                              setType('Theory')
-                            }}
-                          />
-                          <div
-                            className={` flex h-5 w-5 items-center justify-center rounded border ${
-                              !isChecked1 &&
-                              'border-primary bg-gray dark:bg-transparent'
-                            }`}
-                          >
-                            <span
-                              className={`h-2.5 w-2.5 rounded-sm ${!isChecked1 && 'bg-primary'}`}
-                            ></span>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-
-
-
-                  <div className="mb-2 flex   sm:w-1/2">
-                    <div className=" flex  sm:w-full">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="checkboxLabelOne"
-                      >
-                        {'Practical'}
-                      </label>
-                    </div>
-
-                    <div className="flex justify-start sm:w-2/4">
-                      <label
-                        htmlFor={'type2'}
-                        className="flex cursor-pointer select-none "
-                      >
-                        <div className="relative ">
-                          <input
-
-                            title={'type2'}
-                   
-                            type="checkbox"
-                            id={'type2'}
-                            className="sr-only"
-                            onChange={() => {
-                              setIsChecked1(!isChecked1);
-                              setType('Practical')
-
-                            }}
-                          />
-                          <div
-                            className={` flex h-5 w-5 items-center justify-center rounded border ${
-                              isChecked1 &&
-                              'border-primary bg-gray dark:bg-transparent'
-                            }`}
-                          >
-                            <span
-                              className={`h-2.5 w-2.5 rounded-sm ${isChecked1 && 'bg-primary'}`}
-                            ></span>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                     </div>
-
-
-                  </div> 
-
-                    <div className="flex justify-end mt-5 gap-4.5">
-                      <button
-                        className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handlecreateSection();
-                        }}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                        type="reset"
-                      >
-                        Reset
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>{' '}
+      </div>
     </DefaultLayout>
   );
 };

@@ -26,7 +26,6 @@ import {
 } from '@table-library/react-table-library/table';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  
   deleteSingleStudentAction,
   fetchBulkStudent,
   fetchCustomStudentsClassAction,
@@ -73,12 +72,19 @@ const SetStudent = () => {
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
 
+  const {
+    loading,
+    error,
+    fetchStudent,
+    fetchStudentcustom,
+    fetchcustom,
+    fetchStudentcustomloading,
+    fetchcustomloading,
+    singleStudent,
+    singleStudentloading,
+  } = student;
 
-  const { loading, error, fetchStudent, fetchStudentcustom, fetchcustom, fetchStudentcustomloading, fetchcustomloading,singleStudent, singleStudentloading } = student;
-  
-  const {fetchAllClassloading,fetchAllClass}= classes
-
-  
+  const { fetchAllClassloading, fetchAllClass } = classes;
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -90,16 +96,15 @@ const SetStudent = () => {
 
     if (fetchAllClass?.success == 1) {
       let i = 0;
-      let arr = []
+      let arr = [];
       while (i < classes?.fetchAllClass?.data.length) {
         arr.push(classes?.fetchAllClass?.data[i].title);
         i++;
       }
       setClasss(arr);
-      setclazz(arr[0])
+      setclazz(arr[0]);
     }
-
-  }, [fetchAllClassloading , fetchcustomloading ]);
+  }, [fetchAllClassloading, fetchcustomloading]);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -107,18 +112,11 @@ const SetStudent = () => {
     if (fetchStudentcustom?.success == 1) {
       let data = fetchStudentcustom?.data;
       setdata(data);
-
     }
-
-  
-
-  }, [ fetchStudentcustomloading ]);
+  }, [fetchStudentcustomloading]);
 
   useEffect(() => {
-   
-    setdata([])
-  
-
+    setdata([]);
   }, []);
 
   useEffect(() => {
@@ -131,7 +129,7 @@ const SetStudent = () => {
   }, [fetchStudent]);
 
   // useEffect(() => {
-   
+
   //   if (fetchSection?.success == 1) {
   //    let arrr = ['All Sections']
   //     let i = 0;
@@ -146,10 +144,9 @@ const SetStudent = () => {
   //   }
   // }, [sectionloading]);
 
-
   let data = { nodes };
 
- const theme = useTheme([
+  const theme = useTheme([
     {
       // HeaderRow: `
       // background-color: #313D4A;
@@ -162,7 +159,10 @@ const SetStudent = () => {
       padding: 5px 0px;
     }
   `,
-         BaseCell: `
+      Table: `
+  --data-table-library_grid-template-columns:  12% 33% 20% 10% 25%;
+`,
+      BaseCell: `
         font-size: 15px;
         color:white;
       //   border-bottom: 1px solid #313D4A !important;
@@ -193,25 +193,26 @@ const SetStudent = () => {
 
   var data2;
   const [search, setSearch] = useState('');
- const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleviewbtn = (value) => {
-    navigate('/student/singlestudent', {state:{action: 1,value:value.student_id}})
-
+    navigate('/student/singlestudent', {
+      state: { action: 1, value: value.student_id },
+    });
   };
   const handleEditbtn = (value) => {
     dispatch(fetchSingleStudent(value.student_id));
-    navigate("/student/editinfo", {state:{action: 2,value:value.student_id}})
-
+    navigate('/student/editinfo', {
+      state: { action: 2, value: value.student_id },
+    });
   };
   const handledeletbtn = (value) => {
     let data = {
-      "class" : clazz,
-      "section":sectionzz,
-      "id" : value
-    }
+      class: clazz,
+      section: sectionzz,
+      id: value,
+    };
     dispatch(deleteSingleStudentAction(data));
-
   };
 
   data = {
@@ -235,32 +236,31 @@ const SetStudent = () => {
     setVisible(false);
   }
 
-  const csvConfig = mkConfig({ useKeysAsHeaders: true, filename:`${clazz} : ${sectionzz} `});
+  const csvConfig = mkConfig({
+    useKeysAsHeaders: true,
+    filename: `${clazz} : ${sectionzz} `,
+  });
 
   const handleDownloadCSV = async () => {
     const csv = generateCsv(csvConfig)(nodes);
     download(csvConfig)(csv);
   };
   function handleGetClassData() {
-    console.log(clazz)
+    console.log(clazz);
 
     let data = {
-      "class" : clazz,
-      "section":sectionzz
+      class: clazz,
+      section: sectionzz,
+    };
+    console.log(data);
+    if (sectionzz == 'All Sections') {
+      setclazz(clazz);
+      dispatch(fetchStudentsClassAction(data));
     }
-    console.log(data)
-    if(sectionzz == "All Sections"){
-      setclazz(clazz)
-      dispatch(fetchStudentsClassAction(data))
-
+    if (sectionzz != 'All Sections') {
+      setsectionzz(sectionzz);
+      dispatch(fetchCustomStudentsClassAction(data));
     }
-    if(sectionzz != "All Sections"){
-      setsectionzz(sectionzz)
-      dispatch(fetchCustomStudentsClassAction(data))
-
-    }
-
-
   }
   const footerContent = (
     <div>
@@ -317,9 +317,7 @@ const SetStudent = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz}
-                       
-                      />
+                      <ClassSelect setsectionprop={setclazz} />
                     </div>
                   </div>
                   <label
@@ -341,8 +339,7 @@ const SetStudent = () => {
                     Section{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SectionSelect1 setsectionprop={setsectionzz}
-                    />
+                    <SectionSelect1 setsectionprop={setsectionzz} />
                   </div>
                   <label
                     className="pt-4 block text-sm font-medium text-ash dark:text-white"
@@ -363,8 +360,7 @@ const SetStudent = () => {
                   </label>
                   <div className="relative sm:w-1/5 z-20 bg-white dark:bg-form-input">
                     <button
-                      onClick={() => handleGetClassData()
-                      }
+                      onClick={() => handleGetClassData()}
                       className="btn h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
@@ -373,8 +369,7 @@ const SetStudent = () => {
                   </div>
                   <div className="relative sm:w-4/5 z-20 mt-2 bg-white dark:bg-form-input">
                     <button
-                      onClick={() => navigate('/student/admission')
-                      }
+                      onClick={() => navigate('/student/admission')}
                       className="btn h-10 w-full   flex justify-center rounded  bg-primary py-2 px-3 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
@@ -434,6 +429,7 @@ const SetStudent = () => {
                 data={data}
                 pagination={pagination}
                 theme={theme}
+                layout={{ custom: true }}
               >
                 {(tableList) => (
                   <>
@@ -450,11 +446,7 @@ const SetStudent = () => {
 
                     <Body>
                       {tableList.map((item) => (
-                        <Row
-                          key={item.student_id}
-                          item={item}
-                          className=""
-                        >
+                        <Row key={item.student_id} item={item} className="">
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -466,12 +458,13 @@ const SetStudent = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
-                          <span>{item.class} ({item.section})</span>
+                            <span>
+                              {item.class} ({item.section})
+                            </span>
                           </Cell>
                           <Cell className="  ">
                             <span>{item.gender}</span>
                           </Cell>
-                        
 
                           <Cell>
                             <div className="gap-2 flex">
@@ -483,10 +476,14 @@ const SetStudent = () => {
                               />
 
                               <InactiveSVG
-                                clickFunction={() => handledeletbtn(item.student_id)}
+                                clickFunction={() =>
+                                  handledeletbtn(item.student_id)
+                                }
                               />
-                               <RemoveSVG
-                                clickFunction={() => handledeletbtn(item.student_id)}
+                              <RemoveSVG
+                                clickFunction={() =>
+                                  handledeletbtn(item.student_id)
+                                }
                               />
                             </div>
                           </Cell>
@@ -511,7 +508,7 @@ const SetStudent = () => {
                   </span>
                   <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
                     <SelectGroupTwo
-                      values={[ 30, 50, 100, 200, 500, 'All']}
+                      values={[30, 50, 100, 200, 500, 'All']}
                       setSelectedOption={(val) => setpagesval(val)}
                       selectedOption={pagesval}
                     />
@@ -541,10 +538,9 @@ const SetStudent = () => {
                 ))}
               </span>
             </div>
-            <div className='hidden'>
+            <div className="hidden">
               <Table
                 id="my-table"
-                
                 data={data}
                 pagination={pagination}
                 theme={theme}
@@ -578,13 +574,13 @@ const SetStudent = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.section} ({item.section})</span>
+                            <span>
+                              {item.section} ({item.section})
+                            </span>
                           </Cell>
                           <Cell className="  ">
                             <span>{item.gender}</span>
                           </Cell>
-                        
-
                         </Row>
                       ))}
                     </Body>

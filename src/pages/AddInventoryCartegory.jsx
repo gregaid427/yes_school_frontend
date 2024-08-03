@@ -94,7 +94,9 @@ const AddInventoryCartegory = () => {
       border-bottom: 1px solid #a0a8ae;
       padding: 5px 0px;
     }
-  `,
+  `,Table: `
+  --data-table-library_grid-template-columns:  60% 40%;
+`,
       BaseCell: `
         font-size: 15px;
         color:white;
@@ -264,7 +266,7 @@ const AddInventoryCartegory = () => {
           >
             <div className="flex gap-3  flex-col">
               <div className="px-2">
-                <Table data={data} pagination={pagination} theme={theme}>
+                <Table data={data} pagination={pagination} layout={{ custom: true }} theme={theme}> 
                   {(tableList) => (
                     <>
                       <Header>

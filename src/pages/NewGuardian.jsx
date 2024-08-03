@@ -19,11 +19,25 @@ import flatpickr from 'flatpickr';
 import {
   CreateGuardianAction,
   CreateUserAction,
+  resetcreateGuardian,
 } from '../redux/slices/usersSlice';
 import toast, { Toaster } from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
+import { Dialog } from 'primereact/dialog';
+import SetSessionAlert from '../components/SetSessionAlert';
+import NewGuardModal from '../components/NewGuardianModal';
 
 const NewGuardian = () => {
+  const [visible, setVisible] = useState(false);
+  const [position, setPosition] = useState('center');
+  const show = (position) => {
+    setPosition(position);
+    setVisible(true);
+  };
+
+
+  const formRef5 = useRef();
+
   const location = useLocation();
 
   let value  = location?.state.value;
@@ -31,7 +45,7 @@ const NewGuardian = () => {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
-  const { loading, error, CreateUser } = user;
+  const { loading, error, CreateUser,createguard } = user;
 
   const [firstName, setfirstName] = useState('');
   const [lastName, setlastName] = useState('');
@@ -39,16 +53,18 @@ const NewGuardian = () => {
   const [contact1, setcontact1] = useState('');
   const [contact2, setcontact2] = useState('');
   const [gender, setgender] = useState('Male');
-  const [password, setpassword] = useState('');
-  const [email, setemail] = useState('');
+  const [password, setpassword] = useState(null);
+  const [email, setemail] = useState(null);
   const [relation, setRelation] = useState('');
   const [createdBy, setcreatedBy] = useState('');
   const [active, setactive] = useState('');
   const [address, setaddress] = useState('');
+  const [info, setinfo] = useState('');
+
 
   const handleSubmit = (e) => {
     const data = {
-      userId: value,
+      userId: value.student_id,
       firstName: firstName,
       lastName: lastName,
       otherName: otherName,
@@ -66,27 +82,54 @@ const NewGuardian = () => {
     dispatch(CreateGuardianAction(data));
   };
 
+
   useEffect(() => {
+    setinfo(CreateUser?.data)
+
     if (CreateUser?.success === undefined) {
+      dispatch(resetcreateGuardian())
+
     }
     if (error) {
       toast.error('Error Creating New User');
+      dispatch(resetcreateGuardian())
+
     }
     if (CreateUser?.success == 1) {
+      formRef5.current.reset();
+      setinfo(createguard.data)
+
+      dispatch(resetcreateGuardian())
       toast.success('New User created Successfully');
+      show('top-right');
+
     }
     if (CreateUser?.success == 0) {
       toast.error('Email Already Taken');
+      dispatch(resetcreateGuardian())
     }
-  }, [CreateUser]);
+    console.log(CreateUser)
+  }, [CreateUser,loading]);
 
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
-
+console.log(info)
   return (
     <DefaultLayout>
       <Toaster position="top-center" reverseOrder={false} />
-
+      <Dialog
+        visible={visible}
+        position={'top'}
+        style={{ height: 'auto', width: '30%' }}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <NewGuardModal guardinfo={createguard?.data} info={value} close={setVisible} />
+      </Dialog>
       <div className="mx-auto max-w-270">
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
@@ -97,7 +140,7 @@ const NewGuardian = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <form action="" onSubmit={(e) => handleSubmit(e)}>
+                <form ref={formRef5} onSubmit={(e) => handleSubmit(e)}>
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-2/2">
                       <label
@@ -223,7 +266,7 @@ const NewGuardian = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="emailAddress"
                     >
-                      Email Address
+                      Email Address   <span className="text-xs">(optional)</span>
                     </label>
                     <div className="relative">
                       <span className="absolute  top-4"></span>
@@ -243,7 +286,7 @@ const NewGuardian = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="emailAddress"
                     >
-                      User Password
+                       Password  <span className="text-xs">(optional)</span>
                     </label>
                     <div className="relative">
                       <span className="absolute  top-4"></span>

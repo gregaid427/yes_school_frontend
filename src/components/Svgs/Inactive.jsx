@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ActiveSVG = (props) => {
+const InactiveSVG = (props) => {
   return (
-    <button  className='rounded-full bg-[#3ce0739a] text-xs mx-0 my-1 font-  py-1 px-3' onClick={props.clickFunction}>
-      <p>Active</p>
+    <button  className='rounded-full bg-[#0b3306] text-xs mx-0 my-1 font-  py-1 px-3' onClick={props.clickFunction}>
+      <p>Inactive</p>
       {/* <svg
         className="fill-current"
         width="18"
@@ -33,4 +33,4 @@ const ActiveSVG = (props) => {
   );
 };
 
-export default ActiveSVG;
+export default InactiveSVG;

@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 // import { useHistory } from 'react-router-dom';
 
-const NewStudents = () => {
+const Admission = () => {
   const webcamRef = React.useRef(null);
   const [imgSrc, setImgSrc] = React.useState(null);
 
@@ -108,20 +108,15 @@ const NewStudents = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    function hashgenerator() {
-      return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
-    }
-    let date = new Date();
 
-    const data = new FormData();
+
 
     // if(!picture) return console.log('no image')
 
     if (firstName == '') return toast.error('Please Fill Out Required Fields');
 
-    let customfile = hashgenerator() + picturename;
 
-    let Mydata = JSON.stringify({
+    let data = {
       firstName: firstName,
       lastName: lastName,
       otherName: otherName,
@@ -152,10 +147,8 @@ const NewStudents = () => {
       feeArrears: feeArrears,
       feeCredit: feeCredit,
   
-    });
-
-    //data.append(customfile, picture);
-    data.append('data', Mydata);
+    };
+   
     dispatch(CreatestudentAction(data));
   };
 
@@ -360,15 +353,16 @@ const NewStudents = () => {
                   </div>
               
                 </form>
-                <div className="flex mt-10 justify-end gap-4.5">
+                <div className="flex mt-10  gap-4.5">
                   <button
-                    className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                    className="flex w-4/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                     type=""
                     onClick={(e) => handleNextButton()}
                   >
                     Next
                   </button>
                 </div>
+                
               </div>
             </div>
           </div>
@@ -904,7 +898,7 @@ const NewStudents = () => {
                     </div>
                   </div>
                 </form>
-                <div className="flex mt-10 justify-end gap-4.5">
+                <div className="flex mt-10 w-7/12 justify-end gap-4.5">
                   <button
                     className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                     type=""
@@ -929,4 +923,5 @@ const NewStudents = () => {
   );
 };
 
-export default NewStudents;
+export default Admission;
+

@@ -157,7 +157,7 @@ const AddInventoryStock = () => {
     
     {
       Table: `
-      --data-table-library_grid-template-columns:  40% 20% 0% 40%;
+      --data-table-library_grid-template-columns:  45% 20% 0% 35%;
     `,
       // HeaderRow: `
       // background-color: #313D4A;
@@ -294,7 +294,169 @@ const AddInventoryStock = () => {
       >
         <InventNewCartegory close={setVisible} />
       </Dialog>
-      <div className={'flex gap-1  w-full'}>
+      <div className={'flex gap-3 w-full'}>
+      <div className="w-4/12 ">
+        
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
+                  <h3 className="font-medium text-black dark:text-white">
+                    Add Item Stock
+                  </h3>
+                </div>
+                <div className="p-4">
+                  <form ref={formRef1}>
+                    <div className="w-full mb-4 sm:w-2/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        Item
+                      </label>
+                      <div className="relative z-20 bg-white dark:bg-form-input">
+                        <InventItemSelect setsectionprop={setItem}  />
+                      </div>
+                    </div>
+
+                    <div className="w-full mb-3 sm:w-2/2">
+                      <div className="flex justify-between align-middle">
+                        <label
+                          className="mb-2 block align-middle  text-sm font-medium text-black dark:text-white"
+                          htmlFor=""
+                        >
+                          Item Cartegory{' '}
+                          {/* <span className="small-font">(optional)</span> */}
+                        </label>
+                   
+                      </div>
+
+                      <div className="relative z-20 bg-white dark:bg-form-input">
+                        <InvencartegorySelect setsectionprop={setcart}  default={'NONE'}/>
+                      </div>
+                    </div>
+                    <div className="w-full mb-3 sm:w-2/2">
+                      <label
+                        className="mb-2 block text-sm font-medium text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        Quantity{' '}
+                      </label>
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="number"
+                        name=""
+                        id=""
+                        placeholder=""
+                        defaultValue="0"
+                        onChange={(e) => setQuantity(e.target.value)}
+                      />
+                    </div>
+                    <div className="w-full mb-3 sm:w-2/2">
+                      <label
+                        className="mb-2 block text-sm font-medium text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        Supplier {' '}
+                      </label>
+                      <div className="relative z-20 bg-white dark:bg-form-input">
+                        <InventSupplierSelect setsectionprop={setSupName}  default={'NONE'}/>
+                      </div>
+                    </div>
+                    <div className="w-full flex gap-1">
+                      <div className="w-full mb-3 sm:w-1/2">
+                        <label
+                          className="mb-2 block text-sm font-medium text-black dark:text-white"
+                          htmlFor=""
+                        >
+                          Purchase Price{' '}
+                        </label>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="number"
+                          name=""
+                          id=""
+                          placeholder=""
+                          defaultValue="0.00"
+                          onChange={(e) => setPrice(e.target.value)}
+                        />
+                      </div>
+                      <div className="w-full mb-3 sm:w-1/2">
+                        <label
+                          className="mb-2 block text-sm font-medium text-black dark:text-white"
+                          htmlFor=""
+                        >
+                          Date{' '}
+                        </label>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="date"
+                          name=""
+                          id=""
+                          placeholder=""
+                          defaultValue=""
+                          onChange={(e) => setDate(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-5.5">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="emailAddress"
+                      >
+                        Attach Document
+                      </label>
+                      <div className="relative">
+                      <input
+                      onChange={(event) => getFileInfo(event)}
+                      type="file"
+                      accept="image/*"
+                      className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
+                    />
+                      </div>
+                    </div>
+                   
+
+                    <div className="mb-5.5">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="emailAddress"
+                      >
+                        Notes
+                      </label>
+                      <div className="relative">
+                        <textarea
+                          className="w-full rounded border border-stroke bg-gray py-3  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          name="bio"
+                          id="bio"
+                          rows={2}
+                          placeholder=""
+                          onChange={(e) => setDesc(e.target.value)}
+                        ></textarea>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end gap-4.5">
+                      <button
+                        className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSubmit(e);
+                        }}
+                      >
+                        Save
+                      </button>
+                      <button
+                        className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                        type="reset"
+                      >
+                        Reset
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        
         <div className="w-8/12 flex-col">
           <div
             className={
@@ -500,170 +662,7 @@ const AddInventoryStock = () => {
             </div>
           </div>{' '}
         </div>
-        <div className="w-2/12 mr-5">
-          <div className="grid  gap-8">
-            <div className="col-span-12">
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                  <h3 className="font-medium text-black dark:text-white">
-                    Add Item Stock
-                  </h3>
-                </div>
-                <div className="p-7">
-                  <form ref={formRef1}>
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Item
-                      </label>
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                        <InventItemSelect setsectionprop={setItem}  />
-                      </div>
-                    </div>
-
-                    <div className="w-full mb-3 sm:w-2/2">
-                      <div className="flex justify-between align-middle">
-                        <label
-                          className="mb-2 block align-middle  text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Item Cartegory{' '}
-                          {/* <span className="small-font">(optional)</span> */}
-                        </label>
-                   
-                      </div>
-
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                        <InvencartegorySelect setsectionprop={setcart}  default={'NONE'}/>
-                      </div>
-                    </div>
-                    <div className="w-full mb-3 sm:w-2/2">
-                      <label
-                        className="mb-2 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Quantity{' '}
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="number"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue="0"
-                        onChange={(e) => setQuantity(e.target.value)}
-                      />
-                    </div>
-                    <div className="w-full mb-3 sm:w-2/2">
-                      <label
-                        className="mb-2 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Supplier {' '}
-                      </label>
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                        <InventSupplierSelect setsectionprop={setSupName}  default={'NONE'}/>
-                      </div>
-                    </div>
-                    <div className="w-full flex gap-1">
-                      <div className="w-full mb-3 sm:w-1/2">
-                        <label
-                          className="mb-2 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Purchase Price{' '}
-                        </label>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="number"
-                          name=""
-                          id=""
-                          placeholder=""
-                          defaultValue="0.00"
-                          onChange={(e) => setPrice(e.target.value)}
-                        />
-                      </div>
-                      <div className="w-full mb-3 sm:w-1/2">
-                        <label
-                          className="mb-2 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Date{' '}
-                        </label>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="date"
-                          name=""
-                          id=""
-                          placeholder=""
-                          defaultValue=""
-                          onChange={(e) => setDate(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    <div className="mb-5.5">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="emailAddress"
-                      >
-                        Attach Document
-                      </label>
-                      <div className="relative">
-                      <input
-                      onChange={(event) => getFileInfo(event)}
-                      type="file"
-                      accept="image/*"
-                      className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
-                    />
-                      </div>
-                    </div>
-                   
-
-                    <div className="mb-5.5">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="emailAddress"
-                      >
-                        Notes
-                      </label>
-                      <div className="relative">
-                        <textarea
-                          className="w-full rounded border border-stroke bg-gray py-3  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          name="bio"
-                          id="bio"
-                          rows={2}
-                          placeholder=""
-                          onChange={(e) => setDesc(e.target.value)}
-                        ></textarea>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end gap-4.5">
-                      <button
-                        className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleSubmit(e);
-                        }}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                        type="reset"
-                      >
-                        Reset
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+       
       </div>{' '}
     </DefaultLayout>
   );

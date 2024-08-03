@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function PromotionRadio(props) {
   const [selectedValue, setSelectedValue] = useState('option1');
 
-  const handleRadioChange = (value) => {
+
+useEffect(() => {
+
+  setSelectedValue('option1');
+}, [props.reset]); 
+
+const handleRadioChange = (value) => {
     setSelectedValue(value);
   };
 
@@ -18,7 +24,7 @@ function PromotionRadio(props) {
   };
 
   return (
-    <div className='flex row gap-5 py-2'>
+    <div className='flex row gap-5 '>
       <div  style={styles.radioButton}>
         <input
           type="radio"

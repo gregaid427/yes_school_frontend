@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Error from "./pages/error";
 import { Provider } from "react-redux";
 
+
 import Admin1 from "./pages/admin1";
 import Admin from "./pages/Admin";
 import Admin2 from "./pages/admin2";

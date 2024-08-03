@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
-const SectionSelect2 = (props) => {
+const classInstructorSelect = (props) => {
   const [sections, setsections] = useState([]);
   const [sectionzz, setsectionzz] = useState();
 
@@ -18,7 +19,7 @@ const SectionSelect2 = (props) => {
 
   useEffect(() => {
     if (fetchSection?.success == 1) {
-      let arrr = ['NONE'];
+      let arrr = ['All Sections'];
       let i = 0;
       while (i < clad?.fetchSection?.data.length) {
         arrr.push(clad?.fetchSection?.data[i]?.sectionName);
@@ -41,4 +42,4 @@ const SectionSelect2 = (props) => {
   );
 };
 
-export default SectionSelect2;
+export default classInstructorSelect;

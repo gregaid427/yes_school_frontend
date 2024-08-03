@@ -18,7 +18,6 @@ const ROLES = {
 }
 
 function App() {
-console.log('App.js')
   return (
     <Routes>
 

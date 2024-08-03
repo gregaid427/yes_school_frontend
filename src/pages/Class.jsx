@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
 import DefaultLayout from '../layout/DefaultLayout';
-import { Link, useNavigate } from 'react-router-dom';;
+import { Link, useNavigate } from 'react-router-dom';
 import ViewSVG from '../components/Svgs/View';
 import DeleteSVG from '../components/Svgs/delete';
 import EditSVG from '../components/Svgs/edit';
@@ -23,7 +23,14 @@ import autoTable from 'jspdf-autotable';
 
 import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
-import { CreatesClassAction, deleteSingleClassAction, fetchAllClassAction, fetchSingleClassAction, resetcreateClass } from '../redux/slices/classSlice';
+import {
+  CreatesClassAction,
+  deleteSingleClassAction,
+  fetchAllClassAction,
+  fetchAllClassNoAction,
+  fetchSingleClassAction,
+  resetcreateClass,
+} from '../redux/slices/classSlice';
 
 const Class = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -32,57 +39,54 @@ const Class = () => {
   const [loader, setLoader] = useState(true);
 
   const [isChecked1, setIsChecked1] = useState(false);
-  const [classTitle, setClassTitle] = useState("");
-  const [classInstructor, setClassInstructor] = useState("");
+  const [classTitle, setClassTitle] = useState('');
+  const [classInstructor, setClassInstructor] = useState('');
 
   const [sections, setsections] = useState([]);
 
   const [nodes, setdata] = useState([]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const clad = useSelector((state) => state?.classes);
 
-  const { fetchAllClassloading, fetchAllClass, sectionloading, fetchSection, CreateClasses,CreateClassesloading } =
-    clad;
+  const {
+    fetchAllClassloading,
+    fetchAllClass,
+    sectionloading,
+    fetchSection,
+    CreateClasses,
+    CreateClassesloading,fetchAllClassNo
+  } = clad;
 
-  // useEffect(() => {
-  //     dispatch(fetchAllClass());
-  //     dispatch(fetchAllClass());
+  useEffect(() => {
+     // dispatch(fetchAllClass());
+      dispatch(fetchAllClassNoAction());
 
-  // }, []);
-
- 
+  }, []);
 
   useEffect(() => {
     if (CreateClasses?.success == 0) {
-      toast.error("Error - Class Name Already Exists");
-      dispatch(resetcreateClass())
-   //   dispatch(fetchAllClassAction())
-
-
-      }
+      toast.error('Error - Class Name Already Exists');
+      dispatch(resetcreateClass());
+        // dispatch(fetchAllClassAction())
+    }
     if (CreateClasses?.success == 1) {
       toast.success('New Class Added Successfully');
-      dispatch(resetcreateClass())
-     // dispatch(fetchAllClassAction())
-
-
-      }
-    
-
-  }, [fetchAllClassloading,CreateClassesloading]);
+      dispatch(resetcreateClass());
+      // dispatch(fetchAllClassAction())
+    }
+  }, [fetchAllClassloading, CreateClassesloading]);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (fetchAllClass?.success == 1) {
-      let data = fetchAllClass?.data;
+    if (fetchAllClassNo?.success == 1) {
+      let data = fetchAllClassNo?.data;
       setdata(data);
     }
-  
-  }, [fetchAllClass ]);
+  }, [fetchAllClassNo,fetchAllClass]);
 
   let data = { nodes };
 
@@ -99,13 +103,16 @@ const Class = () => {
       padding: 5px 0px;
     }
   `,
-        BaseCell: `
+      BaseCell: `
         font-size: 15px;
         color:white;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
       `,
+        Table: `
+      --data-table-library_grid-template-columns:  45% 20% 35%;
+    `,
       Row: `
   &:nth-of-type(odd) {
     background-color: #24303F;
@@ -130,8 +137,6 @@ const Class = () => {
 
   const [search, setSearch] = useState('');
 
-
-
   data = {
     nodes: data.nodes.filter((item) =>
       item.title.toLowerCase().includes(search.toLowerCase()),
@@ -141,21 +146,30 @@ const Class = () => {
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
-    dispatch(fetchSingleClassAction({"classId":value.classId,"classTitle":value.title}));
+    dispatch(
+      fetchSingleClassAction({
+        classId: value.classId,
+        classTitle: value.title,
+      }),
+    );
     navigate('/academics/class/editclass', {
       state: { action: 1, value: value },
     });
   };
   const handleEditbtn = (value) => {
-    dispatch(fetchSingleClassAction({"classId":value.classId,"classTitle":value.title}));
+    dispatch(
+      fetchSingleClassAction({
+        classId: value.classId,
+        classTitle: value.title,
+      }),
+    );
     navigate('/academics/class/editclass', {
       state: { action: 2, value: value },
     });
   };
   const handledeletbtn = (value) => {
     dispatch(deleteSingleClassAction(value));
-   // dispatch(fetchAllClassAction());
-
+    // dispatch(fetchAllClassAction());
   };
 
   const classdata = {
@@ -170,9 +184,6 @@ const Class = () => {
       dispatch(CreatesClassAction(classdata));
     }
   };
-
-
-  
 
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
@@ -196,8 +207,140 @@ const Class = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-      <div className={'flex gap-2  w-full'}>
-        <div className="w-8/12 flex-col">
+      <div className={'flex row gap-8  w-full'}>
+          <div className="grid w-4/12  gap-8">
+            <div className="col-span-12">
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
+                  <h3 className="font-medium text-black dark:text-white">
+                    Add New Class
+                  </h3>
+                </div>
+                <div className="p-7">
+                  <form action="#">
+                    <div className="w-full mb-4 sm:w-2/2">
+                      <label
+                        className="mb-3 block text-sm font-small text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        Class Name
+                      </label>
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name=""
+                        id=""
+                        placeholder=""
+                        defaultValue=""
+                        onChange={(e) => setClassTitle(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="w-full sm:w-2/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="phoneNumber"
+                      >
+                        Class Instructor{' '}
+                        <span className="small-font">(optional)</span>
+                      </label>
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name=""
+                        id=""
+                        placeholder=""
+                        defaultValue=""
+                        onChange={(e) => setClassInstructor(e.target.value)}
+                      />
+                    </div>
+
+                    {/* <div className="pb-10 mt-3">
+                 <div className='flex my-5 justify-between align-middle'>
+                 <label className=' block text-sm align-middle font-medium text-black dark:text-white'>Class Sections</label>
+                 <button
+                        className="flex w-7/12 justify-center rounded-full  bg-black  px-1 font-[6px] text-muted hover:bg-opacity-90"
+                        type=""
+                        onClick={(e) => {
+                          // handlecreateClass();
+                        }}
+                      >
+                        Create New Section
+                      </button>
+                  </div>  
+                   { sections.map((item) => (
+                     <div className="mb-2 flex   sm:flex-row">
+                    <div className=" flex  sm:w-full">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="checkboxLabelOne"
+                      >
+                        - {item.name}{' '}
+                      </label>
+                    </div>
+
+                    <div className="flex justify-start sm:w-2/4">
+                      <label
+                        htmlFor={item.name}
+                        className="flex cursor-pointer select-none "
+                      >
+                        <div className="relative ">
+                          <input
+                            key={item.id}
+
+                            title={item.name}
+                            isChecked={isChecked1}
+                            toggle={setIsChecked1}
+                            type="checkbox"
+                            id={item.name}
+                            className="sr-only"
+                            onChange={() => {
+                              setIsChecked1(!isChecked1);
+                            }}
+                          />
+                          <div
+                            className={` flex h-5 w-5 items-center justify-center rounded border ${
+                              isChecked1 &&
+                              'border-primary bg-gray dark:bg-transparent'
+                            }`}
+                          >
+                            <span
+                              className={`h-2.5 w-2.5 rounded-sm ${isChecked1 && 'bg-primary'}`}
+                            ></span>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+))}
+
+                  </div> */}
+
+                    <div className="flex justify-end mt-5 gap-4.5">
+                      <button
+                        className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlecreateClass();
+                        }}
+                      >
+                        Save
+                      </button>
+                      <button
+                        className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                        type="reset"
+                      >
+                        Reset
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div className="w-8/12  flex-col">
           <div
             className={
               'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
@@ -275,13 +418,14 @@ const Class = () => {
           >
             <div className="flex gap-3  flex-col">
               <div className="px-2">
-                <Table data={data} pagination={pagination} theme={theme}>
+                <Table data={data} pagination={pagination}   layout={{ custom: true }}
+                  theme={theme}>
                   {(tableList) => (
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
                           <HeaderCell>Class</HeaderCell>
-                          <HeaderCell>Instructor</HeaderCell>
+                           <HeaderCell>Students</HeaderCell> 
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
@@ -290,13 +434,9 @@ const Class = () => {
                       <Body>
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
-                            <Cell className="  ">
-                              {item.title}
-                            </Cell>
+                            <Cell className="  ">{item.title}</Cell>
 
-                            <Cell className="  ">
-                            {item.instructor}
-                            </Cell>
+                             <Cell className="  ">{item.No}</Cell> 
 
                             <Cell>
                               <div className="gap-2 flex">
@@ -308,7 +448,9 @@ const Class = () => {
                                 />
 
                                 <DeleteSVG
-                                  clickFunction={() => handledeletbtn(item.classId)}
+                                  clickFunction={() =>
+                                    handledeletbtn(item.classId)
+                                  }
                                 />
                               </div>
                             </Cell>
@@ -375,7 +517,7 @@ const Class = () => {
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
                           <HeaderCell>Class</HeaderCell>
-                          <HeaderCell>Instructor</HeaderCell>
+                          {/* <HeaderCell>Instructor</HeaderCell> */}
                         </HeaderRow>
                       </Header>
 
@@ -390,9 +532,9 @@ const Class = () => {
                               <span>{item.title}</span>
                             </Cell>
 
-                            <Cell className="  ">
+                            {/* <Cell className="  ">
                               <span>{item.instructor}</span>
-                            </Cell>
+                            </Cell> */}
                           </Row>
                         ))}
                       </Body>
@@ -402,140 +544,6 @@ const Class = () => {
               </div>
             </div>
           </div>{' '}
-        </div>
-        <div className="w-4/12 mr-5">
-          <div className="grid  gap-8">
-            <div className="col-span-12">
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                  <h3 className="font-medium text-black dark:text-white">
-                    Add New Class
-                  </h3>
-                </div>
-                <div className="p-7">
-                  <form action="#">
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-small text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Class Name
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue=""
-                        onChange={(e) => setClassTitle(e.target.value)}
-                      />
-                    </div>
-
-                    <div className="w-full sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
-                      >
-                        Class Instructor{' '}
-                        <span className="small-font">(optional)</span>
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue=""
-                        onChange={(e) => setClassInstructor(e.target.value)}
-                      />
-                    </div>
-
-                  {/* <div className="pb-10 mt-3">
-                 <div className='flex my-5 justify-between align-middle'>
-                 <label className=' block text-sm align-middle font-medium text-black dark:text-white'>Class Sections</label>
-                 <button
-                        className="flex w-7/12 justify-center rounded-full  bg-black  px-1 font-[6px] text-muted hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          // handlecreateClass();
-                        }}
-                      >
-                        Create New Section
-                      </button>
-                  </div>  
-                   { sections.map((item) => (
-                     <div className="mb-2 flex   sm:flex-row">
-                    <div className=" flex  sm:w-full">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="checkboxLabelOne"
-                      >
-                        - {item.name}{' '}
-                      </label>
-                    </div>
-
-                    <div className="flex justify-start sm:w-2/4">
-                      <label
-                        htmlFor={item.name}
-                        className="flex cursor-pointer select-none "
-                      >
-                        <div className="relative ">
-                          <input
-                            key={item.id}
-
-                            title={item.name}
-                            isChecked={isChecked1}
-                            toggle={setIsChecked1}
-                            type="checkbox"
-                            id={item.name}
-                            className="sr-only"
-                            onChange={() => {
-                              setIsChecked1(!isChecked1);
-                            }}
-                          />
-                          <div
-                            className={` flex h-5 w-5 items-center justify-center rounded border ${
-                              isChecked1 &&
-                              'border-primary bg-gray dark:bg-transparent'
-                            }`}
-                          >
-                            <span
-                              className={`h-2.5 w-2.5 rounded-sm ${isChecked1 && 'bg-primary'}`}
-                            ></span>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-))}
-
-                  </div> */}
-
-                    <div className="flex justify-end mt-5 gap-4.5">
-                      <button
-                        className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault()
-                          handlecreateClass();
-                        }}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                        type="reset"
-                      >
-                        Reset
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>{' '}
     </DefaultLayout>

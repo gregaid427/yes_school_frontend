@@ -10,7 +10,7 @@ import store from './redux/store/store';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './context/AuthProvider';
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
     <AuthProvider>
       <Router>
         <Provider store={store}>

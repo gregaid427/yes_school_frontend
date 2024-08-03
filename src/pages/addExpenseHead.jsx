@@ -187,7 +187,11 @@ const AddExpenseHead = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-      <div className={'flex gap-1  w-full'}>
+      <div className={'flex gap-7  w-full'}>
+      <div className="w-4/12 ">
+          <ExpenseHeadCom close={setClasss} />
+        </div>
+       
         <div className="w-7/12 flex-col">
           <div
             className={
@@ -383,9 +387,7 @@ const AddExpenseHead = () => {
             </div>
           </div>{' '}
         </div>
-        <div className="w-2/12 mr-5">
-          <ExpenseHeadCom close={setClasss} />
-        </div>
+     
       </div>{' '}
     </DefaultLayout>
   );

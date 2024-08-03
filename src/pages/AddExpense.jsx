@@ -40,6 +40,8 @@ import {
 import InvencartegorySelect from '../components/InvencartegorySelect';
 import ExpenseHeadSelect from '../components/ExpenseHeadSelect';
 import toast from 'react-hot-toast';
+import ExpenseFormModal from '../components/ExpenseFormModal';
+import { Dialog } from 'primereact/dialog';
 
 const AddExpense = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -81,6 +83,9 @@ const AddExpense = () => {
       toast.success('New Expense Added Successfully');
       dispatch(resetcreateExpense());
       dispatch(fetchAllExpenseAction());
+      setVisible(false);
+
+
     }
   }, [CreateExpense]);
 
@@ -112,7 +117,8 @@ const AddExpense = () => {
     .th {
       border-bottom: 1px solid #a0a8ae;
       padding: 5px 0px;
-    }
+    `, Table: `
+  --data-table-library_grid-template-columns:  30% 18% 15% 15% 22%;
   `,
       BaseCell: `
         font-size: 15px;
@@ -179,45 +185,15 @@ const AddExpense = () => {
     dispatch(deleteSingleExpenseAction(value));
   };
 
-  function hashgenerator() {
-    return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
-  }
-  let customfile = hashgenerator()+filename ;
+  const [visible, setVisible] = useState(false);
+  const [position, setPosition] = useState('center');
+ 
 
-  const classdata = JSON.stringify({
-    name: name,
-    createdby: 'Asante',
-    amount: amount,
-    invoice: invoice,
-    description: desc,
-    expensehead: expensehead,
-    date: date,
-    filename: filename,
-
-  });
-
-  const handleSubmit = () => {
-    const data = new FormData();
-    data.append(customfile, file);
-    data.append('data', classdata);
-
-
-
-    if (name == '') {
-      toast.current.show({ severity: 'error', summary: 'Info', detail: 'Message Content', baseZIndex:'9999999999999999'});
-
-     return toast.error('Error - Name Cannot Be Empty');
-     
-    }
-    if (date == '') {
-     return toast.error('Error - Date Cannot Be Empty');
-    } 
-    if (amount == '') {
-    return  toast.error('Error - Amount Cannot Be Empty');
-    }  else {
-      dispatch(CreatesExpenseAction(data));
-    }
+  const show = (position) => {
+    setPosition(position);
+    setVisible(true);
   };
+
 
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
@@ -241,9 +217,21 @@ const AddExpense = () => {
     <Loader />
   ) : (
     <DefaultLayout>
+            <Dialog
+        visible={visible}
+        position={'top'}
+        style={{ height: 'auto', width: '50%'}}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}
+    
+      >
+        <ExpenseFormModal close={setVisible} />
+      </Dialog>
 
       <div className={'flex gap-2  w-full'}>
-        <div className="w-8/12 flex-col">
+        <div className="w-full flex-col">
           <div
             className={
               'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
@@ -275,6 +263,17 @@ const AddExpense = () => {
                     >
                       Download Page (PDF)
                     </label>
+
+                    <button
+                        className="flex w-12/12 mt-2 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={(e) => {
+                          e.preventDefault();
+                          show('top-right');
+                        }}
+                      >
+                        Add Expense
+                      </button>
                   </div>
 
                   <div className="w-full sm:w-2/5">
@@ -321,7 +320,7 @@ const AddExpense = () => {
           >
             <div className="flex gap-3  flex-col">
               <div className="px-2">
-                <Table data={data} pagination={pagination} theme={theme}>
+                <Table data={data} pagination={pagination}  layout={{ custom: true }} theme={theme}>
                   {(tableList) => (
                     <>
                       <Header>
@@ -465,162 +464,7 @@ const AddExpense = () => {
             </div>
           </div>{' '}
         </div>
-        <div className="w-2/12 mr-5">
-          <div className="grid  gap-8">
-            <div className="col-span-12">
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                  <h3 className="font-medium text-black dark:text-white">
-                    Add Expense
-                  </h3>
-                </div>
-                <div className="p-7">
-                  <form>
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Expense Head
-                      </label>
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                        <ExpenseHeadSelect setsectionprop={SetExpenseHead} />
-                      </div>
-                    </div>
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Name
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue=""
-                        onChange={(e) => setName(e.target.value)}
-                      />
-                    </div>
-
-                    <div className="w-full mb-3 sm:w-2/2">
-                      <label
-                        className="mb-2 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Invoice Number{' '}
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="number"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue=""
-                        onChange={(e) => setInvoice(e.target.value)}
-                      />
-                    </div>
-                    <div className="w-full mb-3 sm:w-2/2">
-                   
-                       <label
-                          className="mb-2 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Attach Document{' '}
-                        </label>
-                        <input
-                          onChange={(event) => {
-                            setFile(event.target.files[0]);
-                            setFileName(event.target.files[0].name);
-                          }}
-                          type="file"
-                          // accept="image/*"
-                          className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
-                        />
-                     
-                    </div>
-                    <div className="w-full flex gap-1">
-                      <div className="w-full mb-3 sm:w-1/2">
-                        <label
-                          className="mb-2 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Amount*{' '}
-                        </label>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="number"
-                          name=""
-                          id=""
-                          placeholder=""
-                          defaultValue=""
-                          onChange={(e) => setAmount(e.target.value)}
-                        />
-                      </div>
-                      <div className="w-full mb-3 sm:w-1/2">
-                        <label
-                          className="mb-2 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Date*{' '}
-                        </label>
-                        <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="date"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue=""
-                        onChange={(e) => setDate(e.target.value)}
-                      />
-                      </div>
-                    </div>
-
-                    <div className="mb-5.5">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="emailAddress"
-                      >
-                        Description/Notes
-                      </label>
-                      <div className="relative">
-                        <textarea
-                          className="w-full rounded border border-stroke bg-gray py-3  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          name="bio"
-                          id="bio"
-                          rows={2}
-                          placeholder=""
-                          onChange={(e) => setDesc(e.target.value)}
-                        ></textarea>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end gap-4.5">
-                      <button
-                        className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleSubmit(e);
-                        }}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                        type="reset"
-                      >
-                        Reset
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      
       </div>{' '}
     </DefaultLayout>
   );

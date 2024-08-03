@@ -88,7 +88,7 @@ const Users = () => {
 
                   <td className="border-b border-[#eee]  dark:border-strokedark">
                     <div className="flex items-center ">
-                      <Link to="/settings/student">
+                      <Link to="/settings/students">
                         <button
                           className="btn float-right flex justify-center rounded bg-primary py-1 px-3 font-small text-gray hover:shadow-1"
                           type="submit"

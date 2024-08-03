@@ -41,9 +41,11 @@ import StudentModal from '../components/StudentModal';
 import SectionSelect1 from '../components/SectionsSelect1';
 import ClassSelect from '../components/ClassSelect';
 import PromotionRadio from '../components/PromotionRadio';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import ClassSelect2 from '../components/ClassSelect2';
 import SetSessionAlert from '../components/SetSessionAlert';
+import NewGuardModal from '../components/NewGuardianModal';
+import PromoteModal from '../components/PromoteModal';
 
 const Promotion = () => {
   ///////////////////////////////////
@@ -68,7 +70,9 @@ const Promotion = () => {
 
   const [searcher, setSearcher] = useState('firstName');
   const [isChecked2, setIsChecked2] = useState(false);
+  const [radioReset, setradioReset] = useState(false);
 
+  
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
   const [classs, setClasss] = useState();
@@ -77,6 +81,8 @@ const Promotion = () => {
   const [nextClass, setNextclass] = useState();
 
   const [sectionzz, setsectionzz] = useState();
+  const [isChecked1, setIsChecked1] = useState(false);
+  const [type, setType] = useState('All');
 
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
@@ -114,8 +120,13 @@ const Promotion = () => {
   useEffect(() => {
     if (studentPromote?.success == 1) {
       setdata([]);
+      setRepeat([])
+      setType('All')
+      setIsChecked1(false)
+      setradioReset(!radioReset)
+
     }
-   // dispatch(resetPromote());
+    // dispatch(resetPromote());
   }, [studentPromote]);
 
   useEffect(() => {
@@ -145,10 +156,13 @@ const Promotion = () => {
       border-bottom: 1px solid #a0a8ae;
       padding: 5px 0px;
     }
-  `,
+  `, Table: `
+  --data-table-library_grid-template-columns:  15% 30% 20% 15% 20%;
+`,
       BaseCell: `
         font-size: 15px;
         color:white;
+        padding: 5px 0px;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
@@ -200,12 +214,15 @@ const Promotion = () => {
     dispatch(PromoteAllAction(data));
   };
   const handlePromoteselected = () => {
+
     const data = {
       value: repeat,
       nextclass: nextClass,
       prevclass: clazz,
     };
+    console.log(data)
     dispatch(PromoteSelectedAction(data));
+
   };
 
   data = {
@@ -239,7 +256,8 @@ const Promotion = () => {
     download(csvConfig)(csv);
   };
   function handleGetClassData() {
-
+    setradioReset(!radioReset)
+    setRepeat([])
     let data = {
       class: clazz,
       section: sectionzz,
@@ -276,10 +294,11 @@ const Promotion = () => {
     <Loader />
   ) : (
     <DefaultLayout>
+      <Toaster position="top-center" reverseOrder={false} />
       <Dialog
         visible={visible}
         position={'top'}
-        style={{ height: 'auto', width: '50%' }}
+        style={{ height: 'auto', width: '40%' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
@@ -287,7 +306,7 @@ const Promotion = () => {
         draggable={false}
         resizable={false}
       >
-        <SetSessionAlert  close={setVisible} />
+        <PromoteModal next={nextClass} prev={clazz} promoteAction={handlePromoteselected} type={allStudent} repeatNo={repeat.length} close={setVisible} />
       </Dialog>
       <div className=" flex-col">
         <div
@@ -380,7 +399,7 @@ const Promotion = () => {
                 {/* <button onClick={() => toPDF()}>Download PDF</button> */}
               </div>
             </div>
-            <div className={nodes[0] ?? 'hidden '}>
+            {/* <div className={nodes[0] ?? 'hidden '}>
               <div className="flex row  w-full">
                 <div className=" w-2/6">
                   {' '}
@@ -456,6 +475,119 @@ const Promotion = () => {
                   </div>
                 </div>
               </div>
+            </div> */}
+            <div className={nodes[0] ?? 'hidden '}>
+              <div className="flex w-full">
+                <div className="flex w-5/12 flex-col">
+                  <div className=" flex  mb-2 ">
+                    <div className="flex justify-start mr-2 ">
+                      <label
+                        htmlFor={'type'}
+                        className="flex cursor-pointer select-none "
+                      >
+                        <div className="relative ">
+                          <input
+                            title={'type'}
+                            type="checkbox"
+                            id={'type'}
+                            className="sr-only"
+                            onChange={() => {
+                              setIsChecked1(false);
+                              setType('All');
+                              setAllStudent(true);
+                              setOnlySelected(false);
+                              setradioReset(!radioReset)
+                              setRepeat([])
+
+
+                            }}
+                          />
+                          <div
+                            className={` flex h-5 w-5 items-center justify-center rounded border ${
+                              !isChecked1 &&
+                              'border-primary bg-gray dark:bg-transparent'
+                            }`}
+                          >
+                            <span
+                              className={`h-2.5 w-2.5 rounded-sm ${!isChecked1 && 'bg-primary'}`}
+                            ></span>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    <div className=" flex  sm:w-full">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="checkboxLabelOne"
+                      >
+                        {'Promote All Student in Selected Class'}
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className=" flex  ">
+                    <div className="flex justify-start mr-2">
+                      <label
+                        htmlFor={'type2'}
+                        className="flex cursor-pointer select-none "
+                      >
+                        <div className="relative ">
+                          <input
+                            title={'type2'}
+                            type="checkbox"
+                            id={'type2'}
+                            className="sr-only"
+                            onChange={() => {
+                              setIsChecked1(true);
+                              setType('Selected');
+                              setAllStudent(false);
+                              setOnlySelected(true);
+                              setradioReset(!radioReset)
+                              setRepeat([])
+
+
+                            }}
+                          />
+                          <div
+                            className={` flex h-5 w-5 items-center justify-center rounded border ${
+                              isChecked1 &&
+                              'border-primary bg-gray dark:bg-transparent'
+                            }`}
+                          >
+                            <span
+                              className={`h-2.5 w-2.5 rounded-sm ${isChecked1 && 'bg-primary'}`}
+                            ></span>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    <div className=" flex  sm:w-full">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="checkboxLabelOne"
+                      >
+                        {'Promote Selected Students In Class'}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div className=" w-6/12">
+                  <label
+                    className="  block text-sm font-medium text-black dark:text-white"
+                    htmlFor="fullName"
+                  >
+                    Choose Next Class :
+                  </label>
+                  <div className="flex row  py-auto gap-2 w-4/6">
+                    <div className="w-2/6">
+                      <ClassSelect
+                        setsectionprop={setNextclass}
+                        clazz={clazz}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -466,7 +598,7 @@ const Promotion = () => {
         >
           <div className="flex gap-3  flex-col">
             <div>
-              <Table data={data} pagination={pagination} theme={theme}>
+              <Table data={data} pagination={pagination} layout={{ custom: true }} theme={theme}>
                 {(tableList) => (
                   <>
                     <Header>
@@ -501,8 +633,9 @@ const Promotion = () => {
                           </Cell>
 
                           <Cell>
-                            <div className="">
-                              <PromotionRadio
+                          <div className={type === 'All' ? 'hidden' : null}>
+                          <PromotionRadio
+                          reset={radioReset}
                                 setRepeated={setRepeat}
                                 repeat={repeat}
                                 stdId={item.student_id}
@@ -525,14 +658,17 @@ const Promotion = () => {
                   </>
                 )}
               </Table>
-              <div className={onlySelected === false ? 'hidden' : null}>
-                <div className="flex w-3/12  pb-5 float-end py-5   gap-4.5">
+              <div className={nodes[0] ?? 'hidden '}>
+              <div className="flex w-3/12  pb-5 float-start py-5   gap-4.5">
                   <button
                     className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                     type=""
-                    onClick={() => handlePromoteselected()}
+                    onClick={() =>     show('top-right')
+
+                      
+                      }
                   >
-                    Promote Selected
+                    Promote Students
                   </button>
                 </div>
               </div>

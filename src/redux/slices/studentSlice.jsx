@@ -12,14 +12,11 @@ export const CreatestudentAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
 
+
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/users/`,
-        payload,
-        {
-          headers: {
-            'Content-type': 'multipart/form-data',
-          },
-        },
+        `${import.meta.env.VITE_APP_BASE_URL}/users/newstudent`,
+        payload
+    
       );
       if (data?.success == 1) {
         toast.success('New Student Added Successfully');
@@ -73,7 +70,7 @@ export const fetchBulkStudent = createAsyncThunk(
   'fetch/allstudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/student/`);
+      const { data } = await axios.get( `${import.meta.env.VITE_APP_BASE_URL}/student/`);
 
       return data;
     } catch (error) {
@@ -137,7 +134,13 @@ export const fetchStudentsClassAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/custom`,
         payload,
       );
+      if (data?.success == '1' && data?.data[0] == null) { 
+        toast.success('Empty Class List');
+      }
 
+      if (data == null) {
+        toast.error('Error Adding New Student');
+      }
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -156,7 +159,24 @@ export const fetchCustomStudentsClassAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/custom1`,
         payload,
       );
+      // toast.loading('Empty Class List');
 
+      if (data?.success == '1' && data?.data[0] == null) { 
+        toast.success('Empty Class List');
+     //   toast.dismiss();
+            //  toast.promise(
+            //   dispatch,
+            //    {
+            //      loading: 'Saving...',
+            //      success: <b>Settings saved!</b>,
+            //      error: <b>Could not save.</b>,
+            //    }
+            //  );
+      }
+
+      if (data == null) {
+        toast.error('Error Adding New Student');
+      }
       return data;
     } catch (error) {
       if (!error?.response) {

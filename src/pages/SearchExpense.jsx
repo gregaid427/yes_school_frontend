@@ -119,6 +119,8 @@ const SearchExpense = () => {
       border-bottom: 1px solid #a0a8ae;
       padding: 5px 0px;
     }
+  `, Table: `
+  --data-table-library_grid-template-columns:  30% 18% 15% 15% 22%;
   `,
       BaseCell: `
         font-size: 15px;
@@ -361,7 +363,7 @@ const SearchExpense = () => {
         >
           <div className="flex gap-3  flex-col">
             <div>
-              <Table data={data} pagination={pagination} theme={theme}>
+              <Table data={data} pagination={pagination}  layout={{ custom: true }}  theme={theme}>
                 {(tableList) => (
                   <>
                     <Header>

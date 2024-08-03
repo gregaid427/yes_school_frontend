@@ -159,6 +159,9 @@ const SetGuardian = () => {
       padding: 5px 0px;
     }
   `,
+      Table: `
+  --data-table-library_grid-template-columns:  20% 40% 15% 25%;
+  `,
       BaseCell: `
         font-size: 15px;
         color:white;
@@ -212,12 +215,12 @@ const SetGuardian = () => {
     dispatch(deleteSingleStudentAction(data));
   };
 
-const handleNaviate = (item) => {
-  console.log(item)
-  navigate('/settings/newguardian', {
-    state: { value: item },
-  })
-}
+  const handleNaviate = (item) => {
+    console.log(item);
+    navigate('/settings/newguardian', {
+      state: { value: item },
+    });
+  };
 
   data = {
     nodes: data.nodes.filter((item) =>
@@ -412,7 +415,12 @@ const handleNaviate = (item) => {
         >
           <div className="flex gap-3  flex-col">
             <div>
-              <Table data={data} pagination={pagination} theme={theme}>
+              <Table
+                data={data}
+                pagination={pagination}
+                layout={{ custom: true }}
+                theme={theme}
+              >
                 {(tableList) => (
                   <>
                     <Header>
@@ -456,7 +464,8 @@ const handleNaviate = (item) => {
                                 }
                               />
                               <GuardianSVG
-                                clickFunction={() =>{ handleNaviate(item.student_id)
+                                clickFunction={() => {
+                                  handleNaviate(item);
                                 }}
                               />
                             </div>

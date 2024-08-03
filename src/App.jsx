@@ -21,7 +21,7 @@ import Staff from './pages/Staff';
 import Teachers from './pages/teachers';
 import Examination from './pages/Examination';
 import NewStaff from './pages/Newstaff';
-import NewStudents from './pages/Newstudent';
+import NewStudents from './pages/Admission';
 import UserStudents from './pages/UserStudents';
 import Grades from './pages/Grades';
 import Marks from './pages/Marks';
@@ -99,6 +99,7 @@ function App() {
 
   return loading ? (
     <Loader />
+    
   ) : (
     <>
       <Toaster position="top-center" reverseOrder={false} />
@@ -333,7 +334,7 @@ function App() {
             }
           />{' '}
               <Route
-            path="/settings/student"
+            path="/settings/students"
             element={
               <>
                 <PageTitle title="Calendar | " />

@@ -159,7 +159,9 @@ const Student = () => {
       border-bottom: 1px solid #a0a8ae;
       padding: 5px 0px;
     }
-  `,
+  `,Table: `
+  --data-table-library_grid-template-columns:  12% 35% 18% 10% 25%;
+`,
          BaseCell: `
         font-size: 15px;
         color:white;
@@ -421,7 +423,7 @@ const Student = () => {
               <Table
                 data={data}
                 pagination={pagination}
-                theme={theme}
+                theme={theme} layout={{ custom: true }}
               >
                 {(tableList) => (
                   <>

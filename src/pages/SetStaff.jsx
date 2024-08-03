@@ -31,7 +31,8 @@ import {
   resetcreateClass,
 } from '../redux/slices/classSlice';
 import InactiveSVG from '../components/Svgs/Inactive';
-import { CreatesStaffAction, deleteStaffAction, fetchAllstaffAction, inactiveStaffAction } from '../redux/slices/usersSlice';
+import { activeStaffAction, CreatesStaffAction, deleteStaffAction, fetchAllstaffAction, inactiveStaffAction } from '../redux/slices/usersSlice';
+import ActiveSVG from '../components/Svgs/active';
 
 const Staff = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -64,12 +65,15 @@ const Staff = () => {
   const dispatch = useDispatch();
 
   const users = useSelector((state) => state?.user);
+  const formRef1 = useRef();
 
-  const { allstaff } = users;
-
+  const { allstaff, allStaffloading} = users;
+  function resetFormStates() {
+    // formRef.current.reset();
+    formRef1.current.reset();
+  }
   useEffect(() => {
     dispatch(fetchAllstaffAction());
-    //  dispatch(fetchAllClass());
   }, []);
 
   useEffect(() => {
@@ -78,6 +82,8 @@ const Staff = () => {
     if (allstaff?.success == 1) {
       let data = allstaff?.data;
       setdata(data);
+
+
     }
   }, [allstaff]);
 
@@ -91,7 +97,7 @@ const Staff = () => {
 
       // `,
       Table: `
-      --data-table-library_grid-template-columns:  55%  45%;
+      --data-table-library_grid-template-columns:  47% 15% 38%;
     `,
       HeaderRow: `
     .th {
@@ -168,6 +174,12 @@ console.log(data.nodes)
     dispatch(inactiveStaffAction(value));
     // dispatch(fetchAllClassAction());
   }
+
+  const handleactivebtn = (value) => {
+    dispatch(activeStaffAction(value));
+    // dispatch(fetchAllClassAction());
+  }
+
   let codes = `${student? 1 : 0}${Academics? 1 : 0}${inventory? 1 : 0}${expenses? 1 : 0}${fees? 1 : 0}${settings? 1 : 0}`;
 
   const classdata = {
@@ -215,227 +227,16 @@ console.log(data.nodes)
   ) : (
     <DefaultLayout>
       <div className={'flex gap-2  w-full'}>
-        <div className="w-8/12 flex-col">
-          <div
-            className={
-              'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
-            }
-          >
-            <div className="max-w-full overflow-x-auto">
-              <div className="w-full  flex justify-between  ">
-                <h3 className="font-medium text-black py-3 dark:text-white">
-                  Staff
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div
-            className={
-              'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
-            }
-          >
-            <div className="max-w-full overflow-x-auto">
-              <div className="w-full  flex justify-between ">
-                <div className=" flex w-7/12 gap-3">
-                  <div className="sm:w-2/5 ">
-                    <label
-                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
-                      onClick={(e) => {
-                        handleDownloadPdf();
-                      }}
-                    >
-                      Download Page (PDF)
-                    </label>
-                  </div>
-
-                  <div className="w-full sm:w-2/5">
-                    <label
-                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
-                      onClick={(e) => {
-                        handleDownloadCSV();
-                      }}
-                    >
-                      Download Page (Excel)
-                    </label>
-                  </div>
-                </div>
-
-                <div className={' w-5/12 flex flex-col float-right '}>
-                  <div className="flex justify-between align-middle mb-2">
-                    <label
-                      className=" w-2/2 pt-2 block text-sm font-medium text-black dark:text-white"
-                      htmlFor=" "
-                    >
-                      Search Staff{' '}
-                    </label>
-                  </div>
-
-                  <input
-                    className="w-full rounded border border-stroke bg-gray py-2 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                    key={1}
-                    type="search"
-                    placeholder={'type here'}
-                    onChange={(e) => {
-                      setSearch(e.target.value);
-                    }}
-                  />
-                  {/* <button onClick={() => toPDF()}>Download PDF</button> */}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className={
-              'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
-            }
-          >
-            <div className="flex gap-3  flex-col">
-              <div className="px-2">
-                <Table
-                  data={data}
-                  pagination={pagination}
-                  layout={{ custom: true }}
-                  theme={theme}
-                >
-                  {(tableList) => (
-                    <>
-                      <Header>
-                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
-                          <HeaderCell>Name</HeaderCell>
-
-                          <HeaderCell>Actions</HeaderCell>
-                        </HeaderRow>
-                      </Header>
-
-                      <Body>
-                        {tableList.map((item) => (
-                          <Row key={item.id} item={item} className=" ">
-                            <Cell className="  ">
-                              {item.sFirstName} {item.sOtherName}{' '}
-                              {item.sLastName}
-                            </Cell>
-
-                            <Cell>
-                              <div className="gap-2 flex">
-                                <EditSVG
-                                  clickFunction={() => handleEditbtn(item)}
-                                />
-                                <InactiveSVG
-                                  clickFunction={() => handleinactivebtn(item.userId)}
-                                />
-
-                                <DeleteSVG
-                                  clickFunction={() =>
-                                    handledeletbtn(item.userId)
-                                  }
-                                />
-                              </div>
-                            </Cell>
-                          </Row>
-                        ))}
-                      </Body>
-                    </>
-                  )}
-                </Table>
-              </div>
-              <div
-                className=" align-middle"
-                style={{ display: 'flex', justifyContent: 'space-between' }}
-              >
-                <div className="flex">
-                  <span className="mt-2">
-                    Total Pages: {pagination.state.getTotalPages(data.nodes)}
-                  </span>
-                  <div className="flex  align-middle  flex-row mr-3">
-                    <span className="flex mt-2 ml-8 align-middle">
-                      Records Per Page:{' '}
-                    </span>
-                    <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
-                      <SelectGroupTwo
-                        values={[30, 50, 100, 200, 500, 'All']}
-                        setSelectedOption={(val) => setpagesval(val)}
-                        selectedOption={pagesval}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <span>
-                  Page:{' '}
-                  {pagination.state.getPages(data.nodes).map((_, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      className="rounded"
-                      style={{
-                        color: pagination.state.page === index ? 'white' : '',
-                        width: '20px',
-                        margin: '0px 5px',
-                        padding: '2px',
-                        backgroundColor:
-                          pagination.state.page === index ? '#3C50E0' : '',
-                      }}
-                      onClick={() => pagination.fns.onSetPage(index)}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
-                </span>
-              </div>
-              <div className="hidden">
-                <Table
-                  id="my-table"
-                  data={data}
-                  pagination={pagination}
-                  theme={theme}
-                >
-                  {(tableList) => (
-                    <>
-                      <Header>
-                        <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                          <HeaderCell>ID</HeaderCell>
-                          <HeaderCell>Name</HeaderCell>
-                          <HeaderCell>Role</HeaderCell>
-                        </HeaderRow>
-                      </Header>
-
-                      <Body>
-                        {tableList.map((item) => (
-                          <Row
-                            key={item.id}
-                            item={item}
-                            className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
-                          >
-                            <Cell className="  ">
-                              <span>{item.title}</span>
-                            </Cell>
-
-                            <Cell className="  ">
-                              <span>{item.instructor}</span>
-                            </Cell>
-                          </Row>
-                        ))}
-                      </Body>
-                    </>
-                  )}
-                </Table>
-              </div>
-            </div>
-          </div>{' '}
-        </div>
-        <div className="w-4/12 mr-5">
-          <div className="grid  gap-8">
-            <div className="col-span-12">
+      <div className="w-4/12 ">
+          <div className=" gap-8">
               <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                   <h3 className="font-medium text-black dark:text-white">
                     Add New Staff
                   </h3>
                 </div>
-                <div className="p-7">
-                  <form action="#">
+                <div className="p-4">
+                <form ref={formRef1}>                   
                     <div className="w-full mb-4 sm:w-2/2">
                       <label
                         className="mb-3 block text-sm font-small text-black dark:text-white"
@@ -592,7 +393,7 @@ console.log(data.nodes)
                         Address
                       </label>
                       <textarea
-                          className="w-full rounded border border-stroke bg-gray py-3  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          className="w-full rounded border border-stroke bg-gray py-3  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                           name="bio"
                           id="bio"
                           rows={2}
@@ -610,7 +411,7 @@ console.log(data.nodes)
                         Notes
                       </label>
                       <textarea
-                          className="w-full rounded border border-stroke bg-gray py-3  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          className="w-full rounded border border-stroke bg-gray py-3  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                           name=""
                           id=""
                           rows={2}
@@ -892,7 +693,224 @@ console.log(data.nodes)
               </div>
             </div>
           </div>
+        <div className="w-8/12 flex-col">
+          <div
+            className={
+              'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
+            }
+          >
+            <div className="max-w-full overflow-x-auto">
+              <div className="w-full  flex justify-between  ">
+                <h3 className="font-medium text-black py-3 dark:text-white">
+                  Staff
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            className={
+              'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+            }
+          >
+            <div className="max-w-full overflow-x-auto">
+              <div className="w-full  flex justify-between ">
+                <div className=" flex w-7/12 gap-3">
+                  <div className="sm:w-2/5 ">
+                    <label
+                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                      style={{ color: '#A9B5B3' }}
+                      onClick={(e) => {
+                        handleDownloadPdf();
+                      }}
+                    >
+                      Download Page (PDF)
+                    </label>
+                  </div>
+
+                  <div className="w-full sm:w-2/5">
+                    <label
+                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                      style={{ color: '#A9B5B3' }}
+                      onClick={(e) => {
+                        handleDownloadCSV();
+                      }}
+                    >
+                      Download Page (Excel)
+                    </label>
+                  </div>
+                </div>
+
+                <div className={' w-5/12 flex flex-col float-right '}>
+                  <div className="flex justify-between align-middle mb-2">
+                    <label
+                      className=" w-2/2 pt-2 block text-sm font-medium text-black dark:text-white"
+                      htmlFor=" "
+                    >
+                      Search Staff{' '}
+                    </label>
+                  </div>
+
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-2 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    key={1}
+                    type="search"
+                    placeholder={'type here'}
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
+                  />
+                  {/* <button onClick={() => toPDF()}>Download PDF</button> */}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className={
+              'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
+            }
+          >
+            <div className="flex gap-3  flex-col">
+              <div className="px-2">
+                <Table
+                  data={data}
+                  pagination={pagination}
+                  layout={{ custom: true }}
+                  theme={theme}
+                >
+                  {(tableList) => (
+                    <>
+                      <Header>
+                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
+                          <HeaderCell>Name</HeaderCell>
+                          <HeaderCell>Status</HeaderCell>
+
+                          <HeaderCell>Actions</HeaderCell>
+                        </HeaderRow>
+                      </Header>
+
+                      <Body>
+                        {tableList.map((item) => (
+                          <Row key={item.id} item={item} className=" ">
+                            <Cell className="  ">
+                              {item.sFirstName} {item.sOtherName}{' '}
+                              {item.sLastName}
+                            </Cell>
+                            <Cell className="  ">
+                              {item.active == "True" ? "Active":"Inactive"}
+                        
+                            </Cell>
+
+                            <Cell>
+                              <div className="gap-2 flex">
+                                <EditSVG
+                                  clickFunction={() => handleEditbtn(item)}
+                                />
+                              {item.active == 'True' ? <InactiveSVG
+                                  clickFunction={() => handleinactivebtn(item.userId)}
+                                />: <ActiveSVG
+                                clickFunction={() => handleactivebtn(item.userId)}
+                              />}
+
+                                <DeleteSVG
+                                  clickFunction={() =>
+                                    handledeletbtn(item.userId)
+                                  }
+                                />
+                              </div>
+                            </Cell>
+                          </Row>
+                        ))}
+                      </Body>
+                    </>
+                  )}
+                </Table>
+              </div>
+              <div
+                className=" align-middle"
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <div className="flex">
+                  <span className="mt-2">
+                    Total Pages: {pagination.state.getTotalPages(data.nodes)}
+                  </span>
+                  <div className="flex  align-middle  flex-row mr-3">
+                    <span className="flex mt-2 ml-8 align-middle">
+                      Records Per Page:{' '}
+                    </span>
+                    <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
+                      <SelectGroupTwo
+                        values={[30, 50, 100, 200, 500, 'All']}
+                        setSelectedOption={(val) => setpagesval(val)}
+                        selectedOption={pagesval}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <span>
+                  Page:{' '}
+                  {pagination.state.getPages(data.nodes).map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      className="rounded"
+                      style={{
+                        color: pagination.state.page === index ? 'white' : '',
+                        width: '20px',
+                        margin: '0px 5px',
+                        padding: '2px',
+                        backgroundColor:
+                          pagination.state.page === index ? '#3C50E0' : '',
+                      }}
+                      onClick={() => pagination.fns.onSetPage(index)}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </span>
+              </div>
+              <div className="hidden">
+                <Table
+                  id="my-table"
+                  data={data}
+                  pagination={pagination}
+                  theme={theme}
+                >
+                  {(tableList) => (
+                    <>
+                      <Header>
+                        <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
+                          <HeaderCell>ID</HeaderCell>
+                          <HeaderCell>Name</HeaderCell>
+                          <HeaderCell>Role</HeaderCell>
+                        </HeaderRow>
+                      </Header>
+
+                      <Body>
+                        {tableList.map((item) => (
+                          <Row
+                            key={item.id}
+                            item={item}
+                            className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
+                          >
+                            <Cell className="  ">
+                              <span>{item.title}</span>
+                            </Cell>
+
+                            <Cell className="  ">
+                              <span>{item.instructor}</span>
+                            </Cell>
+                          </Row>
+                        ))}
+                      </Body>
+                    </>
+                  )}
+                </Table>
+              </div>
+            </div>
+          </div>{' '}
         </div>
+      
       </div>{' '}
     </DefaultLayout>
   );
