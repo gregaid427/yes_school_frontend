@@ -52,7 +52,9 @@ export const CreatestudentImageAction = createAsyncThunk(
       if (data?.success == 1) {
         toast.success('Picture Uploaded Successfully');
       }
-
+      if (data?.success == 0) {
+        toast.error('Error Uploading Picture');
+      }
       if (data == null) {
         toast.error('Error Uploading Picture');
       }
@@ -99,6 +101,7 @@ export const fetchSingleStudent = createAsyncThunk(
     }
   },
 );
+
 
 
 export const MasrkstudentWaiting = createAsyncThunk(
@@ -194,6 +197,26 @@ export const UpdatestudentAction = createAsyncThunk(
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/student/`,
         payload,
+        
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const StudentPicture = createAsyncThunk(
+  'update/studentpicture',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/studentlogo`,
+        payload,
         {
           headers: {
             'Content-type': 'multipart/form-data',
@@ -210,7 +233,6 @@ export const UpdatestudentAction = createAsyncThunk(
     }
   },
 );
-
 export const deleteSingleStudentAction = createAsyncThunk(
   'delete/singlestudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {

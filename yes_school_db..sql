@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 03, 2024 at 05:12 PM
+-- Generation Time: Aug 04, 2024 at 02:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,12 +42,48 @@ CREATE TABLE `class` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `expense`
+--
+
+CREATE TABLE `expense` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `expensehead` varchar(50) DEFAULT NULL,
+  `invoice` varchar(50) DEFAULT NULL,
+  `date` varchar(50) DEFAULT NULL,
+  `amount` varchar(50) DEFAULT '0.00',
+  `documentlink` varchar(50) DEFAULT NULL,
+  `description` varchar(50) DEFAULT NULL,
+  `createdby` varchar(50) DEFAULT NULL,
+  `createdat` varchar(50) DEFAULT NULL,
+  `filename` varchar(50) DEFAULT NULL,
+  `link` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `expensehead`
+--
+
+CREATE TABLE `expensehead` (
+  `expensehead` varchar(50) DEFAULT NULL,
+  `createdat` varchar(50) DEFAULT NULL,
+  `createdby` varchar(50) DEFAULT NULL,
+  `notes` varchar(50) DEFAULT NULL,
+  `id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `guardian`
 --
 
 CREATE TABLE `guardian` (
   `guardianId` int(11) NOT NULL,
-  `studentId` varchar(20) DEFAULT NULL,
+  `userId` varchar(20) DEFAULT NULL,
+  `student_Id` varchar(20) DEFAULT NULL,
   `gFirstName` varchar(30) DEFAULT NULL,
   `gLastName` varchar(30) DEFAULT NULL,
   `gOtherName` varchar(30) DEFAULT NULL,
@@ -108,14 +144,31 @@ CREATE TABLE `inventorycartegory` (
 CREATE TABLE `inventorystock` (
   `id` int(11) NOT NULL,
   `item` varchar(50) DEFAULT NULL,
-  `quantity` varchar(20) DEFAULT '0',
-  `cartegory` varchar(50) DEFAULT NULL,
   `availableqty` varchar(20) DEFAULT '0',
+  `quantity` int(11) DEFAULT 0,
+  `cartegory` varchar(50) DEFAULT NULL,
   `supplier` varchar(30) DEFAULT NULL,
   `createdby` varchar(50) DEFAULT NULL,
   `date` varchar(50) DEFAULT NULL,
   `isactive` varchar(10) DEFAULT 'true',
   `note` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `school`
+--
+
+CREATE TABLE `school` (
+  `name` varchar(60) DEFAULT NULL,
+  `address` varchar(1000) DEFAULT NULL,
+  `contact1` varchar(50) DEFAULT NULL,
+  `contact2` varchar(50) DEFAULT NULL,
+  `logolink` varchar(100) DEFAULT NULL,
+  `filename` varchar(200) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -150,38 +203,72 @@ CREATE TABLE `sectiongroup` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `session`
+--
+
+CREATE TABLE `session` (
+  `id` int(11) NOT NULL,
+  `sessionname` varchar(50) DEFAULT NULL,
+  `startmonth` varchar(10) DEFAULT NULL,
+  `createdat` varchar(50) DEFAULT NULL,
+  `createdby` varchar(50) DEFAULT NULL,
+  `active` varchar(50) DEFAULT 'false'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `staff`
+--
+
+CREATE TABLE `staff` (
+  `userId` varchar(20) DEFAULT NULL,
+  `sEmail` varchar(50) DEFAULT NULL,
+  `sGender` varchar(50) DEFAULT NULL,
+  `sLastName` varchar(50) DEFAULT NULL,
+  `sFirstName` varchar(50) DEFAULT NULL,
+  `contact1` varchar(50) DEFAULT NULL,
+  `contact2` varchar(50) DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL,
+  `staffId` varchar(50) DEFAULT NULL,
+  `definedRole` varchar(50) DEFAULT NULL,
+  `rolecode` varchar(20) DEFAULT NULL,
+  `info` varchar(100) DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `active` varchar(20) DEFAULT 'True'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `staff`
+--
+
+INSERT INTO `staff` (`userId`, `sEmail`, `sGender`, `sLastName`, `sFirstName`, `contact1`, `contact2`, `address`, `staffId`, `definedRole`, `rolecode`, `info`, `id`, `active`) VALUES
+('zhhmp6', 'user@user.com', 'Male', 'User', 'User', '34354645', '43543', 'Accra', NULL, 'Admin', NULL, 'dfg', 1, 'True');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `student`
 --
 
 CREATE TABLE `student` (
   `id` int(11) NOT NULL,
+  `userId` varchar(20) DEFAULT NULL,
   `student_id` varchar(20) DEFAULT NULL,
   `firstName` varchar(50) DEFAULT NULL,
   `lastName` varchar(50) DEFAULT NULL,
   `otherName` varchar(50) DEFAULT NULL,
   `class` varchar(20) DEFAULT NULL,
+  `previousclass` varchar(50) DEFAULT NULL,
   `section` varchar(20) DEFAULT NULL,
   `religion` varchar(20) DEFAULT NULL,
   `gender` varchar(10) DEFAULT NULL,
   `dateofbirth` varchar(50) DEFAULT NULL,
-  `g1fname` varchar(50) DEFAULT NULL,
-  `g1lastname` varchar(50) DEFAULT NULL,
-  `g1sex` varchar(50) DEFAULT NULL,
-  `g1address` varchar(110) DEFAULT NULL,
-  `g1email` varchar(50) DEFAULT NULL,
-  `g1contact1` varchar(50) DEFAULT NULL,
-  `g1relation` varchar(50) DEFAULT NULL,
-  `g1contact2` varchar(50) DEFAULT NULL,
-  `g2fname` varchar(50) DEFAULT NULL,
-  `g2lastname` varchar(50) DEFAULT NULL,
-  `g2sex` varchar(50) DEFAULT NULL,
-  `g2address` varchar(110) DEFAULT NULL,
-  `g2email` varchar(50) DEFAULT NULL,
-  `g2contact1` varchar(50) DEFAULT NULL,
-  `g2relation` varchar(50) DEFAULT NULL,
-  `g2contact2` varchar(50) DEFAULT NULL,
   `accountBalance` decimal(10,0) DEFAULT 0,
-  `isActive` varchar(20) DEFAULT 'true'
+  `status` varchar(20) DEFAULT 'current',
+  `isActive` varchar(20) DEFAULT 'true',
+  `filename` varchar(100) DEFAULT NULL,
+  `imagelink` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -207,23 +294,24 @@ CREATE TABLE `subject` (
 --
 
 CREATE TABLE `users` (
+  `userId` varchar(20) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `role` varchar(10) DEFAULT NULL,
   `password` varchar(200) DEFAULT NULL,
-  `parent` varchar(10) DEFAULT NULL,
-  `student` varchar(10) DEFAULT NULL,
-  `admin` varchar(10) DEFAULT NULL,
-  `superAdmin` varchar(10) DEFAULT NULL,
-  `feesManage` varchar(10) DEFAULT NULL,
-  `expenseManage` varchar(10) DEFAULT NULL,
-  `examManage` varchar(10) DEFAULT NULL,
-  `teacher` varchar(10) DEFAULT NULL,
-  `userId` int(11) NOT NULL,
+  `rolecode` varchar(10) DEFAULT '0',
+  `Id` int(11) NOT NULL,
   `pincode` varchar(20) DEFAULT NULL,
   `createdAt` varchar(50) DEFAULT NULL,
   `createdBy` varchar(20) DEFAULT NULL,
   `isActive` varchar(10) DEFAULT 'true'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`userId`, `email`, `role`, `password`, `rolecode`, `Id`, `pincode`, `createdAt`, `createdBy`, `isActive`) VALUES
+('zhhmp6', 'user@user.com', 'staff', '$2b$10$C/hL3UHigM38cpVJ4m4vlOYZ1v/OKriPrdz1O8ehQZNnlHbbcfNr.', '111111', 1, '6501', 'Sun, 04 Aug 2024 00:22:22 GMT', 'undefined', 'true');
 
 --
 -- Indexes for dumped tables
@@ -233,6 +321,18 @@ CREATE TABLE `users` (
 -- Indexes for table `class`
 --
 ALTER TABLE `class`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `expense`
+--
+ALTER TABLE `expense`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `expensehead`
+--
+ALTER TABLE `expensehead`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -260,6 +360,12 @@ ALTER TABLE `inventorystock`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `school`
+--
+ALTER TABLE `school`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `section`
 --
 ALTER TABLE `section`
@@ -269,6 +375,18 @@ ALTER TABLE `section`
 -- Indexes for table `sectiongroup`
 --
 ALTER TABLE `sectiongroup`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `session`
+--
+ALTER TABLE `session`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `staff`
+--
+ALTER TABLE `staff`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -287,7 +405,7 @@ ALTER TABLE `subject`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`userId`);
+  ADD PRIMARY KEY (`Id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -300,10 +418,22 @@ ALTER TABLE `class`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `expense`
+--
+ALTER TABLE `expense`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `expensehead`
+--
+ALTER TABLE `expensehead`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `guardian`
 --
 ALTER TABLE `guardian`
-  MODIFY `guardianId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `guardianId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -324,16 +454,34 @@ ALTER TABLE `inventorystock`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `school`
+--
+ALTER TABLE `school`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `section`
 --
 ALTER TABLE `section`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `sectiongroup`
 --
 ALTER TABLE `sectiongroup`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `session`
+--
+ALTER TABLE `session`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `staff`
+--
+ALTER TABLE `staff`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `student`
@@ -351,7 +499,7 @@ ALTER TABLE `subject`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -3,14 +3,21 @@ import DefaultLayout from '../layout/DefaultLayout';
 import React from 'react';
 
 import Loader from '../common/Loader';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Webcam from 'react-webcam';
 
 const EditCamera = () => {
 
 
-  const navigate = useNavigate()
+  const [val, setVal] = React.useState(null);
+  const location = useLocation();
 
+  const { value } = location?.state
+
+  useEffect(() => {
+    setVal(value)
+  }, []);
+  const navigate = useNavigate()
 
   const webcamRef = React.useRef(null);
   const [imgSrc, setImgSrc] = React.useState(null);
@@ -86,7 +93,7 @@ setFile(file)
                     type=""
                     onClick={(e) =>{ 
                       
-                      navigate('/student/editinfo',{state:{pic:imgSrc,file:files}})}}
+                      navigate('/student/editinfo',{state:{pic:imgSrc,file:files,value:val}})}}
                   >
                     Done
                   </button></div>  }

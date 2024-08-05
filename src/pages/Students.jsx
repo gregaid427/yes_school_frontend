@@ -38,6 +38,7 @@ import StudentModal from '../components/StudentModal';
 
 import SectionSelect1 from '../components/SectionsSelect1';
 import ClassSelect from '../components/ClassSelect';
+import { fetchUserdataAction } from '../redux/slices/usersSlice';
 
 const Student = () => {
   ///////////////////////////////////
@@ -196,12 +197,13 @@ const Student = () => {
  const navigate = useNavigate()
 
   const handleviewbtn = (value) => {
-    navigate('/student/singlestudent', {state:{action: 1,value:value.student_id}})
+    navigate("/student/editinfo", {state:{action: 1,value:value}})
+    dispatch(fetchUserdataAction({role:'student',id:value.student_id}));
 
   };
   const handleEditbtn = (value) => {
-    dispatch(fetchSingleStudent(value.student_id));
-    navigate("/student/editinfo", {state:{action: 2,value:value.student_id}})
+    dispatch(fetchUserdataAction({role:'student',id:value.student_id}));
+    navigate("/student/editinfo", {state:{action: 2,value:value}})
 
   };
   const handledeletbtn = (value) => {

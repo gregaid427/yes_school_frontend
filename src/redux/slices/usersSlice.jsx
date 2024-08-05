@@ -55,7 +55,6 @@ export const loginUserAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/users/login`,
         payload,
       );
-console.log(import.meta.env.VITE_APP_BASE_URL)
 console.log(data)
 
       // if (data?.success == 0) {
@@ -310,7 +309,23 @@ export const updateschoolinfoAction = createAsyncThunk(
     }
   },
 );
+export const fetchUserdataAction = createAsyncThunk(
+  'fetch/userdata',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/userdata`,payload
+      );
 
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const SchoollogoAction = createAsyncThunk(
   'create/logo',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -406,7 +421,22 @@ const UsersSlices = createSlice({
       state.error = action.payload;
       state.logo = undefined;
     });
+    
+    builder.addCase(fetchUserdataAction.pending, (state, action) => {
+      state.fetchUserdatloading = true;
+      state.fetchUserdat= false;
 
+    });
+    builder.addCase(fetchUserdataAction.fulfilled, (state, action) => {
+      state.fetchUserdat = action?.payload;
+      state.fetchUserdatloading = false;
+      state.fetchUserdaterror = undefined;
+    });
+    builder.addCase(fetchUserdataAction.rejected, (state, action) => {
+      state.logoloading = false;
+      state.fetchUserdaterror = action.payload;
+      state.fetchUserdat = undefined;
+    });
     builder.addCase(loginUserAction.pending, (state, action) => {
       state.loginloading = true;
       state.loginUser = null;
@@ -425,9 +455,12 @@ const UsersSlices = createSlice({
     builder.addCase(CreatesStaffAction.pending, (state, action) => {
       state.allStaffloading = true;
       state.allstaff = undefined;
+      state.allstaff1 = undefined;
+
     });
     builder.addCase(CreatesStaffAction.fulfilled, (state, action) => {
       state.allstaff = action?.payload;
+      state.allstaff1 = action?.payload;
       state.allStaffloading = false;
       state.error = undefined;
     });
@@ -440,6 +473,8 @@ const UsersSlices = createSlice({
     builder.addCase(fetchAllstaffAction.pending, (state, action) => {
       state.allStaffloading = true;
       state.allstaff = undefined;
+      state.allstaff1 = undefined;
+
     });
     builder.addCase(fetchAllstaffAction.fulfilled, (state, action) => {
       state.allstaff = action?.payload;

@@ -67,7 +67,7 @@ const Staff = () => {
   const users = useSelector((state) => state?.user);
   const formRef1 = useRef();
 
-  const { allstaff, allStaffloading} = users;
+  const { allstaff, allStaffloading,allstaff1} = users;
   function resetFormStates() {
     // formRef.current.reset();
     formRef1.current.reset();
@@ -86,6 +86,14 @@ const Staff = () => {
 
     }
   }, [allstaff]);
+  useEffect(() => {
+
+    if (allstaff1?.success == 1) {
+    
+      resetFormStates()
+
+    }
+  }, [allstaff1]);
 
   let data = { nodes };
 

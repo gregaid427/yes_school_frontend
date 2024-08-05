@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   CreatestudentImageAction,
   UpdatestudentAction,
-  fetchSingleStudent,
   resetUdateStudent,
 } from '../redux/slices/studentSlice';
 import { toast } from 'react-hot-toast';
@@ -23,17 +22,18 @@ import StudentCredential from './Studentscredential';
 import Loader from '../common/Loader';
 // import { useHistory } from 'react-router-dom';
 
-const SingleStudentEdit = () => {
+const fetchUserdatEdit = () => {
   const [PageAction, setPageAction] = useState();
 
   const location = useLocation();
   const { action, value } = location?.state;
+  console.log(action)
 
   const [isChecked, setIsChecked] = useState(false);
 
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
-  const { singleStudent, singleStudentloading, updateStudent } = student;
+  const {  fetchUserdatloading, updateStudent } = student;
 
   const [data, setData] = useState(null);
   const [paramaction, setParamaction] = useState(1);
@@ -100,17 +100,18 @@ const SingleStudentEdit = () => {
 
     setPicturename(files?.name)
 console.log(files)
+setTimeout(() => setLoader(false), 1000);
 
 
-    console.log(singleStudent);
-    if (singleStudent == undefined) {
-      toast.error('Error loading Student Data');
-      navigate('/student/info');
+   // console.log(fetchUserdat);
+    // if (fetchUserdat == undefined) {
+    //   toast.error('Error loading Student Data');
+    //   navigate('/student/info');
+    // }
 
 
-    }
     //   // setTimeout(() => toast.success('New Student Added Successfully'), 900);
-    //  if(singleStudent?.data == undefined )
+    //  if(fetchUserdat?.data == undefined )
     //  navigate("/student/info")
   }, []);
 
@@ -118,7 +119,7 @@ console.log(files)
     if (updateStudent?.success == 1) {
       toast.success('Student Records Updated Successfully');
       dispatch(resetUdateStudent());
-      toast.success('navigate to preview page to be done yet');
+      navigate("/student/info")
     }
     if (updateStudent?.success == 0) {
       toast.error('Error Updating Student Info');
@@ -127,16 +128,14 @@ console.log(files)
     //  navigate("/student/info")
   }, [updateStudent]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     if (firstName == '') return toast.error('Please Fill Out Required Fields');
 
-    const data = new FormData();
-    let customfile = hashgenerator() + picturename;
 
-    const Mydata = JSON.stringify({
+
+    const Mydata = {
       studentId: studentID,
       ID:ID,
-
       firstName: firstName,
       lastName: lastName,
       otherName: otherName,
@@ -165,23 +164,20 @@ console.log(files)
       gsex2: gsex2,
       feeArrears: feeArrears,
       feeCredit: feeCredit,
-      filename: customfile,
-    });
+    };
+
+ dispatch(UpdatestudentAction(Mydata));
+  };
+
+  const handlesubmitPic = () => {
     function hashgenerator() {
       return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
     }
-
-    data.append(customfile, picture);
-    data.append('data', Mydata);
-    console.log(Mydata);
-    dispatch(UpdatestudentAction(data));
-  };
-
-  const handlesubmit1 = () => {
+    let customfile = hashgenerator() + picturename;
     const datay = new FormData();
   
     let Mydata = JSON.stringify({
-      id:  data[0]?.userId,
+      id:  value.student_id,
       filename: customfile,
   
     
@@ -194,48 +190,51 @@ console.log(files)
   }
 
   const clad = useSelector((state) => state?.classes);
+  const users = useSelector((state) => state?.user);
+
 
   const { sectionloading, fetchSection, fetchAllClass } = clad;
+  const { fetchUserdat } = users;
+
 
   useEffect(() => {
-    if (singleStudent?.success == 1) {
-      setData(singleStudent?.data);
+    if (fetchUserdat?.success == 1) {
+      setData(fetchUserdat?.data);
       setLoader(false);
-      let data = singleStudent?.data[0];
-      setStudentID(singleStudent?.data[0].student_id);
-      setID(singleStudent?.data[0].userId);
+      //let data = fetchUserdat?.data[0];
+      setStudentID(value.student_id);
+      setID(value.userId);
 
-      setStudentfirstName(singleStudent?.data[0].firstName);
-      setStudentlastName(singleStudent?.data[0].lastName);
-      setStudentotherName(singleStudent?.data[0].otherName);
-      setGender(singleStudent?.data[0].gender);
-      setPicture(singleStudent?.data[0].picture);
-      setgfName1(singleStudent?.data[0].g1fname);
-      setglName1(singleStudent?.data[0].g1lastname);
-      setgfName2(singleStudent?.data.g2fname);
-      setglName2(singleStudent?.data[0].g2lastname);
-      setgcontact1(singleStudent?.data[0].g1contact1);
-      setgcontact2(singleStudent?.data[0].g1contact2);
-      setgcontact3(singleStudent?.data[0].g2contact1);
-      setgcontact4(singleStudent?.data[0].g2contact2);
-      setemail1(singleStudent?.data[0].g1email);
-      setemail2(singleStudent?.data[0].g2email);
-      setgAddress1(singleStudent?.data[0].g1address);
-      setgAddress2(singleStudent?.data[0].g2address);
-      setgsex2(singleStudent?.data[0].g2sex);
-      setgsex1(singleStudent?.data[0].g1sex);
-      setRelation1(singleStudent?.data[0].g1relation);
-      setRelation2(singleStudent?.data[0].g2relation);
-      setreligion(singleStudent?.data[0].religion);
-      setdateofbirth(singleStudent?.data[0].dateofbirth);
-      setcreatedBy(singleStudent?.data[0].createdBy);
-      setclazz(singleStudent?.data[0].class);
-      setsectionzz(singleStudent?.data[0].section);
-      setfileName(singleStudent?.data[0].filename);
-      setimagelink(singleStudent?.data[0].imagelink);
+      setStudentfirstName(value.firstName);
+      setStudentlastName(value.lastName);
+      setStudentotherName(value.otherName);
+      setGender(value.gender);
+      setPicture(value.imagelink);
+      setgfName1(fetchUserdat?.data[0].gFirstName);
+      setglName1(fetchUserdat?.data[0].gLastName);
+      setgfName2(fetchUserdat?.data[1].gFirstName);
+      setglName2(fetchUserdat?.data[1].gLastName);
+      setgcontact1(fetchUserdat?.data[0].gContact1);
+      setgcontact2(fetchUserdat?.data[0].gContact2);
+      setgcontact3(fetchUserdat?.data[1].gContact1);
+      setgcontact4(fetchUserdat?.data[1].gContact2);
+      setemail1(fetchUserdat?.data[0].gEmail);
+      setemail2(fetchUserdat?.data[1].gEmail);
+      setgAddress1(fetchUserdat?.data[0].gAddress);
+      setgAddress2(fetchUserdat?.data[1].gAddress);
+      setgsex2(fetchUserdat?.data[1].gSex);
+      setgsex1(fetchUserdat?.data[0].gSex);
+      setRelation1(fetchUserdat?.data[0].gRelation);
+      setRelation2(fetchUserdat?.data[1].gRelation);
+      setreligion(value.religion);
+      setdateofbirth(value.dateofbirth);
+      setclazz(value.class);
+      setsectionzz(value.section);
+      setfileName(value.filename);
+      setimagelink(value.imagelink);
 
       if (fetchSection?.success == 1) {
-        let arrr = [singleStudent?.data[0].section];
+        let arrr = [value.section];
         let i = 0;
         while (i < clad?.fetchSection?.data.length) {
           arrr.push(clad?.fetchSection?.data[i]?.sectionName);
@@ -243,11 +242,11 @@ console.log(files)
         }
 
         setsections(arrr);
-        // setsectionzz(arrr[0]);
+        setsectionzz(arrr[0]);
 
         if (fetchAllClass?.success == 1) {
           let i = 0;
-          let arr = [singleStudent?.data[0].class];
+          let arr = [value.class];
           while (i < clad?.fetchAllClass?.data.length) {
             arr.push(clad?.fetchAllClass?.data[i].title);
             i++;
@@ -257,17 +256,15 @@ console.log(files)
         }
       }
     }
-    console.log(singleStudent);
-    if (singleStudent?.success == 0) {
+    if (fetchUserdat?.success == 0) {
       toast.error('Unable To load Student Data');
+      navigate(-1)
     }
-  }, [singleStudent]);
+  }, [fetchUserdat]);
 
   const [sections, setsections] = useState([]);
 
-  function handleNextButton() {
-    setButonState(buttonState + 1);
-  }
+
   function hashgenerator() {
     return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
   }
@@ -308,7 +305,7 @@ console.log(files)
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue={data[0]?.firstName}
+                        defaultValue={value.firstName}
                         onChange={(e) => setStudentfirstName(e.target.value)}
                       />
                     </div>
@@ -325,7 +322,7 @@ console.log(files)
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue={data[0]?.lastName}
+                        defaultValue={value.lastName}
                         onChange={(e) => setStudentlastName(e.target.value)}
                       />
                     </div>
@@ -345,7 +342,7 @@ console.log(files)
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue={data[0]?.otherName}
+                        defaultValue={value.otherName}
                         onChange={(e) => setStudentotherName(e.target.value)}
                       />
                     </div>
@@ -360,7 +357,7 @@ console.log(files)
 
                         <div className="relative z-20 bg-white dark:bg-form-input">
                           <SelectGroupTwo
-                            values={[data[0]?.gender, 'Male', 'Female']}
+                            values={[value.gender, 'Male', 'Female']}
                             setSelectedOption={(val) => setGender(val)}
                             selectedOption={gender}
                           />
@@ -377,7 +374,7 @@ console.log(files)
                         <div className="relative z-20 bg-white dark:bg-form-input">
                           <SelectGroupTwo
                             values={[
-                              data[0]?.religion,
+                              value.religion,
                               'Christian',
                               'Muslim',
                               'Other',
@@ -404,7 +401,7 @@ console.log(files)
                         placeholder="12/10/2021"
                         // data-class="flatpickr-right"
                         name="dateofbirth"
-                        defaultValue={data[0]?.dateofbirth}
+                        defaultValue={value.dateofbirth}
                         type="date"
                         onChange={(e) => {
                           setdateofbirth(e.target.value);
@@ -449,7 +446,7 @@ console.log(files)
                       </div>
                     </div>
                   </div>
-                  <div className="border-b border-stroke py-6  dark:border-strokedark">
+                  {/* <div className="border-b border-stroke py-6  dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
                   Login Credentials
                 </h3>
@@ -469,7 +466,7 @@ console.log(files)
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue={data[0]?.firstName}
+                        defaultValue={value.firstName}
                         onChange={(e) => setStudentfirstName(e.target.value)}
                       />
                     </div>
@@ -490,7 +487,8 @@ console.log(files)
                         onChange={(e) => setStudentlastName(e.target.value)}
                       />
                     </div>
-                  </div>                </form>
+                  </div>     */}
+                              </form>
                 {/* <div className="flex mt-10 justify-end gap-4.5">
                   <button
                     className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
@@ -545,7 +543,7 @@ console.log(files)
                     <button
                       className="flex  justify-center rounded bg-black py-2 px- font-medium text-gray hover:bg-opacity-90"
                       type=""
-                      onClick={(e) => navigate('/student/editcapture')}
+                      onClick={(e) => navigate('/student/editcapture', {state:{value:value}})}
                     >
                       Camera Capture
                     </button>
@@ -555,7 +553,7 @@ console.log(files)
                       className="flex mt-2  w-full justify-center rounded bg-primary py-2 px- font-medium text-gray hover:bg-opacity-90"
                       type=""
                       onClick={(e) => {
-                        handlesubmit1();
+                        handlesubmitPic();
                       }}
                     >
                       Save{' '}
@@ -579,7 +577,6 @@ console.log(files)
             
           </div>
         </div>
-
         <div className="flex flex-row w-4/6   gap-3" style={{}}>
           <div className="w-full ">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -589,6 +586,8 @@ console.log(files)
                 </h3>
               </div>
               <div className="flex flex-col">
+              <div className={!data[0] ? 'hidden':''} >  
+
                 <div className=" w-full">
                   <div className="p-7">
                     <form>
@@ -606,7 +605,7 @@ console.log(files)
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue={data[0]?.g1fname}
+                            defaultValue={data[0]?.gFirstName}
                             onChange={(e) => setgfName1(e.target.value)}
                           />
                         </div>
@@ -624,7 +623,7 @@ console.log(files)
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue={data[0]?.g1lastname}
+                            defaultValue={data[0]?.gLastName}
                             onChange={(e) => setglName1(e.target.value)}
                           />
                         </div>
@@ -644,7 +643,7 @@ console.log(files)
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue={data[0]?.g1email}
+                            defaultValue={data[0]?.gEmail}
                             onChange={(e) => setemail1(e.target.value)}
                           />
                         </div>
@@ -659,9 +658,9 @@ console.log(files)
 
                             <div className="relative z-20 bg-white dark:bg-form-input">
                               <SelectGroupTwo
-                                values={['Male', 'Female']}
+                                values={[data[0].gSex,'Male', 'Female']}
                                 setSelectedOption={(val) => setgsex1(val)}
-                                selectedOption={gsex1}
+                                selectedOption={data[0].gSex}
                               />
                             </div>
                           </div>
@@ -679,7 +678,7 @@ console.log(files)
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={data[0]?.g1relation}
+                              defaultValue={data[0]?.gRelation}
                               onChange={(e) => setRelation1(e.target.value)}
                             />
                           </div>
@@ -700,7 +699,7 @@ console.log(files)
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue={data[0]?.g1contact1}
+                            defaultValue={data[0]?.gContact1}
                             onChange={(e) => setgcontact1(e.target.value)}
                           />
                         </div>
@@ -718,7 +717,7 @@ console.log(files)
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue={data[0]?.g1contact2}
+                            defaultValue={data[0]?.gContact2}
                             onChange={(e) => setgcontact2(e.target.value)}
                           />
                         </div>
@@ -732,12 +731,12 @@ console.log(files)
                         </label>
                         <div className="relative">
                           <textarea
-                            className="w-full dark:bg-form-input rounded border border-stroke  py-2  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark  dark:text-white dark:focus:border-primary"
+                            className="w-full dark:bg-form-input rounded border border-stroke  py-2  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark  dark:text-white dark:focus:border-primary"
                             name="bio"
                             id="bio"
-                            rows={1}
+                            rows={2}
                             placeholder=""
-                            defaultValue={data[0]?.g1address}
+                            defaultValue={data[0]?.gAddress}
                             // defaultValue={data?.gAddress}
                             onChange={(e) => setgAddress1(e.target.value)}
                           ></textarea>
@@ -745,7 +744,9 @@ console.log(files)
                       </div>
                     </form>
                   </div>
-                </div>
+                </div>                 </div>
+
+                <div className={!data[1] ? 'hidden':''} >  
 
                 <div className=" w-full">
                   <div className="p-7">
@@ -764,7 +765,7 @@ console.log(files)
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue={data[0]?.g2fname}
+                            defaultValue={data[1]?.gFirstName}
                             onChange={(e) => setgfName2(e.target.value)}
                           />
                         </div>
@@ -782,7 +783,7 @@ console.log(files)
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue={data[0]?.g2lastname}
+                            defaultValue={data[1]?.gLastName}
                             onChange={(e) => setglName2(e.target.value)}
                           />
                         </div>
@@ -802,7 +803,7 @@ console.log(files)
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue={data[0]?.g2email}
+                            defaultValue={data[0]?.gEmail}
                             onChange={(e) => setemail2(e.target.value)}
                           />
                         </div>
@@ -817,9 +818,9 @@ console.log(files)
 
                             <div className="relative z-20 bg-white dark:bg-form-input">
                               <SelectGroupTwo
-                                values={['Male', 'Female']}
+                                values={[data[1].gSex,'Male', 'Female']}
                                 setSelectedOption={(val) => setgsex1(val)}
-                                selectedOption={'Female'}
+                                selectedOption={data[1].gsex}
                               />
                             </div>
                           </div>
@@ -837,7 +838,7 @@ console.log(files)
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={data[0]?.g2relation}
+                              defaultValue={data[1]?.gRelation}
                               onChange={(e) => setRelation2(e.target.value)}
                             />
                           </div>
@@ -858,7 +859,7 @@ console.log(files)
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue={data[0]?.g2contact2}
+                            defaultValue={data[0]?.gContact1}
                             onChange={(e) => setgcontact3(e.target.value)}
                           />
                         </div>
@@ -876,7 +877,7 @@ console.log(files)
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue={data[0]?.g2contact2}
+                            defaultValue={data[0]?.gContact2}
                             onChange={(e) => setgcontact4(e.target.value)}
                           />
                         </div>
@@ -891,12 +892,12 @@ console.log(files)
                         </label>
                         <div className="relative">
                           <textarea
-                            className="w-full dark:bg-form-input rounded border border-stroke  py-2  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark  dark:text-white dark:focus:border-primary"
+                            className="w-full dark:bg-form-input rounded border border-stroke  py-2  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark  dark:text-white dark:focus:border-primary"
                             name="bio"
                             id="bio"
-                            rows={1}
+                            rows={2}
                             placeholder=""
-                            defaultValue={data[0]?.g2address}
+                            defaultValue={data[0]?.gAddress}
                             // defaultValue={data?.gAddress}
                             onChange={(e) => setgAddress2(e.target.value)}
                           ></textarea>
@@ -925,7 +926,7 @@ console.log(files)
             </div>
           </div>
         </div>
-
+        </div>
         {/* Fees Management info */}
 
         <div className="flex flex-row w-4/6    gap-3" style={{}}>
@@ -1104,6 +1105,7 @@ console.log(files)
                     </div>
                   </div>
                 </form>
+
                 <div className="flex mt-10 justify-end gap-4.5">
                   <button
                     className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
@@ -1112,14 +1114,18 @@ console.log(files)
                   >
                     Back
                   </button>
+                  
+
                   <button
-                    className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                    className={action==1 ? 'hidden' : 'flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90'}
                     type=""
                     onClick={(e) => handleSubmit()}
                   >
                     Save{' '}
                   </button>
                 </div>
+                
+
               </div>
             </div>
           </div>
@@ -1129,4 +1135,4 @@ console.log(files)
   );
 };
 
-export default SingleStudentEdit;
+export default fetchUserdatEdit;

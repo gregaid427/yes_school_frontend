@@ -3,12 +3,13 @@ import DefaultLayout from '../layout/DefaultLayout';
 import React from 'react';
 
 import Loader from '../common/Loader';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Webcam from 'react-webcam';
 
 const AdmissionCapture = () => {
 
-
+  const location = useLocation();
+  const { value } = location?.state
   const navigate = useNavigate()
 
 
@@ -86,7 +87,7 @@ setFile(file)
                     type=""
                     onClick={(e) =>{ 
                       
-                      navigate('/student/studentcredential',{state:{pic:imgSrc,file:files}})}}
+                      navigate('/student/studentcredential',{state:{pic:imgSrc,file:files,value:value}})}}
                   >
                     Done
                   </button></div>  }
