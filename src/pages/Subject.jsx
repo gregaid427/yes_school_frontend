@@ -252,7 +252,7 @@ const Subject = () => {
                               id={'type'}
                               className="sr-only"
                               onChange={() => {
-                                setIsChecked1(!isChecked1);
+                                setIsChecked1(false);
                                 setType('Theory');
                               }}
                             />
@@ -293,7 +293,7 @@ const Subject = () => {
                               id={'type2'}
                               className="sr-only"
                               onChange={() => {
-                                setIsChecked1(!isChecked1);
+                                setIsChecked1(true);
                                 setType('Practical');
                               }}
                             />

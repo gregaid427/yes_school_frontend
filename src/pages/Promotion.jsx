@@ -29,8 +29,10 @@ import {
   deleteSingleStudentAction,
   fetchBulkStudent,
   fetchCustomStudentsClassAction,
+  fetchCustomStudentsClassPromoteAction,
   fetchSingleStudent,
   fetchStudentsClassAction,
+  fetchStudentsClassPromoteAction,
   PromoteAllAction,
   PromoteSelectedAction,
   resetPromote,
@@ -52,7 +54,7 @@ const Promotion = () => {
 
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState('top');
-  const [allStudent, setAllStudent] = useState(false);
+  const [allStudent, setAllStudent] = useState(true);
   const [onlySelected, setOnlySelected] = useState(false);
   const [repeat, setRepeat] = useState([]);
 
@@ -157,7 +159,7 @@ const Promotion = () => {
       padding: 5px 0px;
     }
   `, Table: `
-  --data-table-library_grid-template-columns:  15% 30% 20% 15% 20%;
+  --data-table-library_grid-template-columns:  15% 27% 24%  17% 17%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -265,12 +267,12 @@ const Promotion = () => {
     console.log(data);
     if (sectionzz == 'All Sections') {
       // setclazz(clazz);
-      dispatch(fetchStudentsClassAction(data));
+      dispatch(fetchStudentsClassPromoteAction(data));
       console.log('all');
     }
     if (sectionzz != 'All Sections') {
       setsectionzz(sectionzz);
-      dispatch(fetchCustomStudentsClassAction(data));
+      dispatch(fetchCustomStudentsClassPromoteAction(data));
       console.log('custom');
     }
   }
@@ -477,9 +479,9 @@ const Promotion = () => {
               </div>
             </div> */}
             <div className={nodes[0] ?? 'hidden '}>
-              <div className="flex w-full">
-                <div className="flex w-5/12 flex-col">
-                  <div className=" flex  mb-2 ">
+              <div className="flex w-full gap-8">
+                <div className="flex w-4/12 flex-col">
+                  <div className=" flex mt-2  mb-2 ">
                     <div className="flex justify-start mr-2 ">
                       <label
                         htmlFor={'type'}
@@ -517,7 +519,7 @@ const Promotion = () => {
                     </div>
                     <div className=" flex  sm:w-full">
                       <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        className="mb- block text-sm font-medium text-black dark:text-white"
                         htmlFor="checkboxLabelOne"
                       >
                         {'Promote All Student in Selected Class'}
@@ -571,7 +573,7 @@ const Promotion = () => {
                     </div>
                   </div>
                 </div>
-                <div className=" w-6/12">
+                <div className=" w-8/12">
                   <label
                     className="  block text-sm font-medium text-black dark:text-white"
                     htmlFor="fullName"
@@ -579,7 +581,7 @@ const Promotion = () => {
                     Choose Next Class :
                   </label>
                   <div className="flex row  py-auto gap-2 w-4/6">
-                    <div className="w-2/6">
+                    <div className="w-3/6">
                       <ClassSelect
                         setsectionprop={setNextclass}
                         clazz={clazz}
@@ -605,8 +607,10 @@ const Promotion = () => {
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
                         <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Class</HeaderCell>
-                        <HeaderCell>Section</HeaderCell>
+                        <HeaderCell>Class (Section)</HeaderCell>
+                        <HeaderCell>status</HeaderCell>
+
+
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
@@ -626,10 +630,12 @@ const Promotion = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.class}</span>
+                            <span>{item.class}</span> (<span>{item.section}</span>)
+
                           </Cell>
+                          
                           <Cell className="  ">
-                            <span>{item.section}</span>
+                            <span>{item.status}</span>
                           </Cell>
 
                           <Cell>

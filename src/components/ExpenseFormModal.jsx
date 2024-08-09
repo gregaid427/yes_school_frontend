@@ -63,7 +63,7 @@ const ExpenseFormModal = (props) => {
     };
   return (
     <div className="w-full">
-             <div className="w-full mr-5">
+             <div className="w-full ">
           <div className="grid  gap-8">
             <div className="col-span-12">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">

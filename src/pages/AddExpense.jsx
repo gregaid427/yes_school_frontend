@@ -8,7 +8,6 @@ import EditSVG from '../components/Svgs/edit';
 import { useTheme } from '@table-library/react-table-library/theme';
 import { usePagination } from '@table-library/react-table-library/pagination';
 
-
 import {
   Table,
   Header,
@@ -58,7 +57,6 @@ const AddExpense = () => {
 
   const [filename, setFileName] = useState('');
 
-
   const [nodes, setdata] = useState([]);
 
   const navigate = useNavigate();
@@ -84,8 +82,6 @@ const AddExpense = () => {
       dispatch(resetcreateExpense());
       dispatch(fetchAllExpenseAction());
       setVisible(false);
-
-
     }
   }, [CreateExpense]);
 
@@ -117,7 +113,8 @@ const AddExpense = () => {
     .th {
       border-bottom: 1px solid #a0a8ae;
       padding: 5px 0px;
-    `, Table: `
+    `,
+      Table: `
   --data-table-library_grid-template-columns:  30% 18% 15% 15% 22%;
   `,
       BaseCell: `
@@ -187,13 +184,11 @@ const AddExpense = () => {
 
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState('center');
- 
 
   const show = (position) => {
     setPosition(position);
     setVisible(true);
   };
-
 
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
@@ -217,19 +212,17 @@ const AddExpense = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-            <Dialog
+      <Dialog
         visible={visible}
         position={'top'}
-        style={{ height: 'auto', width: '50%'}}
+        style={{ height: 'auto', width: '50%' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
         }}
-    
       >
         <ExpenseFormModal close={setVisible} />
       </Dialog>
-
       <div className={'flex gap-2  w-full'}>
         <div className="w-full flex-col">
           <div
@@ -265,15 +258,15 @@ const AddExpense = () => {
                     </label>
 
                     <button
-                        className="flex w-12/12 mt-2 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault();
-                          show('top-right');
-                        }}
-                      >
-                        Add Expense
-                      </button>
+                      className="flex w-12/12 mt-2 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        show('top-right');
+                      }}
+                    >
+                      Add Expense
+                    </button>
                   </div>
 
                   <div className="w-full sm:w-2/5">
@@ -320,7 +313,12 @@ const AddExpense = () => {
           >
             <div className="flex gap-3  flex-col">
               <div className="px-2">
-                <Table data={data} pagination={pagination}  layout={{ custom: true }} theme={theme}>
+                <Table
+                  data={data}
+                  pagination={pagination}
+                  layout={{ custom: true }}
+                  theme={theme}
+                >
                   {(tableList) => (
                     <>
                       <Header>
@@ -353,9 +351,7 @@ const AddExpense = () => {
                                 />
 
                                 <DeleteSVG
-                                  clickFunction={() =>
-                                    handledeletebtn(item.id)
-                                  }
+                                  clickFunction={() => handledeletebtn(item.id)}
                                 />
                               </div>
                             </Cell>
@@ -448,9 +444,7 @@ const AddExpense = () => {
                                 />
 
                                 <DeleteSVG
-                                  clickFunction={() =>
-                                    handledeletebtn(item.id)
-                                  }
+                                  clickFunction={() => handledeletebtn(item.id)}
                                 />
                               </div>
                             </Cell>
@@ -464,7 +458,6 @@ const AddExpense = () => {
             </div>
           </div>{' '}
         </div>
-      
       </div>{' '}
     </DefaultLayout>
   );

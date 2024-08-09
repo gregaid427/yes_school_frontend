@@ -210,22 +210,22 @@ setTimeout(() => setLoader(false), 1000);
       setStudentotherName(value.otherName);
       setGender(value.gender);
       setPicture(value.imagelink);
-      setgfName1(fetchUserdat?.data[0].gFirstName);
-      setglName1(fetchUserdat?.data[0].gLastName);
-      setgfName2(fetchUserdat?.data[1].gFirstName);
-      setglName2(fetchUserdat?.data[1].gLastName);
-      setgcontact1(fetchUserdat?.data[0].gContact1);
-      setgcontact2(fetchUserdat?.data[0].gContact2);
-      setgcontact3(fetchUserdat?.data[1].gContact1);
-      setgcontact4(fetchUserdat?.data[1].gContact2);
-      setemail1(fetchUserdat?.data[0].gEmail);
-      setemail2(fetchUserdat?.data[1].gEmail);
-      setgAddress1(fetchUserdat?.data[0].gAddress);
-      setgAddress2(fetchUserdat?.data[1].gAddress);
-      setgsex2(fetchUserdat?.data[1].gSex);
-      setgsex1(fetchUserdat?.data[0].gSex);
-      setRelation1(fetchUserdat?.data[0].gRelation);
-      setRelation2(fetchUserdat?.data[1].gRelation);
+      setgfName1(fetchUserdat?.data[0]?.gFirstName);
+      setglName1(fetchUserdat?.data[0]?.gLastName);
+      setgfName2(fetchUserdat?.data[1]?.gFirstName);
+      setglName2(fetchUserdat?.data[1]?.gLastName);
+      setgcontact1(fetchUserdat?.data[0]?.gContact1);
+      setgcontact2(fetchUserdat?.data[0]?.gContact2);
+      setgcontact3(fetchUserdat?.data[1]?.gContact1);
+      setgcontact4(fetchUserdat?.data[1]?.gContact2);
+      setemail1(fetchUserdat?.data[0]?.gEmail);
+      setemail2(fetchUserdat?.data[1]?.gEmail);
+      setgAddress1(fetchUserdat?.data[0]?.gAddress);
+      setgAddress2(fetchUserdat?.data[1]?.gAddress);
+      setgsex2(fetchUserdat?.data[1]?.gSex);
+      setgsex1(fetchUserdat?.data[0]?.gSex);
+      setRelation1(fetchUserdat?.data[0]?.gRelation);
+      setRelation2(fetchUserdat?.data[1]?.gRelation);
       setreligion(value.religion);
       setdateofbirth(value.dateofbirth);
       setclazz(value.class);
@@ -658,9 +658,9 @@ setTimeout(() => setLoader(false), 1000);
 
                             <div className="relative z-20 bg-white dark:bg-form-input">
                               <SelectGroupTwo
-                                values={[data[0].gSex,'Male', 'Female']}
+                                values={[data[0]?.gSex,'Male', 'Female']}
                                 setSelectedOption={(val) => setgsex1(val)}
-                                selectedOption={data[0].gSex}
+                                selectedOption={data[0]?.gSex}
                               />
                             </div>
                           </div>
@@ -818,9 +818,9 @@ setTimeout(() => setLoader(false), 1000);
 
                             <div className="relative z-20 bg-white dark:bg-form-input">
                               <SelectGroupTwo
-                                values={[data[1].gSex,'Male', 'Female']}
+                                values={[data[1]?.gSex,'Male', 'Female']}
                                 setSelectedOption={(val) => setgsex1(val)}
-                                selectedOption={data[1].gsex}
+                                selectedOption={data[1]?.gsex}
                               />
                             </div>
                           </div>

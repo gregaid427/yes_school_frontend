@@ -26,7 +26,6 @@ import {
 } from '@table-library/react-table-library/table';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  
   deleteSingleStudentAction,
   fetchBulkStudent,
   fetchCustomStudentsClassAction,
@@ -38,9 +37,12 @@ import StudentModal from '../components/StudentModal';
 
 import SectionSelect1 from '../components/SectionsSelect1';
 import ClassSelect from '../components/ClassSelect';
-import SessionSelect from '../components/SessionSelect';
+import { fetchUserdataAction } from '../redux/slices/usersSlice';
+import TableBtn from '../components/Svgs/TableBtn';
+import PromoteModal from '../components/PromoteModal';
+import CollectFeesModal from '../components/collectFeesModal';
 
-const ExamResult = () => {
+const CollectFees = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
@@ -60,7 +62,6 @@ const ExamResult = () => {
 
   const [searcher, setSearcher] = useState('firstName');
   const [isChecked2, setIsChecked2] = useState(false);
-  const [sessionoption, setSessionoption] = useState('');
 
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
@@ -68,17 +69,28 @@ const ExamResult = () => {
   const [sections, setsections] = useState([]);
   const [clazz, setclazz] = useState();
   const [sectionzz, setsectionzz] = useState();
+  const [propp, setProp] = useState();
 
+
+
+  
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
 
+  const {
+    loading,
+    error,
+    fetchStudent,
+    fetchStudentcustom,
+    fetchcustom,
+    fetchStudentcustomloading,
+    fetchcustomloading,
+    singleStudent,
+    singleStudentloading,
+  } = student;
 
-  const { loading, error, fetchStudent, fetchStudentcustom, fetchcustom, fetchStudentcustomloading, fetchcustomloading,singleStudent, singleStudentloading } = student;
-  
-  const {fetchAllClassloading,fetchAllClass}= classes
-
-  
+  const { fetchAllClassloading, fetchAllClass } = classes;
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -88,18 +100,17 @@ const ExamResult = () => {
       setdata(data);
     }
 
-    if (fetchAllClass?.success == 1) {
-      let i = 0;
-      let arr = []
-      while (i < classes?.fetchAllClass?.data.length) {
-        arr.push(classes?.fetchAllClass?.data[i].title);
-        i++;
-      }
-      setClasss(arr);
-      setclazz(arr[0])
-    }
-
-  }, [fetchAllClassloading , fetchcustomloading ]);
+    // if (fetchAllClass?.success == 1) {
+    //   let i = 0;
+    //   let arr = []
+    //   while (i < classes?.fetchAllClass?.data.length) {
+    //     arr.push(classes?.fetchAllClass?.data[i].title);
+    //     i++;
+    //   }
+    //   setClasss(arr);
+    // //  setclazz(arr[0])
+    // }
+  }, [fetchAllClassloading, fetchcustomloading]);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -107,18 +118,11 @@ const ExamResult = () => {
     if (fetchStudentcustom?.success == 1) {
       let data = fetchStudentcustom?.data;
       setdata(data);
-
     }
-
-  
-
-  }, [ fetchStudentcustomloading ]);
+  }, [fetchStudentcustomloading]);
 
   useEffect(() => {
-   
-    setdata([])
-  
-
+    setdata([]);
   }, []);
 
   useEffect(() => {
@@ -131,7 +135,7 @@ const ExamResult = () => {
   }, [fetchStudent]);
 
   // useEffect(() => {
-   
+
   //   if (fetchSection?.success == 1) {
   //    let arrr = ['All Sections']
   //     let i = 0;
@@ -146,10 +150,9 @@ const ExamResult = () => {
   //   }
   // }, [sectionloading]);
 
-
   let data = { nodes };
 
- const theme = useTheme([
+  const theme = useTheme([
     {
       // HeaderRow: `
       // background-color: #313D4A;
@@ -162,7 +165,10 @@ const ExamResult = () => {
       padding: 5px 0px;
     }
   `,
-         BaseCell: `
+      Table: `
+  --data-table-library_grid-template-columns:  10% 30% 10% 25% 15% 10%;
+`,
+      BaseCell: `
         font-size: 15px;
         color:white;
       //   border-bottom: 1px solid #313D4A !important;
@@ -193,25 +199,24 @@ const ExamResult = () => {
 
   var data2;
   const [search, setSearch] = useState('');
- const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleviewbtn = (value) => {
-    navigate('/student/singlestudent', {state:{action: 1,value:value.student_id}})
+
+    show('top-right');
 
   };
   const handleEditbtn = (value) => {
-    dispatch(fetchSingleStudent(value.student_id));
-    navigate("/student/editinfo", {state:{action: 2,value:value.student_id}})
-
+    dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
+    navigate('/student/editinfo', { state: { action: 2, value: value } });
   };
   const handledeletbtn = (value) => {
     let data = {
-      "class" : clazz,
-      "section":sectionzz,
-      "id" : value
-    }
+      class: clazz,
+      section: sectionzz,
+      id: value,
+    };
     dispatch(deleteSingleStudentAction(data));
-
   };
 
   data = {
@@ -224,43 +229,31 @@ const ExamResult = () => {
     ),
   };
 
-  const handleDownloadPdf = async () => {
-    const doc = new jsPDF();
-
-    autoTable(doc, { html: '#my-table' });
-
-    doc.save(`${clazz} : ${sectionzz}  `);
-  };
   function setModalVisible() {
     setVisible(false);
   }
 
-  const csvConfig = mkConfig({ useKeysAsHeaders: true, filename:`${clazz} : ${sectionzz} `});
+  const csvConfig = mkConfig({
+    useKeysAsHeaders: true,
+    filename: `${clazz} : ${sectionzz} `,
+  });
 
-  const handleDownloadCSV = async () => {
-    const csv = generateCsv(csvConfig)(nodes);
-    download(csvConfig)(csv);
-  };
   function handleGetClassData() {
-    console.log(clazz)
+    console.log(clazz);
 
     let data = {
-      "class" : clazz,
-      "section":sectionzz
+      class: clazz,
+      section: sectionzz,
+    };
+    console.log(data);
+    if (sectionzz == 'All Sections') {
+      //  setclazz(clazz)
+      dispatch(fetchStudentsClassAction(data));
     }
-    console.log(data)
-    if(sectionzz == "All Sections"){
-      setclazz(clazz)
-      dispatch(fetchStudentsClassAction(data))
-
+    if (sectionzz != 'All Sections') {
+      setsectionzz(sectionzz);
+      dispatch(fetchCustomStudentsClassAction(data));
     }
-    if(sectionzz != "All Sections"){
-      setsectionzz(sectionzz)
-      dispatch(fetchCustomStudentsClassAction(data))
-
-    }
-
-
   }
   const footerContent = (
     <div>
@@ -283,20 +276,19 @@ const ExamResult = () => {
   ) : (
     <DefaultLayout>
       <Dialog
-        header="Student Personal Information"
         resizable={false}
         draggable={false}
-        headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
+       // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
         visible={visible}
         className=""
-        position={'top-right'}
-        style={{ width: 'w-12/12', color: 'white' }}
+        position={'top'}
+        style={{  width: '40%', color: 'white' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
         }}
       >
-        <StudentModal close={() => setModalVisible()} />
+        <CollectFeesModal close={setVisible} val={propp}/>
       </Dialog>
       <div className=" flex-col">
         <div
@@ -306,79 +298,34 @@ const ExamResult = () => {
         >
           <div className="max-w-full overflow-x-auto">
             <div className="w-full  flex justify-between ">
-              <div className=" flex w-full gap-3">
-                <div className="sm:w-1/5 ">
+              <div className=" flex w-7/12 gap-3">
+                <div className="sm:w-2/5 ">
                   <div>
                     <label
                       className="mb-2 block text-sm font-medium text-black dark:text-white"
                       htmlFor="fullName"
                     >
-                      Exam Group
+                      Class
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz}
-                       
-                      />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
                     </div>
                   </div>
-                  <label
-                    className="pt-4 block text-sm font-medium text-ash dark:text-white"
-                    style={{ color: '#A9B5B3' }}
-                    onClick={(e) => {
-                      handleDownloadPdf();
-                    }}
-                  >
-                    Download Page (PDF)
-                  </label>
                 </div>
 
-                <div className="w-full sm:w-1/5">
+                <div className="w-full sm:w-2/5">
                   <label
                     className="mb-2 block text-sm font-medium text-black dark:text-white"
                     htmlFor="phoneNumber"
                   >
-                    Exam{' '}
+                    Section{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SectionSelect1 setsectionprop={setsectionzz}
-                    />
+                    <SectionSelect1 setsectionprop={setsectionzz} />
                   </div>
-                  <label
-                    className="pt-4 block text-sm font-medium text-ash dark:text-white"
-                    style={{ color: '#A9B5B3' }}
-                    onClick={(e) => {
-                      handleDownloadCSV();
-                    }}
-                  >
-                    Download Page (Excel)
-                  </label>
                 </div>
-                <div className="w-full sm:w-1/5">
-                  <label
-                    className="mb-2 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="phoneNumber"
-                  >
-                    Session{' '}
-                  </label>
-                  <div className="relative z-20 bg-white dark:bg-form-input">
-                          <SessionSelect setsectionprop={setSessionoption} />
-                        </div>
-                 
-                </div>
-                <div className="w-full sm:w-1/5">
-                  <label
-                    className="mb-2 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="phoneNumber"
-                  >
-                    Class{' '}
-                  </label>
-                  <div className="relative z-20 bg-white dark:bg-form-input">
-                          <ClassSelect setsectionprop={setclazz} />
-                        </div>
-              
-                </div>
-                <div className="w-full sm:w-1/5">
+                <div className="w-full sm:w-2/5">
                   <label
                     className="mb-2 block text-sm font-medium  dark:text-black"
                     htmlFor=""
@@ -387,8 +334,7 @@ const ExamResult = () => {
                   </label>
                   <div className="relative sm:w-1/5 z-20 bg-white dark:bg-form-input">
                     <button
-                      onClick={() => handleGetClassData()
-                      }
+                      onClick={() => handleGetClassData()}
                       className="btn h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
@@ -396,10 +342,44 @@ const ExamResult = () => {
                     </button>
                   </div>
                 </div>
-             
+                {/* <div className="w-full sm:w-1/3 flex  justify-end align-top  ">
+                    <button onClick={(e)=>{handleDownloadPdf()}}
+                      className="btn sm:w-2/3 h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
+                      type="submit"
+                    >
+                      Search
+                    </button>
+                  </div> */}
               </div>
 
-             
+              <div className={' w-3/12 flex flex-col float-right '}>
+                <div className="flex justify-between align-middle mb-2">
+                  <label
+                    className="mb-3 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
+                    htmlFor=" "
+                  >
+                    Search By{' '}
+                  </label>
+                  <div className="relative  z-20 w-3/5 bg-white dark:bg-form-input">
+                    <SelectGroupTwo
+                      values={['First Name', 'Last Name', 'ID']}
+                      setSelectedOption={(val) => setSearchval(val)}
+                      selectedOption={searchval}
+                    />
+                  </div>
+                </div>
+
+                <input
+                  className="w-full rounded border border-stroke bg-gray py-2 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                  key={1}
+                  type="search"
+                  placeholder={'type here'}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                />
+                {/* <button onClick={() => toPDF()}>Download PDF</button> */}
+              </div>
             </div>
           </div>
         </div>
@@ -414,6 +394,7 @@ const ExamResult = () => {
                 data={data}
                 pagination={pagination}
                 theme={theme}
+                layout={{ custom: true }}
               >
                 {(tableList) => (
                   <>
@@ -421,8 +402,9 @@ const ExamResult = () => {
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
                         <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Section</HeaderCell>
-                        <HeaderCell>Gender</HeaderCell>
+                        <HeaderCell>Class/Sec</HeaderCell>
+                        <HeaderCell>Guardian</HeaderCell>
+                        <HeaderCell>Contact</HeaderCell>
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
@@ -430,11 +412,7 @@ const ExamResult = () => {
 
                     <Body>
                       {tableList.map((item) => (
-                        <Row
-                          key={item.student_id}
-                          item={item}
-                          className=""
-                        >
+                        <Row key={item.student_id} item={item} className="">
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -446,24 +424,24 @@ const ExamResult = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
+                            <span>{item.class}</span>/
                             <span>{item.section}</span>
                           </Cell>
                           <Cell className="  ">
                             <span>{item.gender}</span>
                           </Cell>
-                        
+                          <Cell className="  ">
+                            <span>{item.gender}</span>
+                          </Cell>
 
                           <Cell>
                             <div className="gap-2 flex">
-                              <ViewSVG
-                                clickFunction={() => handleviewbtn(item)}
-                              />
-                              <EditSVG
-                                clickFunction={() => handleEditbtn(item)}
-                              />
-
-                              <DeleteSVG
-                                clickFunction={() => handledeletbtn(item.student_id)}
+                              <TableBtn
+                                text={'Collect Fees'}
+                                clickFunction={() => {
+                                  setProp(item)
+                                  handleviewbtn(item)}}
+                                color={'bg-primary'}
                               />
                             </div>
                           </Cell>
@@ -488,7 +466,7 @@ const ExamResult = () => {
                   </span>
                   <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
                     <SelectGroupTwo
-                      values={[ 30, 50, 100, 200, 500, 'All']}
+                      values={[30, 50, 100, 200, 500, 'All']}
                       setSelectedOption={(val) => setpagesval(val)}
                       selectedOption={pagesval}
                     />
@@ -518,10 +496,9 @@ const ExamResult = () => {
                 ))}
               </span>
             </div>
-            <div className='hidden'>
+            <div className="hidden">
               <Table
                 id="my-table"
-                
                 data={data}
                 pagination={pagination}
                 theme={theme}
@@ -560,8 +537,6 @@ const ExamResult = () => {
                           <Cell className="  ">
                             <span>{item.gender}</span>
                           </Cell>
-                        
-
                         </Row>
                       ))}
                     </Body>
@@ -576,4 +551,4 @@ const ExamResult = () => {
   );
 };
 
-export default ExamResult;
+export default CollectFees;

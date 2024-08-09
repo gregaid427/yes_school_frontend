@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 axios.defaults.headers.common = {
   Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -15,6 +16,33 @@ export const CreatesClassAction = createAsyncThunk(
         payload,
       );
 
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const CreatesBulkClassAction = createAsyncThunk(
+  'new/NewBulkClass',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/bulkAdmission`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Created Successfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Creating Class Data');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -299,17 +327,32 @@ const ClassSlices = createSlice({
     builder.addCase(CreatesClassAction.pending, (state, action) => {
       state.CreateClassesloading = true;
       state.CreateClasses = false;
-      state.fetchAllClassNo = null;
       state.fetchAllClass = null;
     });
     builder.addCase(CreatesClassAction.fulfilled, (state, action) => {
       state.CreateClasses = action?.payload;
       state.fetchAllClass = action?.payload;
-      state.fetchAllClassNo = action?.payload;
       state.CreateClassesloading = false;
       state.error = undefined;
     });
     builder.addCase(CreatesClassAction.rejected, (state, action) => {
+      state.CreateClassesloading = false;
+      state.error = action.payload;
+      state.CreateClasses = undefined;
+    });
+
+    builder.addCase(CreatesBulkClassAction.pending, (state, action) => {
+      state.CreateClassesloading = true;
+      state.CreateClasses = false;
+      state.fetchAllClass = null;
+    });
+    builder.addCase(CreatesBulkClassAction.fulfilled, (state, action) => {
+      state.CreateClasses = action?.payload;
+      state.fetchAllClass = action?.payload;
+      state.CreateClassesloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(CreatesBulkClassAction.rejected, (state, action) => {
       state.CreateClassesloading = false;
       state.error = action.payload;
       state.CreateClasses = undefined;
@@ -336,7 +379,7 @@ const ClassSlices = createSlice({
     });
     builder.addCase(fetchAllClassAction.fulfilled, (state, action) => {
       state.fetchAllClass = action?.payload;
-      state.fetchAllClassNo = action?.payload;
+
       state.fetchAllClassloading = false;
       state.error = undefined;
     });
@@ -482,7 +525,6 @@ const ClassSlices = createSlice({
     builder.addCase(deleteAllClassAction.fulfilled, (state, action) => {
       state.deleteAllClasses = action?.payload;
       state.fetchAllClass = action?.payload;
-      state.fetchAllClassNo = action?.payload;
       state.deleteClassloading = false;
       state.error = undefined;
     });
@@ -496,7 +538,6 @@ const ClassSlices = createSlice({
     builder.addCase(deleteSingleClassAction.pending, (state, action) => {
       state.deleteSingleClassloading = true;
       state.deleteSingleClass = false;
-      state.fetchAllClassNo = null;
       state.fetchAllClass = null;
     });
     builder.addCase(deleteSingleClassAction.fulfilled, (state, action) => {
@@ -504,7 +545,6 @@ const ClassSlices = createSlice({
       state.deleteSingleClassloading = false;
       state.deleteSingleClasserror = undefined;
       state.fetchAllClass = action?.payload;
-      state.fetchAllClassNo = action?.payload;
     });
     builder.addCase(deleteSingleClassAction.rejected, (state, action) => {
       state.deleteSingleClasserror = action.payload;

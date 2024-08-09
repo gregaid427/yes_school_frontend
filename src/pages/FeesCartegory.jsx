@@ -23,79 +23,66 @@ import autoTable from 'jspdf-autotable';
 
 import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
-import {
-  CreatesClassAction,
-  deleteSingleClassAction,
-  fetchAllClassAction,
-  fetchAllClassNoAction,
-  fetchSingleClassAction,
-  resetcreateClass,
-} from '../redux/slices/classSlice';
-import ClassCheckbox from '../components/ClassCheckbox';
-import SectionModal from '../components/SectionModal';
-import { Dialog } from 'primereact/dialog';
 
-const Class = () => {
+import InventNewCartegory from '../components/InventNewCartegory';
+import {
+  deleteSingleCartAction,
+  fetchInventCartegoryAction,
+} from '../redux/slices/inventSlice';
+import FeesCartegoryItem from '../components/FeesCartegoryItem';
+
+const FeesGroup = () => {
   const [pagesval, setpagesval] = useState(30);
-  const [change, setChange] = useState();
+  const [classs, setClasss] = useState([]);
 
   const [loader, setLoader] = useState(true);
-
-  const [classTitle, setClassTitle] = useState('');
-  const [classInstructor, setClassInstructor] = useState('');
-
   const [sections, setsections] = useState([]);
+
+  const [isChecked1, setIsChecked1] = useState(false);
+  const [sectionTitle, setsectionTitle] = useState('');
+  const [type, setType] = useState('Theory');
+
+  const [subjectName, setSubjectName] = useState([]);
 
   const [nodes, setdata] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const clad = useSelector((state) => state?.classes);
-
-  const {
-    fetchAllClassloading,
-    fetchAllClassNo,
-    sectionloading,
-    fetchSection,
-    CreateClasses,
-    CreateClassesloading,
-  } = clad;
+  const sub = useSelector((state) => state?.inventory);
+  const { cartegory } = sub;
 
   useEffect(() => {
-    // dispatch(fetchAllClass());
-    dispatch(fetchAllClassNoAction());
+    dispatch(fetchInventCartegoryAction());
   }, []);
-  useEffect(() => {
-    if (fetchSection?.success == 1) {
-      let data = fetchSection?.data;
-      setsections(data);
-    }
-  }, [change,fetchAllClassloading, CreateClassesloading]);
 
+  // useEffect(() => {
+  //   if (fetchSection?.success == 1) {
+  //     let arrr = [{"name":'None',"id":0}];
+  //     let i = 0;
+  //     while (i < clad?.fetchSection?.data.length) {
+  //       arrr.push({"name":clad?.fetchSection?.data[i]?.sectionName,"id":clad?.fetchSection?.data[i]?.id});
+  //       i++;
+  //     }
 
-  useEffect(() => {
-   
-    if (CreateClasses?.success == 0) {
-      toast.error('Error - Class Name Already Exists');
-      dispatch(resetcreateClass());
-      // dispatch(fetchAllClassAction())
-    }
-    if (CreateClasses?.success == 1) {
-      toast.success('New Class Added Successfully');
-      dispatch(resetcreateClass());
-      // dispatch(fetchAllClassAction())
-    }
-  }, [fetchAllClassloading, CreateClassesloading]);
+  //     setsections(arrr);
+  //   }
+  // }, [sectionloading]);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (fetchAllClassNo?.success == 1) {
-      let data = fetchAllClassNo?.data;
+    if (cartegory?.success == 1) {
+      let data = cartegory?.data;
       setdata(data);
     }
-  }, [fetchAllClassNo]);
+    // if (loading == false) {
+    //   dispatch(fetchBulkStudent());
+    // }
+
+    // }
+    // datas = data;
+  }, [cartegory]);
 
   let data = { nodes };
 
@@ -112,6 +99,9 @@ const Class = () => {
       padding: 5px 0px;
     }
   `,
+      Table: `
+  --data-table-library_grid-template-columns:  60% 40%;
+`,
       BaseCell: `
         font-size: 15px;
         color:white;
@@ -119,9 +109,6 @@ const Class = () => {
       //   //  background-color: #24303F;
 
       `,
-      Table: `
-      --data-table-library_grid-template-columns:  45% 20% 35%;
-    `,
       Row: `
   &:nth-of-type(odd) {
     background-color: #24303F;
@@ -145,82 +132,54 @@ const Class = () => {
   function onPaginationChange(action, state) {}
 
   const [search, setSearch] = useState('');
-
+  console.log(data);
   data = {
     nodes: data.nodes.filter((item) =>
-      item.title.toLowerCase().includes(search.toLowerCase()),
+      item.cartegoryname.toLowerCase().includes(search.toLowerCase()),
     ),
   };
 
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
-    dispatch(
-      fetchSingleClassAction({
-        classId: value.classId,
-        classTitle: value.title,
-      }),
-    );
-    navigate('/academics/class/editclass', {
-      state: { action: 1, value: value },
+    navigate('/inventory/editcartegory', {
+      state: { action: 2, info: value },
     });
   };
   const handleEditbtn = (value) => {
-    dispatch(
-      fetchSingleClassAction({
-        classId: value.classId,
-        classTitle: value.title,
-      }),
-    );
-    navigate('/academics/class/editclass', {
-      state: { action: 2, value: value },
+    console.log(value.type);
+    navigate('/inventory/editcartegory', {
+      state: { action: 1, info: value },
     });
   };
-  const handledeletbtn = (value) => {
-    dispatch(deleteSingleClassAction(value));
-    // dispatch(fetchAllClassAction());
+  const handledeletebtn = (value) => {
+    dispatch(deleteSingleCartAction(value));
   };
-  const [visible, setVisible] = useState(false);
-  const [position, setPosition] = useState('center');
-  const show = (position) => {
-    setPosition(position);
-    setVisible(true);
-  };
-  const [selectedsection, setselectedsection] = useState([]);
 
-  const classdata = {
-    title: classTitle.toUpperCase(),
+  const subdata = {
+    type: type,
+    subjectName: subjectName,
     createdBy: 'Asante',
-    instructor: classInstructor,
-    sections: selectedsection
   };
-  const handlecreateClass = () => {
-    if (classTitle == '') {
-      toast.error('Error - Class Name Cannot Be Empty');
+  const handlecreateSection = (e) => {
+    if (subjectName == '') {
+      toast.error('Error - subject Name Cannot Be Empty');
     } else {
-      dispatch(CreatesClassAction(classdata));
+      dispatch(CreatesSubjectAction(subdata));
     }
   };
-
-  function updatesection(val) {
-    if (selectedsection.includes(val)) {
-      setselectedsection(selectedsection.filter((element) => element !== val));
-    } else {
-      setselectedsection([val, ...selectedsection]);
-    }
-  }
 
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
 
     autoTable(doc, { html: '#my-table' });
 
-    doc.save(`All-Classes-List`);
+    doc.save(`All-Subject-List`);
   };
 
   const csvConfig = mkConfig({
     useKeysAsHeaders: true,
-    filename: `All-Classes-List`,
+    filename: `All-Subject-List`,
   });
 
   const handleDownloadCSV = async () => {
@@ -232,125 +191,11 @@ const Class = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-      <Dialog
-        visible={visible}
-        position={'top'}
-        style={{ height: 'auto', width: '30%' }}
-        onHide={() => {
-          if (!visible) return;
-          setVisible(false);
-        }}
-      >
-        <SectionModal close={setVisible} changeval={change} change={setChange} />
-      </Dialog>
-      <div className={'flex row gap-8  w-full'}>
-        <div className="grid w-4/12  gap-8">
-          <div className="col-span-12">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Add New Class
-                </h3>
-              </div>
-              <div className="p-7">
-                <form action="#">
-                  <div className="w-full mb-4 sm:w-2/2">
-                    <label
-                      className="mb-3 block text-sm font-small text-black dark:text-white"
-                      htmlFor=""
-                    >
-                      Class Name
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder=""
-                      defaultValue=""
-                      onChange={(e) => setClassTitle(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="w-full sm:w-2/2">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="phoneNumber"
-                    >
-                      Class Instructor{' '}
-                      <span className="small-font">(optional)</span>
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder=""
-                      defaultValue=""
-                      onChange={(e) => setClassInstructor(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="pb-10 mt-3">
-                    <div className="flex my-5 justify-between align-middle">
-                      <label className=" block text-sm align-middle font-medium text-black dark:text-white">
-                        Class Sections
-                      </label>
-                      <button
-                        className="flex w-7/12 justify-center rounded-full  bg-black  px-1 font-[6px] text-muted hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault()
-                          // handlecreateClass();
-                          show('top-right');
-                        }}
-                      >
-                        Create New Section
-                      </button>
-                    </div>
-                    {sections.map((item) => (
-                      <div key={item.id} className="mb- flex   sm:flex-row">
-                        <div className=" flex  sm:w-full">
-                          <label
-                            className="mb-1 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="checkboxLabelOne"
-                          >
-                            - {item.sectionName}{' '}
-                          </label>
-                        </div>
-
-                        <ClassCheckbox
-                          updatesection={() => updatesection(item.sectionName)}
-                          item={item}
-                        />
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex justify-end mt-5 gap-4.5">
-                    <button
-                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type=""
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handlecreateClass();
-                      }}
-                    >
-                      Save
-                    </button>
-                    <button
-                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="reset"
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
+      <div className={'flex gap-2  w-full'}>
+      <div className="w-4/12">
+          <FeesCartegoryItem close={setClasss} />
         </div>
-        <div className="w-8/12  flex-col">
+        <div className="w-7/12 flex-col">
           <div
             className={
               'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
@@ -359,7 +204,7 @@ const Class = () => {
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
-                  All Classes
+                  Fees Cartegory List
                 </h3>
               </div>
             </div>
@@ -403,7 +248,7 @@ const Class = () => {
                       className=" w-2/2 pt-2 block text-sm font-medium text-black dark:text-white"
                       htmlFor=" "
                     >
-                      Search Class{' '}
+                      Search Item{' '}
                     </label>
                   </div>
 
@@ -437,10 +282,8 @@ const Class = () => {
                   {(tableList) => (
                     <>
                       <Header>
-                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
-                          <HeaderCell>Class</HeaderCell>
-                          <HeaderCell>Section</HeaderCell>
-
+                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
+                          <HeaderCell>Cartegory</HeaderCell>
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
@@ -449,10 +292,7 @@ const Class = () => {
                       <Body>
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
-                            <Cell className="  ">{item.title}</Cell>
-
-                            <Cell className="  ">{item.section ? item.section : '-'}</Cell>
-
+                            <Cell className="  ">{item.cartegoryname}</Cell>
 
                             <Cell>
                               <div className="gap-2 flex">
@@ -462,11 +302,8 @@ const Class = () => {
                                 <EditSVG
                                   clickFunction={() => handleEditbtn(item)}
                                 />
-
                                 <DeleteSVG
-                                  clickFunction={() =>
-                                    handledeletbtn(item.classId)
-                                  }
+                                  clickFunction={() => handledeletebtn(item.id)}
                                 />
                               </div>
                             </Cell>
@@ -531,9 +368,10 @@ const Class = () => {
                   {(tableList) => (
                     <>
                       <Header>
-                        <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                          <HeaderCell>Class</HeaderCell>
-                          {/* <HeaderCell>Instructor</HeaderCell> */}
+                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
+                          <HeaderCell>Cartegory</HeaderCell>
+
+                          <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
                       </Header>
 
@@ -544,13 +382,7 @@ const Class = () => {
                             item={item}
                             className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                           >
-                            <Cell className="  ">
-                              <span>{item.title}</span>
-                            </Cell>
-
-                            {/* <Cell className="  ">
-                              <span>{item.instructor}</span>
-                            </Cell> */}
+                            <Cell className="  ">{item.cartegoryname}</Cell>
                           </Row>
                         ))}
                       </Body>
@@ -561,9 +393,10 @@ const Class = () => {
             </div>
           </div>{' '}
         </div>
+       
       </div>{' '}
     </DefaultLayout>
   );
 };
 
-export default Class;
+export default FeesGroup;

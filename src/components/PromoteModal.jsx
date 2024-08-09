@@ -21,7 +21,7 @@ const PromoteModal = (props) => {
                     htmlFor=""
                   >
                     {props.type == true
-                      ? ' Promote All Students From {props.prev} To {props.next} ?'
+                      ? ` Promote All Students From ${props.prev} To ${props.next} ?`
                       : ` Promote Selected Students From ${props.prev} To ${props.next} ?`}
                   </label>
 

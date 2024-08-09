@@ -190,6 +190,67 @@ export const fetchCustomStudentsClassAction = createAsyncThunk(
   },
 );
 
+export const fetchStudentsClassPromoteAction = createAsyncThunk(
+  'fetch/studentClassPromote',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/custompromote`,
+        payload,
+      );
+      if (data?.success == '1' && data?.data[0] == null) { 
+        toast.success('Empty Class List');
+      }
+
+      if (data == null) {
+        toast.error('Error Adding New Student');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const fetchCustomStudentsClassPromoteAction = createAsyncThunk(
+  'fetch/studentClassCustomPromote',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/custom1promote`,
+        payload,
+      );
+      // toast.loading('Empty Class List');
+
+      if (data?.success == '1' && data?.data[0] == null) { 
+        toast.success('Empty Class List');
+     //   toast.dismiss();
+            //  toast.promise(
+            //   dispatch,
+            //    {
+            //      loading: 'Saving...',
+            //      success: <b>Settings saved!</b>,
+            //      error: <b>Could not save.</b>,
+            //    }
+            //  );
+      }
+
+      if (data == null) {
+        toast.error('Error Adding New Student');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const UpdatestudentAction = createAsyncThunk(
   'update/User',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -450,6 +511,28 @@ const StudentSlices = createSlice({
       },
     );
 
+
+      builder.addCase(fetchCustomStudentsClassPromoteAction.pending, (state, action) => {
+      state.fetchStudentcustomloading = true;
+      state.fetchStudentcustom = false;
+    });
+    builder.addCase(
+      fetchCustomStudentsClassPromoteAction.fulfilled,
+      (state, action) => {
+        state.fetchStudentcustom = action?.payload;
+        state.fetchStudentcustomloading = false;
+        state.error = undefined;
+      },
+    );
+    builder.addCase(
+      fetchCustomStudentsClassPromoteAction.rejected,
+      (state, action) => {
+        state.error = action.payload;
+        state.fetchStudentcustom = undefined;
+        state.fetchStudentcustomloading = undefined;
+      },
+    );
+
     builder.addCase(fetchStudentsClassAction.pending, (state, action) => {
       state.fetchcustomloading = true;
       state.fetchcustom = false;
@@ -460,6 +543,22 @@ const StudentSlices = createSlice({
       state.error = undefined;
     });
     builder.addCase(fetchStudentsClassAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.fetchcustom = undefined;
+      state.fetchcustomloading = undefined;
+    });
+
+
+    builder.addCase(fetchStudentsClassPromoteAction.pending, (state, action) => {
+      state.fetchcustomloading = true;
+      state.fetchcustom = false;
+    });
+    builder.addCase(fetchStudentsClassPromoteAction.fulfilled, (state, action) => {
+      state.fetchcustom = action?.payload;
+      state.fetchcustomloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(fetchStudentsClassPromoteAction.rejected, (state, action) => {
       state.error = action.payload;
       state.fetchcustom = undefined;
       state.fetchcustomloading = undefined;

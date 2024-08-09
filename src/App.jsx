@@ -61,6 +61,10 @@ import SetGuardian from './pages/SetGuardian';
 import NewGuardian from './pages/NewGuardian';
 import ExamGroup from './pages/ExamGroup';
 import ExamResult from './pages/ExamResult';
+import BulkAdmission from './pages/BulkAdmission';
+import FeesGroup from './pages/FeesCartegory';
+import CollectFees from './pages/CollectFees';
+import AssignFees from './pages/AssignFees';
 
   
 function App() {
@@ -135,11 +139,38 @@ function App() {
               }
             />
               <Route
-            path="/student/editcapture"
+            path="/fees/collectfees"
+            element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <CollectFees />
+                </>
+              }
+            />
+             <Route
+            path="/fees/addfeesgroup"
+            element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <FeesGroup />
+                </>
+              }
+            />
+             <Route
+            path="/fees/Collectfees"
             element={
                 <>
                   <PageTitle title="Calendar | " />
                   <EditCamera />
+                </>
+              }
+            />
+              <Route
+            path="/fees/records"
+            element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <SearchExpense />
                 </>
               }
             />
@@ -225,6 +256,16 @@ function App() {
               </>
             }
           />{' '}
+            <Route
+            path="/student/bulkAdmission"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <BulkAdmission  />
+              </>
+            }
+          />{' '}
+          
             <Route
             path="/student/editinfo"
             element={
@@ -410,6 +451,16 @@ function App() {
               <>
                 <PageTitle title="Calendar | " />
                 <SearchExpense />
+              </>
+            }
+          />
+          
+          <Route
+            path="/fees/Assignfees"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <AssignFees />
               </>
             }
           />
