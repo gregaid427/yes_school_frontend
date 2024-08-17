@@ -6,7 +6,6 @@ import toast from 'react-hot-toast';
 axios.defaults.headers.common = {
   Authorization: `Bearer ${localStorage.getItem('token')}`,
   'Content-Type': 'application/json',
-
 };
 
 export const CreateUserAction = createAsyncThunk(
@@ -55,7 +54,7 @@ export const loginUserAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/users/login`,
         payload,
       );
-console.log(data)
+      console.log(data);
 
       // if (data?.success == 0) {
       //   const toast = useRef(null);
@@ -67,9 +66,8 @@ console.log(data)
 
       return data;
     } catch (error) {
-      console.log(error)
-      console.log(error?.response)
-
+      console.log(error);
+      console.log(error?.response);
 
       if (!error?.response) {
         throw error;
@@ -288,7 +286,8 @@ export const updateschoolinfoAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/users/school/update`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/users/school/update`,
+        payload,
       );
       if (data?.success == 1) {
         toast.success('Information Updated Successfully');
@@ -314,7 +313,8 @@ export const fetchUserdataAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/users/userdata`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/users/userdata`,
+        payload,
       );
 
       return data;
@@ -330,7 +330,6 @@ export const SchoollogoAction = createAsyncThunk(
   'create/logo',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/logoschool`,
         payload,
@@ -368,10 +367,9 @@ const UsersSlices = createSlice({
         ...initialState,
       };
     },
-      resetcreateGuardian(state) {
-      state.CreateUser = null
-    }
-
+    resetcreateGuardian(state) {
+      state.CreateUser = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(CreateUserAction.pending, (state, action) => {
@@ -387,16 +385,15 @@ const UsersSlices = createSlice({
       state.error = action.payload;
       state.CreateUser = undefined;
     });
-    
+
     builder.addCase(CreateGuardianAction.pending, (state, action) => {
       state.loading = true;
       state.createguard = false;
-
     });
     builder.addCase(CreateGuardianAction.fulfilled, (state, action) => {
       state.CreateUser = action?.payload;
       state.createguard = action?.payload;
-      
+
       state.loading = false;
       state.error = undefined;
     });
@@ -405,7 +402,6 @@ const UsersSlices = createSlice({
       state.error = action.payload;
       state.CreateUser = undefined;
       state.createguard = undefined;
-
     });
 
     builder.addCase(SchoollogoAction.pending, (state, action) => {
@@ -421,11 +417,10 @@ const UsersSlices = createSlice({
       state.error = action.payload;
       state.logo = undefined;
     });
-    
+
     builder.addCase(fetchUserdataAction.pending, (state, action) => {
       state.fetchUserdatloading = true;
-      state.fetchUserdat= false;
-
+      state.fetchUserdat = false;
     });
     builder.addCase(fetchUserdataAction.fulfilled, (state, action) => {
       state.fetchUserdat = action?.payload;
@@ -451,12 +446,11 @@ const UsersSlices = createSlice({
       state.loginerror = action.payload;
       state.loginUser = false;
     });
-    
+
     builder.addCase(CreatesStaffAction.pending, (state, action) => {
       state.allStaffloading = true;
       state.allstaff = undefined;
       state.allstaff1 = undefined;
-
     });
     builder.addCase(CreatesStaffAction.fulfilled, (state, action) => {
       state.allstaff = action?.payload;
@@ -474,7 +468,6 @@ const UsersSlices = createSlice({
       state.allStaffloading = true;
       state.allstaff = undefined;
       state.allstaff1 = undefined;
-
     });
     builder.addCase(fetchAllstaffAction.fulfilled, (state, action) => {
       state.allstaff = action?.payload;
@@ -589,6 +582,6 @@ const UsersSlices = createSlice({
     });
   },
 });
-export const { reset,resetcreateGuardian } = UsersSlices.actions;
+export const { reset, resetcreateGuardian } = UsersSlices.actions;
 
 export default UsersSlices.reducer;

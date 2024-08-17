@@ -630,7 +630,7 @@ const Promotion = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.class}</span> (<span>{item.section}</span>)
+                            <span>{item.class}</span> (<span>{item.section ? item.section : 'None'}</span>)
 
                           </Cell>
                           

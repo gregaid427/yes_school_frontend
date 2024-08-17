@@ -1,84 +1,76 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  CreatesInventoryCartegoryAction,
-  fetchInventCartegoryAction,
-  resetcreatecart,
-} from '../redux/slices/inventSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import ClassSelect3 from './ClassSelect3';
+import SessionSelect1 from './SessionSelect1';
+import { AssignFeesAction } from '../redux/slices/feeSlice';
 import toast from 'react-hot-toast';
-import ExpenseHeadSelect from './ExpenseHeadSelect';
-import { CreatesExpenseAction } from '../redux/slices/expenseSlice';
-import ClassSelect from './ClassSelect';
-import ClassSelect2 from './ClassSelect2';
-import SessionSelect from './SessionSelect';
 
 const AssignFeeModal = (props) => {
   const dispatch = useDispatch();
-  const [type, setType] = useState(true);
-  const [isChecked1, setIsChecked1] = useState(true);
+  const [display, setDisplay] = useState(1);
 
-  const [amount, setAmount] = useState([]);
-
-  const [loader, setLoader] = useState(true);
   const [clazz, setclazz] = useState();
 
-  const [name, setName] = useState(false);
-  const [date, setDate] = useState('');
   const [desc, setDesc] = useState('');
-  const [invoice, setInvoice] = useState('');
-  const [expensehead, SetExpenseHead] = useState('');
-  const [file, setFile] = useState('');
+
   const [sessionoption, setSessionoption] = useState('');
+  const fee = useSelector((state) => state?.fees);
+  const { cartegory } = fee;
 
-  const [filename, setFileName] = useState('');
-  function hashgenerator() {
-    return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+  const [data1, setdata1] = useState(0);
+  const [data2, setdata2] = useState({ test: 0 });
+  const [data3, setdata3] = useState({ test: 0 });
+  const [data4, setdata4] = useState({ test: 0 });
+
+  const obj = {
+    test: 0,
+  };
+  console.log(obj);
+  console.log(data2);
+
+  function pop(data2) {
+    delete data2.test;
+
+    let pp = [];
+    let entries = Object.entries(data2);
+    let data = entries.map(([key, val] = entry) => {
+      console.log(key + val);
+      pp.push([key, val]);
+      console.log(pp);
+    });
+    return pp;
   }
-  let customfile = hashgenerator() + filename;
-
-  const classdata = JSON.stringify({
-    name: name,
-    createdby: 'Asante',
-    amount: amount,
-    invoice: invoice,
-    description: desc,
-    expensehead: expensehead,
-    date: date,
-    filename: filename,
-  });
-
   const handleSubmit = () => {
-    const data = new FormData();
-    data.append(customfile, file);
-    data.append('data', classdata);
+    data4['class'] = clazz;
+    data4['session'] = sessionoption;
+    data4['total'] = data3;
+    data4['createdby'] = 'Asante';
+    delete data4.test;
+    data4['fee'] = pop(data2);
+    console.log('data4');
+    console.log(data4.fee);
 
-    if (name == '') {
-      return toast.error('Error - Name Cannot Be Empty');
-    }
-    if (date == '') {
-      return toast.error('Error - Date Cannot Be Empty');
-    }
-    if (amount == '') {
-      return toast.error('Error - Amount Cannot Be Empty');
+    if (data4.fee[0] == undefined) {
+      return toast.error('Error -Fee Cartegory Cannot Be Empty');
     } else {
-      dispatch(CreatesExpenseAction(data));
+      dispatch(AssignFeesAction(data4));
     }
   };
   return (
     <div className="w-full">
-      <div className="w-full mr-5">
+      <div className="w-full ">
         <div className="grid  gap-8">
           <div className="col-span-12">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">
               <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
+                <h3 className="font-medium  text-black dark:text-white">
                   Assign Fees
                 </h3>
               </div>
               <div className="p-8">
-                <form>
+                <form className={display == 1 ? '' : 'hidden'}>
                   <div className="flex gap-4">
-                    <div className="w-1/2">
+                    <div className="w-full">
                       <div className="w-full mb-4 sm:w-2/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -87,7 +79,7 @@ const AssignFeeModal = (props) => {
                           Class
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
-                          <ClassSelect
+                          <ClassSelect3
                             setsectionprop={setclazz}
                             clazz={clazz}
                           />
@@ -102,10 +94,10 @@ const AssignFeeModal = (props) => {
                           Academic Session
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
-                          <SessionSelect setsectionprop={setSessionoption} />
+                          <SessionSelect1 setsectionprop={setSessionoption} />
                         </div>
                       </div>
-                      <div className="w-full  sm:w-2/2">
+                      {/* <div className="w-full  sm:w-2/2">
                         <div className="flex w-full ">
                           <div className=" flex   sm:w-1/2">
                             <div className=" flex  sm:w-full">
@@ -189,7 +181,7 @@ const AssignFeeModal = (props) => {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="mb-5.5">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -209,108 +201,98 @@ const AssignFeeModal = (props) => {
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="w-1/2">
-                      <div className="flex justify-between">
-                        <label
-                          className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Fee Cartegories
-                        </label>
-                        <label
-                          className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Amount To Charge
-                        </label>
-                      </div>
-                      <div className="flex   ">
-                        <div className="w-3/5 flex  ">
-                          {' '}
-                          <label
-                            className=" my-auto  block text-sm font-medium text-black dark:text-white"
-                            htmlFor=""
-                          >
-                            Tuition
-                          </label>
-                        </div>{' '}
-                        <div className="  w-2/5">
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-1.5 mb-1 px-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="number"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue="0.00"
-                            onChange={(e) => setName(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="flex   ">
-                        <div className="w-3/5 flex  ">
-                          {' '}
-                          <label
-                            className=" my-auto  block text-sm font-medium text-black dark:text-white"
-                            htmlFor=""
-                          >
-                            Feeding
-                          </label>
-                        </div>{' '}
-                        <div className="  w-2/5">
-                          <input
-                            className="w-full py-1.5 mb-1 rounded border border-stroke bg-gray px-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="number"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue="0.00"
-                            onChange={(e) => setName(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="flex   ">
-                        <div className="w-3/5 flex  ">
-                          {' '}
-                          <label
-                            className=" my-auto   block text-sm font-medium text-black dark:text-white"
-                            htmlFor=""
-                          >
-                            Transport
-                          </label>
-                        </div>{' '}
-                        <div className="  w-2/5">
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-1.5 mb-1 px-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="number"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue="0.00"
-                            onChange={(e) => setName(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="flex mt-5  ">
-                        <div className="w-3/5 flex  ">
-                          {' '}
-                          <label
-                            className=" my-auto    block text-sm font-medium text-black dark:text-white"
-                            htmlFor=""
-                          >
-                            Total Fees To Be Charged
-                          </label>
-                        </div>{' '}
-                        <div className="  w-2/5">
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-1.5 mb-1 px-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="number"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue="0.00"
-                            onChange={(e) => setName(e.target.value)}
-                          />
+                  <div className="flex justify-end gap-4.5">
+                    <button
+                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setDisplay(2);
+                      }}
+                    >
+                      Next
+                    </button>
+                    <button
+                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      type="reset"
+                      onClick={(e) => {
+                        e.preventDefault();
+
+                        props.close(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+
+                <form className={display == 2 ? '' : 'hidden'}>
+                  <div className="flex gap-4">
+                    <div className="w-full">
+                      <div className="w-full mb-4 sm:w-2/2">
+                        <div className="w-full">
+                          <div className="flex justify-between">
+                            <label
+                              className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
+                              htmlFor=""
+                            >
+                              Fee Cartegories
+                            </label>
+                            <label
+                              className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
+                              htmlFor=""
+                            >
+                              Amount To Charge
+                            </label>
+                          </div>
+                          {cartegory?.data.map((item, index) => (
+                            <div className="flex   " key={item.id}>
+                              <div className="w-4/6 flex  ">
+                                {' '}
+                                <label
+                                  className=" my-auto  block text-sm font-medium text-black dark:text-white"
+                                  htmlFor=""
+                                >
+                                  {item.name}
+                                </label>
+                              </div>{' '}
+                              <div className="  w-2/6">
+                                <input
+                                  className="w-full rounded border border-stroke bg-gray py-1.5 mb-1 px-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                  type="number"
+                                  name=""
+                                  id=""
+                                  placeholder=""
+                                  defaultValue="0"
+                                  onChange={(e) => {
+                                    obj[item.name] = parseInt(e.target.value);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          ))}
+
+                          <div className="flex mt-5  ">
+                            <div className="w-4/6 flex  ">
+                              {' '}
+                              <label
+                                className=" my-auto    block text-sm font-medium text-black dark:text-white"
+                                htmlFor=""
+                              >
+                                Total Fees
+                              </label>
+                            </div>{' '}
+                            <div className="  w-2/6">
+                              <label
+                                className=" my-auto    block text-sm font-medium text-black dark:text-white"
+                                htmlFor=""
+                              >
+                                {data1}
+                              </label>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -322,7 +304,106 @@ const AssignFeeModal = (props) => {
                       type=""
                       onClick={(e) => {
                         e.preventDefault();
-                        handleSubmit(e);
+                        console.log(obj)
+                        if (Object.entries(obj).length == 1) {
+                          toast.error('Error - Fee Cartegory Cannot Be Empty');
+                        } else {
+                          e.preventDefault();
+                          setDisplay(3);
+                          delete data2.test;
+                          setdata2(obj);
+                          setdata3(Object.values(obj).reduce((a, b) => a + b));
+                        }
+                      }}
+                    >
+                      Next
+                    </button>
+                    <button
+                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      type="reset"
+                      onClick={(e) => {
+                        e.preventDefault();
+
+                        props.close(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+
+                <form className={display == 3 ? '' : 'hidden'}>
+                  <div className="flex gap-4">
+                    <div className="w-full">
+                      <div className="w-full mb-4 sm:w-2/2">
+                        <div className="w-full">
+                          <div className="flex justify-between">
+                            <label
+                              className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
+                              htmlFor=""
+                            >
+                              Class
+                            </label>
+                            <label
+                              className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
+                              htmlFor=""
+                            >
+                              {clazz}
+                            </label>
+                          </div>
+
+                          <div className="flex justify-between">
+                            <label
+                              className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
+                              htmlFor=""
+                            >
+                              Session
+                            </label>
+                            <label
+                              className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
+                              htmlFor=""
+                            >
+                              {sessionoption}
+                            </label>
+                          </div>
+
+                          <div className="flex justify-between">
+                            <div className=" flex  ">
+                              {' '}
+                              <label
+                                className=" my-auto    block text-sm font-medium text-black dark:text-white"
+                                htmlFor=""
+                              >
+                                Total Fees
+                              </label>
+                            </div>{' '}
+                            <div className="  ">
+                              <label
+                                className=" my-auto    block text-sm font-medium text-black dark:text-white"
+                                htmlFor=""
+                              >
+                                {display == 3
+                                  ? !data2
+                                    ? 0
+                                    : Object.values(data2).reduce(
+                                        (a, b) => a + b,
+                                      )
+                                  : 0}
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4.5">
+                    <button
+                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSubmit();
                       }}
                     >
                       Save
@@ -332,7 +413,7 @@ const AssignFeeModal = (props) => {
                       type="reset"
                       onClick={() => props.close(false)}
                     >
-                      Close
+                      Cancel
                     </button>
                   </div>
                 </form>

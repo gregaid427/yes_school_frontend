@@ -15,7 +15,7 @@ import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import Class from './pages/Class';
-import Fees from './pages/Fees';
+import Fees from './pages/Fees/Fees';
 import Users from './pages/Users';
 import Staff from './pages/Staff';
 import Teachers from './pages/teachers';
@@ -62,20 +62,21 @@ import NewGuardian from './pages/NewGuardian';
 import ExamGroup from './pages/ExamGroup';
 import ExamResult from './pages/ExamResult';
 import BulkAdmission from './pages/BulkAdmission';
-import FeesGroup from './pages/FeesCartegory';
-import CollectFees from './pages/CollectFees';
-import AssignFees from './pages/AssignFees';
+import FeesGroup from './pages/Fees/FeesCartegory';
+import CollectFees from './pages/Fees/CollectFees';
+import AssignFees from './pages/Fees/AssignFees';
+import Scholarship from './pages/Fees/Scholarship';
 
   
 function App() {
   const [loading, setLoading] = useState(true);
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
   const dispatch = useDispatch();
 
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [pathname]);
 
 
 
@@ -109,7 +110,7 @@ function App() {
       <Toaster position="top-center" reverseOrder={false} />
 
       <Routes>
-        <Route path="/" element={<Layout />}>
+        {/* <Route path="/" element={<Layout />}> */}
           <Route
             index
             element={
@@ -144,6 +145,15 @@ function App() {
                 <>
                   <PageTitle title="Calendar | " />
                   <CollectFees />
+                </>
+              }
+            />
+              <Route
+            path="/fees/scholarship"
+            element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <Scholarship />
                 </>
               }
             />
@@ -711,7 +721,7 @@ function App() {
               </>
             }
           />
-        </Route>
+        {/* </Route> */}
       </Routes>
     </>
   );

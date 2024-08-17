@@ -676,6 +676,28 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                           <li>
                             <NavLink
+                              to="/fees/Scholarship"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Scholarship
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/fees/manage"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Manage Fees
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
                               to="/fees/records"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +

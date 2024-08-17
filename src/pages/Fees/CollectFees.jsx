@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
-import userThree from '../images/user/user-03.png';
-import DefaultLayout from '../layout/DefaultLayout';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
+import DefaultLayout from '../../layout/DefaultLayout';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import ViewSVG from '../components/Svgs/View';
-import DeleteSVG from '../components/Svgs/delete';
-import EditSVG from '../components/Svgs/edit';
+import ViewSVG from '../../components/Svgs/View';
+import DeleteSVG from '../../components/Svgs/delete';
+import EditSVG from '../../components/Svgs/edit';
 import { useTheme } from '@table-library/react-table-library/theme';
 import { getTheme } from '@table-library/react-table-library/baseline';
 import { usePagination } from '@table-library/react-table-library/pagination';
@@ -28,24 +27,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteSingleStudentAction,
   fetchBulkStudent,
+  fetchCustomStudentsClassAccountAction,
   fetchCustomStudentsClassAction,
   fetchSingleStudent,
+  fetchStudentsClassAccountAction,
   fetchStudentsClassAction,
-} from '../redux/slices/studentSlice';
-import Loader from '../common/Loader';
-import StudentModal from '../components/StudentModal';
+} from '../../redux/slices/studentSlice';
+import Loader from '../../common/Loader';
 
-import SectionSelect1 from '../components/SectionsSelect1';
-import ClassSelect from '../components/ClassSelect';
-import { fetchUserdataAction } from '../redux/slices/usersSlice';
-import TableBtn from '../components/Svgs/TableBtn';
-import PromoteModal from '../components/PromoteModal';
-import CollectFeesModal from '../components/collectFeesModal';
+import SectionSelect1 from '../../components/SectionsSelect1';
+import ClassSelect from '../../components/ClassSelect';
+import { fetchUserdataAction } from '../../redux/slices/usersSlice';
+import TableBtn from '../../components/Svgs/TableBtn';
+import PromoteModal from '../../components/PromoteModal';
+import CollectFeesModal from '../../components/collectFeesModal';
 
 const CollectFees = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
+
   const [position, setPosition] = useState('top');
 
   const show = (position) => {
@@ -71,26 +73,27 @@ const CollectFees = () => {
   const [sectionzz, setsectionzz] = useState();
   const [propp, setProp] = useState();
 
-
-
-  
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
+  const fee = useSelector((state) => state?.fees);
+
 
   const {
     loading,
     error,
     fetchStudent,
-    fetchStudentcustom,
+    fetchStudentcustombal,
     fetchcustom,
-    fetchStudentcustomloading,
+    fetchStudentcustomballoading,
     fetchcustomloading,
     singleStudent,
     singleStudentloading,
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
+  const { payfee } = fee;
+
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -115,24 +118,28 @@ const CollectFees = () => {
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (fetchStudentcustom?.success == 1) {
-      let data = fetchStudentcustom?.data;
+    if (fetchStudentcustombal?.success == 1) {
+      let data = fetchStudentcustombal?.data;
       setdata(data);
     }
-  }, [fetchStudentcustomloading]);
+  }, [fetchStudentcustomballoading]);
+
+
+  useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
+
+    if (payfee?.success == 1) {
+     setVisible(false)
+     setVisible1(true)
+
+    }
+  }, [payfee]);
 
   useEffect(() => {
     setdata([]);
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => setLoader(false), 1000);
-
-    if (fetchStudent?.success == 1) {
-      let data = fetchStudent?.data;
-      setdata(data);
-    }
-  }, [fetchStudent]);
+ 
 
   // useEffect(() => {
 
@@ -166,7 +173,7 @@ const CollectFees = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  10% 30% 10% 25% 15% 10%;
+  --data-table-library_grid-template-columns:  15% 33% 15% 10% 17%  10%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -202,9 +209,7 @@ const CollectFees = () => {
   const navigate = useNavigate();
 
   const handleviewbtn = (value) => {
-
     show('top-right');
-
   };
   const handleEditbtn = (value) => {
     dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
@@ -248,11 +253,11 @@ const CollectFees = () => {
     console.log(data);
     if (sectionzz == 'All Sections') {
       //  setclazz(clazz)
-      dispatch(fetchStudentsClassAction(data));
+      dispatch(fetchStudentsClassAccountAction(data));
     }
     if (sectionzz != 'All Sections') {
       setsectionzz(sectionzz);
-      dispatch(fetchCustomStudentsClassAction(data));
+      dispatch(fetchCustomStudentsClassAccountAction(data));
     }
   }
   const footerContent = (
@@ -278,17 +283,32 @@ const CollectFees = () => {
       <Dialog
         resizable={false}
         draggable={false}
-       // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
+        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
         visible={visible}
         className=""
         position={'top'}
-        style={{  width: '40%', color: 'white' }}
+        style={{ width: '40%', color: 'white' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
         }}
       >
-        <CollectFeesModal close={setVisible} val={propp}/>
+        <CollectFeesModal close={setVisible} val={propp} />
+      </Dialog>
+      <Dialog
+        resizable={false}
+        draggable={false}
+        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
+        visible={visible1}
+        className=""
+        position={'bottom'}
+        style={{ width: '40%', color: 'white' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+      >
+        <CollectFeesModal close={setVisible1} val={propp} />
       </Dialog>
       <div className=" flex-col">
         <div
@@ -402,9 +422,10 @@ const CollectFees = () => {
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
                         <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Class/Sec</HeaderCell>
-                        <HeaderCell>Guardian</HeaderCell>
-                        <HeaderCell>Contact</HeaderCell>
+                        <HeaderCell>Class</HeaderCell>
+                        <HeaderCell>Section</HeaderCell>
+
+                        <HeaderCell>Acct Balance</HeaderCell>
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
@@ -424,23 +445,38 @@ const CollectFees = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.class}</span>/
+                            <span>{item.class}</span>
+                          </Cell>
+                          <Cell className="  ">
                             <span>{item.section}</span>
                           </Cell>
-                          <Cell className="  ">
-                            <span>{item.gender}</span>
+                          <Cell className="flex   justify-between  ">
+                            <span className=''>{Math.abs(item.accountbalance)}</span>   <span  className=''  >
+                              {item?.accountbalance < 0
+                                ?  <TableBtn
+                                clickFunction={() => {}}
+                                text={' Debit '}
+                                color={'bg-[#0F4598]'}
+                              />
+                                : item?.accountbalance == 0
+                                  ? ''
+                                  :  <TableBtn
+                                  clickFunction={()=>{}}
+                                  text={'Credit'}
+                                  color={'bg-success'}
+                                />}
+                            </span>
                           </Cell>
-                          <Cell className="  ">
-                            <span>{item.gender}</span>
-                          </Cell>
+                        
 
                           <Cell>
                             <div className="gap-2 flex">
                               <TableBtn
                                 text={'Collect Fees'}
                                 clickFunction={() => {
-                                  setProp(item)
-                                  handleviewbtn(item)}}
+                                  setProp(item);
+                                  handleviewbtn(item);
+                                }}
                                 color={'bg-primary'}
                               />
                             </div>

@@ -1,36 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllClassAction } from '../redux/slices/classSlice';
+import {
+  fetchAllClassAction,
+} from '../redux/slices/classSlice';
 import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
-const ClassSelect2 = (props) => {
+
+
+const SessionSelect1 = (props) => {
+
+  
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
   const [clazz, setclazz] = useState();
 
-  const clad = useSelector((state) => state?.classes);
+  const session = useSelector((state) => state?.session);
 
-  const { fetchAllClassloading, fetchAllClass } = clad;
+ 
+  const { fetchsession} =
+    session;
 
   useEffect(() => {
-    if (fetchAllClass?.success == 1) {
+
+    if (fetchsession?.success == 1) {
       let i = 0;
-      let arr = [];
-      while (i < clad?.fetchAllClass?.data.length) {
-        arr.push(clad?.fetchAllClass?.data[i].title);
+      let arr = ['None'];
+      while (i < session?.fetchsession?.data.length) {
+        arr.push(session?.fetchsession?.data[i].sessionname);
         i++;
       }
 
+      
+
       setClasss(arr);
       setclazz(arr[0]);
+
+
     }
-  }, [fetchAllClassloading]);
+
+  }, [fetchsession ]);
 
   useEffect(() => {
-    props.setsectionprop(clazz);
+    props.setsectionprop(clazz)
   }, [clazz]);
 
+
+
+
   return (
+
     <>
       <SelectGroupTwo
         values={classs}
@@ -41,4 +59,4 @@ const ClassSelect2 = (props) => {
   );
 };
 
-export default ClassSelect2;
+export default SessionSelect1;

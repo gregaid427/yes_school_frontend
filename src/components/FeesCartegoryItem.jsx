@@ -1,29 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { CreatesInventoryCartegoryAction,fetchInventCartegoryAction,resetcreatecart } from '../redux/slices/inventSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
+import { CreatesfeeCartegoryAction, fetchfeeCartegoryAction, resetcreatefee } from '../redux/slices/feeSlice';
 
 
 
 const FeesCartegoryItem = (props) => {
     const dispatch = useDispatch();
-    const inventory = useSelector((state) => state?.inventory);
+    const fees = useSelector((state) => state?.fees);
 
-    const {CreateInventorycart } =
-    inventory;
+    const {Createfeecart } =
+    fees;
     useEffect(() => {
-        if (CreateInventorycart?.success == 0) {
-          toast.error("Error - Adding Item Cartegory ");
+        if (Createfeecart?.success == 0) {
        //    dispatch(resetcreatecart())
           // dispatch(fetchAllClassAction())
     
     
           }
-        if (CreateInventorycart?.success == 1) {
-          toast.success('New Item Cartegory Added Successfully');
-          dispatch(fetchInventCartegoryAction());
+        if (Createfeecart?.success == 1) {
+          dispatch(fetchfeeCartegoryAction());
           resetFormStates()
-           dispatch(resetcreatecart())    
+           dispatch(resetcreatefee())    
            props.close((false))
 
     
@@ -40,11 +38,12 @@ const FeesCartegoryItem = (props) => {
     
         //   setClasss(arr);
         // }
-      }, [CreateInventorycart]);
+      }, [Createfeecart]);
 
 
     const [cartegoryName, setcartegoryName] = useState();
-    const [note, setNote] = useState();
+    
+    const [description, setDesription] = useState();
    
    
     const formRef1 = useRef();
@@ -57,15 +56,15 @@ const FeesCartegoryItem = (props) => {
 
 let data = {
     
-    'cartegoryname' : cartegoryName,
+    'name' : cartegoryName,
     'createdby' : 'asante',
-    'notes' : note
+    'description' : description
 }
 const handleSubmit=(e)=>{
     if (cartegoryName == '') {
         toast.error('Error - Name Cannot Be Empty');
       } else {
-        dispatch(CreatesInventoryCartegoryAction(data));
+        dispatch(CreatesfeeCartegoryAction(data));
       }
 }
 
@@ -77,7 +76,7 @@ const handleSubmit=(e)=>{
     }               >
                 <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                   <h3 className="font-medium text-black dark:text-white">
-                    Add Fees Cartegory
+                    Add Fee Cartegory 
                   </h3>
                 </div>
                 <div className="p-5">
@@ -101,7 +100,7 @@ const handleSubmit=(e)=>{
 
                       />
                     </div>
-
+                  
                     <div className="mb-5.5">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -119,7 +118,7 @@ const handleSubmit=(e)=>{
                           rows={2}
                           placeholder=""
                           defaultValue=""
-                          onChange={(e) => setNote(e.target.value)}
+                          onChange={(e) => setDesription(e.target.value)}
 
                         ></textarea>
                       </div>

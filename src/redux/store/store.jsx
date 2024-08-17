@@ -8,6 +8,8 @@ import inventory from "../slices/inventSlice";
 import statistics from "../slices/statisticsSlice";
 import expense from "../slices/expenseSlice";
 import session from "../slices/sessionSlice";
+import fees from "../slices/feeSlice";
+
 
 
 
@@ -23,10 +25,8 @@ const store = configureStore({
     subject: subject,
     statistics: statistics,
     expense: expense,
-    session: session
-
-
-
+    session: session,
+    fees: fees
   },
 });
 

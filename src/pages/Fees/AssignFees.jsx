@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
-import DefaultLayout from '../layout/DefaultLayout';
+import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
+import DefaultLayout from '../../layout/DefaultLayout';
 import { Link, useNavigate } from 'react-router-dom';
-import ViewSVG from '../components/Svgs/View';
-import DeleteSVG from '../components/Svgs/delete';
-import EditSVG from '../components/Svgs/edit';
+import ViewSVG from '../../components/Svgs/View';
+import DeleteSVG from '../../components/Svgs/delete';
+import EditSVG from '../../components/Svgs/edit';
 import { useTheme } from '@table-library/react-table-library/theme';
 import { usePagination } from '@table-library/react-table-library/pagination';
 import * as XLSX from 'xlsx';
@@ -23,7 +23,7 @@ import { mkConfig, generateCsv, download } from 'export-to-csv';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-import Loader from '../common/Loader';
+import Loader from '../../common/Loader';
 import toast from 'react-hot-toast';
 import {
   CreatesBulkClassAction,
@@ -31,11 +31,13 @@ import {
   fetchAllClassAction,
   fetchSingleClassAction,
   resetcreateClass,
-} from '../redux/slices/classSlice';
-import TableBtn from '../components/Svgs/TableBtn';
-import ExpenseFormModal from '../components/ExpenseFormModal';
+} from '../../redux/slices/classSlice';
+import TableBtn from '../../components/Svgs/TableBtn';
+import ExpenseFormModal from '../../components/ExpenseFormModal';
 import { Dialog } from 'primereact/dialog';
-import AssignFeeModal from '../components/AssignFeeModal';
+import AssignFeeModal from '../../components/AssignFeeModal';
+import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
+import { fetchfeeAssignRecordAction, fetchfeeCartegoryAction } from '../../redux/slices/feeSlice';
 
 const AssignFees = () => {
   const formRef1 = useRef();
@@ -44,6 +46,10 @@ const AssignFees = () => {
     formRef1.current.reset();
     console.log('reset');
   }
+
+
+  const fee = useSelector((state) => state?.fees);
+  const { cartegory,Assignfee } = fee;
 
   const [pagesval, setpagesval] = useState(30);
   const [classs, setClasss] = useState([]);
@@ -55,7 +61,7 @@ const AssignFees = () => {
 
   const [display, setDisplay] = useState(false);
   const [displaytable, setDisplaytable] = useState(false);
-
+  
   const [id, setclassId] = useState('');
   const [filename, setFileName] = useState('');
   const [file, setFile] = useState('');
@@ -66,6 +72,8 @@ const AssignFees = () => {
   const [sections, setsections] = useState([]);
 
   const [nodes, setdata] = useState([]);
+  const [datacart, setdatacart] = useState([]);
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -76,14 +84,15 @@ const AssignFees = () => {
     fetchAllClassloading,
     fetchAllClass,
     sectionloading,
-    fetchSection,
     CreateClasses,
     CreateClassesloading,
   } = clad;
 
   useEffect(() => {
-    // dispatch(fetchAllClass());
+    dispatch(fetchAllsessionAction());
     dispatch(fetchAllClassAction());
+    dispatch(fetchfeeAssignRecordAction());
+
   }, []);
 
   useEffect(() => {
@@ -106,11 +115,12 @@ const AssignFees = () => {
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (fetchAllClass?.success == 1) {
-      let data = fetchAllClass?.data;
+    if (Assignfee?.success == 1) {
+      let data = Assignfee?.data;
       setdata(data);
+      setVisible(false)
     }
-  }, [ fetchAllClass]);
+  }, [ Assignfee]);
 
   let data = { nodes };
 
@@ -135,7 +145,7 @@ const AssignFees = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  30% 10% 25% 10% 25%;
+      --data-table-library_grid-template-columns:  25% 10% 20% 10% 10% 25%;
     `,
       Row: `
   &:nth-of-type(odd) {
@@ -163,7 +173,7 @@ const AssignFees = () => {
 
   data = {
     nodes: data.nodes.filter((item) =>
-      item.title.toLowerCase().includes(search.toLowerCase()),
+      item.class.toLowerCase().includes(search.toLowerCase()),
     ),
   };
 
@@ -191,7 +201,39 @@ const AssignFees = () => {
     dispatch(deleteSingleClassAction(value));
     // dispatch(fetchAllClassAction());
   };
+ 
 
+  useEffect(() => {
+    dispatch(fetchfeeCartegoryAction());
+  }, []);
+
+  // useEffect(() => {
+  //   if (fetchSection?.success == 1) {
+  //     let arrr = [{"name":'None',"id":0}];
+  //     let i = 0;
+  //     while (i < clad?.fetchSection?.data.length) {
+  //       arrr.push({"name":clad?.fetchSection?.data[i]?.sectionName,"id":clad?.fetchSection?.data[i]?.id});
+  //       i++;
+  //     }
+
+  //     setsections(arrr);
+  //   }
+  // }, [sectionloading]);
+
+  useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
+
+    if (cartegory?.success == 1) {
+      let data = cartegory?.data;
+      setdatacart(data);
+    }
+    // if (loading == false) {
+    //   dispatch(fetchBulkStudent());
+    // }
+
+    // }
+    // datas = data;
+  }, [cartegory]);
   const classdata = {
     title: classTitle.toUpperCase(),
     createdBy: 'Asante',
@@ -293,7 +335,7 @@ const AssignFees = () => {
        <Dialog
         visible={visible}
         position={'top'}
-        style={{ height: 'auto', width: '50%' }}
+        style={{ height: 'auto', width: '35%' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
@@ -334,17 +376,7 @@ const AssignFees = () => {
                 </button>
               </div>
               <div className='flex gap-6'>
-              <div className="">
-                <button
-                  className="flex  justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
-                  type=""
-                  onClick={() => {
-                    handleDownloadCSV();
-                  }}
-                >
-                  Download Template
-                </button>
-              </div>
+              
               <div className="  float-end">
                 <button
                   className="flex  justify-center rounded bg-dark border border-stroke py-2 px-2 font-medium text-gray hover:bg-opacity-90"
@@ -386,7 +418,7 @@ const AssignFees = () => {
             'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
           }
         >
-          <div className="flex gap-3  flex-col">
+           <div className="flex gap-3  flex-col">
             <div className="px-2">
               <Table
                 data={data}
@@ -401,9 +433,11 @@ const AssignFees = () => {
                         <HeaderCell>Class</HeaderCell>
                         {/* <HeaderCell>Section</HeaderCell> */}
                         <HeaderCell>Total Fees</HeaderCell>
-                        <HeaderCell>Session Applicable</HeaderCell>
+                        <HeaderCell>Date Assigned</HeaderCell>
+                        <HeaderCell>Assigned By</HeaderCell>
                         <HeaderCell>Status</HeaderCell>
-                        <HeaderCell>Actions</HeaderCell>{' '}
+                        <HeaderCell>Actions</HeaderCell>
+
 
                       </HeaderRow>
                     </Header>
@@ -411,11 +445,13 @@ const AssignFees = () => {
                     <Body>
                       {tableList.map((item) => (
                         <Row key={item.id} item={item} className=" ">
-                          <Cell className="  ">{item.title}</Cell>
-                          <Cell className="  ">{'500.00'}</Cell>
+                          <Cell className="  ">{item.class}</Cell>
+                          <Cell className="  ">{item.total}</Cell>
 
-                          <Cell className="  ">{'1st Term 20214'}</Cell>
-                          <Cell className="  ">{'Applied'}</Cell> 
+                          <Cell className="  ">{item.createdat}</Cell>
+                          <Cell className="  ">{item.createdby}</Cell>
+                          <Cell className="  ">{item.status}</Cell>
+
 
                           <Cell>
                             <div className="gap-2 flex">

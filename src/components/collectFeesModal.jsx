@@ -6,6 +6,8 @@ import {
 } from '../redux/slices/inventSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
+import FeeRadio from './FeeRadio';
+import { PayFeeAction } from '../redux/slices/feeSlice';
 
 const CollectFeesModal = (props) => {
   const dispatch = useDispatch();
@@ -22,7 +24,6 @@ const CollectFeesModal = (props) => {
       toast.success('New Item Cartegory Added Successfully');
       dispatch(fetchInventCartegoryAction());
       resetFormStates();
-      dispatch(resetcreatecart());
       props.close(false);
     }
 
@@ -38,8 +39,10 @@ const CollectFeesModal = (props) => {
     // }
   }, [CreateInventorycart]);
 
-  const [cartegoryName, setcartegoryName] = useState();
-  const [note, setNote] = useState();
+  const [amount, setAmount] = useState(0);
+  const [mode, setmode] = useState('Cash');
+ 
+
 
   const formRef1 = useRef();
 
@@ -47,17 +50,26 @@ const CollectFeesModal = (props) => {
     // formRef.current.reset();
     formRef1.current.reset();
   }
+  let balanceresult = eval(parseInt(props.val?.accountbalance) + parseInt(amount))
 
   let data = {
-    cartegoryname: cartegoryName,
-    createdby: 'asante',
-    notes: note,
+    id: props.val?.student_id,
+    class: props.val?.class,
+    section: props.val?.section,
+    collectedby: 'asante',
+    amountpaid: amount,
+    mode: mode,
+    balbeforepayment: props.val?.accountbalance,
+    balanceafterpayment:  balanceresult,
+    receiptid: 'receiptid',
+
+
   };
   const handleSubmit = (e) => {
-    if (cartegoryName == '') {
-      toast.error('Error - Name Cannot Be Empty');
+    if (amount < 1 ) {
+      toast.error('Error - Enter Valid Amount');
     } else {
-      dispatch(CreatesInventoryCartegoryAction(data));
+      dispatch(PayFeeAction(data));
     }
   };
 
@@ -86,10 +98,8 @@ const CollectFeesModal = (props) => {
                     name=""
                     id=""
                     placeholder=""
-                    defaultValue={props.val.student_id}
-                    onChange={(e) =>
-                      setcartegoryName(e.target.value.toUpperCase())
-                    }
+                    defaultValue={props.val?.student_id}
+                  
                     disabled
                   />
                 </div>
@@ -106,10 +116,14 @@ const CollectFeesModal = (props) => {
                     name=""
                     id=""
                     placeholder=""
-                    defaultValue={props.val.firstName +" "+ props.val.otherName+" "+props.val.lastName}
-                    onChange={(e) =>
-                      setcartegoryName(e.target.value.toUpperCase())
+                    defaultValue={
+                      props.val?.firstName +
+                      ' ' +
+                      props.val?.otherName +
+                      ' ' +
+                      props.val?.lastName
                     }
+                 
                     disabled
                   />
                 </div>
@@ -127,32 +141,61 @@ const CollectFeesModal = (props) => {
                     name=""
                     id=""
                     placeholder=""
-                    defaultValue={props.val.class +" "+"("+ props.val.section +")"}
-                    onChange={(e) =>
-                      setcartegoryName(e.target.value.toUpperCase())
+                    defaultValue={
+                      props.val?.class + ' ' + '(' + props.val?.section + ')'
                     }
+                  
                     disabled
                   />
                 </div>
 
-                <div className="w-full flex mb-4 sm:w-2/2">
+                <div className="w-full flex mb-4 gap-2 sm:w-2/2">
                   <label
                     className="my-auto w-2/5 block text-sm font-medium text-black dark:text-white"
                     htmlFor=""
                   >
                     Amount
                   </label>
+                  <div className='flex'>
                   <input
-                    className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className="w-2/6 rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                     type="number"
                     name=""
                     id=""
                     placeholder=""
                     defaultValue=""
                     onChange={(e) =>
-                      setcartegoryName(e.target.value.toUpperCase())
+                      setAmount(e.target.value)
                     }
                   />
+                  <label
+                    className="my-auto w-2/6 text-center block text-sm font-medium text-black dark:text-white"
+                    htmlFor=""
+                  >
+                    Accnt Balance
+                  </label>
+                  <input
+                    className="w-2/6 rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    type="number"
+                    name=""
+                    id=""
+                    placeholder=""
+                    defaultValue={props.val?.accountbalance}
+                    //defaultValue={Math.abs(props.val?.accountbalance)}
+
+                  
+                  />
+                  </div>
+                </div>
+                
+                <div className="w-full flex justify-between mb-4 sm:w-2/2">
+                  <label
+                    className="my-auto  block text-sm font-medium text-black dark:text-white"
+                    htmlFor=""
+                  >
+                    Payment :
+                  </label>
+                  <FeeRadio setmode={setmode}/>
                 </div>
                 <div className="flex justify-end mt-8.5 gap-4.5">
                   <button

@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
-import DefaultLayout from '../layout/DefaultLayout';
+import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
+import DefaultLayout from '../../layout/DefaultLayout';
 import { Link, useNavigate } from 'react-router-dom';
-import ViewSVG from '../components/Svgs/View';
-import DeleteSVG from '../components/Svgs/delete';
-import EditSVG from '../components/Svgs/edit';
+import ViewSVG from '../../components/Svgs/View';
+import DeleteSVG from '../../components/Svgs/delete';
+import EditSVG from '../../components/Svgs/edit';
 import { useTheme } from '@table-library/react-table-library/theme';
 import { usePagination } from '@table-library/react-table-library/pagination';
 import {
@@ -21,17 +21,16 @@ import { mkConfig, generateCsv, download } from 'export-to-csv';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-import Loader from '../common/Loader';
+import Loader from '../../common/Loader';
 import toast from 'react-hot-toast';
+import { deleteScholarshipAction, deleteSinglefeeAction, fetchfeeCartegoryAction, fetchScholarshipAction } from '../../redux/slices/feeSlice';
+import FeesCartegoryItem from '../../components/FeesCartegoryItem';
+import { deleteSingleCartAction } from '../../redux/slices/inventSlice';
+import ScholarshipItem from '../../components/ScholarshipItem';
 
-import InventNewCartegory from '../components/InventNewCartegory';
-import {
-  deleteSingleCartAction,
-  fetchInventCartegoryAction,
-} from '../redux/slices/inventSlice';
-import FeesCartegoryItem from '../components/FeesCartegoryItem';
 
-const FeesGroup = () => {
+
+const Scholarship = () => {
   const [pagesval, setpagesval] = useState(30);
   const [classs, setClasss] = useState([]);
 
@@ -49,11 +48,11 @@ const FeesGroup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const sub = useSelector((state) => state?.inventory);
-  const { cartegory } = sub;
+  const fee = useSelector((state) => state?.fees);
+  const { CreateScholar } = fee;
 
   useEffect(() => {
-    dispatch(fetchInventCartegoryAction());
+    dispatch(fetchScholarshipAction());
   }, []);
 
   // useEffect(() => {
@@ -72,8 +71,8 @@ const FeesGroup = () => {
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (cartegory?.success == 1) {
-      let data = cartegory?.data;
+    if (CreateScholar?.success == 1) {
+      let data = CreateScholar?.data;
       setdata(data);
     }
     // if (loading == false) {
@@ -82,7 +81,7 @@ const FeesGroup = () => {
 
     // }
     // datas = data;
-  }, [cartegory]);
+  }, [CreateScholar]);
 
   let data = { nodes };
 
@@ -100,7 +99,7 @@ const FeesGroup = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  60% 40%;
+  --data-table-library_grid-template-columns:  40% 20% 40%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -135,25 +134,26 @@ const FeesGroup = () => {
   console.log(data);
   data = {
     nodes: data.nodes.filter((item) =>
-      item.cartegoryname.toLowerCase().includes(search.toLowerCase()),
+      item.name.toLowerCase().includes(search.toLowerCase()),
     ),
   };
 
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
-    navigate('/inventory/editcartegory', {
+    navigate('/inventory/editFeeegory', {
       state: { action: 2, info: value },
     });
   };
   const handleEditbtn = (value) => {
     console.log(value.type);
-    navigate('/inventory/editcartegory', {
+    navigate('/inventory/editFeeegory', {
       state: { action: 1, info: value },
     });
   };
   const handledeletebtn = (value) => {
-    dispatch(deleteSingleCartAction(value));
+    console.log(value)
+    dispatch(deleteScholarshipAction(value));
   };
 
   const subdata = {
@@ -193,9 +193,9 @@ const FeesGroup = () => {
     <DefaultLayout>
       <div className={'flex gap-2  w-full'}>
       <div className="w-4/12">
-          <FeesCartegoryItem close={setClasss} />
+          <ScholarshipItem close={setClasss} />
         </div>
-        <div className="w-7/12 flex-col">
+        <div className="w-8/12 flex-col">
           <div
             className={
               'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
@@ -204,7 +204,7 @@ const FeesGroup = () => {
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
-                  Fees Cartegory List
+                  Scholarship List
                 </h3>
               </div>
             </div>
@@ -283,7 +283,9 @@ const FeesGroup = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
-                          <HeaderCell>Cartegory</HeaderCell>
+                          <HeaderCell>Title</HeaderCell>
+                          <HeaderCell>Amount</HeaderCell>
+
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
@@ -292,7 +294,8 @@ const FeesGroup = () => {
                       <Body>
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
-                            <Cell className="  ">{item.cartegoryname}</Cell>
+                            <Cell className="  ">{item.name}</Cell>
+                            <Cell className="  ">{item.amount}</Cell>
 
                             <Cell>
                               <div className="gap-2 flex">
@@ -369,7 +372,7 @@ const FeesGroup = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
-                          <HeaderCell>Cartegory</HeaderCell>
+                          <HeaderCell>Feeegory</HeaderCell>
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
@@ -382,7 +385,7 @@ const FeesGroup = () => {
                             item={item}
                             className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                           >
-                            <Cell className="  ">{item.cartegoryname}</Cell>
+                            <Cell className="  ">{item.Feeegoryname}</Cell>
                           </Row>
                         ))}
                       </Body>
@@ -399,4 +402,4 @@ const FeesGroup = () => {
   );
 };
 
-export default FeesGroup;
+export default Scholarship;
