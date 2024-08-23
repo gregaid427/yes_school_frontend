@@ -674,6 +674,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Assign Fees
                             </NavLink>
                           </li>
+                        
                           <li>
                             <NavLink
                               to="/fees/Scholarship"
@@ -705,6 +706,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               }
                             >
                               Search Records
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/fees/studentpreference"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Student Preference
                             </NavLink>
                           </li>
                      

@@ -58,6 +58,7 @@ const Class = () => {
     fetchAllClassNo,
     sectionloading,
     fetchSection,
+    fetchAllClass,
     CreateClasses,
     CreateClassesloading,
   } = clad;
@@ -91,11 +92,11 @@ const Class = () => {
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (fetchAllClassNo?.success == 1) {
-      let data = fetchAllClassNo?.data;
+    if (fetchAllClass?.success == 1) {
+      let data = fetchAllClass?.data;
       setdata(data);
     }
-  }, [fetchAllClassNo]);
+  }, [fetchAllClass ,fetchAllClass]);
 
   let data = { nodes };
 
@@ -293,11 +294,11 @@ const Class = () => {
 
                   <div className="pb-10 mt-3">
                     <div className="flex my-5 justify-between align-middle">
-                      <label className=" block text-sm align-middle font-medium text-black dark:text-white">
+                      <label className=" block text-sm py-1 align-middle font-medium text-black dark:text-white">
                         Class Sections
                       </label>
                       <button
-                        className="flex w-7/12 justify-center rounded-full  bg-black  px-1 font-[6px] text-muted hover:bg-opacity-90"
+                        className="flex w-6/12 justify-center rounded-full  bg-black py-1  px-1 font-[6px] text-muted hover:bg-opacity-90"
                         type=""
                         onClick={(e) => {
                           e.preventDefault()
@@ -309,20 +310,21 @@ const Class = () => {
                       </button>
                     </div>
                     {sections.map((item) => (
-                      <div key={item.id} className="mb- flex   sm:flex-row">
+                      <div key={item.id} className="mb- flex gap-2   sm:flex-row">
+                         <ClassCheckbox
+                          updatesection={() => updatesection(item.sectionName)}
+                          item={item}
+                        />
                         <div className=" flex  sm:w-full">
                           <label
                             className="mb-1 block text-sm font-medium text-black dark:text-white"
                             htmlFor="checkboxLabelOne"
                           >
-                            - {item.sectionName}{' '}
+                            {item.sectionName}{' '}
                           </label>
                         </div>
 
-                        <ClassCheckbox
-                          updatesection={() => updatesection(item.sectionName)}
-                          item={item}
-                        />
+                       
                       </div>
                     ))}
                   </div>

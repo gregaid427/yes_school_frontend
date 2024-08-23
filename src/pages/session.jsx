@@ -28,6 +28,7 @@ import ActiveSVG from '../components/Svgs/active';
 import {
   createsessionAction,
   deletesessionByIdAction,
+  fetchActivesessionAction,
   fetchAllsessionAction,
   resetcreatesession,
   resetUpdatesession,
@@ -96,6 +97,8 @@ const Session = () => {
       toast.success('New Section Added Successfully');
       show('top-right');
       dispatch(resetcreatesession());
+      dispatch(fetchActivesessionAction());
+
       //   dispatch(fetchAllSectionAction())
     }
     
@@ -103,6 +106,8 @@ const Session = () => {
      // toast.success('New Section Added Successfully');
       show('top-right');
      dispatch(resetUpdatesession());
+     dispatch(fetchActivesessionAction());
+
       //   dispatch(fetchAllSectionAction())
     }
 

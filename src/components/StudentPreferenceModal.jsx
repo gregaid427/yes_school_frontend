@@ -6,24 +6,22 @@ import {
 } from '../redux/slices/inventSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import { PayFeeAction } from '../redux/slices/feeSlice';
-import { fetchAllClassAction } from '../redux/slices/classSlice';
-import { fetchActivesessionAction } from '../redux/slices/sessionSlice';
-import { fetchschoolinfoAction } from '../redux/slices/usersSlice';
+import PreferenceRadio from './PreferenceRadio';
+import { PrefencesAction } from '../redux/slices/feeSlice';
 
-const CollectFeesModal = (props) => {
-  const clad = useSelector((state) => state?.classes);
-
-  const { fetchAllClassloading, fetchAllClass } = clad;
+const StudentPreferenceModal = (props) => {
   const dispatch = useDispatch();
   const inventory = useSelector((state) => state?.inventory);
+
+  const fee = useSelector((state) => state?.fees);
+  const { cartegory } = fee;
 
   const { CreateInventorycart } = inventory;
   useEffect(() => {
     if (CreateInventorycart?.success == 0) {
       toast.error('Error - Adding Item Cartegory ');
       //    dispatch(resetcreatecart())
-      dispatch(fetchAllClassAction());
+      // dispatch(fetchAllClassAction())
     }
     if (CreateInventorycart?.success == 1) {
       toast.success('New Item Cartegory Added Successfully');
@@ -45,8 +43,11 @@ const CollectFeesModal = (props) => {
   }, [CreateInventorycart]);
 
   const [amount, setAmount] = useState(0);
-  const [mode, setmode] = useState('Cash');
-  const [selectedArr, setselectedArr] = useState([]);
+  const [repeat, setRepeat] = useState([]);
+  console.log(repeat);
+
+
+
 
   const formRef1 = useRef();
 
@@ -57,30 +58,33 @@ const CollectFeesModal = (props) => {
   let balanceresult = eval(
     parseInt(props.val?.accountbalance) + parseInt(amount),
   );
+  // console.log(props.cart)
+  // useEffect(() => {
+  //   if(props.cart){
+  //     let myArr =[]
+  //     console.log(props.cart?.length)
 
+  //     for(let i = 0; i < props.cart?.length; i++ ){
+  //       console.log(props.cart[i].feeid)
+  //       myArr.push(props.cart[i].feeid)
+
+  //       if(i==props?.cart.length-1)setselectedArr(myArr)
+  //         console.log(myArr)
+  //     }
+
+  //   }
+  // }, []);
+  let myarr = [];
   let data = {
     id: props.val?.student_id,
     class: props.val?.class,
-    section: props.val?.section,
-    collectedby: 'asante',
-    amountpaid: amount,
-    mode: mode,
-    balbeforepayment: props.val?.accountbalance,
-    balanceafterpayment: balanceresult,
-    receiptid: 'receiptid',
-    infotype: props.infotype,
+    createdby: 'asante',
+    pref: repeat,
   };
   const handleSubmit = (e) => {
-    if (amount < 1) {
-      toast.error('Error - Enter Valid Amount');
-    } else {
-      dispatch(PayFeeAction(data));
-    }
+    console.log(repeat);
+      dispatch(PrefencesAction(data));
   };
-  useEffect(() => {
-    dispatch(fetchschoolinfoAction());
-    dispatch(fetchActivesessionAction());
-  }, []);
 
   return (
     <div className="w-full">
@@ -89,7 +93,7 @@ const CollectFeesModal = (props) => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">
             <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Collect Fees
+                Student Prefences
               </h3>
             </div>
             <div className="p-7">
@@ -135,83 +139,46 @@ const CollectFeesModal = (props) => {
                   />
                 </div>
 
-                <div className="w-full flex mb-4 sm:w-2/2">
+                <div className="w-full mb-3 mt-4 sm:w-2/2">
                   <label
-                    className="my-auto w-2/5 block text-sm font-medium text-black dark:text-white"
+                    className="mb-2 block text-sm font-medium text-black dark:text-white"
                     htmlFor=""
                   >
-                    Class / section
-                  </label>
-                  <input
-                    className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name=""
-                    id=""
-                    placeholder=""
-                    defaultValue={
-                      props.val?.class +
-                      ' ' +
-                      `${props.val?.section ? '/' : ''}` +
-                      ' ' +
-                      props.val?.section
-                    }
-                    disabled
-                  />
-                </div>
+                   Select Fee Cartegory Preferences
+                  </label>{' '}
+                  <div>
+                    {props?.cart.map((item, index) => (
+                      <div key={index}>
+                        <div className=" flex  gap-6 sm:w-full">
+                       <div className=''>
+                        <PreferenceRadio 
+                          
+                          setRepeated={setRepeat}
+                          repeat={repeat}
+                          stdId={item?.name}
+                          
+                          />
+                                                  </div>
 
-                <div className="w-full flex mb-4 gap-1 sm:w-2/2">
-                  <label
-                    className="my-auto w-2/5 block text-sm font-medium text-black dark:text-white"
-                    htmlFor=""
-                  >
-                    Amount
-                  </label>
-                  <div className="flex">
-                    <input
-                      className="w-2/6 rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="number"
-                      name=""
-                      id=""
-                      placeholder=""
-                      defaultValue=""
-                      onChange={(e) => setAmount(e.target.value)}
-                    />
-                    <label
-                      className="my-auto w-2/6 text-center block text-sm font-medium text-black dark:text-white"
-                      htmlFor=""
-                    >
-                      Accnt Balance
-                    </label>
-                    <input
-                      className="w-2/6 rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="number"
-                      name=""
-                      id=""
-                      placeholder=""
-                      defaultValue={Math.abs(props.val?.accountbalance)}
-                      //defaultValue={Math.abs(props.val?.accountbalance)}
-                      disabled
-                    />
+                          <label
+                            className="block pt-1  text-sm font-medium text-black dark:text-white"
+                            htmlFor="checkboxLabelOne"
+                          >
+                            {"- " +item?.name}
+                          </label>
+                        
+                        </div>
+
+                        {/* <StudentPreferenceSelect
+                        info={props?.cart[index]}
+                        arr={myarr}
+                        setselectedarr={setselectedArr}
+                        pref={(val)=>getpref(val)}
+                      /> */}
+                      </div>
+                    ))}
                   </div>
                 </div>
-                {/*                 
-                <div className="w-full mb-3 mt-4 sm:w-2/2">
-                          <label
-                            className="mb-2 block text-sm font-medium text-black dark:text-white"
-                            htmlFor=""
-                          >
-                            Select Classes Applicable
-                          </label>{' '}
-                          <div>
-                            {fetchAllClass?.data.map((item, index) => (
-                              <AssignFeeClassSelect
-                                info={fetchAllClass?.data?.[index]}
-                                selectedarr={selectedArr}
-                                selected={setselectedArr}
-                              />
-                            ))}
-                          </div>
-                        </div> */}
                 <div className="flex justify-end mt-8.5 gap-4.5">
                   <button
                     className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
@@ -243,4 +210,4 @@ const CollectFeesModal = (props) => {
   );
 };
 
-export default CollectFeesModal;
+export default StudentPreferenceModal;

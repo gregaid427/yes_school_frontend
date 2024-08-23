@@ -4,8 +4,31 @@ import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import LogoIcon from '../../images/logo/logo-icon.svg';
 import DarkModeSwitcher from './DarkModeSwitcher';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  fetchActivesessionAction,
+  fetchAllsessionAction,
+} from '../../redux/slices/sessionSlice';
+import { fetchschoolinfoAction } from '../../redux/slices/usersSlice';
 
 const Header = (props) => {
+  const dispatch = useDispatch();
+ 
+  const user = useSelector((state) => state?.user);
+  const { allschool } = user;
+  const session = useSelector((state) => state?.session);
+  const { fetchsessionactive, fetchsession } = session;
+  const [sessionz, setsession] = useState(null);
+
+  useEffect(() => {
+    if (fetchsessionactive?.success == 1) {
+      let data = fetchsessionactive?.data[0];
+      setsession(data);
+      console.log('sessionz');
+    }
+  }, [fetchsessionactive]);
+
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
@@ -56,19 +79,20 @@ const Header = (props) => {
           {/* <Link className="block flex-shrink-0 lg:hidden" to="/">
             <img src={LogoIcon} alt="Logo" />
           </Link> */}
-
-          
         </div>
-
-        <div className="hidden sm:block">
-         
-        </div>
+        <span className="float-start block text-sm font-medium text-black dark:text-white">
+          {allschool?.data[0]?.name ? allschool?.data[0]?.name : "" }
+        </span>
+        <span className=" float-start block text-sm font-medium text-black dark:text-white">
+          Current Session : {sessionz?.sessionname}
+        </span>
+        <div className="hidden sm:block"></div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
           <ul className="flex items-center gap-2 2xsm:gap-4">
             {/* <!-- Dark Mode Toggler --> */}
-           <div className='hidden'>
-           <DarkModeSwitcher />
+            <div className="">
+              <DarkModeSwitcher />
             </div>
             {/* <!-- Dark Mode Toggler --> */}
 

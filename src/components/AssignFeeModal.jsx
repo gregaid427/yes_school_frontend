@@ -4,15 +4,21 @@ import ClassSelect3 from './ClassSelect3';
 import SessionSelect1 from './SessionSelect1';
 import { AssignFeesAction } from '../redux/slices/feeSlice';
 import toast from 'react-hot-toast';
+import ClassSelect2 from './ClassSelect2';
+import AssignFeeClassSelect from './AssignFeeClassSelect';
 
 const AssignFeeModal = (props) => {
   const dispatch = useDispatch();
-  const [display, setDisplay] = useState(1);
+  const [display, setDisplay] = useState(0);
 
   const [clazz, setclazz] = useState();
+  const [isChecked1, setIsChecked1] = useState();
+  const [selectedArr, setselectedArr] = useState([]);
 
   const [desc, setDesc] = useState('');
+  const clad = useSelector((state) => state?.classes);
 
+  const { fetchAllClassloading, fetchAllClass } = clad;
   const [sessionoption, setSessionoption] = useState('');
   const fee = useSelector((state) => state?.fees);
   const { cartegory } = fee;
@@ -21,6 +27,8 @@ const AssignFeeModal = (props) => {
   const [data2, setdata2] = useState({ test: 0 });
   const [data3, setdata3] = useState({ test: 0 });
   const [data4, setdata4] = useState({ test: 0 });
+
+  console.log(selectedArr);
 
   const obj = {
     test: 0,
@@ -53,9 +61,26 @@ const AssignFeeModal = (props) => {
     if (data4.fee[0] == undefined) {
       return toast.error('Error -Fee Cartegory Cannot Be Empty');
     } else {
+      console.log(data4);
       dispatch(AssignFeesAction(data4));
     }
   };
+
+  useEffect(() => {
+    if (fetchAllClass?.success == 0) {
+      toast.error('Error Loading Class');
+      let i = 0;
+      let arr = [];
+      while (i < clad?.fetchAllClass?.data.length) {
+        arr.push(clad?.fetchAllClass?.data[i].title);
+        i++;
+      }
+
+      setClasss(arr);
+      setclazz(arr[0]);
+    }
+  }, [fetchAllClassloading]);
+
   return (
     <div className="w-full">
       <div className="w-full ">
@@ -68,6 +93,166 @@ const AssignFeeModal = (props) => {
                 </h3>
               </div>
               <div className="p-8">
+                <form className={display == 0 ? '' : 'hidden'}>
+                  <div className="flex gap-4">
+                    <div className="w-full">
+                      <div className="w-full  sm:w-2/2">
+                        <label
+                          className=" block text-sm font-medium text-black dark:text-white"
+                          htmlFor=""
+                        >
+                          Fee Assign Option :
+                        </label>
+                        <div className="flex w-full gap-8">
+                          <div className="flex w-full flex-col">
+                            <div className=" flex mt-2  mb-2 ">
+                              <div className="flex justify-start mr-2 ">
+                                <label
+                                  htmlFor={'type'}
+                                  className="flex cursor-pointer select-none "
+                                >
+                                  <div className="relative ">
+                                    <input
+                                      title={'type'}
+                                      type="checkbox"
+                                      id={'type'}
+                                      className="sr-only"
+                                      onChange={() => {
+                                        setIsChecked1(false);
+                                      }}
+                                    />
+                                    <div
+                                      className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                        !isChecked1 &&
+                                        'border-primary bg-gray dark:bg-transparent'
+                                      }`}
+                                    >
+                                      <span
+                                        className={`h-2.5 w-2.5 rounded-sm ${!isChecked1 && 'bg-primary'}`}
+                                      ></span>
+                                    </div>
+                                  </div>
+                                </label>
+                              </div>
+                              <div className=" flex  sm:w-full">
+                                <label
+                                  className="mb- block text-sm font-medium text-black dark:text-white"
+                                  htmlFor="checkboxLabelOne"
+                                >
+                                  {'Single Class'}
+                                </label>
+                              </div>
+                            </div>
+
+                            <div className=" flex  ">
+                              <div className="flex justify-start">
+                                <label
+                                  htmlFor={'type2'}
+                                  className="flex cursor-pointer select-none "
+                                >
+                                  <div className="relative mr-2 ">
+                                    <input
+                                      title={'type2'}
+                                      type="checkbox"
+                                      id={'type2'}
+                                      className="sr-only"
+                                      onChange={() => {
+                                        setIsChecked1(true);
+                                      }}
+                                    />
+                                    <div
+                                      className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                        isChecked1 &&
+                                        'border-primary bg-gray dark:bg-transparent'
+                                      }`}
+                                    >
+                                      <span
+                                        className={`h-2.5 w-2.5 rounded-sm ${isChecked1 && 'bg-primary'}`}
+                                      ></span>
+                                    </div>
+                                  </div>
+                                </label>
+                              </div>
+                              <div className=" flex  sm:w-full">
+                                <label
+                                  className="mb-3 block text-sm font-medium text-black dark:text-white"
+                                  htmlFor="checkboxLabelOne"
+                                >
+                                  {'Multiple Classes'}
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <form className={!isChecked1 ? '' : 'hidden'}>
+                        <div className="w-full mb-3 sm:w-2/2">
+                          <label
+                            className="mb-2 block text-sm font-medium text-black dark:text-white"
+                            htmlFor=""
+                          >
+                            Class
+                          </label>
+                          <div className="relative z-20 bg-white dark:bg-form-input">
+                            <ClassSelect3 setsectionprop={setclazz} />
+                          </div>
+                        </div>
+                      </form>
+                      <form className={isChecked1 ? '' : 'hidden'}>
+                        <div className="w-full mb-3 mt-4 sm:w-2/2">
+                          <label
+                            className="mb-2 block text-sm font-medium text-black dark:text-white"
+                            htmlFor=""
+                          >
+                            Select Classes Applicable
+                          </label>{' '}
+                          <div>
+                            {fetchAllClass?.data.map((item, index) => (
+                              <AssignFeeClassSelect
+                                info={fetchAllClass?.data?.[index]}
+                                selectedarr={selectedArr}
+                                selected={setselectedArr}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end mt-3 gap-4.5">
+                    <button
+                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (selectedArr.length == 0 && isChecked1) {
+                          toast.error('Please Select Class');
+                          console.log(selectedArr);
+                        } else if (clazz == 'None' && !isChecked1) {
+                          toast.error('Please Select Class');
+                          console.log(selectedArr);
+                        } else {
+                          setDisplay(2);
+                          console.log(selectedArr);
+                        }
+                      }}
+                    >
+                      Next
+                    </button>
+                    <button
+                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      type="reset"
+                      onClick={(e) => {
+                        e.preventDefault();
+
+                        props.close(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
                 <form className={display == 1 ? '' : 'hidden'}>
                   <div className="flex gap-4">
                     <div className="w-full">
@@ -273,26 +458,6 @@ const AssignFeeModal = (props) => {
                               </div>
                             </div>
                           ))}
-
-                          <div className="flex mt-5  ">
-                            <div className="w-4/6 flex  ">
-                              {' '}
-                              <label
-                                className=" my-auto    block text-sm font-medium text-black dark:text-white"
-                                htmlFor=""
-                              >
-                                Total Fees
-                              </label>
-                            </div>{' '}
-                            <div className="  w-2/6">
-                              <label
-                                className=" my-auto    block text-sm font-medium text-black dark:text-white"
-                                htmlFor=""
-                              >
-                                {data1}
-                              </label>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -304,7 +469,7 @@ const AssignFeeModal = (props) => {
                       type=""
                       onClick={(e) => {
                         e.preventDefault();
-                        console.log(obj)
+                        console.log(obj);
                         if (Object.entries(obj).length == 1) {
                           toast.error('Error - Fee Cartegory Cannot Be Empty');
                         } else {

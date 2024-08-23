@@ -22,6 +22,21 @@ export const fetchAllsessionAction = createAsyncThunk(
     }
   },
 );
+export const fetchActivesessionAction = createAsyncThunk(
+  'fetch/Activesession',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/session/active`);
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
 export const deletesessionByIdAction = createAsyncThunk(
   'delete/sessionbysession',
@@ -203,6 +218,37 @@ const SessionSlices = createSlice({
       state.fetchsession = undefined;
       state.sessionloading = undefined;
     });
+
+    
+
+
+
+
+    builder.addCase(fetchActivesessionAction.pending, (state, action) => {
+      state.activeloading = true;
+      state.fetchsessionactive = false;
+    });
+    builder.addCase(fetchActivesessionAction.fulfilled, (state, action) => {
+      state.activeloading = false;
+      state.activeerror = undefined;
+      state.fetchsessionactive = action?.payload;
+    });
+    builder.addCase(fetchActivesessionAction.rejected, (state, action) => {
+      state.activeloading = false;
+      state.activeerror = action.payload;
+      state.fetchsessionactive = undefined;
+    });
+
+
+
+
+
+
+
+
+
+
+
 
     builder.addCase(createsessionAction.pending, (state, action) => {
       state.loading = true;

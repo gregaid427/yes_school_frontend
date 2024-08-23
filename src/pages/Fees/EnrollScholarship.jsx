@@ -34,14 +34,14 @@ import Loader from '../../common/Loader';
 
 import SectionSelect1 from '../../components/SectionsSelect1';
 import ClassSelect from '../../components/ClassSelect';
-import { fetchschoolinfoAction, fetchUserdataAction } from '../../redux/slices/usersSlice';
+import { fetchUserdataAction } from '../../redux/slices/usersSlice';
 import TableBtn from '../../components/Svgs/TableBtn';
 import CollectFeesModal from '../../components/collectFeesModal';
 import FeesReceiptModal from '../../components/FeesReceiptModal';
-import { fetchfeeCartegoryAction, resetpayfee } from '../../redux/slices/feeSlice';
-import { fetchActivesessionAction } from '../../redux/slices/sessionSlice';
+import { fetchfeeCartegoryAction, fetchScholarshipAction, resetpayfee } from '../../redux/slices/feeSlice';
+import ScholarshipModal from '../../components/ScholarshipModal';
 
-const CollectFees = () => {
+const EnrollScholarship = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
@@ -92,7 +92,7 @@ const CollectFees = () => {
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
-  const { payfee,cartegory } = fee;
+  const { payfee,cartegory,CreateScholar } = fee;
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -153,7 +153,7 @@ const CollectFees = () => {
 
 
   useEffect(() => {
-    dispatch(fetchfeeCartegoryAction());
+    dispatch(fetchScholarshipAction());
   }, []);
 
   // useEffect(() => {
@@ -188,7 +188,7 @@ const CollectFees = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  15% 33% 15% 10% 17%  10%;
+  --data-table-library_grid-template-columns:  15% 40% 20% 15%   10%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -208,11 +208,6 @@ const CollectFees = () => {
 `,
     },
   ]);
-  useEffect(() => {
-    dispatch(fetchschoolinfoAction());
-    dispatch(fetchActivesessionAction());
-  }, []);  const user = useSelector((state) => state?.user);
-  const { allschool } = user;
 
   const pagination = usePagination(data, {
     state: {
@@ -313,30 +308,16 @@ const CollectFees = () => {
           setVisible(false);
         }}
       >
-        <CollectFeesModal close={setVisible} val={propp} infotype={sectionzz} />
+        <ScholarshipModal close={setVisible} val={propp} infotype={sectionzz} cartinfo={CreateScholar} />
       </Dialog>
-      <Dialog
-        resizable={false}
-        draggable={false}
-        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
-        visible={visible1}
-        className=""
-        position={'bottom'}
-        style={{ width: '65%', color: 'white' }}
-        onHide={() => {
-          if (!visible1) return;
-          setVisible1(false);
-        }}
-      >
-        <FeesReceiptModal close={setVisible1} val={propp} cart={cartz} school={allschool} />
-      </Dialog>
-      <div className=" flex-col">
+     
+      <div className="w-full flex-col">
         <div
           className={
             'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
           }
         >
-          <div className="max-w-full overflow-x-auto">
+          <div className="m overflow-x-auto">
             <div className="w-full  flex justify-between ">
               <div className=" flex w-7/12 gap-3">
                 <div className="sm:w-2/5 ">
@@ -444,9 +425,6 @@ const CollectFees = () => {
                         <HeaderCell>Name</HeaderCell>
                         <HeaderCell>Class</HeaderCell>
                         <HeaderCell>Section</HeaderCell>
-
-                        <HeaderCell>Acct Balance</HeaderCell>
-
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
@@ -470,33 +448,12 @@ const CollectFees = () => {
                           <Cell className="  ">
                             <span>{item.section}</span>
                           </Cell>
-                          <Cell className="flex   justify-between  ">
-                            <span className="">
-                              {Math.abs(item.accountbalance)}
-                            </span>{' '}
-                            {/* <span className="float-right mr-15">
-                              {item?.accountbalance < 0 ? (
-                                <TableBtn
-                                  clickFunction={() => {}}
-                                  text={' Debit '}
-                                  color={'bg-[#6D343E]'}
-                                />
-                              ) : item?.accountbalance == 0 ? (
-                                ''
-                              ) : (
-                                <TableBtn
-                                  clickFunction={() => {}}
-                                  text={'Credit'}
-                                  color={'bg-success'}
-                                />
-                              )}
-                            </span> */}
-                          </Cell>
+                        
 
                           <Cell>
                             <div className="gap-2 flex">
                               <TableBtn
-                                text={'Collect Fees'}
+                                text={'Enroll'}
                                 clickFunction={() => {
                                   setProp(item);
                                   handleviewbtn(item);
@@ -611,4 +568,4 @@ const CollectFees = () => {
   );
 };
 
-export default CollectFees;
+export default EnrollScholarship;

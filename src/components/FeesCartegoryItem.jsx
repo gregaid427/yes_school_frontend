@@ -21,6 +21,7 @@ const FeesCartegoryItem = (props) => {
         if (Createfeecart?.success == 1) {
           dispatch(fetchfeeCartegoryAction());
           resetFormStates()
+          setcartegoryName('')
            dispatch(resetcreatefee())    
            props.close((false))
 

@@ -153,7 +153,7 @@ const FeesGroup = () => {
   const handledeletebtn = (value) => {
     const data ={
       id:value.id,
-      name: value.name
+      name: value.feeid
     }
     dispatch(deleteSingleFeeCartAction(data));
   };

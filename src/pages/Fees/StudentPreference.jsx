@@ -34,14 +34,14 @@ import Loader from '../../common/Loader';
 
 import SectionSelect1 from '../../components/SectionsSelect1';
 import ClassSelect from '../../components/ClassSelect';
-import { fetchschoolinfoAction, fetchUserdataAction } from '../../redux/slices/usersSlice';
+import { fetchUserdataAction } from '../../redux/slices/usersSlice';
 import TableBtn from '../../components/Svgs/TableBtn';
 import CollectFeesModal from '../../components/collectFeesModal';
 import FeesReceiptModal from '../../components/FeesReceiptModal';
 import { fetchfeeCartegoryAction, resetpayfee } from '../../redux/slices/feeSlice';
-import { fetchActivesessionAction } from '../../redux/slices/sessionSlice';
+import StudentPreferenceModal from '../../components/StudentPreferenceModal';
 
-const CollectFees = () => {
+const StudentPreference = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
@@ -92,7 +92,7 @@ const CollectFees = () => {
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
-  const { payfee,cartegory } = fee;
+  const { payfee,cartegory,Prefences } = fee;
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -124,27 +124,22 @@ const CollectFees = () => {
     }
   }, [fetchStudentcustombal]);
 
+
+
   useEffect(() => {
-    if (payfee?.success == 1) {
-      let data = payfee?.data;
-      setdata(data);
-    }
+   
     if (cartegory?.success == 1) {
       let data = cartegory?.data;
       setcartegory(data);
-      console.log(cartegory?.data)
     }
   }, [payfee,cartegory]);
 
   useEffect(() => {
-    setTimeout(() => setLoader(false), 1000);
 
-    if (payfee?.success == 1) {
+    if (Prefences?.success == 1) {
       setVisible(false);
-      setVisible1(true);
-      dispatch(resetpayfee());
     }
-  }, [payfee]);
+  }, [Prefences]);
 
   useEffect(() => {
     setdata([]);
@@ -188,7 +183,7 @@ const CollectFees = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  15% 33% 15% 10% 17%  10%;
+  --data-table-library_grid-template-columns:  15% 40% 10% 17%   18%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -208,11 +203,6 @@ const CollectFees = () => {
 `,
     },
   ]);
-  useEffect(() => {
-    dispatch(fetchschoolinfoAction());
-    dispatch(fetchActivesessionAction());
-  }, []);  const user = useSelector((state) => state?.user);
-  const { allschool } = user;
 
   const pagination = usePagination(data, {
     state: {
@@ -307,29 +297,15 @@ const CollectFees = () => {
         visible={visible}
         className=""
         position={'top'}
-        style={{ width: '40%', color: 'white' }}
+        style={{ width: '50%', color: 'white' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
         }}
       >
-        <CollectFeesModal close={setVisible} val={propp} infotype={sectionzz} />
+        <StudentPreferenceModal close={setVisible} val={propp} cart={cartz} />
       </Dialog>
-      <Dialog
-        resizable={false}
-        draggable={false}
-        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
-        visible={visible1}
-        className=""
-        position={'bottom'}
-        style={{ width: '65%', color: 'white' }}
-        onHide={() => {
-          if (!visible1) return;
-          setVisible1(false);
-        }}
-      >
-        <FeesReceiptModal close={setVisible1} val={propp} cart={cartz} school={allschool} />
-      </Dialog>
+    
       <div className=" flex-col">
         <div
           className={
@@ -445,7 +421,6 @@ const CollectFees = () => {
                         <HeaderCell>Class</HeaderCell>
                         <HeaderCell>Section</HeaderCell>
 
-                        <HeaderCell>Acct Balance</HeaderCell>
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
@@ -470,33 +445,12 @@ const CollectFees = () => {
                           <Cell className="  ">
                             <span>{item.section}</span>
                           </Cell>
-                          <Cell className="flex   justify-between  ">
-                            <span className="">
-                              {Math.abs(item.accountbalance)}
-                            </span>{' '}
-                            {/* <span className="float-right mr-15">
-                              {item?.accountbalance < 0 ? (
-                                <TableBtn
-                                  clickFunction={() => {}}
-                                  text={' Debit '}
-                                  color={'bg-[#6D343E]'}
-                                />
-                              ) : item?.accountbalance == 0 ? (
-                                ''
-                              ) : (
-                                <TableBtn
-                                  clickFunction={() => {}}
-                                  text={'Credit'}
-                                  color={'bg-success'}
-                                />
-                              )}
-                            </span> */}
-                          </Cell>
+                        
 
                           <Cell>
                             <div className="gap-2 flex">
                               <TableBtn
-                                text={'Collect Fees'}
+                                text={'Manage Preference'}
                                 clickFunction={() => {
                                   setProp(item);
                                   handleviewbtn(item);
@@ -611,4 +565,4 @@ const CollectFees = () => {
   );
 };
 
-export default CollectFees;
+export default StudentPreference;

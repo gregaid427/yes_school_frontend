@@ -66,6 +66,11 @@ import FeesGroup from './pages/Fees/FeesCartegory';
 import CollectFees from './pages/Fees/CollectFees';
 import AssignFees from './pages/Fees/AssignFees';
 import Scholarship from './pages/Fees/Scholarship';
+import EnrollScholarship from './pages/Fees/EnrollScholarship';
+import StudentPreference from './pages/Fees/StudentPreference';
+import { fetchActivesessionAction } from './redux/slices/sessionSlice';
+import { fetchschoolinfoAction } from './redux/slices/usersSlice';
+import ManageFee from './pages/Fees/ManageFee';
 
   
 function App() {
@@ -87,7 +92,10 @@ function App() {
 
 
   }, []);
- 
+  useEffect(() => {
+    dispatch(fetchschoolinfoAction());
+    dispatch(fetchActivesessionAction());
+  }, []);
 
   const roles = {
     parent: '100',
@@ -148,12 +156,40 @@ function App() {
                 </>
               }
             />
-              <Route
+           
+            <Route
             path="/fees/scholarship"
             element={
                 <>
                   <PageTitle title="Calendar | " />
                   <Scholarship />
+                </>
+              }
+            />
+             <Route
+            path="/fees/manage"
+            element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <ManageFee />
+                </>
+              }
+            />
+             <Route
+            path="/fees/enrollscholarship"
+            element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <EnrollScholarship />
+                </>
+              }
+            />
+               <Route
+            path="/fees/studentpreference"
+            element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <StudentPreference />
                 </>
               }
             />

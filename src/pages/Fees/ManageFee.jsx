@@ -38,8 +38,10 @@ import { Dialog } from 'primereact/dialog';
 import AssignFeeModal from '../../components/AssignFeeModal';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import { fetchfeeAssignRecordAction, fetchfeeCartegoryAction } from '../../redux/slices/feeSlice';
+import ManageFeeModal from '../../components/AssignFeeModal';
+import GenerateFeeModak from '../../components/GenerateFeeModal';
 
-const AssignFees = () => {
+const ManageFee = () => {
   const formRef1 = useRef();
   function resetFormStates() {
     // formRef.current.reset();
@@ -49,7 +51,7 @@ const AssignFees = () => {
 
 
   const fee = useSelector((state) => state?.fees);
-  const { cartegory,Assignfee } = fee;
+  const { Generatefee } = fee;
 
   const [pagesval, setpagesval] = useState(30);
   const [classs, setClasss] = useState([]);
@@ -112,16 +114,7 @@ const AssignFees = () => {
     }
   }, [fetchAllClassloading, CreateClassesloading]);
 
-  useEffect(() => {
-    setTimeout(() => setLoader(false), 1000);
-
-    if (Assignfee?.success == 1) {
-      let data = Assignfee?.data;
-      setdata(data);
-     setVisible(false)
-    }
-  }, [ Assignfee]);
-
+  
   let data = { nodes };
 
   const theme = useTheme([
@@ -223,17 +216,8 @@ const AssignFees = () => {
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (cartegory?.success == 1) {
-      let data = cartegory?.data;
-      setdatacart(data);
-    }
-    // if (loading == false) {
-    //   dispatch(fetchBulkStudent());
-    // }
-
-    // }
-    // datas = data;
-  }, [cartegory]);
+    
+  }, []);
   const classdata = {
     title: classTitle.toUpperCase(),
     createdBy: 'Asante',
@@ -326,6 +310,12 @@ const AssignFees = () => {
     setPosition(position);
     setVisible(true);
   };
+  useEffect(() => {
+    if (Generatefee?.success == 1) {
+      setVisible(false);
+
+    }
+  }, [Generatefee]);
 
 
   return loader ? (
@@ -341,7 +331,7 @@ const AssignFees = () => {
           setVisible(false);
         }}
       >
-        <AssignFeeModal close={setVisible} />
+        <GenerateFeeModak close={setVisible} />
       </Dialog>
       <div className=" flex-col">
         <div
@@ -352,7 +342,7 @@ const AssignFees = () => {
           <div className="w-full overflow-x-auto">
             <div className="w-full  flex justify-between  ">
               <h3 className="font-medium text-black py-3 dark:text-white">
-                Assigned Fee List
+                Manage Fee
               </h3>
             </div>
           </div>
@@ -372,7 +362,7 @@ const AssignFees = () => {
                     show('top-right');
                   }}
                 >
-                  Assign Fee
+                  Generate Fee
                 </button>
               </div>
               <div className='flex gap-6'>
@@ -568,4 +558,4 @@ const AssignFees = () => {
   );
 };
 
-export default AssignFees;
+export default ManageFee;

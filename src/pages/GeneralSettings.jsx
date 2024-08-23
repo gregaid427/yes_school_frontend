@@ -7,6 +7,7 @@ import DefaultLayout from '../layout/DefaultLayout';
 import {
   createsessionAction,
   deletesessionByIdAction,
+  fetchActivesessionAction,
   fetchAllsessionAction,
   resetcreatesession,
   resetUpdatesession,
@@ -133,6 +134,8 @@ const GeneralSettings = () => {
        toast.success('Session Updated Successfully');
       show('top-right');
       dispatch(resetUpdatesession());
+      dispatch(fetchActivesessionAction());
+
       //   dispatch(fetchAllSectionAction())
     }
 

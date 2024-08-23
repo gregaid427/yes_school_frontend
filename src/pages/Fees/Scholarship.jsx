@@ -23,14 +23,28 @@ import autoTable from 'jspdf-autotable';
 
 import Loader from '../../common/Loader';
 import toast from 'react-hot-toast';
-import { deleteScholarshipAction, deleteSinglefeeAction, fetchfeeCartegoryAction, fetchScholarshipAction } from '../../redux/slices/feeSlice';
+import {
+  deleteScholarshipAction,
+  deleteSinglefeeAction,
+  fetchfeeCartegoryAction,
+  fetchScholarshipAction,
+} from '../../redux/slices/feeSlice';
 import FeesCartegoryItem from '../../components/FeesCartegoryItem';
 import { deleteSingleCartAction } from '../../redux/slices/inventSlice';
 import ScholarshipItem from '../../components/ScholarshipItem';
-
-
+import { Dialog } from 'primereact/dialog';
 
 const Scholarship = () => {
+  const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
+
+  const [position, setPosition] = useState('top');
+
+  const show = (position) => {
+    setPosition(position);
+    setVisible(true);
+  };
+
   const [pagesval, setpagesval] = useState(30);
   const [classs, setClasss] = useState([]);
 
@@ -74,6 +88,7 @@ const Scholarship = () => {
     if (CreateScholar?.success == 1) {
       let data = CreateScholar?.data;
       setdata(data);
+      setVisible(false);
     }
     // if (loading == false) {
     //   dispatch(fetchBulkStudent());
@@ -99,7 +114,7 @@ const Scholarship = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  40% 20% 40%;
+  --data-table-library_grid-template-columns:  35% 10% 10% 20% 25%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -134,7 +149,7 @@ const Scholarship = () => {
   console.log(data);
   data = {
     nodes: data.nodes.filter((item) =>
-      item.name.toLowerCase().includes(search.toLowerCase()),
+      item.title.toLowerCase().includes(search.toLowerCase()),
     ),
   };
 
@@ -152,21 +167,8 @@ const Scholarship = () => {
     });
   };
   const handledeletebtn = (value) => {
-    console.log(value)
+    console.log(value);
     dispatch(deleteScholarshipAction(value));
-  };
-
-  const subdata = {
-    type: type,
-    subjectName: subjectName,
-    createdBy: 'Asante',
-  };
-  const handlecreateSection = (e) => {
-    if (subjectName == '') {
-      toast.error('Error - subject Name Cannot Be Empty');
-    } else {
-      dispatch(CreatesSubjectAction(subdata));
-    }
   };
 
   const handleDownloadPdf = async () => {
@@ -191,11 +193,23 @@ const Scholarship = () => {
     <Loader />
   ) : (
     <DefaultLayout>
+      <Dialog
+        resizable={false}
+        draggable={false}
+        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
+        visible={visible}
+        className=""
+        position={'top'}
+        style={{ width: '40%', color: 'white' }}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}
+      >
+        <ScholarshipItem close={setVisible} cartinfo={CreateScholar} />
+      </Dialog>
       <div className={'flex gap-2  w-full'}>
-      <div className="w-4/12">
-          <ScholarshipItem close={setClasss} />
-        </div>
-        <div className="w-8/12 flex-col">
+        <div className="w-full flex-col">
           <div
             className={
               'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
@@ -216,33 +230,51 @@ const Scholarship = () => {
           >
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between ">
-                <div className=" flex w-7/12 gap-3">
-                  <div className="sm:w-2/5 ">
-                    <label
-                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
-                      onClick={(e) => {
-                        handleDownloadPdf();
+                <div className=" flex  gap-8">
+                  <div className=" ">
+                    <button
+                      className="flex  justify-center rounded bg-primary py-2 px-4 font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={() => {
+                        show('top-right');
                       }}
                     >
-                      Download Page (PDF)
-                    </label>
+                      Add Scholarship
+                    </button>
                   </div>
+                  <div className=" ">
+                    <button
+                      className="flex  justify-center rounded bg-primary py-2 px-4 font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={() => {
+                        navigate('/fees/enrollscholarship');
+                      }}
+                    >
+                      Enroll Student
+                    </button>
+                  </div>
+                  <label
+                    className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                    style={{ color: '#A9B5B3' }}
+                    onClick={(e) => {
+                      handleDownloadPdf();
+                    }}
+                  >
+                    Download Page (PDF)
+                  </label>
 
-                  <div className="w-full sm:w-2/5">
-                    <label
-                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
-                      onClick={(e) => {
-                        handleDownloadCSV();
-                      }}
-                    >
-                      Download Page (Excel)
-                    </label>
-                  </div>
+                  <label
+                    className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                    style={{ color: '#A9B5B3' }}
+                    onClick={(e) => {
+                      handleDownloadCSV();
+                    }}
+                  >
+                    Download Page (Excel)
+                  </label>
                 </div>
 
-                <div className={' w-5/12 flex flex-col float-right '}>
+                <div className={' w-3/12 flex flex-col float-right '}>
                   <div className="flex justify-between align-middle mb-2">
                     <label
                       className=" w-2/2 pt-2 block text-sm font-medium text-black dark:text-white"
@@ -284,9 +316,11 @@ const Scholarship = () => {
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
                           <HeaderCell>Title</HeaderCell>
-                          <HeaderCell>Amount</HeaderCell>
 
+                          <HeaderCell>Type</HeaderCell>
+                          <HeaderCell>Val/%</HeaderCell>
 
+                          <HeaderCell>Cartegory Applicable</HeaderCell>
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
                       </Header>
@@ -294,9 +328,13 @@ const Scholarship = () => {
                       <Body>
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
-                            <Cell className="  ">{item.name}</Cell>
-                            <Cell className="  ">{item.amount}</Cell>
+                            <Cell className="  ">{item.title}</Cell>
+                            <Cell className="  ">{item.type}</Cell>
+                            <Cell className="  ">
+                              {item.amount < 1 ?  item.percent+ " %"  : item.amount}
+                            </Cell>
 
+                            <Cell className="  ">{item.applicable}</Cell>
                             <Cell>
                               <div className="gap-2 flex">
                                 <ViewSVG
@@ -396,7 +434,6 @@ const Scholarship = () => {
             </div>
           </div>{' '}
         </div>
-       
       </div>{' '}
     </DefaultLayout>
   );

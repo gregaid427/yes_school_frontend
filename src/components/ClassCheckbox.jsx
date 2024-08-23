@@ -5,7 +5,7 @@ const ClassCheckbox = (props) => {
   const [isChecked1, setIsChecked1] = useState(false);
 
   return (
-    <div className="flex justify-start sm:w-2/4">
+    <div className="flex justify-start ">
       <label
         htmlFor={props.item.name}
         className="flex cursor-pointer select-none "

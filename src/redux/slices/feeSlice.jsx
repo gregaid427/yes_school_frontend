@@ -51,6 +51,56 @@ export const PayFeeAction = createAsyncThunk(
   },
 );
 
+export const GenerateFeeAction = createAsyncThunk(
+  'new/generatefee',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefee`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Fee Generated Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Generating Fee');
+
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const PrefencesAction = createAsyncThunk(
+  'Post/Preferences',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/preferences`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Prefences Set Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Setting Preferences');
+
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const CreatesfeeCartegoryAction = createAsyncThunk(
   'new/Newfeecart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -351,7 +401,16 @@ export const AssignFeesAction = createAsyncThunk(
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/assignfee`, payload
       );
+      if (data?.success == 1) {
+        toast.success('Assigned Successfully');
+      }
 
+      if (data == null) {
+        toast.error('Error Assigning Fee');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -390,8 +449,8 @@ const FeeSlices = createSlice({
     resetcreatecart(state) {
       state.Createfeecart = null;
     },
-    resetcreatestock(state) {
-      state.Createfeestock = null;
+    resetpayfee(state) {
+      state.payfee = null;
     },
     resetUpdatefeeItem(state) {
       state.updatefeeItem = null;
@@ -422,7 +481,7 @@ const FeeSlices = createSlice({
       state.fetchAllfee = undefined;
     });
 
-
+    
     builder.addCase(AssignFeesAction.pending, (state, action) => {
       state.AssignFeesloading = true;
       state.Assignfee = false;
@@ -438,6 +497,43 @@ const FeeSlices = createSlice({
       state.AssignFeesloading = false;
       state.error = action.payload;
       state.Assignfee = undefined;
+   //   state.fetchAllfee = undefined;
+    });
+
+
+    builder.addCase(GenerateFeeAction.pending, (state, action) => {
+      state.Generatefeeloading = true;
+      state.Generatefee = false;
+     // state.fetchAllfee = false;
+    });
+    builder.addCase(GenerateFeeAction.fulfilled, (state, action) => {
+      state.Generatefee = action?.payload;
+      state.Generatefeeloading = false;
+      state.Generatefeerror = undefined;
+    //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(GenerateFeeAction.rejected, (state, action) => {
+      state.Generatefeeloading = false;
+      state.Generatefeerror = action.payload;
+      state.Generatefee = undefined;
+   //   state.fetchAllfee = undefined;
+    });
+
+    builder.addCase(PrefencesAction.pending, (state, action) => {
+      state.Prefencesloading = true;
+      state.Prefences = false;
+     // state.fetchAllfee = false;
+    });
+    builder.addCase(PrefencesAction.fulfilled, (state, action) => {
+      state.Prefences = action?.payload;
+      state.Prefencesloading = false;
+      state.Prefenceserror = undefined;
+    //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(PrefencesAction.rejected, (state, action) => {
+      state.Prefencesloading = false;
+      state.Prefenceserror = action.payload;
+      state.Prefences = undefined;
    //   state.fetchAllfee = undefined;
     });
 
@@ -739,7 +835,7 @@ const FeeSlices = createSlice({
 });
 
 export const {
-  resetcreatestock,
+  resetpayfee,
   resetUpdatefeeItem,
   resetcreatefee,
   resetUpdatefee,
