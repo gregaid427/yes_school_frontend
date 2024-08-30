@@ -688,13 +688,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                           <li>
                             <NavLink
+                              to="/fees/Scholarshipenroll"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Scholarship List
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
                               to="/fees/manage"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
                               }
                             >
-                              Manage Fees
+                               Payment Records
                             </NavLink>
                           </li>
                           <li>
@@ -717,6 +728,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               }
                             >
                               Student Preference
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/fees/preferencelist"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Preference List
                             </NavLink>
                           </li>
                      

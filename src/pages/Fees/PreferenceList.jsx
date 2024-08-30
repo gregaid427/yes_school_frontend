@@ -38,15 +38,10 @@ import { fetchUserdataAction } from '../../redux/slices/usersSlice';
 import TableBtn from '../../components/Svgs/TableBtn';
 import CollectFeesModal from '../../components/collectFeesModal';
 import FeesReceiptModal from '../../components/FeesReceiptModal';
-import {
-  fetchfeeAssignbycartAction,
-  fetchfeeCartegoryAction,
-  fetchScholarshipAction,
-  resetpayfee,
-} from '../../redux/slices/feeSlice';
-import ScholarshipModal from '../../components/ScholarshipModal';
+import { fetchfeeCartegoryAction, resetpayfee } from '../../redux/slices/feeSlice';
+import StudentPreferenceModal from '../../components/StudentPreferenceModal';
 
-const EnrollScholarship = () => {
+const PreferenceList = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
@@ -78,6 +73,7 @@ const EnrollScholarship = () => {
   const [propp, setProp] = useState();
   const [cartz, setcartegory] = useState();
 
+  
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
@@ -96,7 +92,7 @@ const EnrollScholarship = () => {
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
-  const { payfee, cartegory, CreateScholar,Enroll } = fee;
+  const { payfee,cartegory,Prefences } = fee;
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -105,6 +101,7 @@ const EnrollScholarship = () => {
       let data = fetchcustom?.data;
       setdata(data);
     }
+
 
     // if (fetchAllClass?.success == 1) {
     //   let i = 0;
@@ -127,42 +124,31 @@ const EnrollScholarship = () => {
     }
   }, [fetchStudentcustombal]);
 
+
+
   useEffect(() => {
-    if (payfee?.success == 1) {
-      let data = payfee?.data;
-      setdata(data);
-    }
+   
     if (cartegory?.success == 1) {
       let data = cartegory?.data;
       setcartegory(data);
-      console.log(cartegory?.data);
     }
-  }, [payfee, cartegory]);
+  }, [payfee,cartegory]);
 
   useEffect(() => {
-    setTimeout(() => setLoader(false), 1000);
 
-    if (payfee?.success == 1) {
+    if (Prefences?.success == 1) {
       setVisible(false);
-      setVisible1(true);
-      dispatch(resetpayfee());
     }
-  }, [payfee]);
+  }, [Prefences]);
 
   useEffect(() => {
     setdata([]);
+    
   }, []);
 
-  useEffect(() => {
-    if (Enroll?.success == 1) {
-      setVisible(false);
-  
-    }
-  }, [Enroll]);
 
   useEffect(() => {
-    dispatch(fetchScholarshipAction());
-    dispatch(fetchfeeAssignbycartAction());
+    dispatch(fetchfeeCartegoryAction());
   }, []);
 
   // useEffect(() => {
@@ -197,7 +183,7 @@ const EnrollScholarship = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  15% 40% 20% 15%   10%;
+  --data-table-library_grid-template-columns:  15% 40% 10% 17%   18%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -311,27 +297,22 @@ const EnrollScholarship = () => {
         visible={visible}
         className=""
         position={'top'}
-        style={{ width: '40%', color: 'white' }}
+        style={{ width: '50%', color: 'white' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
         }}
       >
-        <ScholarshipModal
-          close={setVisible}
-          val={propp}
-          infotype={sectionzz}
-          cartinfo={CreateScholar}
-        />
+        <StudentPreferenceModal close={setVisible} val={propp} cart={cartz} />
       </Dialog>
-
-      <div className="w-full flex-col">
+    
+      <div className=" flex-col">
         <div
           className={
             'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
           }
         >
-          <div className="m overflow-x-auto">
+          <div className="max-w-full overflow-x-auto">
             <div className="w-full  flex justify-between ">
               <div className=" flex w-7/12 gap-3">
                 <div className="sm:w-2/5 ">
@@ -439,6 +420,8 @@ const EnrollScholarship = () => {
                         <HeaderCell>Name</HeaderCell>
                         <HeaderCell>Class</HeaderCell>
                         <HeaderCell>Section</HeaderCell>
+
+
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
@@ -462,11 +445,12 @@ const EnrollScholarship = () => {
                           <Cell className="  ">
                             <span>{item.section}</span>
                           </Cell>
+                        
 
                           <Cell>
                             <div className="gap-2 flex">
                               <TableBtn
-                                text={'Enroll'}
+                                text={'Manage Preference'}
                                 clickFunction={() => {
                                   setProp(item);
                                   handleviewbtn(item);
@@ -581,4 +565,4 @@ const EnrollScholarship = () => {
   );
 };
 
-export default EnrollScholarship;
+export default PreferenceList;

@@ -37,7 +37,11 @@ import ExpenseFormModal from '../../components/ExpenseFormModal';
 import { Dialog } from 'primereact/dialog';
 import AssignFeeModal from '../../components/AssignFeeModal';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
-import { fetchfeeAssignRecordAction, fetchfeeCartegoryAction } from '../../redux/slices/feeSlice';
+import {
+  fetchfeeAssignRecordAction,
+  fetchfeeCartegoryAction,
+  FetchPaymentsAction,
+} from '../../redux/slices/feeSlice';
 import ManageFeeModal from '../../components/AssignFeeModal';
 import GenerateFeeModak from '../../components/GenerateFeeModal';
 
@@ -49,10 +53,6 @@ const ManageFee = () => {
     console.log('reset');
   }
 
-
-  const fee = useSelector((state) => state?.fees);
-  const { Generatefee } = fee;
-
   const [pagesval, setpagesval] = useState(30);
   const [classs, setClasss] = useState([]);
 
@@ -63,7 +63,7 @@ const ManageFee = () => {
 
   const [display, setDisplay] = useState(false);
   const [displaytable, setDisplaytable] = useState(false);
-  
+
   const [id, setclassId] = useState('');
   const [filename, setFileName] = useState('');
   const [file, setFile] = useState('');
@@ -76,45 +76,16 @@ const ManageFee = () => {
   const [nodes, setdata] = useState([]);
   const [datacart, setdatacart] = useState([]);
 
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const clad = useSelector((state) => state?.classes);
-
-  const {
-    fetchAllClassloading,
-    fetchAllClass,
-    sectionloading,
-    CreateClasses,
-    CreateClassesloading,
-  } = clad;
+  const fee = useSelector((state) => state?.fees);
+  const { FetchPayment } = fee;
 
   useEffect(() => {
-    dispatch(fetchAllsessionAction());
-    dispatch(fetchAllClassAction());
-    dispatch(fetchfeeAssignRecordAction());
-
+    dispatch(FetchPaymentsAction());
   }, []);
 
-  useEffect(() => {
-    if (CreateClasses?.success == 0) {
-      //  toast.error('Error - Class Name Already Exists');
-      dispatch(resetcreateClass());
-      // dispatch(fetchAllClassAction())
-    }
-    if (CreateClasses?.success == 1) {
-      // toast.success('New Class Added Successfully');
-      formRef1.current.reset();
-
-      setClassData1([]);
-      resetFormStates();
-      dispatch(resetcreateClass());
-      // dispatch(fetchAllClassAction())
-    }
-  }, [fetchAllClassloading, CreateClassesloading]);
-
-  
   let data = { nodes };
 
   const theme = useTheme([
@@ -138,7 +109,7 @@ const ManageFee = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  25% 10% 20% 10% 10% 25%;
+      --data-table-library_grid-template-columns:  20% 10% 10% 10% 20% 20% 10%;
     `,
       Row: `
   &:nth-of-type(odd) {
@@ -166,7 +137,7 @@ const ManageFee = () => {
 
   data = {
     nodes: data.nodes.filter((item) =>
-      item.class.toLowerCase().includes(search.toLowerCase()),
+      item.student_id.toLowerCase().includes(search.toLowerCase()),
     ),
   };
 
@@ -194,11 +165,6 @@ const ManageFee = () => {
     dispatch(deleteSingleClassAction(value));
     // dispatch(fetchAllClassAction());
   };
- 
-
-  useEffect(() => {
-    dispatch(fetchfeeCartegoryAction());
-  }, []);
 
   // useEffect(() => {
   //   if (fetchSection?.success == 1) {
@@ -215,8 +181,6 @@ const ManageFee = () => {
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
-
-    
   }, []);
   const classdata = {
     title: classTitle.toUpperCase(),
@@ -311,18 +275,16 @@ const ManageFee = () => {
     setVisible(true);
   };
   useEffect(() => {
-    if (Generatefee?.success == 1) {
-      setVisible(false);
-
+    if (FetchPayment?.success == 1) {
+      setdata(FetchPayment?.data);
     }
-  }, [Generatefee]);
-
+  }, [FetchPayment]);
 
   return loader ? (
     <Loader />
   ) : (
     <DefaultLayout>
-       <Dialog
+      <Dialog
         visible={visible}
         position={'top'}
         style={{ height: 'auto', width: '35%' }}
@@ -342,7 +304,7 @@ const ManageFee = () => {
           <div className="w-full overflow-x-auto">
             <div className="w-full  flex justify-between  ">
               <h3 className="font-medium text-black py-3 dark:text-white">
-                Manage Fee
+                Fee Payment Records
               </h3>
             </div>
           </div>
@@ -365,20 +327,19 @@ const ManageFee = () => {
                   Generate Fee
                 </button>
               </div>
-              <div className='flex gap-6'>
-              
-              <div className="  float-end">
-                <button
-                  className="flex  justify-center rounded bg-dark border border-stroke py-2 px-2 font-medium text-gray hover:bg-opacity-90"
-                  type=""
-                  onClick={() => {
-                    handleDownloadCSV();
-                  }}
-                >
-                  Delete Assigned Fees{' '}
-                </button>
+              <div className="flex gap-6">
+                <div className="  float-end">
+                  <button
+                    className="flex  justify-center rounded bg-dark border border-stroke py-2 px-2 font-medium text-gray hover:bg-opacity-90"
+                    type=""
+                    onClick={() => {
+                      handleDownloadCSV();
+                    }}
+                  >
+                    Delete Assigned Fees{' '}
+                  </button>
+                </div>
               </div>
-            </div>
             </div>
             <div className={' w-3/12 flex flex-col '}>
               <div className="flex justify-between align-middle ">
@@ -408,7 +369,7 @@ const ManageFee = () => {
             'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
           }
         >
-           <div className="flex gap-3  flex-col">
+          <div className="flex gap-3  flex-col">
             <div className="px-2">
               <Table
                 data={data}
@@ -420,44 +381,42 @@ const ManageFee = () => {
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
-                        <HeaderCell>Class</HeaderCell>
                         {/* <HeaderCell>Section</HeaderCell> */}
-                        <HeaderCell>Total Fees</HeaderCell>
-                        <HeaderCell>Date Assigned</HeaderCell>
-                        <HeaderCell>Assigned By</HeaderCell>
-                        <HeaderCell>Status</HeaderCell>
+                        <HeaderCell>Name</HeaderCell>
+                        <HeaderCell>Class</HeaderCell>
+
+                        <HeaderCell>Receipt ID</HeaderCell>
+                        <HeaderCell>Amount</HeaderCell>
+                        <HeaderCell> Date</HeaderCell>
+                        <HeaderCell>Received By</HeaderCell>
+
                         <HeaderCell>Actions</HeaderCell>
-
-
                       </HeaderRow>
                     </Header>
 
                     <Body>
                       {tableList.map((item) => (
                         <Row key={item.id} item={item} className=" ">
-                          <Cell className="  ">{item.class}</Cell>
-                          <Cell className="  ">{item.total}</Cell>
-
-                          <Cell className="  ">{item.createdat}</Cell>
-                          <Cell className="  ">{item.createdby}</Cell>
-                          <Cell className="  ">{item.status}</Cell>
-
-
+                          <Cell className="capitalize">
+                            {item.firstName +
+                              ' ' +
+                              item.otherName +
+                              ' ' +
+                              item.lastName}
+                          </Cell>{' '}
+                          <Cell className=" capitalize ">
+                            <span>{item?.class?.toLowerCase()}</span>
+                          </Cell>
+                          <Cell className="  ">{item?.receiptid}</Cell>
+                          <Cell className="  ">{item?.amountpaid}</Cell>
+                          <Cell className="  ">{item?.date}</Cell>
+                          <Cell className="  ">{item?.collectedby}</Cell>
                           <Cell>
                             <div className="gap-2 flex">
-                              <EditSVG
-                                clickFunction={() => handleViewbtn(item)}
-                                text={'View'}
-                                color={'bg-primary'}
-                              />
                               <TableBtn
                                 clickFunction={() => handleViewbtn(item)}
-                                text={'Apply'}
+                                text={'Manage'}
                                 color={'bg-primary'}
-                              />
-                              <DeleteSVG
-                                clickFunction={() => handleViewbtn(item)}
-                               
                               />
                             </div>
                           </Cell>
@@ -552,8 +511,6 @@ const ManageFee = () => {
           </div>
         </div>{' '}
       </div>
-
-   
     </DefaultLayout>
   );
 };

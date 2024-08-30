@@ -42,7 +42,7 @@ const ScholarshipItem = (props) => {
   const [amount, setAmount] = useState(0.0);
   const [isChecked1, setIsChecked1] = useState(false);
   const [selectedArr, setselectedArr] = useState([]);
-  const [feecartegory, setfeecart] = useState('None');
+  const [feecartegory, setfeecart] = useState('FEE PAYABLE');
   const [percent, setPercent] = useState(false);
   const [type, settype] = useState('Fixed Value');
 
@@ -61,14 +61,15 @@ const ScholarshipItem = (props) => {
     percent: percent,
     applicable: feecartegory,
   };
+
   const handleSubmit = (e) => {
     if (cartegoryName == '') {
       return toast.error('Error - Name Cannot Be Empty');
     }
-    if (feecartegory == 'None' && type == 'Percentage') {
+    if (feecartegory == 'FEE PAYABLE' && type == 'Percentage') {
       return toast.error('Error - Please Select Fee Caetegory');
     }
-    if (feecartegory == 'None' && type == 'Percentage') {
+    if (feecartegory == 'FEE PAYABLE' && type == 'Percentage') {
       return toast.error('Error - Please Set Percentage');
     }
     if (amount < 1 && type == 'Fixed Value') {

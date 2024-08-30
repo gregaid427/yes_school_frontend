@@ -7,43 +7,24 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import FeeRadio from './FeeRadio';
-import { GenerateFeeAction, PayFeeAction } from '../redux/slices/feeSlice';
+import {
+  EnrollScholarshipAction,
+  fetchfeeAssignRecordAction,
+  fetchfeeCartegoryAction,
+  GenerateFeeAction,
+  PayFeeAction,
+} from '../redux/slices/feeSlice';
 import ScholarshipSelect from './ScholarshipSelect';
 
 const ScholarshipModal = (props) => {
   const dispatch = useDispatch();
-  const inventory = useSelector((state) => state?.inventory);
+  const fee = useSelector((state) => state?.fees);
 
-  const { CreateInventorycart } = inventory;
-  useEffect(() => {
-    if (CreateInventorycart?.success == 0) {
-      toast.error('Error - Adding Item Cartegory ');
-      //    dispatch(resetcreatecart())
-      // dispatch(fetchAllClassAction())
-    }
-    if (CreateInventorycart?.success == 1) {
-      toast.success('New Item Cartegory Added Successfully');
-      dispatch(fetchInventCartegoryAction());
-      resetFormStates();
-      props.close(false);
-    }
-
-    // if (fetchAllClass?.success == 1) {
-    //   let i = 0;
-    //   let arr = [];
-    //   while (i < clad?.fetchAllClass?.data.length) {
-    //     arr.push(clad?.fetchAllClass?.data[i].title);
-    //     i++;
-    //   }
-
-    //   setClasss(arr);
-    // }
-  }, [CreateInventorycart]);
-
+  const { CreateScholar, Assignbyclass, cartegory } = fee;
+  console.log(Assignbyclass);
   const [amount, setAmount] = useState(0);
   const [chosen, setchosen] = useState('');
-  const [chosendata, setchosendata] = useState('');
-
+  const [chosendata, setchosendata] = useState([]);
 
   const formRef1 = useRef();
 
@@ -52,32 +33,98 @@ const ScholarshipModal = (props) => {
     formRef1.current.reset();
   }
   let balanceresult = eval(
-    parseInt(props.val?.accountbalance) + parseInt(amount),
+    parseInt(props?.val?.accountbalance) + parseInt(amount),
   );
   useEffect(() => {
-    setchosendata(props.cartinfo.data.filter((item) =>
-      item.title.includes(chosen)))
+    setchosendata(
+      props?.cartinfo?.data?.filter((item) => item?.title.includes(chosen)),
+    );
   }, [chosen]);
-  console.log(chosendata)
-  console.log(props.cartinfo.data)
 
+  
 
+  useEffect(() => {
+    dispatch(fetchfeeCartegoryAction());
+  }, []);
+  const [scholarr, setScholarr] = useState('');
+  const [scholarrid, setScholarrId] = useState('');
+  const [cover, setcover] = useState('');
+  const [scholarramount, setScholarramount] = useState('');
+  const [scholarrPercent, setScholarrPercent] = useState('');
+  const [type, setType] = useState('');
+
+  useEffect(() => {
+
+    setScholarr(chosendata[0]?.title)
+    setScholarrId(chosendata[0]?.id)
+    setcover(chosendata[0]?.applicable)
+    setScholarrPercent(chosendata[0]?.percent)
+    setScholarramount(chosendata[0]?.amount)
+    setType(chosendata[0]?.type)
+    console.log(chosendata[0]?.percent);
+    console.log(chosendata[0]?.title);
+    console.log(Assignbyclass?.data[0].total);
+
+    console.log(chosendata[0]?.applicable);
+    console.log(chosendata[0]?.type);
+
+    let cartamount = Assignbyclass?.data?.filter((item) =>
+      item?.feename.includes(chosendata[0]?.applicable),
+    );
+
+    console.log(cartamount[0]?.total);
+    console.log(cartegory);
+
+    if (chosendata[0]?.type == 'Fixed Value') {
+      setAmount(chosendata[0].amount);
+      console.log('Fixedddddddddddddddddddddddddddddddddd');
+    } else {
+      console.log('we are in percentage');
+
+      if (chosendata[0]?.applicable == 'TOTAL FEE PAYABLE') {
+        setAmount(
+          (chosendata[0]?.percent / 100) * Assignbyclass?.data[0].total,
+        );
+        console.log('vaaaaaaaaaaaaaaaaaaaaaaal');
+      } else {
+        console.log('we are in custom');
+
+        for (let i = 0; i < cartegory?.data?.length; i++) {
+
+          if (chosendata[0]?.applicable == cartegory?.data?.[i].name) {
+            console.log('trueeeeeeeeeee');
+            setAmount((chosendata[0]?.percent / 100) * cartamount[0]?.amount);
+            console.log('custom vaaaaaaaaaaaaaaaaaaaaaaal');
+          }
+        }
+      }
+    }
+  }, [chosendata]);
+
+  console.log(chosendata);
+  console.log(props.cartinfo.data);
   let data = {
-    // id: props.val?.student_id,
-    // class: props.val?.class,
-    // section: props.val?.section,
-    // collectedby: 'asante',
-    // amount: amount,
-    // percentage: props.val?.accountbalance,
-    // type: type,
-    // scholarship: 'receiptid',
-    // title: props.infotype,
+    id: props.val?.student_id,
+    class: props.val?.class,
+    section: props.val?.section,
+    createdby: 'asante',
+    amount: amount,
+    percentage: props.val?.accountbalance,
+    scholarship: scholarr,
+    scholarId: scholarrid,
+    cover : cover,
   };
+
+ 
   const handleSubmit = (e) => {
+
+  
+
     if (chosen == 'None') {
       toast.error('Error - Please Select Scholarship');
     } else {
-      dispatch(GenerateFeeAction(data));
+      console.log(data);
+      dispatch(EnrollScholarshipAction(data));
     }
   };
 
@@ -165,7 +212,7 @@ const ScholarshipModal = (props) => {
                     <ScholarshipSelect setsectionprop={setchosen} />
                   </div>
                 </div>
-                <div className={!chosendata[0]?.title ? "hidden" : '' }>
+                <div className={!scholarr ? 'hidden' : ''}>
                   <div className="border-b border-t my-3 border-stroke py-1 px-7 dark:border-strokedark">
                     <p>
                       <span className="flex justify-around text-md text-center mx-auto">
@@ -178,16 +225,43 @@ const ScholarshipModal = (props) => {
                     <div className="w-2/5 ">
                       <p>Scholarship </p>
                       <p>Type </p>
-                      <p className={chosendata[0]?.amount == '0' ? 'hidden' : ""}>Amount </p>
-                      <p  className={chosendata[0]?.percent == 'false' ? 'hidden' : ""}>Percentage </p>
+                      <p
+                        className={scholarramount == '0' ? 'hidden' : ''}
+                      >
+                        Amount{' '}
+                      </p>
+                      <p
+                        className={
+                          scholarrPercent == 'false' ? 'hidden' : ''
+                        }
+                      >
+                        Percentage{' '}
+                      </p>
                       <p>Cartegory Applicable </p>
                     </div>
                     <div className="">
-                      <p>{chosendata[0]?.title }</p>
-                      <p>{chosendata[0]?.type}</p>
-                      <p className={chosendata[0]?.amount == '0' ? 'hidden' : ""} >{chosendata[0]?.amount}</p>
-                      <p className={chosendata[0]?.percent == 'false' || chosendata[0]?.percent == undefined ? 'hidden' : ""} >{chosendata[0]?.percent+'%'}</p>
-                      <p>{chosendata[0]?.applicable != "None" ? chosendata[0]?.applicable :"Fee Payable"}</p>
+                      <p>{scholarr}</p>
+                      <p>{type}</p>
+                      <p
+                        className={scholarramount == '0' ? 'hidden' : ''}
+                      >
+                        {scholarramount}
+                      </p>
+                      <p
+                        className={
+                          scholarrPercent == 'false' ||
+                          scholarrPercent == undefined
+                            ? 'hidden'
+                            : ''
+                        }
+                      >
+                        {scholarrPercent + '%'}
+                      </p>
+                      <p>
+                        {cover != 'None'
+                          ? cover
+                          : 'Fee Payable'}
+                      </p>
                     </div>
                   </div>
                 </div>

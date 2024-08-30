@@ -72,6 +72,10 @@ const CollectFees = () => {
   const [sectionzz, setsectionzz] = useState('All Sections');
   const [propp, setProp] = useState();
   const [cartz, setcartegory] = useState();
+  const [info, setinfo] = useState();
+  const [receipt, setReceipt] = useState('');
+
+  
 
   
   const dispatch = useDispatch();
@@ -99,6 +103,8 @@ const CollectFees = () => {
 
     if (fetchcustom?.success == 1) {
       let data = fetchcustom?.data;
+      let info = fetchcustom?.info;
+      setinfo(info)
       setdata(data);
     }
 
@@ -120,6 +126,8 @@ const CollectFees = () => {
 
     if (fetchStudentcustombal?.success == 1) {
       let data = fetchStudentcustombal?.data;
+      let info = fetchStudentcustombal?.info;
+      setinfo(info)
       setdata(data);
     }
   }, [fetchStudentcustombal]);
@@ -142,6 +150,7 @@ const CollectFees = () => {
     if (payfee?.success == 1) {
       setVisible(false);
       setVisible1(true);
+      setReceipt(payfee?.response)
       dispatch(resetpayfee());
     }
   }, [payfee]);
@@ -328,7 +337,7 @@ const CollectFees = () => {
           setVisible1(false);
         }}
       >
-        <FeesReceiptModal close={setVisible1} val={propp} cart={cartz} school={allschool} />
+        <FeesReceiptModal close={setVisible1} val={propp} response={receipt} cart={info} school={allschool} />
       </Dialog>
       <div className=" flex-col">
         <div

@@ -71,6 +71,8 @@ import StudentPreference from './pages/Fees/StudentPreference';
 import { fetchActivesessionAction } from './redux/slices/sessionSlice';
 import { fetchschoolinfoAction } from './redux/slices/usersSlice';
 import ManageFee from './pages/Fees/ManageFee';
+import ScholarshipList from './pages/Fees/ScholarshipList';
+import PreferenceList from './pages/Fees/PreferenceList';
 
   
 function App() {
@@ -156,6 +158,15 @@ function App() {
                 </>
               }
             />
+            <Route
+            path="/fees/preferencelist"
+            element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <PreferenceList />
+                </>
+              }
+            />
            
             <Route
             path="/fees/scholarship"
@@ -163,6 +174,15 @@ function App() {
                 <>
                   <PageTitle title="Calendar | " />
                   <Scholarship />
+                </>
+              }
+            />
+                   <Route
+            path="/fees/scholarshipenroll"
+            element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <ScholarshipList />
                 </>
               }
             />

@@ -146,6 +146,8 @@ const Admission = () => {
       picture: picture,
       feeArrears: feeArrears,
       feeCredit: feeCredit,
+      createdBy: 'Asante',
+
   
     };
    

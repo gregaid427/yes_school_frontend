@@ -50,6 +50,30 @@ export const PayFeeAction = createAsyncThunk(
     }
   },
 );
+export const FetchPaymentsAction = createAsyncThunk(
+  'new/fetchpayment',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/paymentrecords`,
+        payload,
+      );
+      if (data?.success == 1 && data?.data == []) {
+        toast.success('No Transaction Records');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Fetching Records');
+
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
 export const GenerateFeeAction = createAsyncThunk(
   'new/generatefee',
@@ -185,6 +209,57 @@ export const fetchfeeStockAction = createAsyncThunk(
   },
 );
 
+export const EnrollScholarshipAction = createAsyncThunk(
+  'fetch/enrollscholarship',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/enrollscholarship`,payload
+      );
+      if (data?.success == 1) {
+        toast.success('Student Enrolled Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Enrolling Scholarship');
+
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+
+
+export const GetEnrolledStudentAction = createAsyncThunk(
+  'fetch/enrolledstudent',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/listscholarship`,
+        payload,
+      );
+      if (data?.success == '1' && data?.data[0] == null) { 
+        toast.success('Empty Class List');
+      }
+
+      if (data == null) {
+        toast.error('Error loading Enrolled Student');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const fetchSinglefeeAction = createAsyncThunk(
   'fetch/singlefee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -228,6 +303,25 @@ export const fetchfeeAssignRecordAction = createAsyncThunk(
     try {
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/feerecord`,
+        payload,
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const fetchfeeAssignbycartAction = createAsyncThunk(
+  'fetch/feeassignbyclass',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/assignfeerecord`,
         payload,
       );
 
@@ -481,6 +575,21 @@ const FeeSlices = createSlice({
       state.fetchAllfee = undefined;
     });
 
+    builder.addCase(FetchPaymentsAction.pending, (state, action) => {
+      state.FetchPaymentloading = true;
+      state.FetchPayment = false;
+    });
+    builder.addCase(FetchPaymentsAction.fulfilled, (state, action) => {
+      state.FetchPayment = action?.payload;
+      state.FetchPaymentloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(FetchPaymentsAction.rejected, (state, action) => {
+      state.FetchPaymentloading = false;
+      state.error = action.payload;
+      state.FetchPayment = undefined;
+    });
+
     
     builder.addCase(AssignFeesAction.pending, (state, action) => {
       state.AssignFeesloading = true;
@@ -497,6 +606,42 @@ const FeeSlices = createSlice({
       state.AssignFeesloading = false;
       state.error = action.payload;
       state.Assignfee = undefined;
+   //   state.fetchAllfee = undefined;
+    });
+
+    builder.addCase(EnrollScholarshipAction.pending, (state, action) => {
+      state.Enrollloading = true;
+      state.Enroll = false;
+     // state.fetchAllfee = false;
+    });
+    builder.addCase(EnrollScholarshipAction.fulfilled, (state, action) => {
+      state.Enroll = action?.payload;
+      state.Enrollloading = false;
+      state.error = undefined;
+    //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(EnrollScholarshipAction.rejected, (state, action) => {
+      state.Enrollloading = false;
+      state.error = action.payload;
+      state.Enroll = undefined;
+   //   state.fetchAllfee = undefined;
+    });
+
+    builder.addCase(GetEnrolledStudentAction.pending, (state, action) => {
+      state.Enrolllistloading = true;
+      state.Enrolllist = false;
+     // state.fetchAllfee = false;
+    });
+    builder.addCase(GetEnrolledStudentAction.fulfilled, (state, action) => {
+      state.Enrolllist = action?.payload;
+      state.Enrolllistloading = false;
+      state.Enrolllisterror = undefined;
+    //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(GetEnrolledStudentAction.rejected, (state, action) => {
+      state.Enrolllistloading = false;
+      state.Enrolllisterror = action.payload;
+      state.Enrolllist = undefined;
    //   state.fetchAllfee = undefined;
     });
 
@@ -538,7 +683,31 @@ const FeeSlices = createSlice({
     });
 
 
+    
 
+    builder.addCase(
+      fetchfeeAssignbycartAction.pending,
+      (state, action) => {
+        state.Assignbyclassloading = true;
+        state.Assignbyclass = false;
+      },
+    );
+    builder.addCase(
+      fetchfeeAssignbycartAction.fulfilled,
+      (state, action) => {
+        state.Assignbyclass = action?.payload;
+        state.Assignbyclassloading = false;
+        state.Assignbyclasserror = undefined;
+      },
+    );
+    builder.addCase(
+      fetchfeeAssignbycartAction.rejected,
+      (state, action) => {
+        state.Assignbyclassloading = false;
+        state.Assignbyclasserror = action.payload;
+        state.Assignbyclass = undefined;
+      },
+    );
 
     builder.addCase(
       CreatesfeeCartegoryAction.pending,

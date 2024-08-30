@@ -55,7 +55,7 @@ const CollectFeesModal = (props) => {
     formRef1.current.reset();
   }
   let balanceresult = eval(
-    parseInt(props.val?.accountbalance) + parseInt(amount),
+    parseInt(props.val?.accountbalance) - parseInt(amount),
   );
 
   let data = {
@@ -72,7 +72,10 @@ const CollectFeesModal = (props) => {
   };
   const handleSubmit = (e) => {
     if (amount < 1) {
-      toast.error('Error - Enter Valid Amount');
+     return toast.error('Error - Enter Valid Amount');
+    }
+    if (amount > props.val?.accountbalance) {
+     return toast.error(`Error - Amount cannot Exceed ${props.val?.accountbalance}`);
     } else {
       dispatch(PayFeeAction(data));
     }

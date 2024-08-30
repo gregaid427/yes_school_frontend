@@ -44,13 +44,23 @@ const FeesReceiptModal = (props) => {
     // }
   }, [CreateInventorycart]);
 
+
+  const session = useSelector((state) => state?.session);
+  const { fetchsessionactive, fetchsession } = session;
   const [amount, setAmount] = useState(0);
   const [mode, setmode] = useState('Cash');
+  const [sessionz, setsession] = useState(null);
 
   const [pictureurl, setPictureurl] = useState(null);
 
   const formRef1 = useRef();
-
+  useEffect(() => {
+    if (fetchsessionactive?.success == 1) {
+      let data = fetchsessionactive?.data[0];
+      setsession(data);
+      console.log('sessionz');
+    }
+  }, [fetchsessionactive]);
   function resetFormStates() {
     // formRef.current.reset();
     formRef1.current.reset();
@@ -80,7 +90,7 @@ const FeesReceiptModal = (props) => {
   };
   const user = useSelector((state) => state?.user);
   const { allschool } = user;
-
+  console.log(props.val);
   return (
     <div className="w-full">
       <div className="grid  gap-8">
@@ -144,18 +154,28 @@ const FeesReceiptModal = (props) => {
                     <div className="w-4/6 ">
                       <p>
                         <span className="text-xl">
-
-                        {allschool?.data[0]?.name}
-                        </span>
-                      </p>
-                      <p >
-                        <span className="text-sm"> {allschool?.data[0]?.address}
+                          {allschool?.data[0]?.name}
                         </span>
                       </p>
                       <p>
-                        <span className="text-sm ">{allschool?.data[0]?.contact1} { " "}{allschool?.data[0]?.contact2 ?'/' : ""}{ " "}{allschool?.data[0]?.contact2}</span>
+                        <span className="text-sm">
+                          {' '}
+                          {allschool?.data[0]?.address}
+                        </span>
                       </p>
-
+                      <p>
+                        <span className="text-sm ">
+                          {allschool?.data[0]?.contact1}{' '}
+                          {allschool?.data[0]?.contact2 ? '/' : ''}{' '}
+                          {allschool?.data[0]?.contact2}
+                        </span>
+                      </p>
+                      <p>
+                        <span className="flex text-sm align-bottom">
+                          {' '}
+                         Session : {sessionz?.sessionname}
+                        </span>
+                      </p>
                       {/* <p>Accra, Ghana</p>   */}
                     </div>
                     <img
@@ -166,7 +186,10 @@ const FeesReceiptModal = (props) => {
                   <div className="flex border-b justify-between  border-stroke  dark:border-strokedark">
                     <div className="w-full flex py-3 justify-between">
                       <div className="w-4/12 text-sm">
-                      <p>{props.val?.student_id} / {props.val?.class} ({props.val?.section})</p>
+                        <p>
+                          {props.val?.student_id} / {props.val?.class} (
+                          {props.val?.section})
+                        </p>
 
                         <p>
                           {props.val?.firstName +
@@ -175,79 +198,103 @@ const FeesReceiptModal = (props) => {
                             ' ' +
                             props.val?.lastName}
                         </p>
-                        <p>
-                         
-                        </p>
+                        <p></p>
                       </div>
                       <div className="w-4/12">
-                        <p className="text-xl font-bold text-center">
+                        <p className="text-xl font-bold text-center  ">
                           Fee Receipt
                         </p>
                       </div>
                       <div className="w-4/12 text-right text-sm">
                         <p>{date}</p>
-                        <p>Receipt No : 3453453453453</p>
+                        <p>Receipt No : {props?.response?.receiptid}</p>
                       </div>
                     </div>
                   </div>{' '}
                 </div>
-                <div className="flex border-b   border-stroke  dark:border-strokedark">
-                  <table className="w-full  ">
-                    <thead className="w-full border-b border-stroke  dark:border-strokedark">
-                      <tr className="w-full  ">
-                        <th className="text-sm float-start flex font-semibold w-4/12"><p>#</p></th>
-                        <th className="text-sm  font-semibold w-4/12">
-                          Fee Cartegory
-                        </th>
-                        <th className="text-sm font-semibold w-4/12">Amount</th>
-                      </tr>
-                    </thead>
-                    {}
-                    <thead className="w-full  ">
-                      {props.cart?.map((item, index) => (
+                <div className="flex border border-stroke  dark:border-strokedark p-4">
+                  <div className="flex border-b  w-8/12 border-stroke  dark:border-strokedark">
+                    <table className="w-full  ">
+                      <thead className="w-full border-b border-stroke  dark:border-strokedark">
                         <tr className="w-full  ">
-                          {' '}
-                          <th className="text-sm float-start  font-light w-4/12">{index + 1}</th>
-                          <th className="text-sm text font-light w-4/12">
-                            {item?.name}{' '}
+                          <th className="text-sm float-start flex font-semibold w-4/12">
+                            <p>#</p>
                           </th>
-                          <th className="text-sm font-light w-4/12">Amount</th>
+                          <th className="text-sm  font-semibold w-4/12">
+                            Fee Cartegory
+                          </th>
+                          <th className="text-sm font-semibold w-4/12">
+                            Amount
+                          </th>
                         </tr>
-                      ))}
-                    </thead>
+                      </thead>
+                      {}
+                      <thead className="w-full  ">
+                        {props.cart?.map((item, index) => (
+                          <tr className="w-full  ">
+                            {' '}
+                            <th className="text-sm float-start  font-light w-4/12">
+                              {index + 1}
+                            </th>
+                            <th className="text-sm text font-light w-4/12">
+                              {item?.feename}{' '}
+                            </th>
+                            <th className="text-sm font-light w-4/12">
+                              {props.val?.preference?.includes(item?.feename)
+                                ? 0
+                                : item?.amount}
+                            </th>
+                          </tr>
+                        ))}
+                      </thead>
+                      <thead
+                        className={
+                          props?.val?.scholarship < 1 ? 'hidden' : 'w-full'
+                        }
+                      >
+                        <tr className="w-full  border-stroke  dark:border-strokedark ">
+                          {' '}
+                          <th className="text-sm  font-light w-1/12"></th>
+                          <th className="text-sm text-right font-light w-6/12">
+                            Scholarship
+                          </th>
+                          <th className="text-sm font-light w-4/12">
+                            ( {props?.val?.scholarship} )
+                          </th>
+                        </tr>
+                      </thead>
+                      <thead className="w-full   ">
+                        <tr className="w-full border-t border-stroke  dark:border-strokedark ">
+                          {' '}
+                          <th className="text-sm  font-light w-1/12"></th>
+                          <th className="text-sm text-right font-bold  w-6/12">
+                            Fee Payable For Session
+                          </th>
+                          <th className="text-sm font-bold  w-4/12">
+                            {eval(
+                              props.val?.feepayable - props?.val?.scholarship,
+                            )}
+                          </th>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>
 
-                    <thead className="w-full  ">
-                      <tr className="w-full border-t border-stroke  dark:border-strokedark ">
-                        {' '}
-                        <th className="text-sm  font-light w-1/12"></th>
-                        <th className="text-sm text-right font-light w-6/12">
-                          Total
-                        </th>
-                        <th className="text-sm font-light w-4/12">Amount</th>
-                      </tr>
-                    </thead>
-                    <thead className="w-full  ">
-                      <tr className="w-full  border-stroke  dark:border-strokedark ">
-                        {' '}
-                        <th className="text-sm  font-light w-1/12"></th>
-                        <th className="text-sm text-right font-light w-6/12">
-                          Amount Paid
-                        </th>
-                        <th className="text-sm font-light w-4/12">Amount</th>
-                      </tr>
-                    </thead>
-                
-                    <thead className="w-full  ">
-                      <tr className="w-full  border-stroke  dark:border-strokedark ">
-                        {' '}
-                        <th className="text-sm  font-light w-1/12"></th>
-                        <th className="text-sm text-right font-light w-6/12">
-                          Current Balance
-                        </th>
-                        <th className="text-sm font-light w-4/12">Amount</th>
-                      </tr>
-                    </thead>
-                  </table>
+                  <div className="border-l font-thin px-3 text-sm flex float-end flex-col w-5/12 border-stroke  dark:border-strokedark">
+                    <div className="flex w-full justify-between float-end">
+                     <p>Amount Paid </p>  {props?.response?.amountpaid}
+                    </div>
+                    {/* <div className="flex float-end">
+                       Arrears : {eval(props.val?.feepayable - props?.response?.balbeforepayment)}
+                    </div> */}
+                    <div className="flex w-full justify-between float-end">
+                     <p>Balance Before Payment </p> {props?.response?.balbeforepayment}
+                    </div>
+
+                    <div className="flex w-full justify-between font-bold float-end">
+                     <p>Current Balance </p>  {props?.response?.balanceafterpayment}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex text-sm mt-10 flex-row w-full">
@@ -256,13 +303,13 @@ const FeesReceiptModal = (props) => {
                     .........................
                   </p>
                   <p className="text-center w-4/12 ">
-                    .........................
+                  {props?.response?.collectedby}
                   </p>
                 </div>
                 <div className="flex text-sm flex-row w-full">
-                  <p className="text-center w-4/12 ">Cash</p>
+                  <p className="text-center w-4/12 ">{props?.response?.mode}</p>
                   <p className="text-center w-4/12 "> Signature </p>
-                  <p className="text-center w-4/12 ">Stamp</p>
+                  <p className="text-center w-4/12 ">Received By</p>
                 </div>
               </Print>
             </div>
