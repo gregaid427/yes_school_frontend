@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import { useTheme } from '@table-library/react-table-library/theme';
-import { getTheme } from '@table-library/react-table-library/baseline';
 import { usePagination } from '@table-library/react-table-library/pagination';
 
 import { mkConfig, generateCsv, download } from 'export-to-csv';
@@ -31,14 +29,17 @@ import {
   fetchStudentsClassAction,
 } from '../../redux/slices/studentSlice';
 import Loader from '../../common/Loader';
-
-import SectionSelect1 from '../../components/SectionsSelect1';
 import ClassSelect from '../../components/ClassSelect';
-import { fetchUserdataAction } from '../../redux/slices/usersSlice';
+import {
+  fetchschoolinfoAction,
+  fetchUserdataAction,
+} from '../../redux/slices/usersSlice';
 import TableBtn from '../../components/Svgs/TableBtn';
-import CollectFeesModal from '../../components/collectFeesModal';
-import FeesReceiptModal from '../../components/FeesReceiptModal';
-import { fetchfeeCartegoryAction, resetpayfee } from '../../redux/slices/feeSlice';
+import {
+  fetchfeeCartegoryAction,
+  resetpayfee,
+} from '../../redux/slices/feeSlice';
+import { fetchActivesessionAction } from '../../redux/slices/sessionSlice';
 import StudentPreferenceModal from '../../components/StudentPreferenceModal';
 
 const PreferenceList = () => {
@@ -72,8 +73,10 @@ const PreferenceList = () => {
   const [sectionzz, setsectionzz] = useState('All Sections');
   const [propp, setProp] = useState();
   const [cartz, setcartegory] = useState();
+  const [info, setinfo] = useState();
+  const [receipt, setReceipt] = useState('');
 
-  
+
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
@@ -92,16 +95,24 @@ const PreferenceList = () => {
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
-  const { payfee,cartegory,Prefences } = fee;
+  const { payfee, cartegory,fetchcustomPref } = fee;
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
     if (fetchcustom?.success == 1) {
       let data = fetchcustom?.data;
+      let info = fetchcustom?.info;
+      setinfo(info);
       setdata(data);
     }
-
+    if (fetchcustomPref?.success == 1) {
+      console.log('fffffffffffffffffffffffffff')
+      let data = fetchcustomPref?.data;
+      let info = fetchcustomPref?.info;
+      setinfo(info);
+      setdata(data);
+    }
 
     // if (fetchAllClass?.success == 1) {
     //   let i = 0;
@@ -115,37 +126,59 @@ const PreferenceList = () => {
     // }
   }, [fetchAllClassloading, fetchcustomloading]);
 
+
+
+  useEffect(() => {
+
+    if (fetchcustomPref?.success == 1) {
+      let data = fetchcustomPref?.data;
+      let info = fetchcustomPref?.info;
+      setinfo(info);
+      setdata(data);
+    }
+
+ 
+  }, [fetchcustomPref]);
+
+
+
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
     if (fetchStudentcustombal?.success == 1) {
       let data = fetchStudentcustombal?.data;
+      let info = fetchStudentcustombal?.info;
+      setinfo(info);
       setdata(data);
     }
   }, [fetchStudentcustombal]);
 
-
-
   useEffect(() => {
-   
+    if (payfee?.success == 1) {
+      let data = payfee?.data;
+      setdata(data);
+    }
     if (cartegory?.success == 1) {
       let data = cartegory?.data;
       setcartegory(data);
+      console.log(cartegory?.data);
     }
-  }, [payfee,cartegory]);
+  }, [payfee, cartegory]);
 
   useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
 
-    if (Prefences?.success == 1) {
+    if (payfee?.success == 1) {
       setVisible(false);
+      setVisible1(true);
+      setReceipt(payfee?.response);
+      dispatch(resetpayfee());
     }
-  }, [Prefences]);
+  }, [payfee]);
 
   useEffect(() => {
     setdata([]);
-    
   }, []);
-
 
   useEffect(() => {
     dispatch(fetchfeeCartegoryAction());
@@ -183,7 +216,7 @@ const PreferenceList = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  15% 40% 10% 17%   18%;
+  --data-table-library_grid-template-columns:  30% 60% 10%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -203,6 +236,12 @@ const PreferenceList = () => {
 `,
     },
   ]);
+  useEffect(() => {
+    dispatch(fetchschoolinfoAction());
+    dispatch(fetchActivesessionAction());
+  }, []);
+  const user = useSelector((state) => state?.user);
+  const { allschool } = user;
 
   const pagination = usePagination(data, {
     state: {
@@ -290,7 +329,7 @@ const PreferenceList = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-      <Dialog
+  <Dialog
         resizable={false}
         draggable={false}
         // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
@@ -305,7 +344,6 @@ const PreferenceList = () => {
       >
         <StudentPreferenceModal close={setVisible} val={propp} cart={cartz} />
       </Dialog>
-    
       <div className=" flex-col">
         <div
           className={
@@ -330,17 +368,7 @@ const PreferenceList = () => {
                   </div>
                 </div>
 
-                <div className="w-full sm:w-2/5">
-                  <label
-                    className="mb-2 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="phoneNumber"
-                  >
-                    Section{' '}
-                  </label>
-                  <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SectionSelect1 setsectionprop={setsectionzz} />
-                  </div>
-                </div>
+           
                 <div className="w-full sm:w-2/5">
                   <label
                     className="mb-2 block text-sm font-medium  dark:text-black"
@@ -416,22 +444,23 @@ const PreferenceList = () => {
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <HeaderCell className="">ID</HeaderCell>
-                        <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Class</HeaderCell>
-                        <HeaderCell>Section</HeaderCell>
-
-
-                        <HeaderCell>Actions</HeaderCell>
+                        <Header>
+                          <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
+                            <HeaderCell>Name</HeaderCell>
+                            <HeaderCell>Exempted Fee Cartegories</HeaderCell>
+                            <HeaderCell>Actions</HeaderCell>
+                          </HeaderRow>
+                        </Header>
                       </HeaderRow>
                     </Header>
 
                     <Body>
                       {tableList.map((item) => (
-                        <Row key={item.student_id} item={item} className="">
-                          <Cell className="  ">
-                            <span>{item.student_id}</span>
-                          </Cell>
+                        <Row
+                          key={item.student_id}
+                          item={item}
+                          className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
+                        >
                           <Cell className="capitalize">
                             {item.firstName +
                               ' ' +
@@ -440,21 +469,19 @@ const PreferenceList = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.class}</span>
+                            <span>{item.preference == 0 ? "-" : item.preference}</span>
                           </Cell>
-                          <Cell className="  ">
-                            <span>{item.section}</span>
-                          </Cell>
-                        
-
                           <Cell>
                             <div className="gap-2 flex">
                               <TableBtn
-                                text={'Manage Preference'}
                                 clickFunction={() => {
-                                  setProp(item);
-                                  handleviewbtn(item);
-                                }}
+                                  show('top-right');
+                                  setProp(item)
+
+                                }
+
+                                }
+                                text={'Manage'}
                                 color={'bg-primary'}
                               />
                             </div>
@@ -521,10 +548,8 @@ const PreferenceList = () => {
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Section</HeaderCell>
-                        <HeaderCell>Gender</HeaderCell>
+                        <HeaderCell>Exempted Fee Cartegories</HeaderCell>
                       </HeaderRow>
                     </Header>
 
@@ -535,9 +560,6 @@ const PreferenceList = () => {
                           item={item}
                           className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                         >
-                          <Cell className="  ">
-                            <span>{item.student_id}</span>
-                          </Cell>
                           <Cell className="capitalize">
                             {item.firstName +
                               ' ' +
@@ -546,10 +568,16 @@ const PreferenceList = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.section}</span>
+                            <span>{item.preference}</span>
                           </Cell>
-                          <Cell className="  ">
-                            <span>{item.gender}</span>
+                          <Cell>
+                            <div className="gap-2 flex">
+                              <TableBtn
+                                clickFunction={() => handleEditbtn(item)}
+                                text={'Manage'}
+                                color={'bg-primary'}
+                              />
+                            </div>
                           </Cell>
                         </Row>
                       ))}

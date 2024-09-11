@@ -39,7 +39,52 @@ export const PayFeeAction = createAsyncThunk(
       }
       if (data?.success == 0) {
         toast.error('Error Paying Fee');
-
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const CustomBalUpdate = createAsyncThunk(
+  'new/balanceUpdate',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/updatebal`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Balance Updated  Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Updating Balance');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const ReverseFee = createAsyncThunk(
+  'new/reverse',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/reversefee`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Paymet Reversed Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Reversing Balance');
       }
       return data;
     } catch (error) {
@@ -63,7 +108,6 @@ export const FetchPaymentsAction = createAsyncThunk(
       }
       if (data?.success == 0) {
         toast.error('Error Fetching Records');
-
       }
       return data;
     } catch (error) {
@@ -81,14 +125,62 @@ export const GenerateFeeAction = createAsyncThunk(
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefee`,
-        payload,
+        
       );
       if (data?.success == 1) {
         toast.success('Fee Generated Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Generating Fee');
-
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const ResetAllAccountBalanceAction = createAsyncThunk(
+  'new/resetAccount',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/resetallaccount`,payload
+        
+      );
+      if (data?.success == 1) {
+        toast.success('All Accounts Updated Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Updating All Account');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const ResetAllAccountBalanceByClassAction = createAsyncThunk(
+  'new/resetAccountbyclass',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/resetclassaccount`,payload
+        
+      );
+      if (data?.success == 2) {
+        toast.success('Class Has No Students');
+      }
+      if (data?.success == 1) {
+        toast.success('Accounts Updated Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Updating All Account');
       }
       return data;
     } catch (error) {
@@ -100,7 +192,55 @@ export const GenerateFeeAction = createAsyncThunk(
   },
 );
 
-export const PrefencesAction = createAsyncThunk(
+export const GenerateFeeClassAction = createAsyncThunk(
+  'new/generatefeeclass',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefeebyclass`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Fee Generated Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Generating Fee');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const GenerateFeeStudentAction = createAsyncThunk(
+  'new/generatefeestudent',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefeebystudent`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Fee Generated Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Generating Fee');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const PreferencesAction = createAsyncThunk(
   'Post/Preferences',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
@@ -109,11 +249,10 @@ export const PrefencesAction = createAsyncThunk(
         payload,
       );
       if (data?.success == 1) {
-        toast.success('Prefences Set Successfully');
+        toast.success('Preferences Set Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Setting Preferences');
-
       }
       return data;
     } catch (error) {
@@ -138,7 +277,6 @@ export const CreatesfeeCartegoryAction = createAsyncThunk(
       }
       if (data?.success == 0) {
         toast.error('Error Adding Fee Cartegory');
-
       }
 
       return data;
@@ -164,7 +302,6 @@ export const CreatesScholarshipAction = createAsyncThunk(
       }
       if (data?.success == 0) {
         toast.error('Error Adding Scholarship');
-
       }
       return data;
     } catch (error) {
@@ -180,7 +317,9 @@ export const fetchAllfeeAction = createAsyncThunk(
   'fetch/Allfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/fee/`);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/`,
+      );
 
       return data;
     } catch (error) {
@@ -214,14 +353,14 @@ export const EnrollScholarshipAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/enrollscholarship`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/enrollscholarship`,
+        payload,
       );
       if (data?.success == 1) {
         toast.success('Student Enrolled Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Enrolling Scholarship');
-
       }
       return data;
     } catch (error) {
@@ -233,8 +372,6 @@ export const EnrollScholarshipAction = createAsyncThunk(
   },
 );
 
-
-
 export const GetEnrolledStudentAction = createAsyncThunk(
   'fetch/enrolledstudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -243,7 +380,7 @@ export const GetEnrolledStudentAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/listscholarship`,
         payload,
       );
-      if (data?.success == '1' && data?.data[0] == null) { 
+      if (data?.success == '1' && data?.data[0] == null) {
         toast.success('Empty Class List');
       }
 
@@ -315,6 +452,24 @@ export const fetchfeeAssignRecordAction = createAsyncThunk(
     }
   },
 );
+export const fetchfeeAssignGroupRecordAction = createAsyncThunk(
+  'fetch/feeassignrecordgroup',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/feerecordgroup`,
+        payload,
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
 export const fetchfeeAssignbycartAction = createAsyncThunk(
   'fetch/feeassignbyclass',
@@ -322,6 +477,25 @@ export const fetchfeeAssignbycartAction = createAsyncThunk(
     try {
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/assignfeerecord`,
+        payload,
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const fetchfeeAssignbycustomAction = createAsyncThunk(
+  'fetch/feeassignbycustom',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/assigncustom`,
         payload,
       );
 
@@ -423,7 +597,33 @@ export const deleteScholarshipAction = createAsyncThunk(
       }
       if (data?.success == 0) {
         toast.error('Error Deleting Scholarship');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
+export const DeleteAllAssignedFeeAction = createAsyncThunk(
+  'fee/DeleteAllAssignedFee',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/deleteallasigned`,
+      );
+      if (data?.success == 1) {
+        toast.success('Records Deleted Successfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Deleting Records');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
       }
       return data;
     } catch (error) {
@@ -469,13 +669,13 @@ export const deleteSinglefeeAction = createAsyncThunk(
   },
 );
 
-
 export const deleteSingleFeeCartAction = createAsyncThunk(
   'delete/deletefeeCart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/cartegorydel`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/cartegorydel`,
+        payload,
       );
 
       return data;
@@ -493,7 +693,8 @@ export const AssignFeesAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/assignfee`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/assignfee`,
+        payload,
       );
       if (data?.success == 1) {
         toast.success('Assigned Successfully');
@@ -540,6 +741,9 @@ const FeeSlices = createSlice({
     resetcreatefee(state) {
       state.Createfee = null;
     },
+    resetpreference(state) {
+      state.Preferences = null;
+    },
     resetcreatecart(state) {
       state.Createfeecart = null;
     },
@@ -554,6 +758,12 @@ const FeeSlices = createSlice({
     },
     resetdeletefee(state) {
       state.deleteSinglefee = null;
+    },
+    resetdeleteassignedfee(state) {
+      state.deleteAllAssigned = null;
+    },
+    resetGeneratefee(state) {
+      state.Generatefee = null;
     },
   },
   extraReducers: (builder) => {
@@ -590,199 +800,261 @@ const FeeSlices = createSlice({
       state.FetchPayment = undefined;
     });
 
-    
     builder.addCase(AssignFeesAction.pending, (state, action) => {
       state.AssignFeesloading = true;
       state.Assignfee = false;
-     // state.fetchAllfee = false;
+       state.AssignfeeGroup = false;
     });
     builder.addCase(AssignFeesAction.fulfilled, (state, action) => {
       state.Assignfee = action?.payload;
       state.AssignFeesloading = false;
       state.error = undefined;
-    //  state.fetchAllfee = action?.payload;
+        state.AssignfeeGroup = action?.payload;
     });
     builder.addCase(AssignFeesAction.rejected, (state, action) => {
       state.AssignFeesloading = false;
       state.error = action.payload;
       state.Assignfee = undefined;
-   //   state.fetchAllfee = undefined;
+         state.AssignfeeGroup = undefined;
     });
 
     builder.addCase(EnrollScholarshipAction.pending, (state, action) => {
       state.Enrollloading = true;
       state.Enroll = false;
-     // state.fetchAllfee = false;
+      // state.fetchAllfee = false;
     });
     builder.addCase(EnrollScholarshipAction.fulfilled, (state, action) => {
       state.Enroll = action?.payload;
       state.Enrollloading = false;
       state.error = undefined;
-    //  state.fetchAllfee = action?.payload;
+      //  state.fetchAllfee = action?.payload;
     });
     builder.addCase(EnrollScholarshipAction.rejected, (state, action) => {
       state.Enrollloading = false;
       state.error = action.payload;
       state.Enroll = undefined;
-   //   state.fetchAllfee = undefined;
+      //   state.fetchAllfee = undefined;
     });
 
     builder.addCase(GetEnrolledStudentAction.pending, (state, action) => {
       state.Enrolllistloading = true;
       state.Enrolllist = false;
-     // state.fetchAllfee = false;
+      // state.fetchAllfee = false;
     });
     builder.addCase(GetEnrolledStudentAction.fulfilled, (state, action) => {
       state.Enrolllist = action?.payload;
       state.Enrolllistloading = false;
       state.Enrolllisterror = undefined;
-    //  state.fetchAllfee = action?.payload;
+      //  state.fetchAllfee = action?.payload;
     });
     builder.addCase(GetEnrolledStudentAction.rejected, (state, action) => {
       state.Enrolllistloading = false;
       state.Enrolllisterror = action.payload;
       state.Enrolllist = undefined;
-   //   state.fetchAllfee = undefined;
+      //   state.fetchAllfee = undefined;
     });
-
-
+    
     builder.addCase(GenerateFeeAction.pending, (state, action) => {
       state.Generatefeeloading = true;
       state.Generatefee = false;
-     // state.fetchAllfee = false;
+      // state.fetchAllfee = false;
     });
     builder.addCase(GenerateFeeAction.fulfilled, (state, action) => {
       state.Generatefee = action?.payload;
       state.Generatefeeloading = false;
       state.Generatefeerror = undefined;
-    //  state.fetchAllfee = action?.payload;
+      //  state.fetchAllfee = action?.payload;
     });
     builder.addCase(GenerateFeeAction.rejected, (state, action) => {
       state.Generatefeeloading = false;
       state.Generatefeerror = action.payload;
       state.Generatefee = undefined;
-   //   state.fetchAllfee = undefined;
+      //   state.fetchAllfee = undefined;
     });
 
-    builder.addCase(PrefencesAction.pending, (state, action) => {
-      state.Prefencesloading = true;
-      state.Prefences = false;
-     // state.fetchAllfee = false;
+    builder.addCase(ResetAllAccountBalanceByClassAction.pending, (state, action) => {
+      state.Generatefeeloading = true;
+      state.Generatefee = false;
+      // state.fetchAllfee = false;
     });
-    builder.addCase(PrefencesAction.fulfilled, (state, action) => {
-      state.Prefences = action?.payload;
-      state.Prefencesloading = false;
-      state.Prefenceserror = undefined;
-    //  state.fetchAllfee = action?.payload;
+    builder.addCase(ResetAllAccountBalanceByClassAction.fulfilled, (state, action) => {
+      state.Generatefee = action?.payload;
+      state.Generatefeeloading = false;
+      state.Generatefeerror = undefined;
+      //  state.fetchAllfee = action?.payload;
     });
-    builder.addCase(PrefencesAction.rejected, (state, action) => {
-      state.Prefencesloading = false;
-      state.Prefenceserror = action.payload;
-      state.Prefences = undefined;
-   //   state.fetchAllfee = undefined;
+    builder.addCase(ResetAllAccountBalanceByClassAction.rejected, (state, action) => {
+      state.Generatefeeloading = false;
+      state.Generatefeerror = action.payload;
+      state.Generatefee = undefined;
+      //   state.fetchAllfee = undefined;
     });
 
+    builder.addCase(ResetAllAccountBalanceAction.pending, (state, action) => {
+      state.Generatefeeloading = true;
+      state.Generatefee = false;
+      // state.fetchAllfee = false;
+    });
+    builder.addCase(ResetAllAccountBalanceAction.fulfilled, (state, action) => {
+      state.Generatefee = action?.payload;
+      state.Generatefeeloading = false;
+      state.Generatefeerror = undefined;
+      //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(ResetAllAccountBalanceAction.rejected, (state, action) => {
+      state.Generatefeeloading = false;
+      state.Generatefeerror = action.payload;
+      state.Generatefee = undefined;
+      //   state.fetchAllfee = undefined;
+    });
 
+    builder.addCase(GenerateFeeClassAction.pending, (state, action) => {
+      state.Generatefeeloading = true;
+      state.Generatefee = false;
+      // state.fetchAllfee = false;
+    });
+    builder.addCase(GenerateFeeClassAction.fulfilled, (state, action) => {
+      state.Generatefee = action?.payload;
+      state.Generatefeeloading = false;
+      state.Generatefeerror = undefined;
+      //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(GenerateFeeClassAction.rejected, (state, action) => {
+      state.Generatefeeloading = false;
+      state.Generatefeerror = action.payload;
+      state.Generatefee = undefined;
+      //   state.fetchAllfee = undefined;
+    });
+    builder.addCase(GenerateFeeStudentAction.pending, (state, action) => {
+      state.Generatefeeloading = true;
+      state.Generatefee = false;
+      // state.fetchAllfee = false;
+    });
+    builder.addCase(GenerateFeeStudentAction.fulfilled, (state, action) => {
+      state.Generatefee = action?.payload;
+      state.Generatefeeloading = false;
+      state.Generatefeerror = undefined;
+      //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(GenerateFeeStudentAction.rejected, (state, action) => {
+      state.Generatefeeloading = false;
+      state.Generatefeerror = action.payload;
+      state.Generatefee = undefined;
+      //   state.fetchAllfee = undefined;
+    });
+    
+    builder.addCase(PreferencesAction.pending, (state, action) => {
+      state.Preferencesloading = true;
+      state.Preferences = false;
+      state.fetchcustomPref = false;
+    });
+    builder.addCase(PreferencesAction.fulfilled, (state, action) => {
+      state.Preferences = action?.payload;
+      state.Preferencesloading = false;
+      state.Preferenceserror = undefined;
+      state.fetchcustomPref = action?.payload;
+    });
+    builder.addCase(PreferencesAction.rejected, (state, action) => {
+      state.Preferencesloading = false;
+      state.Preferenceserror = action.payload;
+      state.Preferences = undefined;
+      state.fetchcustomPref = undefined;
+    });
+
+    builder.addCase(fetchfeeAssignbycartAction.pending, (state, action) => {
+      state.Assignbyclassloading = true;
+      state.Assignbyclass = false;
+    });
+    builder.addCase(fetchfeeAssignbycartAction.fulfilled, (state, action) => {
+      state.Assignbyclass = action?.payload;
+      state.Assignbyclassloading = false;
+      state.Assignbyclasserror = undefined;
+    });
+    builder.addCase(fetchfeeAssignbycartAction.rejected, (state, action) => {
+      state.Assignbyclassloading = false;
+      state.Assignbyclasserror = action.payload;
+      state.Assignbyclass = undefined;
+    });
+
+    builder.addCase(fetchfeeAssignbycustomAction.pending, (state, action) => {
+      state.Assignbycustomloading = true;
+      state.Assignbycustom = false;
+    });
+    builder.addCase(fetchfeeAssignbycustomAction.fulfilled, (state, action) => {
+      state.Assignbycustom = action?.payload;
+      state.Assignbycustomsloading = false;
+      state.Assignbycustomerror = undefined;
+    });
+    builder.addCase(fetchfeeAssignbycustomAction.rejected, (state, action) => {
+      state.Assignbycustomloading = false;
+      state.Assignbycustomerror = action.payload;
+      state.Assignbycustom = undefined;
+    });
+
+    builder.addCase(CreatesfeeCartegoryAction.pending, (state, action) => {
+      state.Createfeecartloading = true;
+      state.Createfeecart = false;
+    });
+    builder.addCase(CreatesfeeCartegoryAction.fulfilled, (state, action) => {
+      state.Createfeecart = action?.payload;
+      state.Createfeecartloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(CreatesfeeCartegoryAction.rejected, (state, action) => {
+      state.Createfeecartloading = false;
+      state.error = action.payload;
+      state.Createfeecart = undefined;
+    });
     
 
-    builder.addCase(
-      fetchfeeAssignbycartAction.pending,
-      (state, action) => {
-        state.Assignbyclassloading = true;
-        state.Assignbyclass = false;
-      },
-    );
-    builder.addCase(
-      fetchfeeAssignbycartAction.fulfilled,
-      (state, action) => {
-        state.Assignbyclass = action?.payload;
-        state.Assignbyclassloading = false;
-        state.Assignbyclasserror = undefined;
-      },
-    );
-    builder.addCase(
-      fetchfeeAssignbycartAction.rejected,
-      (state, action) => {
-        state.Assignbyclassloading = false;
-        state.Assignbyclasserror = action.payload;
-        state.Assignbyclass = undefined;
-      },
-    );
-
-    builder.addCase(
-      CreatesfeeCartegoryAction.pending,
-      (state, action) => {
-        state.Createfeecartloading = true;
-        state.Createfeecart = false;
-      },
-    );
-    builder.addCase(
-      CreatesfeeCartegoryAction.fulfilled,
-      (state, action) => {
-        state.Createfeecart = action?.payload;
-        state.Createfeecartloading = false;
-        state.error = undefined;
-      },
-    );
-    builder.addCase(
-      CreatesfeeCartegoryAction.rejected,
-      (state, action) => {
-        state.Createfeecartloading = false;
-        state.error = action.payload;
-        state.Createfeecart = undefined;
-      },
-    );
 
 
-    
-    builder.addCase(
-      fetchfeeAssignRecordAction.pending,
-      (state, action) => {
-        state.Assignfeeloading = true;
-        state.Assignfee = false;
-      },
-    );
-    builder.addCase(
-      fetchfeeAssignRecordAction.fulfilled,
-      (state, action) => {
-        state.Assignfee = action?.payload;
-        state.Assignfeeloading = false;
-        state.error = undefined;
-      },
-    );
-    builder.addCase(
-      fetchfeeAssignRecordAction.rejected,
-      (state, action) => {
-        state.Assignfeeloading = false;
-        state.error = action.payload;
-        state.Assignfee = undefined;
-      },
-    );
+    builder.addCase(fetchfeeAssignGroupRecordAction.pending, (state, action) => {
+      state.AssignfeeGrouploading = true;
+      state.AssignfeeGroup = false;
+    });
+    builder.addCase(fetchfeeAssignGroupRecordAction.fulfilled, (state, action) => {
+      state.AssignfeeGroup = action?.payload;
+      state.AssignfeeGrouploading = false;
+      state.error = undefined;
+    });
+    builder.addCase(fetchfeeAssignGroupRecordAction.rejected, (state, action) => {
+      state.AssignfeeGrouploading = false;
+      state.AssignfeeGrouperror = action.payload;
+      state.AssignfeeGroup = undefined;
+    });
 
-    builder.addCase(
-      CreatesScholarshipAction.pending,
-      (state, action) => {
-        state.CreateScholarloading = true;
-        state.CreateScholar = false;
-      },
-    );
-    builder.addCase(
-      CreatesScholarshipAction.fulfilled,
-      (state, action) => {
-        state.CreateScholar = action?.payload;
-        state.CreateScholarloading = false;
-        state.scholarerror = undefined;
-      },
-    );
-    builder.addCase(
-      CreatesScholarshipAction.rejected,
-      (state, action) => {
-        state.CreateScholarloading = false;
-        state.scholarerror = action.payload;
-        state.CreateScholar = undefined;
-      },
-    );
 
+
+    builder.addCase(fetchfeeAssignRecordAction.pending, (state, action) => {
+      state.Assignfeeloading = true;
+      state.Assignfee = false;
+    });
+    builder.addCase(fetchfeeAssignRecordAction.fulfilled, (state, action) => {
+      state.Assignfee = action?.payload;
+      state.Assignfeeloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(fetchfeeAssignRecordAction.rejected, (state, action) => {
+      state.Assignfeeloading = false;
+      state.error = action.payload;
+      state.Assignfee = undefined;
+    });
+
+    builder.addCase(CreatesScholarshipAction.pending, (state, action) => {
+      state.CreateScholarloading = true;
+      state.CreateScholar = false;
+    });
+    builder.addCase(CreatesScholarshipAction.fulfilled, (state, action) => {
+      state.CreateScholar = action?.payload;
+      state.CreateScholarloading = false;
+      state.scholarerror = undefined;
+    });
+    builder.addCase(CreatesScholarshipAction.rejected, (state, action) => {
+      state.CreateScholarloading = false;
+      state.scholarerror = action.payload;
+      state.CreateScholar = undefined;
+    });
 
     builder.addCase(updateCartegoryAction.pending, (state, action) => {
       state.updateCartegoryloading = true;
@@ -877,43 +1149,38 @@ const FeeSlices = createSlice({
       state.deleteSinglefeeloading = true;
       state.deleteSinglefee = false;
       state.fetchAllfee = false;
-
-      
     });
 
     builder.addCase(deleteSinglefeeAction.fulfilled, (state, action) => {
       state.deleteSinglefee = action?.payload;
       state.deleteSinglefeeloading = false;
       state.error = undefined;
-     state.fetchAllfee = action?.payload;
+      state.fetchAllfee = action?.payload;
     });
     builder.addCase(deleteSinglefeeAction.rejected, (state, action) => {
       state.error = action.payload;
       state.deleteSinglefee = undefined;
       state.deleteSinglefeeloading = undefined;
       state.fetchAllfee = undefined;
-
     });
-
 
     builder.addCase(deleteSingleFeeCartAction.pending, (state, action) => {
       state.deleteSingleCartloading = true;
       state.deleteSinglefee = false;
-      state.cartegory = false; 
+      state.cartegory = false;
     });
 
     builder.addCase(deleteSingleFeeCartAction.fulfilled, (state, action) => {
       state.deleteSinglefee = action?.payload;
       state.deleteSingleCartloading = false;
       state.error = undefined;
-     state.cartegory = action?.payload;
+      state.cartegory = action?.payload;
     });
     builder.addCase(deleteSingleFeeCartAction.rejected, (state, action) => {
       state.error = action.payload;
       state.deleteSinglefee = undefined;
       state.deleteSingleCartloading = undefined;
       state.cartegory = undefined;
-
     });
 
     builder.addCase(PayFeeAction.pending, (state, action) => {
@@ -925,7 +1192,7 @@ const FeeSlices = createSlice({
       state.payfee = action?.payload;
       state.payfeeloading = false;
       state.payfeeerror = undefined;
-    //  state.fetchAllfee = action?.payload;
+      //  state.fetchAllfee = action?.payload;
     });
     builder.addCase(PayFeeAction.rejected, (state, action) => {
       state.payfeeerror = action.payload;
@@ -933,6 +1200,41 @@ const FeeSlices = createSlice({
       state.payfee = undefined;
     });
 
+
+    builder.addCase(CustomBalUpdate.pending, (state, action) => {
+      state.customloading = true;
+      state.custom = false;
+    });
+
+    builder.addCase(CustomBalUpdate.fulfilled, (state, action) => {
+      state.custom = action?.payload;
+      state.customloading = false;
+      state.customerror = undefined;
+      //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(CustomBalUpdate.rejected, (state, action) => {
+      state.customerror = action.payload;
+      state.customloading = undefined;
+      state.custom = undefined;
+    });
+
+    builder.addCase(ReverseFee.pending, (state, action) => {
+      state.reverseloading = true;
+      state.reverse = false;
+    });
+
+    builder.addCase(ReverseFee.fulfilled, (state, action) => {
+      state.reverse = action?.payload;
+      state.reverseloading = false;
+      state.reverserror = undefined;
+      //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(ReverseFee.rejected, (state, action) => {
+      state.reverserror = action.payload;
+      state.reverseloading = undefined;
+      state.reverse = undefined;
+    });
+    
 
     builder.addCase(fetchSinglefeeAction.pending, (state, action) => {
       state.singlefeeloading = true;
@@ -968,7 +1270,6 @@ const FeeSlices = createSlice({
     builder.addCase(deleteScholarshipAction.pending, (state, action) => {
       state.deleteScholarloading = true;
       state.CreateScholar = true;
-
     });
     builder.addCase(deleteScholarshipAction.fulfilled, (state, action) => {
       state.deleteScholar = action?.payload;
@@ -976,15 +1277,28 @@ const FeeSlices = createSlice({
 
       state.deleteScholarloading = false;
       state.deleteScholarerror = undefined;
-      
     });
     builder.addCase(deleteScholarshipAction.rejected, (state, action) => {
       state.deleteScholarloading = false;
       state.deleteScholarerror = action.payload;
       state.deleteScholar = undefined;
       state.CreateScholar = undefined;
+    });
+    
+    builder.addCase(DeleteAllAssignedFeeAction.pending, (state, action) => {
+      state.deleteAllAssignedloading = true;
+      state.deleteAllAssigned = false;
 
-      
+    });
+    builder.addCase(DeleteAllAssignedFeeAction.fulfilled, (state, action) => {
+      state.deleteAllAssigned = action?.payload;
+      state.deleteAllAssignedloading = false;
+      state.deleteAllAssignederror = undefined;
+    });
+    builder.addCase(DeleteAllAssignedFeeAction.rejected, (state, action) => {
+      state.deleteAllAssignedloading = false;
+      state.deleteAllAssignederror = action.payload;
+      state.deleteAllAssigned = undefined;
     });
 
     builder.addCase(deleteAllfeeAction.pending, (state, action) => {
@@ -1009,7 +1323,10 @@ export const {
   resetcreatefee,
   resetUpdatefee,
   resetdeletefee,
+  resetpreference,
   resetcreatecart,
+  resetGeneratefee,
+  resetdeleteassignedfee
 } = FeeSlices.actions;
 
 export default FeeSlices.reducer;

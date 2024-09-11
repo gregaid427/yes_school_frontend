@@ -32,22 +32,17 @@ import {
 } from '../../redux/slices/studentSlice';
 import Loader from '../../common/Loader';
 
+
 import SectionSelect1 from '../../components/SectionsSelect1';
 import ClassSelect from '../../components/ClassSelect';
-import { fetchUserdataAction } from '../../redux/slices/usersSlice';
+import { fetchschoolinfoAction, fetchUserdataAction } from '../../redux/slices/usersSlice';
 import TableBtn from '../../components/Svgs/TableBtn';
 import CollectFeesModal from '../../components/collectFeesModal';
 import FeesReceiptModal from '../../components/FeesReceiptModal';
-import {
-  fetchfeeAssignbycartAction,
-  fetchfeeAssignbycustomAction,
-  fetchfeeCartegoryAction,
-  fetchScholarshipAction,
-  resetpayfee,
-} from '../../redux/slices/feeSlice';
-import ScholarshipModal from '../../components/ScholarshipModal';
+import { fetchfeeCartegoryAction, resetpayfee } from '../../redux/slices/feeSlice';
+import { fetchActivesessionAction } from '../../redux/slices/sessionSlice';
 
-const EnrollScholarship = () => {
+const SearchRecords = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
@@ -78,7 +73,12 @@ const EnrollScholarship = () => {
   const [sectionzz, setsectionzz] = useState('All Sections');
   const [propp, setProp] = useState();
   const [cartz, setcartegory] = useState();
+  const [info, setinfo] = useState();
+  const [receipt, setReceipt] = useState('');
 
+  
+
+  
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
@@ -97,15 +97,18 @@ const EnrollScholarship = () => {
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
-  const { payfee, cartegory, CreateScholar,Enroll } = fee;
+  const { payfee,cartegory } = fee;
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
     if (fetchcustom?.success == 1) {
       let data = fetchcustom?.data;
+      let info = fetchcustom?.info;
+      setinfo(info)
       setdata(data);
     }
+
 
     // if (fetchAllClass?.success == 1) {
     //   let i = 0;
@@ -124,6 +127,8 @@ const EnrollScholarship = () => {
 
     if (fetchStudentcustombal?.success == 1) {
       let data = fetchStudentcustombal?.data;
+      let info = fetchStudentcustombal?.info;
+      setinfo(info)
       setdata(data);
     }
   }, [fetchStudentcustombal]);
@@ -136,9 +141,9 @@ const EnrollScholarship = () => {
     if (cartegory?.success == 1) {
       let data = cartegory?.data;
       setcartegory(data);
-      console.log(cartegory?.data);
+      console.log(cartegory?.data)
     }
-  }, [payfee, cartegory]);
+  }, [payfee,cartegory]);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -146,25 +151,19 @@ const EnrollScholarship = () => {
     if (payfee?.success == 1) {
       setVisible(false);
       setVisible1(true);
+      setReceipt(payfee?.response)
       dispatch(resetpayfee());
     }
   }, [payfee]);
 
   useEffect(() => {
     setdata([]);
+    
   }, []);
 
-  useEffect(() => {
-    if (Enroll?.success == 1) {
-      setVisible(false);
-  
-    }
-  }, [Enroll]);
 
   useEffect(() => {
-    dispatch(fetchScholarshipAction());
-    dispatch(fetchfeeAssignbycartAction());
-
+    dispatch(fetchfeeCartegoryAction());
   }, []);
 
   // useEffect(() => {
@@ -199,7 +198,7 @@ const EnrollScholarship = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  15% 40% 20% 15%   10%;
+  --data-table-library_grid-template-columns:  20% 40% 20%  20%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -219,6 +218,11 @@ const EnrollScholarship = () => {
 `,
     },
   ]);
+  useEffect(() => {
+    dispatch(fetchschoolinfoAction());
+    dispatch(fetchActivesessionAction());
+  }, []);  const user = useSelector((state) => state?.user);
+  const { allschool } = user;
 
   const pagination = usePagination(data, {
     state: {
@@ -280,15 +284,10 @@ const EnrollScholarship = () => {
     if (sectionzz == 'All Sections') {
       //  setclazz(clazz)
       dispatch(fetchStudentsClassAccountAction(data));
-      dispatch(fetchfeeAssignbycustomAction(data));
-
     }
     if (sectionzz != 'All Sections') {
       setsectionzz(sectionzz);
       dispatch(fetchCustomStudentsClassAccountAction(data));
-      dispatch(fetchfeeAssignbycustomAction(data));
-
-      
     }
   }
   const footerContent = (
@@ -324,21 +323,30 @@ const EnrollScholarship = () => {
           setVisible(false);
         }}
       >
-        <ScholarshipModal
-          close={setVisible}
-          val={propp}
-          infotype={sectionzz}
-          cartinfo={CreateScholar}
-        />
+        <CollectFeesModal close={setVisible} val={propp} infotype={sectionzz} />
       </Dialog>
-
-      <div className="w-full flex-col">
+      <Dialog
+        resizable={false}
+        draggable={false}
+        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
+        visible={visible1}
+        className=""
+        position={'bottom'}
+        style={{ width: '65%', color: 'white' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+      >
+        <FeesReceiptModal close={setVisible1} val={propp} response={receipt} cart={info} school={allschool} />
+      </Dialog>
+      <div className=" flex-col">
         <div
           className={
             'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
           }
         >
-          <div className="m overflow-x-auto">
+          <div className="max-w-full overflow-x-auto">
             <div className="w-full  flex justify-between ">
               <div className=" flex w-7/12 gap-3">
                 <div className="sm:w-2/5 ">
@@ -444,8 +452,10 @@ const EnrollScholarship = () => {
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
                         <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Class</HeaderCell>
-                        <HeaderCell>Section</HeaderCell>
+                    
+
+                        <HeaderCell>Acct Balance</HeaderCell>
+
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
@@ -463,19 +473,35 @@ const EnrollScholarship = () => {
                               ' ' +
                               item.lastName}
                           </Cell>
-                          <Cell className="  ">
-                            <span>{item.class}</span>
-                          </Cell>
-                          <Cell className="  ">
-                            <span>{item.section}</span>
+                        
+                          <Cell className="flex   justify-between  ">
+                            <span className="">
+                              {Math.abs(item.accountbalance)}
+                            </span>{' '}
+                            {/* <span className="float-right mr-15">
+                              {item?.accountbalance < 0 ? (
+                                <TableBtn
+                                  clickFunction={() => {}}
+                                  text={' Debit '}
+                                  color={'bg-[#6D343E]'}
+                                />
+                              ) : item?.accountbalance == 0 ? (
+                                ''
+                              ) : (
+                                <TableBtn
+                                  clickFunction={() => {}}
+                                  text={'Credit'}
+                                  color={'bg-success'}
+                                />
+                              )}
+                            </span> */}
                           </Cell>
 
                           <Cell>
                             <div className="gap-2 flex">
                               <TableBtn
-                                text={'Enroll'}
+                                text={'Collect Fees'}
                                 clickFunction={() => {
-                                  setProp(item);
                                   handleviewbtn(item);
                                 }}
                                 color={'bg-primary'}
@@ -588,4 +614,4 @@ const EnrollScholarship = () => {
   );
 };
 
-export default EnrollScholarship;
+export default SearchRecords;

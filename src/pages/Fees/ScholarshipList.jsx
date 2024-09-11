@@ -140,7 +140,7 @@ const ScholarshipList = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  10% 26% 15% 24% 25% ;
+  --data-table-library_grid-template-columns:  15% 30%  30% 25% ;
 `,
       BaseCell: `
         font-size: 15px;
@@ -418,7 +418,6 @@ const ScholarshipList = () => {
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
                         <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Class (Section)</HeaderCell>
                         <HeaderCell>Scholarship</HeaderCell>
 
                         <HeaderCell>Actions</HeaderCell>
@@ -438,10 +437,7 @@ const ScholarshipList = () => {
                               ' ' +
                               item.lastName}
                           </Cell>
-                          <Cell className="  ">
-                            <span>{item.class}</span> (
-                            <span>{item.section ? item.section : 'None'}</span>)
-                          </Cell>
+                          
 
                           <Cell className="  ">
                             <span>{item.scholarshiptitle}</span>

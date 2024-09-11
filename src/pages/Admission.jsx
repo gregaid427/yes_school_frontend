@@ -129,7 +129,6 @@ const Admission = () => {
       section: sectionzz,
       religion: religion,
       dateofbirth: dateofbirth,
-      createdBy: createdBy,
       role: 'student',
       gfName1: gfName1,
       glName1: glName1,

@@ -44,6 +44,7 @@ import {
 } from '../../redux/slices/feeSlice';
 import ManageFeeModal from '../../components/AssignFeeModal';
 import GenerateFeeModak from '../../components/GenerateFeeModal';
+import ManageHistoryModal from '../../components/ManageHistoryModal';
 
 const ManageFee = () => {
   const formRef1 = useRef();
@@ -53,8 +54,8 @@ const ManageFee = () => {
     console.log('reset');
   }
 
-  const [pagesval, setpagesval] = useState(30);
-  const [classs, setClasss] = useState([]);
+  const [pagesval, setpagesval] = useState(60);
+  const [item, setItem] = useState();
 
   const [loader, setLoader] = useState(true);
 
@@ -80,7 +81,22 @@ const ManageFee = () => {
   const dispatch = useDispatch();
 
   const fee = useSelector((state) => state?.fees);
-  const { FetchPayment } = fee;
+  const { FetchPayment,custom,reverse } = fee;
+
+
+
+
+  useEffect(() => {
+    if (reverse?.success == 1) {
+     setVisible1(false)
+     setdata(reverse?.data);
+    }
+    if (custom?.success == 1) {
+      setVisible1(false)
+      setdata(custom?.data);
+
+     }
+  }, [reverse,custom]);
 
   useEffect(() => {
     dispatch(FetchPaymentsAction());
@@ -109,7 +125,7 @@ const ManageFee = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  20% 10% 10% 10% 20% 20% 10%;
+      --data-table-library_grid-template-columns:  20% 10% 20% 10% 10% 20% 10%;
     `,
       Row: `
   &:nth-of-type(odd) {
@@ -126,7 +142,7 @@ const ManageFee = () => {
   const pagination = usePagination(data, {
     state: {
       page: 0,
-      size: 30,
+      size: 60,
     },
     onChange: onPaginationChange,
   });
@@ -144,11 +160,8 @@ const ManageFee = () => {
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
-    show('top-right');
-
-    setclasname(value.title);
-    setsectionname(value.title);
-    setclassId(value.id);
+    show1('top-right');
+setItem(value)
   };
   const handleEditbtn = (value) => {
     dispatch(
@@ -267,12 +280,24 @@ const ManageFee = () => {
     console.log(classData1);
   }, [classData, check]);
   const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
+  const [visible2, setVisible2] = useState(false);
+
+
 
   const [position, setPosition] = useState('center');
 
   const show = (position) => {
     setPosition(position);
     setVisible(true);
+  };
+  const show1 = (position) => {
+    setPosition(position);
+    setVisible1(true);
+  };
+  const show2 = (position) => {
+    setPosition(position);
+    setVisible2(true);
   };
   useEffect(() => {
     if (FetchPayment?.success == 1) {
@@ -284,17 +309,19 @@ const ManageFee = () => {
     <Loader />
   ) : (
     <DefaultLayout>
+   
       <Dialog
-        visible={visible}
+        visible={visible1}
         position={'top'}
-        style={{ height: 'auto', width: '35%' }}
+        style={{ height: 'auto', width: '40%' }}
         onHide={() => {
-          if (!visible) return;
-          setVisible(false);
+          if (!visible1) return;
+          setVisible1(false);
         }}
       >
-        <GenerateFeeModak close={setVisible} />
+        <ManageHistoryModal close={setVisible1} val={item} side={setVisible2}  />
       </Dialog>
+      
       <div className=" flex-col">
         <div
           className={
@@ -316,30 +343,7 @@ const ManageFee = () => {
         >
           <div className="w-full  flex gap-7">
             <div className=" flex w-9/12 justify-between gap-4">
-              <div className=" ">
-                <button
-                  className="flex  justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
-                  type=""
-                  onClick={() => {
-                    show('top-right');
-                  }}
-                >
-                  Generate Fee
-                </button>
-              </div>
-              <div className="flex gap-6">
-                <div className="  float-end">
-                  <button
-                    className="flex  justify-center rounded bg-dark border border-stroke py-2 px-2 font-medium text-gray hover:bg-opacity-90"
-                    type=""
-                    onClick={() => {
-                      handleDownloadCSV();
-                    }}
-                  >
-                    Delete Assigned Fees{' '}
-                  </button>
-                </div>
-              </div>
+             
             </div>
             <div className={' w-3/12 flex flex-col '}>
               <div className="flex justify-between align-middle ">
@@ -385,7 +389,7 @@ const ManageFee = () => {
                         <HeaderCell>Name</HeaderCell>
                         <HeaderCell>Class</HeaderCell>
 
-                        <HeaderCell>Receipt ID</HeaderCell>
+                        <HeaderCell>Rct.ID/Activity</HeaderCell>
                         <HeaderCell>Amount</HeaderCell>
                         <HeaderCell> Date</HeaderCell>
                         <HeaderCell>Received By</HeaderCell>
@@ -407,14 +411,14 @@ const ManageFee = () => {
                           <Cell className=" capitalize ">
                             <span>{item?.class?.toLowerCase()}</span>
                           </Cell>
-                          <Cell className="  ">{item?.receiptid}</Cell>
-                          <Cell className="  ">{item?.amountpaid}</Cell>
+                          <Cell className="  ">{item?.receiptid ? item?.receiptid : item?.activity}</Cell>
+                          <Cell className="  ">{item?.amountpaid ? item?.amountpaid:item?.amountinvolved}</Cell>
                           <Cell className="  ">{item?.date}</Cell>
                           <Cell className="  ">{item?.collectedby}</Cell>
                           <Cell>
                             <div className="gap-2 flex">
                               <TableBtn
-                                clickFunction={() => handleViewbtn(item)}
+                                clickFunction={() =>item?.amountpaid  ? handleViewbtn(item) : ''}
                                 text={'Manage'}
                                 color={'bg-primary'}
                               />
@@ -441,7 +445,7 @@ const ManageFee = () => {
                   </span>
                   <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
                     <SelectGroupTwo
-                      values={[30, 50, 100, 200, 500, 'All']}
+                      values={[60, 100, 200, 500, 'All']}
                       setSelectedOption={(val) => setpagesval(val)}
                       selectedOption={pagesval}
                     />

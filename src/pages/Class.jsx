@@ -64,8 +64,8 @@ const Class = () => {
   } = clad;
 
   useEffect(() => {
-    // dispatch(fetchAllClass());
-    dispatch(fetchAllClassNoAction());
+     dispatch(fetchAllClassAction());
+   // dispatch(fetchAllClassNoAction());
   }, []);
   useEffect(() => {
     if (fetchSection?.success == 1) {
@@ -96,7 +96,7 @@ const Class = () => {
       let data = fetchAllClass?.data;
       setdata(data);
     }
-  }, [fetchAllClass ,fetchAllClass]);
+  }, [fetchAllClass ]);
 
   let data = { nodes };
 

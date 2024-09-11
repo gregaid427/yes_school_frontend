@@ -20,8 +20,7 @@ const ScholarshipModal = (props) => {
   const dispatch = useDispatch();
   const fee = useSelector((state) => state?.fees);
 
-  const { CreateScholar, Assignbyclass, cartegory } = fee;
-  console.log(Assignbyclass);
+  const { Assignbycustom, cartegory } = fee;
   const [amount, setAmount] = useState(0);
   const [chosen, setchosen] = useState('');
   const [chosendata, setchosendata] = useState([]);
@@ -41,8 +40,6 @@ const ScholarshipModal = (props) => {
     );
   }, [chosen]);
 
-  
-
   useEffect(() => {
     dispatch(fetchfeeCartegoryAction());
   }, []);
@@ -54,25 +51,18 @@ const ScholarshipModal = (props) => {
   const [type, setType] = useState('');
 
   useEffect(() => {
-
-    setScholarr(chosendata[0]?.title)
-    setScholarrId(chosendata[0]?.id)
-    setcover(chosendata[0]?.applicable)
-    setScholarrPercent(chosendata[0]?.percent)
-    setScholarramount(chosendata[0]?.amount)
-    setType(chosendata[0]?.type)
+    setScholarr(chosendata[0]?.title);
+    setScholarrId(chosendata[0]?.id);
+    setcover(chosendata[0]?.applicable);
+    setScholarrPercent(chosendata[0]?.percent);
+    setScholarramount(chosendata[0]?.amount);
+    setType(chosendata[0]?.type);
     console.log(chosendata[0]?.percent);
     console.log(chosendata[0]?.title);
-    console.log(Assignbyclass?.data[0].total);
 
     console.log(chosendata[0]?.applicable);
     console.log(chosendata[0]?.type);
 
-    let cartamount = Assignbyclass?.data?.filter((item) =>
-      item?.feename.includes(chosendata[0]?.applicable),
-    );
-
-    console.log(cartamount[0]?.total);
     console.log(cartegory);
 
     if (chosendata[0]?.type == 'Fixed Value') {
@@ -81,19 +71,28 @@ const ScholarshipModal = (props) => {
     } else {
       console.log('we are in percentage');
 
-      if (chosendata[0]?.applicable == 'TOTAL FEE PAYABLE') {
+      if (chosendata[0]?.applicable == 'FEE PAYABLE') {
         setAmount(
-          (chosendata[0]?.percent / 100) * Assignbyclass?.data[0].total,
+          (chosendata[0]?.percent / 100) * Assignbycustom?.data[0].total,
         );
         console.log('vaaaaaaaaaaaaaaaaaaaaaaal');
       } else {
         console.log('we are in custom');
 
-        for (let i = 0; i < cartegory?.data?.length; i++) {
-
-          if (chosendata[0]?.applicable == cartegory?.data?.[i].name) {
+        for (let i = 0; i < Assignbycustom?.data?.length; i++) {
+          if (
+            chosendata[0]?.applicable == Assignbycustom?.data?.[i].feename &&
+            Assignbycustom?.data?.[i].class == props.val?.class
+          ) {
             console.log('trueeeeeeeeeee');
-            setAmount((chosendata[0]?.percent / 100) * cartamount[0]?.amount);
+            console.log();
+
+            setAmount(
+              (chosendata[0]?.percent / 100) * Assignbycustom?.data?.[i].amount,
+            );
+            console.log(
+              (chosendata[0]?.percent / 100) * Assignbycustom?.data?.[i].amount,
+            );
             console.log('custom vaaaaaaaaaaaaaaaaaaaaaaal');
           }
         }
@@ -112,14 +111,10 @@ const ScholarshipModal = (props) => {
     percentage: props.val?.accountbalance,
     scholarship: scholarr,
     scholarId: scholarrid,
-    cover : cover,
+    cover: cover,
   };
 
- 
   const handleSubmit = (e) => {
-
-  
-
     if (chosen == 'None') {
       toast.error('Error - Please Select Scholarship');
     } else {
@@ -225,16 +220,10 @@ const ScholarshipModal = (props) => {
                     <div className="w-2/5 ">
                       <p>Scholarship </p>
                       <p>Type </p>
-                      <p
-                        className={scholarramount == '0' ? 'hidden' : ''}
-                      >
+                      <p className={scholarramount == '0' ? 'hidden' : ''}>
                         Amount{' '}
                       </p>
-                      <p
-                        className={
-                          scholarrPercent == 'false' ? 'hidden' : ''
-                        }
-                      >
+                      <p className={scholarrPercent == 'false' ? 'hidden' : ''}>
                         Percentage{' '}
                       </p>
                       <p>Cartegory Applicable </p>
@@ -242,9 +231,7 @@ const ScholarshipModal = (props) => {
                     <div className="">
                       <p>{scholarr}</p>
                       <p>{type}</p>
-                      <p
-                        className={scholarramount == '0' ? 'hidden' : ''}
-                      >
+                      <p className={scholarramount == '0' ? 'hidden' : ''}>
                         {scholarramount}
                       </p>
                       <p
@@ -257,11 +244,7 @@ const ScholarshipModal = (props) => {
                       >
                         {scholarrPercent + '%'}
                       </p>
-                      <p>
-                        {cover != 'None'
-                          ? cover
-                          : 'Fee Payable'}
-                      </p>
+                      <p>{cover != 'None' ? cover : 'Fee Payable'}</p>
                     </div>
                   </div>
                 </div>

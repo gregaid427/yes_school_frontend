@@ -57,17 +57,25 @@ const CollectFeesModal = (props) => {
   let balanceresult = eval(
     parseInt(props.val?.accountbalance) - parseInt(amount),
   );
+  function receiptidGen() {
+    const max = 100
+    return props.val?.student_id.slice(-6)+Math.floor(Math.random()*(max+1))
+
+  }
+  let receiptid = receiptidGen()
+  console.log(receiptid)
 
   let data = {
     id: props.val?.student_id,
     class: props.val?.class,
     section: props.val?.section,
     collectedby: 'asante',
+    arrears: props.val?.arrears,
     amountpaid: amount,
     mode: mode,
     balbeforepayment: props.val?.accountbalance,
     balanceafterpayment: balanceresult,
-    receiptid: 'receiptid',
+    receiptid: receiptid,
     infotype: props.infotype,
   };
   const handleSubmit = (e) => {

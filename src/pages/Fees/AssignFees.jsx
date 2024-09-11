@@ -35,9 +35,16 @@ import {
 import TableBtn from '../../components/Svgs/TableBtn';
 import ExpenseFormModal from '../../components/ExpenseFormModal';
 import { Dialog } from 'primereact/dialog';
-import AssignFeeModal from '../../components/AssignFeeModal';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
-import { fetchfeeAssignRecordAction, fetchfeeCartegoryAction } from '../../redux/slices/feeSlice';
+import {
+  fetchfeeAssignGroupRecordAction,
+  fetchfeeAssignRecordAction,
+  fetchfeeCartegoryAction,
+} from '../../redux/slices/feeSlice';
+import AssignFeeModal from '../../components/AssignFeeModal';
+import AssignFeeModalClass from '../../components/AssignFeeModalClass';
+import AssignFeeModalPartial from '../../components/AssignFeeModalPartial';
+
 
 const AssignFees = () => {
   const formRef1 = useRef();
@@ -47,12 +54,11 @@ const AssignFees = () => {
     console.log('reset');
   }
 
-
   const fee = useSelector((state) => state?.fees);
-  const { cartegory,Assignfee } = fee;
+  const { cartegory, Assignfee, AssignfeeGroup } = fee;
 
   const [pagesval, setpagesval] = useState(30);
-  const [classs, setClasss] = useState([]);
+  const [classs, setClass] = useState();
 
   const [loader, setLoader] = useState(true);
 
@@ -61,7 +67,7 @@ const AssignFees = () => {
 
   const [display, setDisplay] = useState(false);
   const [displaytable, setDisplaytable] = useState(false);
-  
+
   const [id, setclassId] = useState('');
   const [filename, setFileName] = useState('');
   const [file, setFile] = useState('');
@@ -69,11 +75,10 @@ const AssignFees = () => {
   const [classTitle, setClassTitle] = useState('');
   const [classInstructor, setClassInstructor] = useState('');
 
-  const [sections, setsections] = useState([]);
+  const [propdata, setpropdata] = useState();
 
   const [nodes, setdata] = useState([]);
   const [datacart, setdatacart] = useState([]);
-
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -92,7 +97,7 @@ const AssignFees = () => {
     dispatch(fetchAllsessionAction());
     dispatch(fetchAllClassAction());
     dispatch(fetchfeeAssignRecordAction());
-
+    dispatch(fetchfeeAssignGroupRecordAction());
   }, []);
 
   useEffect(() => {
@@ -115,12 +120,24 @@ const AssignFees = () => {
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (Assignfee?.success == 1) {
-      let data = Assignfee?.data;
+    if (AssignfeeGroup?.success == 1) {
+      let data = AssignfeeGroup?.data;
       setdata(data);
-     setVisible(false)
+      setVisible(false);
     }
-  }, [ Assignfee]);
+  }, [AssignfeeGroup]);
+
+  fetchAllClass;
+
+  useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
+
+    if (AssignfeeGroup?.success == 1) {
+      let data = AssignfeeGroup?.data;
+      setdata(data);
+      setVisible(false);
+    }
+  }, [AssignfeeGroup]);
 
   let data = { nodes };
 
@@ -145,7 +162,7 @@ const AssignFees = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  25% 10% 20% 10% 10% 25%;
+      --data-table-library_grid-template-columns:  30% 16%  14% 25% 15%;
     `,
       Row: `
   &:nth-of-type(odd) {
@@ -166,6 +183,7 @@ const AssignFees = () => {
     },
     onChange: onPaginationChange,
   });
+  const [visible1, setVisible1] = useState(false);
 
   function onPaginationChange(action, state) {}
 
@@ -173,18 +191,20 @@ const AssignFees = () => {
 
   data = {
     nodes: data.nodes.filter((item) =>
-      item.class.toLowerCase().includes(search.toLowerCase()),
+      item.title.toLowerCase().includes(search.toLowerCase()),
     ),
   };
 
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
-    show('top-right');
-
-    setclasname(value.title);
-    setsectionname(value.title);
-    setclassId(value.id);
+    setVisible1(true);
+    console.log(Assignfee);
+    let myArr = [];
+    myArr = Assignfee?.data.filter((item) =>
+      item.title.toLowerCase().includes(value.toLowerCase()),
+    );
+    setpropdata(myArr);
   };
   const handleEditbtn = (value) => {
     dispatch(
@@ -197,28 +217,19 @@ const AssignFees = () => {
       state: { action: 2, value: value },
     });
   };
-  const handledeletbtn = (value) => {
-    dispatch(deleteSingleClassAction(value));
-    // dispatch(fetchAllClassAction());
-  };
- 
 
   useEffect(() => {
     dispatch(fetchfeeCartegoryAction());
   }, []);
 
-  // useEffect(() => {
-  //   if (fetchSection?.success == 1) {
-  //     let arrr = [{"name":'None',"id":0}];
-  //     let i = 0;
-  //     while (i < clad?.fetchSection?.data.length) {
-  //       arrr.push({"name":clad?.fetchSection?.data[i]?.sectionName,"id":clad?.fetchSection?.data[i]?.id});
-  //       i++;
-  //     }
+  useEffect(() => {
+    if (Assignfee?.success == 1) {
+     setVisible(false)
+     setVisible1(false)
+     setVisible2(false)
 
-  //     setsections(arrr);
-  //   }
-  // }, [sectionloading]);
+    }
+  }, [Assignfee]);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -319,6 +330,8 @@ const AssignFees = () => {
     console.log(classData1);
   }, [classData, check]);
   const [visible, setVisible] = useState(false);
+  const [visible2, setVisible2] = useState(false);
+
 
   const [position, setPosition] = useState('center');
 
@@ -326,13 +339,16 @@ const AssignFees = () => {
     setPosition(position);
     setVisible(true);
   };
-
+  const show1 = (position) => {
+    setPosition(position);
+    setVisible1(true);
+  };
 
   return loader ? (
     <Loader />
   ) : (
     <DefaultLayout>
-       <Dialog
+      <Dialog
         visible={visible}
         position={'top'}
         style={{ height: 'auto', width: '35%' }}
@@ -343,6 +359,29 @@ const AssignFees = () => {
       >
         <AssignFeeModal close={setVisible} />
       </Dialog>
+      <Dialog
+        visible={visible1}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+      >
+        <AssignFeeModalClass close={setVisible1} data={propdata} />
+      </Dialog>
+      <Dialog
+        visible={visible2}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible2) return;
+          setVisible2(false);
+        }}
+      >
+        <AssignFeeModalPartial close={setVisible2} data={classs} />
+      </Dialog>
+      
       <div className=" flex-col">
         <div
           className={
@@ -366,29 +405,16 @@ const AssignFees = () => {
             <div className=" flex w-9/12 justify-between gap-4">
               <div className=" ">
                 <button
-                  className="flex  justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
+                  className="flex  justify-center rounded bg-primary py-2 px-5 font-medium text-gray hover:bg-opacity-90"
                   type=""
                   onClick={() => {
                     show('top-right');
                   }}
                 >
-                  Assign Fee
+                  Assign Fee For Class
                 </button>
               </div>
-              <div className='flex gap-6'>
-              
-              <div className="  float-end">
-                <button
-                  className="flex  justify-center rounded bg-dark border border-stroke py-2 px-2 font-medium text-gray hover:bg-opacity-90"
-                  type=""
-                  onClick={() => {
-                    handleDownloadCSV();
-                  }}
-                >
-                  Delete Assigned Fees{' '}
-                </button>
-              </div>
-            </div>
+             
             </div>
             <div className={' w-3/12 flex flex-col '}>
               <div className="flex justify-between align-middle ">
@@ -418,7 +444,7 @@ const AssignFees = () => {
             'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
           }
         >
-           <div className="flex gap-3  flex-col">
+          <div className="flex gap-3  flex-col">
             <div className="px-2">
               <Table
                 data={data}
@@ -431,43 +457,43 @@ const AssignFees = () => {
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
                         <HeaderCell>Class</HeaderCell>
-                        {/* <HeaderCell>Section</HeaderCell> */}
-                        <HeaderCell>Total Fees</HeaderCell>
+
+                        <HeaderCell>Class Fee Payable</HeaderCell>
+
                         <HeaderCell>Date Assigned</HeaderCell>
                         <HeaderCell>Assigned By</HeaderCell>
-                        <HeaderCell>Status</HeaderCell>
-                        <HeaderCell>Actions</HeaderCell>
-
-
+                        <HeaderCell>Action</HeaderCell>
                       </HeaderRow>
                     </Header>
 
                     <Body>
                       {tableList.map((item) => (
-                        <Row key={item.id} item={item} className=" ">
-                          <Cell className="  ">{item.class}</Cell>
-                          <Cell className="  ">{item.total}</Cell>
+                        <Row key={item.title} item={item} className=" ">
+                          <Cell className="  ">{item.title}</Cell>
 
-                          <Cell className="  ">{item.createdat}</Cell>
-                          <Cell className="  ">{item.createdby}</Cell>
-                          <Cell className="  ">{item.status}</Cell>
+                          <Cell className="  ">{item.total == null ?   <TableBtn
+                                  clickFunction={() => {}}
+                                  text={' Unassigned '}
+                                  color={'bg-primary'}
+                                /> : item.total}</Cell>
 
+                          <Cell className="  ">{item.createdat ? item.createdat : '-'}</Cell>
+                          <Cell className="  ">{item.createdby? item.createdby : '-'}</Cell>
 
                           <Cell>
-                            <div className="gap-2 flex">
-                              <EditSVG
-                                clickFunction={() => handleViewbtn(item)}
-                                text={'View'}
-                                color={'bg-primary'}
+                            <div className="gap-1 flex">
+                            <TableBtn
+                                  clickFunction={() => { setClass(item?.title)
+                                    setVisible2(true)}}
+                                  text={' Assign '}
+                                  color={'bg-primary'}
+                                />
+                              <ViewSVG
+                                clickFunction={() => item.amount == null ?"" : handleViewbtn(item.title)}
                               />
-                              <TableBtn
-                                clickFunction={() => handleViewbtn(item)}
-                                text={'Apply'}
-                                color={'bg-primary'}
-                              />
+
                               <DeleteSVG
                                 clickFunction={() => handleViewbtn(item)}
-                               
                               />
                             </div>
                           </Cell>
@@ -562,8 +588,6 @@ const AssignFees = () => {
           </div>
         </div>{' '}
       </div>
-
-   
     </DefaultLayout>
   );
 };

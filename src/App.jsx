@@ -73,6 +73,8 @@ import { fetchschoolinfoAction } from './redux/slices/usersSlice';
 import ManageFee from './pages/Fees/ManageFee';
 import ScholarshipList from './pages/Fees/ScholarshipList';
 import PreferenceList from './pages/Fees/PreferenceList';
+import SearchRecords from './pages/Fees/SearchRecords';
+import Finance from './pages/settings/Finance';
 
   
 function App() {
@@ -236,7 +238,7 @@ function App() {
             element={
                 <>
                   <PageTitle title="Calendar | " />
-                  <SearchExpense />
+                  <SearchRecords />
                 </>
               }
             />
@@ -431,6 +433,15 @@ function App() {
               </>
             }
           />{' '}
+             <Route
+            path="/settings/finance"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <Finance />
+              </>
+            }
+          />
               <Route
             path="/settings/guardian"
             element={

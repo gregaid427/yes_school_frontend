@@ -456,6 +456,9 @@ const StudentSlices = createSlice({
     resetPromote(state) {
       state.studentPromote = null;
     },
+    resetSinglestudent(state) {
+      state.singleStudent = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(CreatestudentAction.pending, (state, action) => {
@@ -745,5 +748,6 @@ export const {
   resetUdateStudent,
   resetcreateStudentimage,
   resetPromote,
+  resetSinglestudent
 } = StudentSlices.actions;
 export default StudentSlices.reducer;

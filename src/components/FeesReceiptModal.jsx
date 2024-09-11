@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState,useId } from 'react';
 import {
   CreatesInventoryCartegoryAction,
   fetchInventCartegoryAction,
@@ -68,6 +68,13 @@ const FeesReceiptModal = (props) => {
   let balanceresult = eval(
     parseInt(props.val?.accountbalance) + parseInt(amount),
   );
+  function receiptidGen() {
+    const max = 100
+    return Math.floor(Math.random()*(max+1))
+
+  }
+  let receiptid = receiptidGen()
+  console.log(receiptid)
   let date = new Date();
   date = date.toUTCString().slice(0, 17);
   let data = {
@@ -79,8 +86,9 @@ const FeesReceiptModal = (props) => {
     mode: mode,
     balbeforepayment: props.val?.accountbalance,
     balanceafterpayment: balanceresult,
-    receiptid: 'receiptid',
+    receiptid: receiptid,
   };
+  console.log(data)
   const handleSubmit = (e) => {
     if (amount < 1) {
       toast.error('Error - Enter Valid Amount');
@@ -230,6 +238,7 @@ const FeesReceiptModal = (props) => {
                       </thead>
                       {}
                       <thead className="w-full  ">
+
                         {props.cart?.map((item, index) => (
                           <tr className="w-full  ">
                             {' '}
@@ -245,8 +254,24 @@ const FeesReceiptModal = (props) => {
                                 : item?.amount}
                             </th>
                           </tr>
+                          
                         ))}
+                                  <tr className="w-full  ">
+                            {' '}
+                            <th className="text-sm float-start  font-light w-4/12">
+                              {'-'}
+                            </th>
+                            <th className="text-sm uppercase text font-light w-4/12">
+                            Previous Session Arrears 
+                            </th>
+                            <th className="text-sm font-light w-4/12">
+                            {props?.response?.arrears}
+                            </th>
+                          </tr>           
+
                       </thead>
+                      <div className='w-full flex'>  </div>
+
                       <thead
                         className={
                           props?.val?.scholarship < 1 ? 'hidden' : 'w-full'
@@ -272,7 +297,7 @@ const FeesReceiptModal = (props) => {
                           </th>
                           <th className="text-sm font-bold  w-4/12">
                             {eval(
-                              props.val?.feepayable - props?.val?.scholarship,
+                              props.val?.feepayable - props?.val?.scholarship + parseFloat(props?.response?.arrears)
                             )}
                           </th>
                         </tr>
@@ -286,6 +311,9 @@ const FeesReceiptModal = (props) => {
                     </div>
                     {/* <div className="flex float-end">
                        Arrears : {eval(props.val?.feepayable - props?.response?.balbeforepayment)}
+                    </div> */}
+                     {/* <div className="flex w-full justify-between float-end">
+                     <p>Previous Session Arrears  </p> {props?.response?.arrears}
                     </div> */}
                     <div className="flex w-full justify-between float-end">
                      <p>Balance Before Payment </p> {props?.response?.balbeforepayment}

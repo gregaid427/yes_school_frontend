@@ -7,26 +7,26 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import PreferenceRadio from './PreferenceRadio';
-import { PrefencesAction } from '../redux/slices/feeSlice';
+import {  PreferencesAction ,resetpreference} from '../redux/slices/feeSlice';
 
 const StudentPreferenceModal = (props) => {
   const dispatch = useDispatch();
   const inventory = useSelector((state) => state?.inventory);
 
   const fee = useSelector((state) => state?.fees);
-  const { cartegory } = fee;
+  const { cartegory,Preferences } = fee;
 
   const { CreateInventorycart } = inventory;
   useEffect(() => {
-    if (CreateInventorycart?.success == 0) {
-      toast.error('Error - Adding Item Cartegory ');
+    if (Preferences?.success == 0) {
+     // toast.error('Error - Adding Item Cartegory ');
       //    dispatch(resetcreatecart())
       // dispatch(fetchAllClassAction())
     }
-    if (CreateInventorycart?.success == 1) {
-      toast.success('New Item Cartegory Added Successfully');
-      dispatch(fetchInventCartegoryAction());
-      resetFormStates();
+    if (Preferences?.success == 1) {
+      //toast.success('New Item Cartegory Added Successfully');
+     // dispatch(fetchInventCartegoryAction());
+      dispatch(resetpreference());
       props.close(false);
     }
 
@@ -40,7 +40,7 @@ const StudentPreferenceModal = (props) => {
 
     //   setClasss(arr);
     // }
-  }, [CreateInventorycart]);
+  }, [Preferences]);
 
   const [amount, setAmount] = useState(0);
   const [repeat, setRepeat] = useState([]);
@@ -83,7 +83,7 @@ const StudentPreferenceModal = (props) => {
   };
   const handleSubmit = (e) => {
     console.log(repeat);
-      dispatch(PrefencesAction(data));
+      dispatch(PreferencesAction(data));
   };
 
   return (
@@ -93,7 +93,7 @@ const StudentPreferenceModal = (props) => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">
             <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Student Prefences
+                Student Preferences
               </h3>
             </div>
             <div className="p-7">
