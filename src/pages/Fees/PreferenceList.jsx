@@ -43,7 +43,6 @@ import { fetchActivesessionAction } from '../../redux/slices/sessionSlice';
 import StudentPreferenceModal from '../../components/StudentPreferenceModal';
 
 const PreferenceList = () => {
-  ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
@@ -55,7 +54,6 @@ const PreferenceList = () => {
     setVisible(true);
   };
 
-  //////////////////////////////////////
 
   const [loader, setLoader] = useState(true);
 

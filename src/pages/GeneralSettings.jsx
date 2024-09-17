@@ -33,11 +33,12 @@ const GeneralSettings = () => {
   };
 
   const user = useSelector((state) => state?.user);
-  const { allschool } = user;
-  console.log(allschool);
+  const { allschool,logo } = user;
   const [picture, setPicture] = useState();
   const [picturename, setPicturename] = useState();
   const [pictureurl, setPictureurl] = useState(null);
+  const [pictureurlshow, setPictureurlshow] = useState(null);
+
 
   const [startmonth, setStartMonth] = useState('JANUARY');
   const [sessionoption, setSessionoption] = useState('');
@@ -113,13 +114,14 @@ const GeneralSettings = () => {
       setEmail(
         allschool?.data[0]?.email == undefined ? '' : allschool?.data[0]?.email,
       );
-      setLink(
+      setPictureurl(
         allschool?.data[0]?.logolink == undefined
           ? ''
           : allschool?.data[0]?.logolink,
       );
     }
   }, [allschool]);
+  console.log(pictureurl)
   const handleSetsession = () => {
     const data = {
       session: sessionoption,
@@ -139,17 +141,10 @@ const GeneralSettings = () => {
       //   dispatch(fetchAllSectionAction())
     }
 
-    // if (fetchAllClass?.success == 1) {
-    //   let i = 0;
-    //   let arr = [];
-    //   while (i < clad?.fetchAllClass?.data.length) {
-    //     arr.push(clad?.fetchAllClass?.data[i].title);
-    //     i++;
-    //   }
-
-    //   setClasss(arr);
-    // }
-  }, [fetchsession]);
+    if (logo?.success == 1) {
+     setPictureurlshow(null)
+    }
+  }, [fetchsession,logo]);
 
   return (
     <DefaultLayout>
@@ -448,7 +443,7 @@ const GeneralSettings = () => {
             <div className="p-2 ">
               <div className="w-full flex justify-center items-center">
                 <img
-                  src={pictureurl == null ? userThree : pictureurl}
+                  src={ pictureurl == null ? userThree : pictureurl}
                   className="h-40"
                 />
               </div>
@@ -460,7 +455,7 @@ const GeneralSettings = () => {
               <div>
                 <div
                   className={
-                    pictureurl != null ? 'hidden' : 'flex flex-col gap-1'
+                    pictureurlshow != null ? 'hidden' : 'flex flex-col gap-1'
                   }
                 >
                   {' '}
@@ -469,13 +464,14 @@ const GeneralSettings = () => {
                       setPicture(event.target.files[0]);
                       setPicturename(event.target.files[0].name);
                       setPictureurl(URL.createObjectURL(event.target.files[0]));
+                      setPictureurlshow(true)
                     }}
                     type="file"
                     accept="image/*"
                     className=" rounded-md border border-stroke p-1 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
                   />{' '}
                 </div>
-                <div className={pictureurl ?? 'hidden'}>
+                <div className={!pictureurlshow ? 'hidden' : ''}>
                   <button
                     className="flex mt-2  w-full justify-center rounded bg-primary py-2 px- font-medium text-gray hover:bg-opacity-90"
                     type=""
@@ -486,12 +482,12 @@ const GeneralSettings = () => {
                     Save{' '}
                   </button>
                 </div>
-                <div className={pictureurl ?? 'hidden'}>
+                <div className={!pictureurlshow ? 'hidden' :""}>
                   <button
                     className="flex mt-2  w-full justify-center rounded bg-black py-2 px- font-medium text-gray hover:bg-opacity-90"
                     type=""
                     onClick={(e) => {
-                      setPictureurl(null);
+                      setPictureurlshow(null);
                     }}
                   >
                     Cancel{' '}

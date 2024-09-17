@@ -356,7 +356,9 @@ const handlesubmit = () => {
                 <button
                   className="flex  justify-center rounded bg-black py-2 px- font-medium text-gray hover:bg-opacity-90"
                   type=""
-                  onClick={(e) => navigate('/student/admissioncapture')}
+                  onClick={(e) => navigate('/student/admissioncapture', {
+                    state: {  value: data },
+                  })}
                 >
                   Camera Capture
                 </button>

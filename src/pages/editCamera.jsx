@@ -7,22 +7,19 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Webcam from 'react-webcam';
 
 const EditCamera = () => {
-
-
   const [val, setVal] = React.useState(null);
   const location = useLocation();
 
-  const { value } = location?.state
+  const { value } = location?.state;
 
   useEffect(() => {
-    setVal(value)
+    setVal(value);
   }, []);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const webcamRef = React.useRef(null);
   const [imgSrc, setImgSrc] = React.useState(null);
   const [files, setFile] = React.useState(null);
-
 
   const capture = React.useCallback(async () => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -41,9 +38,9 @@ const EditCamera = () => {
     // props.setPicture(file);
     // props.setPicturename(file.name);
     // props.preview(imgSrc)
-setFile(file)
- //   console.log(file);
-  }, [webcamRef, setImgSrc])
+    setFile(file);
+    //   console.log(file);
+  }, [webcamRef, setImgSrc]);
   return (
     <DefaultLayout>
       <div className={'flex gap-1  w-full'}>
@@ -60,45 +57,44 @@ setFile(file)
                 </h3>
               </div>
             </div>
-            
 
+            <div className="flex gap-7 py-6">
+              <div>
+                {' '}
+                <Webcam
+                  audio={false}
+                  ref={webcamRef}
+                  height={380}
+                  width={380}
+                  // screenshotFormat="image/png"
+                />{' '}
+                <button
+                  className="flex w-full mt-4 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                  type=""
+                  onClick={(e) => capture()}
+                >
+                  {!imgSrc ? 'Capture' : 'Recapture'}
+                </button>
+              </div>
 
-
-
-
-
-
-
-
-
-
-            <div className='flex gap-7 py-6'>
-        <div> <Webcam
-
-        audio={false}
-        ref={webcamRef}
-        height={380}
-        width={380}
-        // screenshotFormat="image/png"
-      /> <button
+              {imgSrc && (
+                <div className="">
+                  {' '}
+                  <img src={imgSrc} />{' '}
+                  <button
                     className="flex w-full mt-4 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                     type=""
-                    onClick={(e) => capture()}
-                  >
-                    {!imgSrc ? 'Capture' : 'Recapture'}
-                  </button></div>
-     
-            {imgSrc && <div className=''>   <img src={imgSrc} /> <button
-                    className="flex w-full mt-4 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                    type=""
-                    onClick={(e) =>{ 
-                      
-                      navigate('/student/editinfo',{state:{pic:imgSrc,file:files,value:val}})}}
+                    onClick={(e) => {
+                      navigate('/student/editinfo', {
+                        state: { pic: imgSrc, file: files, value: val,captureimage:1 },
+                      });
+                    }}
                   >
                     Done
-                  </button></div>  }
-
-    </div>
+                  </button>
+                </div>
+              )}
+            </div>
             {/* preview={setPreview} setPicture={setPicture} setPicturename={setPicturename} */}
           </div>
         </div>

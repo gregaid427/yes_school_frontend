@@ -27,7 +27,6 @@ import {
   deleteScholarshipAction,
   deleteSinglefeeAction,
   fetchfeeAssignbycartAction,
-  fetchfeeAssignRecordAction,
   fetchfeeCartegoryAction,
   fetchScholarshipAction,
 } from '../../redux/slices/feeSlice';

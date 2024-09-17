@@ -27,16 +27,17 @@ const fetchUserdatEdit = () => {
 
   const location = useLocation();
   const { action, value } = location?.state;
-  console.log(action)
+  console.log(action);
 
   const [isChecked, setIsChecked] = useState(false);
 
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
-  const {  fetchUserdatloading, updateStudent } = student;
+  const { fetchUserdatloading, updateStudent } = student;
 
   const [data, setData] = useState(null);
   const [paramaction, setParamaction] = useState(1);
+  const [pictureurlshow, setPictureurlshow] = useState(null);
 
   const [studentID, setStudentID] = useState('');
 
@@ -46,7 +47,6 @@ const fetchUserdatEdit = () => {
   const [gender, setGender] = useState('Male');
   const [picture, setPicture] = useState();
   const [picturecam, setPicturecam] = useState();
-
 
   const [gfName1, setgfName1] = useState('');
   const [glName1, setglName1] = useState('');
@@ -86,40 +86,41 @@ const fetchUserdatEdit = () => {
 
   const [pictureurl, setPictureurl] = useState(null);
 
-
-  const pic= location.state.pic
-  const files= location.state.file
-
+  const pic = location.state.pic;
+  const files = location.state.file;
+  const captureimage = location.state.captureimage;
 
   useEffect(() => {
+    if (captureimage == 1) {
+      setPictureurl(pic);
+      setPictureurlshow(true);
+    } else {
+      setPictureurl(value.imagelink);
+    }
+    setPicturecam(files);
+    setPicture(files);
+    setfileName(files?.name + 'student');
 
-    setPictureurl(pic)
-    setPicturecam(files)
-    setPicture(files)
-    setfileName(files?.name+'student')
+    setPicturename(files?.name);
+    console.log(files);
+    setTimeout(() => setLoader(false), 1000);
 
-    setPicturename(files?.name)
-console.log(files)
-setTimeout(() => setLoader(false), 1000);
-
-
-   // console.log(fetchUserdat);
+    // console.log(fetchUserdat);
     // if (fetchUserdat == undefined) {
     //   toast.error('Error loading Student Data');
     //   navigate('/student/info');
     // }
 
-
     //   // setTimeout(() => toast.success('New Student Added Successfully'), 900);
     //  if(fetchUserdat?.data == undefined )
     //  navigate("/student/info")
   }, []);
-
+  console.log(pictureurl);
   useEffect(() => {
     if (updateStudent?.success == 1) {
       toast.success('Student Records Updated Successfully');
       dispatch(resetUdateStudent());
-      navigate("/student/info")
+      navigate('/student/info');
     }
     if (updateStudent?.success == 0) {
       toast.error('Error Updating Student Info');
@@ -131,11 +132,9 @@ setTimeout(() => setLoader(false), 1000);
   const handleSubmit = () => {
     if (firstName == '') return toast.error('Please Fill Out Required Fields');
 
-
-
     const Mydata = {
       studentId: studentID,
-      ID:ID,
+      ID: ID,
       firstName: firstName,
       lastName: lastName,
       otherName: otherName,
@@ -166,7 +165,7 @@ setTimeout(() => setLoader(false), 1000);
       feeCredit: feeCredit,
     };
 
- dispatch(UpdatestudentAction(Mydata));
+    dispatch(UpdatestudentAction(Mydata));
   };
 
   const handlesubmitPic = () => {
@@ -175,27 +174,22 @@ setTimeout(() => setLoader(false), 1000);
     }
     let customfile = hashgenerator() + picturename;
     const datay = new FormData();
-  
-    let Mydata = JSON.stringify({
-      id:  value.student_id,
-      filename: customfile,
-  
-    
-    });
-    console.log(picturecam)
 
+    let Mydata = JSON.stringify({
+      id: value.userId,
+      filename: customfile,
+    });
+    datay.append(customfile, picture);
     datay.append(customfile, picturecam);
     datay.append('data', Mydata);
     dispatch(CreatestudentImageAction(datay));
-  }
+  };
 
   const clad = useSelector((state) => state?.classes);
   const users = useSelector((state) => state?.user);
 
-
   const { sectionloading, fetchSection, fetchAllClass } = clad;
   const { fetchUserdat } = users;
-
 
   useEffect(() => {
     if (fetchUserdat?.success == 1) {
@@ -258,19 +252,16 @@ setTimeout(() => setLoader(false), 1000);
     }
     if (fetchUserdat?.success == 0) {
       toast.error('Unable To load Student Data');
-      navigate(-1)
+      navigate(-1);
     }
   }, [fetchUserdat]);
 
   const [sections, setsections] = useState([]);
 
-
   function hashgenerator() {
     return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
   }
   let customfile = hashgenerator() + picturename;
-
-
 
   function handleBackButton() {
     navigate(-1);
@@ -488,7 +479,7 @@ setTimeout(() => setLoader(false), 1000);
                       />
                     </div>
                   </div>     */}
-                              </form>
+                </form>
                 {/* <div className="flex mt-10 justify-end gap-4.5">
                   <button
                     className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
@@ -523,7 +514,7 @@ setTimeout(() => setLoader(false), 1000);
                 <div>
                   <div
                     className={
-                      pictureurl != null ? 'hidden' : 'flex flex-col gap-1'
+                      pictureurlshow != null ? 'hidden' : 'flex flex-col gap-1'
                     }
                   >
                     {' '}
@@ -534,6 +525,7 @@ setTimeout(() => setLoader(false), 1000);
                         setPictureurl(
                           URL.createObjectURL(event.target.files[0]),
                         );
+                        setPictureurlshow(true);
                       }}
                       type="file"
                       accept="image/*"
@@ -543,12 +535,16 @@ setTimeout(() => setLoader(false), 1000);
                     <button
                       className="flex  justify-center rounded bg-black py-2 px- font-medium text-gray hover:bg-opacity-90"
                       type=""
-                      onClick={(e) => navigate('/student/editcapture', {state:{value:value}})}
+                      onClick={(e) =>
+                        navigate('/student/editcapture', {
+                          state: { value: value },
+                        })
+                      }
                     >
                       Camera Capture
                     </button>
                   </div>
-                  <div className={pictureurl ?? 'hidden'}>
+                  <div className={!pictureurlshow ? 'hidden' : ''}>
                     <button
                       className="flex mt-2  w-full justify-center rounded bg-primary py-2 px- font-medium text-gray hover:bg-opacity-90"
                       type=""
@@ -559,7 +555,7 @@ setTimeout(() => setLoader(false), 1000);
                       Save{' '}
                     </button>
                   </div>
-                  <div className={pictureurl ?? 'hidden'}>
+                  <div className={!pictureurlshow ? 'hidden' : ''}>
                     <button
                       className="flex mt-2  w-full justify-center rounded bg-black py-2 px- font-medium text-gray hover:bg-opacity-90"
                       type=""
@@ -573,8 +569,6 @@ setTimeout(() => setLoader(false), 1000);
                 </div>
               </div>
             </div>
-
-            
           </div>
         </div>
         <div className="flex flex-row w-4/6   gap-3" style={{}}>
@@ -586,91 +580,17 @@ setTimeout(() => setLoader(false), 1000);
                 </h3>
               </div>
               <div className="flex flex-col">
-              <div className={!data[0] ? 'hidden':''} >  
-
-                <div className=" w-full">
-                  <div className="p-7">
-                    <form>
-                      <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
-                        <div className="w-full sm:w-2/2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="fullName"
-                          >
-                            First Name
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue={data[0]?.gFirstName}
-                            onChange={(e) => setgfName1(e.target.value)}
-                          />
-                        </div>
-
-                        <div className="w-full sm:w-2/2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="phoneNumber"
-                          >
-                            Last Name
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue={data[0]?.gLastName}
-                            onChange={(e) => setglName1(e.target.value)}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
-                        <div className="w-full sm:w-2/4">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="phoneNumber"
-                          >
-                            Email
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue={data[0]?.gEmail}
-                            onChange={(e) => setemail1(e.target.value)}
-                          />
-                        </div>
-                        <div className="w-full sm:w-2/4 flex gap-1">
-                          <div className="w-full sm:w-1/3">
+                <div className={!data[0] ? 'hidden' : ''}>
+                  <div className=" w-full">
+                    <div className="p-7">
+                      <form>
+                        <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
+                          <div className="w-full sm:w-2/2">
                             <label
                               className="mb-3 block text-sm font-medium text-black dark:text-white"
-                              htmlFor=""
+                              htmlFor="fullName"
                             >
-                              Sex
-                            </label>
-
-                            <div className="relative z-20 bg-white dark:bg-form-input">
-                              <SelectGroupTwo
-                                values={[data[0]?.gSex,'Male', 'Female']}
-                                setSelectedOption={(val) => setgsex1(val)}
-                                selectedOption={data[0]?.gSex}
-                              />
-                            </div>
-                          </div>
-
-                          <div className="w-full sm:w-2/3">
-                            <label
-                              className="mb-3 block text-sm font-medium text-black dark:text-white"
-                              htmlFor=""
-                            >
-                              Relation With Student{' '}
+                              First Name
                             </label>
                             <input
                               className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -678,159 +598,17 @@ setTimeout(() => setLoader(false), 1000);
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={data[0]?.gRelation}
-                              onChange={(e) => setRelation1(e.target.value)}
+                              defaultValue={data[0]?.gFirstName}
+                              onChange={(e) => setgfName1(e.target.value)}
                             />
                           </div>
-                        </div>
-                      </div>
 
-                      <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
-                        <div className="w-full sm:w-2/2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="fullName"
-                          >
-                            Contact 1
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue={data[0]?.gContact1}
-                            onChange={(e) => setgcontact1(e.target.value)}
-                          />
-                        </div>
-
-                        <div className="w-full sm:w-2/2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="phoneNumber"
-                          >
-                            Contact 2
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue={data[0]?.gContact2}
-                            onChange={(e) => setgcontact2(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="w-full ">
-                        <label
-                          className=" block text-sm font-medium text-black dark:text-white"
-                          htmlFor="Username"
-                        >
-                          Home Address
-                        </label>
-                        <div className="relative">
-                          <textarea
-                            className="w-full dark:bg-form-input rounded border border-stroke  py-2  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark  dark:text-white dark:focus:border-primary"
-                            name="bio"
-                            id="bio"
-                            rows={2}
-                            placeholder=""
-                            defaultValue={data[0]?.gAddress}
-                            // defaultValue={data?.gAddress}
-                            onChange={(e) => setgAddress1(e.target.value)}
-                          ></textarea>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>                 </div>
-
-                <div className={!data[1] ? 'hidden':''} >  
-
-                <div className=" w-full">
-                  <div className="p-7">
-                    <form>
-                      <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
-                        <div className="w-full sm:w-2/2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="fullName"
-                          >
-                            First Name
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue={data[1]?.gFirstName}
-                            onChange={(e) => setgfName2(e.target.value)}
-                          />
-                        </div>
-
-                        <div className="w-full sm:w-2/2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="phoneNumber"
-                          >
-                            Last Name
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue={data[1]?.gLastName}
-                            onChange={(e) => setglName2(e.target.value)}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
-                        <div className="w-full sm:w-2/4">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="phoneNumber"
-                          >
-                            Email
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue={data[0]?.gEmail}
-                            onChange={(e) => setemail2(e.target.value)}
-                          />
-                        </div>
-                        <div className="w-full sm:w-2/4 flex gap-1">
-                          <div className="w-full sm:w-1/3">
+                          <div className="w-full sm:w-2/2">
                             <label
                               className="mb-3 block text-sm font-medium text-black dark:text-white"
-                              htmlFor=""
+                              htmlFor="phoneNumber"
                             >
-                              Sex
-                            </label>
-
-                            <div className="relative z-20 bg-white dark:bg-form-input">
-                              <SelectGroupTwo
-                                values={[data[1]?.gSex,'Male', 'Female']}
-                                setSelectedOption={(val) => setgsex1(val)}
-                                selectedOption={data[1]?.gsex}
-                              />
-                            </div>
-                          </div>
-
-                          <div className="w-full sm:w-2/3">
-                            <label
-                              className="mb-3 block text-sm font-medium text-black dark:text-white"
-                              htmlFor=""
-                            >
-                              Relation With Student{' '}
+                              Last Name
                             </label>
                             <input
                               className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -838,76 +616,291 @@ setTimeout(() => setLoader(false), 1000);
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={data[1]?.gRelation}
-                              onChange={(e) => setRelation2(e.target.value)}
+                              defaultValue={data[0]?.gLastName}
+                              onChange={(e) => setglName1(e.target.value)}
                             />
                           </div>
                         </div>
-                      </div>
 
-                      <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
-                        <div className="w-full sm:w-2/2">
+                        <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
+                          <div className="w-full sm:w-2/4">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="phoneNumber"
+                            >
+                              Email
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={data[0]?.gEmail}
+                              onChange={(e) => setemail1(e.target.value)}
+                            />
+                          </div>
+                          <div className="w-full sm:w-2/4 flex gap-1">
+                            <div className="w-full sm:w-1/3">
+                              <label
+                                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                                htmlFor=""
+                              >
+                                Sex
+                              </label>
+
+                              <div className="relative z-20 bg-white dark:bg-form-input">
+                                <SelectGroupTwo
+                                  values={[data[0]?.gSex, 'Male', 'Female']}
+                                  setSelectedOption={(val) => setgsex1(val)}
+                                  selectedOption={data[0]?.gSex}
+                                />
+                              </div>
+                            </div>
+
+                            <div className="w-full sm:w-2/3">
+                              <label
+                                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                                htmlFor=""
+                              >
+                                Relation With Student{' '}
+                              </label>
+                              <input
+                                className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                type="text"
+                                name=""
+                                id=""
+                                placeholder=""
+                                defaultValue={data[0]?.gRelation}
+                                onChange={(e) => setRelation1(e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
+                          <div className="w-full sm:w-2/2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="fullName"
+                            >
+                              Contact 1
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={data[0]?.gContact1}
+                              onChange={(e) => setgcontact1(e.target.value)}
+                            />
+                          </div>
+
+                          <div className="w-full sm:w-2/2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="phoneNumber"
+                            >
+                              Contact 2
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={data[0]?.gContact2}
+                              onChange={(e) => setgcontact2(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div className="w-full ">
                           <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="fullName"
+                            className=" block text-sm font-medium text-black dark:text-white"
+                            htmlFor="Username"
                           >
-                            Contact 1
+                            Home Address
                           </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue={data[0]?.gContact1}
-                            onChange={(e) => setgcontact3(e.target.value)}
-                          />
+                          <div className="relative">
+                            <textarea
+                              className="w-full dark:bg-form-input rounded border border-stroke  py-2  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark  dark:text-white dark:focus:border-primary"
+                              name="bio"
+                              id="bio"
+                              rows={2}
+                              placeholder=""
+                              defaultValue={data[0]?.gAddress}
+                              // defaultValue={data?.gAddress}
+                              onChange={(e) => setgAddress1(e.target.value)}
+                            ></textarea>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>{' '}
+                </div>
+
+                <div className={!data[1] ? 'hidden' : ''}>
+                  <div className=" w-full">
+                    <div className="p-7">
+                      <form>
+                        <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
+                          <div className="w-full sm:w-2/2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="fullName"
+                            >
+                              First Name
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={data[1]?.gFirstName}
+                              onChange={(e) => setgfName2(e.target.value)}
+                            />
+                          </div>
+
+                          <div className="w-full sm:w-2/2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="phoneNumber"
+                            >
+                              Last Name
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={data[1]?.gLastName}
+                              onChange={(e) => setglName2(e.target.value)}
+                            />
+                          </div>
                         </div>
 
-                        <div className="w-full sm:w-2/2">
+                        <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
+                          <div className="w-full sm:w-2/4">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="phoneNumber"
+                            >
+                              Email
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={data[0]?.gEmail}
+                              onChange={(e) => setemail2(e.target.value)}
+                            />
+                          </div>
+                          <div className="w-full sm:w-2/4 flex gap-1">
+                            <div className="w-full sm:w-1/3">
+                              <label
+                                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                                htmlFor=""
+                              >
+                                Sex
+                              </label>
+
+                              <div className="relative z-20 bg-white dark:bg-form-input">
+                                <SelectGroupTwo
+                                  values={[data[1]?.gSex, 'Male', 'Female']}
+                                  setSelectedOption={(val) => setgsex1(val)}
+                                  selectedOption={data[1]?.gsex}
+                                />
+                              </div>
+                            </div>
+
+                            <div className="w-full sm:w-2/3">
+                              <label
+                                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                                htmlFor=""
+                              >
+                                Relation With Student{' '}
+                              </label>
+                              <input
+                                className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                type="text"
+                                name=""
+                                id=""
+                                placeholder=""
+                                defaultValue={data[1]?.gRelation}
+                                onChange={(e) => setRelation2(e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
+                          <div className="w-full sm:w-2/2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="fullName"
+                            >
+                              Contact 1
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={data[0]?.gContact1}
+                              onChange={(e) => setgcontact3(e.target.value)}
+                            />
+                          </div>
+
+                          <div className="w-full sm:w-2/2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="phoneNumber"
+                            >
+                              Contact 2
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={data[0]?.gContact2}
+                              onChange={(e) => setgcontact4(e.target.value)}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="w-full ">
                           <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="phoneNumber"
+                            className=" block text-sm font-medium text-black dark:text-white"
+                            htmlFor="Username"
                           >
-                            Contact 2
+                            Home Address
                           </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue={data[0]?.gContact2}
-                            onChange={(e) => setgcontact4(e.target.value)}
-                          />
+                          <div className="relative">
+                            <textarea
+                              className="w-full dark:bg-form-input rounded border border-stroke  py-2  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark  dark:text-white dark:focus:border-primary"
+                              name="bio"
+                              id="bio"
+                              rows={2}
+                              placeholder=""
+                              defaultValue={data[0]?.gAddress}
+                              // defaultValue={data?.gAddress}
+                              onChange={(e) => setgAddress2(e.target.value)}
+                            ></textarea>
+                          </div>
                         </div>
-                      </div>
-
-                      <div className="w-full ">
-                        <label
-                          className=" block text-sm font-medium text-black dark:text-white"
-                          htmlFor="Username"
-                        >
-                          Home Address
-                        </label>
-                        <div className="relative">
-                          <textarea
-                            className="w-full dark:bg-form-input rounded border border-stroke  py-2  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark  dark:text-white dark:focus:border-primary"
-                            name="bio"
-                            id="bio"
-                            rows={2}
-                            placeholder=""
-                            defaultValue={data[0]?.gAddress}
-                            // defaultValue={data?.gAddress}
-                            onChange={(e) => setgAddress2(e.target.value)}
-                          ></textarea>
-                        </div>
-                      </div>
-                    </form>
+                      </form>
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* <div className="flex w-4/12 mx-8 pb-5   gap-4.5">
+                {/* <div className="flex w-4/12 mx-8 pb-5   gap-4.5">
                 <button
                   className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                   type=""
@@ -923,9 +916,9 @@ setTimeout(() => setLoader(false), 1000);
                   Next
                 </button>
               </div> */}
+              </div>
             </div>
           </div>
-        </div>
         </div>
         {/* Fees Management info */}
 
@@ -1114,18 +1107,19 @@ setTimeout(() => setLoader(false), 1000);
                   >
                     Back
                   </button>
-                  
 
                   <button
-                    className={action==1 ? 'hidden' : 'flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90'}
+                    className={
+                      action == 1
+                        ? 'hidden'
+                        : 'flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90'
+                    }
                     type=""
                     onClick={(e) => handleSubmit()}
                   >
                     Save{' '}
                   </button>
                 </div>
-                
-
               </div>
             </div>
           </div>

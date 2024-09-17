@@ -380,12 +380,39 @@ export const GetEnrolledStudentAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/listscholarship`,
         payload,
       );
-      if (data?.success == '1' && data?.data[0] == null) {
+      // if (data?.success == '1' && data?.data[0] == null) {
+      //   toast.success('Empty Class List');
+      // }
+      if (data?.success == '1' && data?.data[0] == null && data?.type!='All') {
         toast.success('Empty Class List');
       }
 
       if (data == null) {
         toast.error('Error loading Enrolled Student');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const RevokeScholarshipAction = createAsyncThunk(
+  'fetch/revokescholarship',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/revokescholarship`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Scholarship Revoked Successfully');
+      }
+
+      if (data.success == 0) {
+        toast.error('Error Revoking Scholarship');
       }
       return data;
     } catch (error) {
@@ -434,6 +461,24 @@ export const fetchfeeCartegoryAction = createAsyncThunk(
   },
 );
 
+export const fetchAllfeeAssignRecordAction = createAsyncThunk(
+  'fetch/feeAllassignrecord',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/getallassignedfeerecord`,
+        payload,
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const fetchfeeAssignRecordAction = createAsyncThunk(
   'fetch/feeassignrecord',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -835,7 +880,24 @@ const FeeSlices = createSlice({
       state.Enroll = undefined;
       //   state.fetchAllfee = undefined;
     });
-
+    
+    builder.addCase(RevokeScholarshipAction.pending, (state, action) => {
+      state.Revokeloading = true;
+      state.Revoke = false;
+      // state.fetchAllfee = false;
+    });
+    builder.addCase(RevokeScholarshipAction.fulfilled, (state, action) => {
+      state.Revoke = action?.payload;
+      state.Revokeloading = false;
+      state.Revokeerror = undefined;
+      //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(RevokeScholarshipAction.rejected, (state, action) => {
+      state.Revokeloading = false;
+      state.Revokeerror = action.payload;
+      state.Revoke = undefined;
+      //   state.fetchAllfee = undefined;
+    });
     builder.addCase(GetEnrolledStudentAction.pending, (state, action) => {
       state.Enrolllistloading = true;
       state.Enrolllist = false;
@@ -1025,6 +1087,21 @@ const FeeSlices = createSlice({
     });
 
 
+    
+    builder.addCase(fetchAllfeeAssignRecordAction.pending, (state, action) => {
+      state.AllAssignfeeloading = true;
+      state.AllAssignfee = false;
+    });
+    builder.addCase(fetchAllfeeAssignRecordAction.fulfilled, (state, action) => {
+      state.AllAssignfee = action?.payload;
+      state.AllAssignfeeloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(fetchAllfeeAssignRecordAction.rejected, (state, action) => {
+      state.AllAssignfeeloading = false;
+      state.error = action.payload;
+      state.AllAssignfee = undefined;
+    });
 
     builder.addCase(fetchfeeAssignRecordAction.pending, (state, action) => {
       state.Assignfeeloading = true;

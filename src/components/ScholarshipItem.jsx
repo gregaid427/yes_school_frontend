@@ -67,7 +67,7 @@ const ScholarshipItem = (props) => {
       return toast.error('Error - Name Cannot Be Empty');
     }
     if (feecartegory == 'FEE PAYABLE' && type == 'Percentage') {
-      return toast.error('Error - Please Select Fee Caetegory');
+      return toast.error('Error - Please Select Fee Caetegory ');
     }
     if (feecartegory == 'FEE PAYABLE' && type == 'Percentage') {
       return toast.error('Error - Please Set Percentage');

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../images/logo/logo.png';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -12,9 +13,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const sidebar = useRef(null);
 
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
+
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
   );
+
+  useEffect(() => {
+    if( storedSidebarExpanded === null){
+      window.localStorage.setItem('sidebar-expanded','true')
+    }
+   
+  }, []);
 
   // // close on click outside
   // useEffect(() => {

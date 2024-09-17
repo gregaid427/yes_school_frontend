@@ -14,7 +14,9 @@ const FeeCartSelect = (props) => {
   useEffect(() => {
     if (cartegory?.success == 1) {
       let i = 0;
-      let arr = ['FEE PAYABLE'];
+      let arr = [];
+     // let arr = ['FEE PAYABLE'];
+
       while (i < fees?.cartegory?.data.length) {
         arr.push(fees?.cartegory?.data[i].name);
         i++;

@@ -39,8 +39,9 @@ import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
 import ViewSVG from '../../components/Svgs/View';
 import EditSVG from '../../components/Svgs/edit';
 import DeleteSVG from '../../components/Svgs/delete';
-import { GetEnrolledStudentAction } from '../../redux/slices/feeSlice';
+import { GetEnrolledStudentAction, RevokeScholarshipAction } from '../../redux/slices/feeSlice';
 import ClassSelect3 from '../../components/ClassSelect3';
+import TableBtn from '../../components/Svgs/TableBtn';
 
 const ScholarshipList = () => {
   ///////////////////////////////////
@@ -101,12 +102,7 @@ const ScholarshipList = () => {
     }
   }, [fetchcustom]);
 
-  useEffect(() => {
-    if (fetchStudentcustom?.success == 1) {
-      let data = fetchStudentcustom?.data;
-      setdata(data);
-    }
-  }, [fetchStudentcustomloading]);
+
 
   useEffect(() => {
     let data ={
@@ -140,7 +136,7 @@ const ScholarshipList = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  15% 30%  30% 25% ;
+  --data-table-library_grid-template-columns:   30%  25% 20% 25% ;
 `,
       BaseCell: `
         font-size: 15px;
@@ -177,9 +173,14 @@ const ScholarshipList = () => {
   const navigate = useNavigate();
 
   const handleviewbtn = (value) => {
-    navigate('/student/singlestudent', {
-      state: { action: 1, value: value.student_id },
-    });
+    // navigate('/student/singlestudent', {
+    //   state: { action: 1, value: value.student_id },
+    // });
+  };
+  
+  const handleRevoke = (value) => {
+    dispatch(RevokeScholarshipAction({id:value}))
+
   };
 
   data = {
@@ -219,7 +220,14 @@ const ScholarshipList = () => {
       type:'custom'
     };
     console.log(data);
-    dispatch(GetEnrolledStudentAction(data))
+    if(clazz == 'None'){
+      toast.error('Pleae Select Class');
+
+    }
+    else{
+      dispatch(GetEnrolledStudentAction(data))
+
+    }
 
   }
 
@@ -416,9 +424,11 @@ const ScholarshipList = () => {
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <HeaderCell className="">ID</HeaderCell>
+                        {/* <HeaderCell className="">ID</HeaderCell> */}
                         <HeaderCell>Name</HeaderCell>
                         <HeaderCell>Scholarship</HeaderCell>
+                        <HeaderCell>Amount/Cover</HeaderCell>
+
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
@@ -427,9 +437,9 @@ const ScholarshipList = () => {
                     <Body>
                       {tableList.map((item) => (
                         <Row key={item.student_id} item={item} className="">
-                          <Cell className="  ">
+                          {/* <Cell className="  ">
                             <span>{item.student_id}</span>
-                          </Cell>
+                          </Cell> */}
                           <Cell className="capitalize">
                             {item.firstName +
                               ' ' +
@@ -443,6 +453,10 @@ const ScholarshipList = () => {
                             <span>{item.scholarshiptitle}</span>
                           </Cell>
 
+                          <Cell className="  ">
+                            <span>{item.amount +' '+'-'+ ' '+item.cartegorycovering}</span>
+                          </Cell>
+
                         
 
                           <Cell >
@@ -454,10 +468,13 @@ const ScholarshipList = () => {
                               <EditSVG
                                 clickFunction={() => handleEditbtn(item)}
                               />
-
-                              <DeleteSVG
-                                clickFunction={() => handledeletbtn(item.student_id)}
+                               <TableBtn
+                                clickFunction={() =>handleRevoke(item.id)}
+                                text={'Revoke'}
+                                color={'bg-[#e03c3c63]'}
                               />
+
+                          
                               </div>
                           </Cell>
                         </Row>

@@ -37,6 +37,7 @@ import ExpenseFormModal from '../../components/ExpenseFormModal';
 import { Dialog } from 'primereact/dialog';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import {
+  fetchAllfeeAssignRecordAction,
   fetchfeeAssignGroupRecordAction,
   fetchfeeAssignRecordAction,
   fetchfeeCartegoryAction,
@@ -55,7 +56,7 @@ const AssignFees = () => {
   }
 
   const fee = useSelector((state) => state?.fees);
-  const { cartegory, Assignfee, AssignfeeGroup } = fee;
+  const { cartegory, Assignfee, AssignfeeGroup,AllAssignfee } = fee;
 
   const [pagesval, setpagesval] = useState(30);
   const [classs, setClass] = useState();
@@ -96,7 +97,7 @@ const AssignFees = () => {
   useEffect(() => {
     dispatch(fetchAllsessionAction());
     dispatch(fetchAllClassAction());
-    dispatch(fetchfeeAssignRecordAction());
+    dispatch(fetchAllfeeAssignRecordAction());
     dispatch(fetchfeeAssignGroupRecordAction());
   }, []);
 
@@ -199,10 +200,10 @@ const AssignFees = () => {
 
   const handleViewbtn = (value) => {
     setVisible1(true);
-    console.log(Assignfee);
+    console.log(AllAssignfee);
     let myArr = [];
-    myArr = Assignfee?.data.filter((item) =>
-      item.title.toLowerCase().includes(value.toLowerCase()),
+    myArr = AllAssignfee?.data.filter((item) =>
+      item.class.toLowerCase().includes(value.toLowerCase()),
     );
     setpropdata(myArr);
   };

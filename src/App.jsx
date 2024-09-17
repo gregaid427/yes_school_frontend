@@ -224,7 +224,7 @@ function App() {
                 </>
               }
             />
-             <Route
+             {/* <Route
             path="/fees/Collectfees"
             element={
                 <>
@@ -232,7 +232,7 @@ function App() {
                   <EditCamera />
                 </>
               }
-            />
+            /> */}
               <Route
             path="/fees/records"
             element={
@@ -312,6 +312,16 @@ function App() {
               <>
                 <PageTitle title="Calendar | " />
                 <NewStudents  />
+              </>
+            }
+          />{' '}
+          
+          <Route
+            path="/student/editcapture"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <EditCamera  />
               </>
             }
           />{' '}

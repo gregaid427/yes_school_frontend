@@ -19,17 +19,18 @@ const FeesReceiptModal = (props) => {
   const inventory = useSelector((state) => state?.inventory);
 
   const { CreateInventorycart } = inventory;
+  const user = useSelector((state) => state?.user);
+  const { allschool } = user;
+
+
   useEffect(() => {
-    if (CreateInventorycart?.success == 0) {
-      toast.error('Error - Adding Item Cartegory ');
+    if (allschool?.success == 0) {
+      //toast.error('Error - Adding Item Cartegory ');
       //    dispatch(resetcreatecart())
       // dispatch(fetchAllClassAction())
     }
-    if (CreateInventorycart?.success == 1) {
-      toast.success('New Item Cartegory Added Successfully');
-      dispatch(fetchInventCartegoryAction());
-      resetFormStates();
-      props.close(false);
+    if (allschool?.success == 1) {
+      setPictureurl(allschool?.data[0]?.logolink)
     }
 
     // if (fetchAllClass?.success == 1) {
@@ -42,7 +43,7 @@ const FeesReceiptModal = (props) => {
 
     //   setClasss(arr);
     // }
-  }, [CreateInventorycart]);
+  }, [allschool]);
 
 
   const session = useSelector((state) => state?.session);
@@ -96,9 +97,7 @@ const FeesReceiptModal = (props) => {
       dispatch(PayFeeAction(data));
     }
   };
-  const user = useSelector((state) => state?.user);
-  const { allschool } = user;
-  console.log(props.val);
+  console.log(pictureurl);
   return (
     <div className="w-full">
       <div className="grid  gap-8">
@@ -158,8 +157,12 @@ const FeesReceiptModal = (props) => {
                 }}
               >
                 <div className="w-full">
-                  <div className="flex border-b justify-between  border-stroke  dark:border-strokedark">
-                    <div className="w-4/6 ">
+                  <div className="flex border-b justify-between pb-2 border-stroke  dark:border-strokedark">
+                  <img
+                      src={pictureurl == null ? userThree : pictureurl}
+                      className=" float-end mb-2 h-25 mr-2"
+                    />
+                    <div className="border-l pl-2 border-stroke  dark:border-strokedark w-full ">
                       <p>
                         <span className="text-xl">
                           {allschool?.data[0]?.name}
@@ -186,10 +189,7 @@ const FeesReceiptModal = (props) => {
                       </p>
                       {/* <p>Accra, Ghana</p>   */}
                     </div>
-                    <img
-                      src={pictureurl == null ? userThree : pictureurl}
-                      className=" float-end mb-2 h-25"
-                    />
+                   
                   </div>
                   <div className="flex border-b justify-between  border-stroke  dark:border-strokedark">
                     <div className="w-full flex py-3 justify-between">
