@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
-import userThree from '../images/user/user-03.png';
-import DefaultLayout from '../layout/DefaultLayout';
+import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
+import DefaultLayout from '../../layout/DefaultLayout';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import ViewSVG from '../components/Svgs/View';
-import DeleteSVG from '../components/Svgs/delete';
-import EditSVG from '../components/Svgs/edit';
+import ViewSVG from '../../components/Svgs/View';
+import DeleteSVG from '../../components/Svgs/delete';
+import EditSVG from '../../components/Svgs/edit';
 import { useTheme } from '@table-library/react-table-library/theme';
-import { getTheme } from '@table-library/react-table-library/baseline';
 import { usePagination } from '@table-library/react-table-library/pagination';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -32,13 +29,13 @@ import {
   fetchCustomStudentsClassAction,
   fetchSingleStudent,
   fetchStudentsClassAction,
-} from '../redux/slices/studentSlice';
-import Loader from '../common/Loader';
-import StudentModal from '../components/StudentModal';
+} from '../../redux/slices/studentSlice';
+import Loader from '../../common/Loader';
+import StudentModal from '../../components/StudentModal';
 
-import SectionSelect1 from '../components/SectionsSelect1';
-import ClassSelect from '../components/ClassSelect';
-import SessionSelect from '../components/SessionSelect';
+import SectionSelect1 from '../../components/SectionsSelect1';
+import ClassSelect from '../../components/ClassSelect';
+import SessionSelect from '../../components/SessionSelect';
 
 const ExamResult = () => {
   ///////////////////////////////////

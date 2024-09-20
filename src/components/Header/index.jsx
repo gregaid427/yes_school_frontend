@@ -25,7 +25,6 @@ const Header = (props) => {
     if (fetchsessionactive?.success == 1) {
       let data = fetchsessionactive?.data[0];
       setsession(data);
-      console.log('sessionz');
     }
   }, [fetchsessionactive]);
 

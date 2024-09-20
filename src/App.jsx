@@ -19,7 +19,6 @@ import Fees from './pages/Fees/Fees';
 import Users from './pages/Users';
 import Staff from './pages/Staff';
 import Teachers from './pages/teachers';
-import Examination from './pages/Examination';
 import NewStaff from './pages/Newstaff';
 import NewStudents from './pages/Admission';
 import UserStudents from './pages/UserStudents';
@@ -59,8 +58,6 @@ import SetStudent from './pages/Setstudent';
 import SetStaff from './pages/SetStaff';
 import SetGuardian from './pages/SetGuardian';
 import NewGuardian from './pages/NewGuardian';
-import ExamGroup from './pages/ExamGroup';
-import ExamResult from './pages/ExamResult';
 import BulkAdmission from './pages/BulkAdmission';
 import FeesGroup from './pages/Fees/FeesCartegory';
 import CollectFees from './pages/Fees/CollectFees';
@@ -75,6 +72,11 @@ import ScholarshipList from './pages/Fees/ScholarshipList';
 import PreferenceList from './pages/Fees/PreferenceList';
 import SearchRecords from './pages/Fees/SearchRecords';
 import Finance from './pages/settings/Finance';
+import ExamList from './pages/exam/ExamList';
+import ExamResult from './pages/exam/ExamResult';
+import ExamGrade from './pages/exam/ExamGrade';
+import ExamGroup from './pages/exam/ExamGroup';
+import AddExam from './pages/exam/NewExam';
 
   
 function App() {
@@ -560,21 +562,40 @@ function App() {
               </>
             }
           />
+          
           <Route
-            path="/exam/examination"
-            element={
-              <>
-                <PageTitle title="Calendar | " />
-                <Examination />
-              </>
-            }
-          />
-             <Route
             path="/exam/examgroup"
             element={
               <>
                 <PageTitle title="Calendar | " />
                 <ExamGroup />
+              </>
+            }
+          />
+              <Route
+            path="/exam/newexam"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <AddExam />
+              </>
+            }
+          />
+             <Route
+            path="/exam/examlist"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <ExamList />
+              </>
+            }
+          />
+             <Route
+            path="/exam/examgrading"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <ExamGrade />
               </>
             }
           />

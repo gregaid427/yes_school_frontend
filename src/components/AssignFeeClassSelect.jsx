@@ -82,7 +82,7 @@ const AssignFeeClassSelect = (props) => {
                 className="sr-only"
                 onChange={() => {
                  if(props.selectedarr.includes(props.info?.title)){
-                  props.selected([props.selectedarr.filter((element) => element !== props.info?.title)])
+                  props.selected(props.selectedarr.filter((element) => element !== props.info?.title))
                   setIsChecked(!isChecked);
                   console.log(props.selectedarr)
 

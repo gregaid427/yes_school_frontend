@@ -7,38 +7,34 @@ import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
 
 
-const SessionSelect1 = (props) => {
+const ExamGroupSelect = (props) => {
 
   
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
   const [clazz, setclazz] = useState();
 
-  const session = useSelector((state) => state?.session);
-
- 
-  const { fetchsession,fetchsessionactive} =
-    session;
-
+  const exam = useSelector((state) => state?.exam);
+  const {examgroup,createxamgroup  } = exam;
   useEffect(() => {
 
-    if (fetchsession?.success == 1) {
+    if (examgroup?.success == 1) {
       let i = 0;
       let arr = ['None'];
-      while (i < session?.fetchsession?.data.length) {
-        arr.push(session?.fetchsession?.data[i].sessionname);
+      while (i < examgroup?.data.length) {
+        arr.push(examgroup?.data[i].grouptitle);
         i++;
       }
 
       
 
       setClasss(arr);
-      setclazz(fetchsessionactive?.data[0].sessionname);
+      setclazz(arr[0]);
 
 
     }
 
-  }, [fetchsession ]);
+  }, [examgroup ]);
 
   useEffect(() => {
     props.setsectionprop(clazz)
@@ -59,4 +55,4 @@ const SessionSelect1 = (props) => {
   );
 };
 
-export default SessionSelect1;
+export default ExamGroupSelect;

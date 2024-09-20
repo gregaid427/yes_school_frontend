@@ -19,7 +19,7 @@ const SectionSelect1 = (props) => {
 
   useEffect(() => {
     if (fetchSection?.success == 1) {
-      let arrr = ['All Sections'];
+      let arrr = ['None','All Sections'];
       let i = 0;
       while (i < clad?.fetchSection?.data.length) {
         arrr.push(clad?.fetchSection?.data[i]?.sectionName);

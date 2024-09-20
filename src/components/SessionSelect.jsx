@@ -6,7 +6,6 @@ import {
 import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
 
-
 const SessionSelect = (props) => {
 
   
@@ -17,7 +16,7 @@ const SessionSelect = (props) => {
   const session = useSelector((state) => state?.session);
 
  
-  const { fetchsession} =
+  const { fetchsession,fetchsessionactive} =
     session;
 
   useEffect(() => {
@@ -33,7 +32,7 @@ const SessionSelect = (props) => {
       
 
       setClasss(arr);
-      setclazz(arr[0]);
+      setclazz(fetchsessionactive?.data[0].sessionname);
 
 
     }
