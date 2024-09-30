@@ -77,6 +77,12 @@ import ExamResult from './pages/exam/ExamResult';
 import ExamGrade from './pages/exam/ExamGrade';
 import ExamGroup from './pages/exam/ExamGroup';
 import AddExam from './pages/exam/NewExam';
+import ViewResult from './pages/exam/AddExamResult';
+import AddResult from './pages/exam/ViewExamResult';
+import ViewExamResult from './pages/exam/ViewExamResult';
+import AddExamResult from './pages/exam/AddExamResult';
+import AddExam1 from './pages/exam/NewExam copy';
+import ExamReport from './pages/exam/ExamReport';
 
   
 function App() {
@@ -572,12 +578,39 @@ function App() {
               </>
             }
           />
+            <Route
+            path="/exam/viewresult"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <ViewExamResult />
+              </>
+            }
+          />
+           <Route
+            path="/exam/addresult"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <AddExamResult />
+              </>
+            }
+          />
               <Route
             path="/exam/newexam"
             element={
               <>
                 <PageTitle title="Calendar | " />
                 <AddExam />
+              </>
+            }
+          />
+           <Route
+            path="/exam/newexam1"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <AddExam1 />
               </>
             }
           />
@@ -600,14 +633,24 @@ function App() {
             }
           />
           <Route
-            path="/exam/result"
+            path="/exam/report"
             element={
               <>
                 <PageTitle title="Calendar | " />
-                <ExamResult />
+                <ExamReport />
               </>
             }
           />
+           <Route
+            path="/exam/reportdetail"
+            element={
+              <>
+                <PageTitle title="Calendar " />
+                <ExamReport />
+              </>
+            }
+          />
+
 
           
       

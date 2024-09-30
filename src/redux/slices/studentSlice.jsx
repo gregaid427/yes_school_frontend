@@ -209,6 +209,41 @@ export const fetchCustomStudentsClassAction = createAsyncThunk(
     }
   },
 );
+export const fetchStudentsCustomAction = createAsyncThunk(
+  'get/studentcustom',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/studentcustom`,
+        payload,
+      );
+      // toast.loading('Empty Class List');
+
+      if (data?.success == '1' && data?.data[0] == null) {
+        toast.success('Empty Class List');
+        //   toast.dismiss();
+        //  toast.promise(
+        //   dispatch,
+        //    {
+        //      loading: 'Saving...',
+        //      success: <b>Settings saved!</b>,
+        //      error: <b>Could not save.</b>,
+        //    }
+        //  );
+      }
+
+      if (data == null) {
+        toast.error('Error Adding New Student');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
 export const fetchCustomStudentsClassAccountAction = createAsyncThunk(
   'fetch/studentClassCustomAccount',
@@ -543,26 +578,20 @@ const StudentSlices = createSlice({
       state.studentPromoteloading = undefined;
     });
 
-    builder.addCase(fetchCustomStudentsClassAction.pending, (state, action) => {
-      state.fetchStudentcustomloading = true;
-      state.fetchStudentcustom = false;
+    builder.addCase(fetchStudentsCustomAction.pending, (state, action) => {
+      state.fetchcustomloading = true;
+      state.fetchcustomstudent = false;
     });
-    builder.addCase(
-      fetchCustomStudentsClassAction.fulfilled,
-      (state, action) => {
-        state.fetchStudentcustom = action?.payload;
-        state.fetchStudentcustomloading = false;
-        state.error = undefined;
-      },
-    );
-    builder.addCase(
-      fetchCustomStudentsClassAction.rejected,
-      (state, action) => {
-        state.error = action.payload;
-        state.fetchStudentcustom = undefined;
-        state.fetchStudentcustomloading = undefined;
-      },
-    );
+    builder.addCase(fetchStudentsCustomAction.fulfilled, (state, action) => {
+      state.fetchcustomstudent = action?.payload;
+      state.fetchcustomloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(fetchStudentsCustomAction.rejected, (state, action) => {
+      state.fetchcustomstudenterror = action.payload;
+      state.fetchcustomstudent = undefined;
+      state.fetchcustomloading = undefined;
+    });
 
     builder.addCase(
       fetchCustomStudentsClassAccountAction.pending,
@@ -748,6 +777,6 @@ export const {
   resetUdateStudent,
   resetcreateStudentimage,
   resetPromote,
-  resetSinglestudent
+  resetSinglestudent,
 } = StudentSlices.actions;
 export default StudentSlices.reducer;

@@ -4,7 +4,6 @@ import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../images/logo/logo.png';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
-
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
   const { pathname } = location;
@@ -19,10 +18,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   );
 
   useEffect(() => {
-    if( storedSidebarExpanded === null){
-      window.localStorage.setItem('sidebar-expanded','true')
+    if (storedSidebarExpanded === null) {
+      window.localStorage.setItem('sidebar-expanded', 'true');
     }
-   
   }, []);
 
   // // close on click outside
@@ -162,7 +160,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 }}
               </SidebarLinkGroup>
               {/* <!-- Menu Item Dashboard --> */}
-          
+
               <SidebarLinkGroup
                 activeCondition={
                   pathname === '/student' || pathname.includes('student')
@@ -174,7 +172,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                       <NavLink
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/student' ) &&
+                          pathname === '/student' &&
                           'bg-graydark dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
@@ -184,7 +182,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                     <svg
+                        <svg
                           className="fill-current"
                           width="18"
                           height="18"
@@ -260,7 +258,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Bulk Admission
                             </NavLink>
                           </li>
-                    
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
@@ -279,7 +276,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                       <NavLink
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/academics' ) &&
+                          pathname === '/academics' &&
                           'bg-graydark dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
@@ -427,7 +424,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                       <NavLink
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/inventory' ) &&
+                          pathname === '/inventory' &&
                           'bg-graydark dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
@@ -545,7 +542,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Add Cartegory
                             </NavLink>
                           </li>
-                     
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
@@ -565,8 +561,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                       <NavLink
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/fees' ) &&
-                          'bg-graydark dark:bg-meta-4'
+                          pathname === '/fees' && 'bg-graydark dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -683,7 +678,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Assign Fees
                             </NavLink>
                           </li>
-                        
+
                           <li>
                             <NavLink
                               to="/fees/Scholarship"
@@ -714,7 +709,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                               Payment Records
+                              Payment Records
                             </NavLink>
                           </li>
                           <li>
@@ -750,7 +745,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Preference List
                             </NavLink>
                           </li>
-                     
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
@@ -949,7 +943,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               }
                             >
                               Search Expense
-                              
                             </NavLink>
                           </li>
                           <li>
@@ -1163,9 +1156,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <!-- Menu Item Ui Elements --> */}
 
               {/* <!-- Menu Item Auth Pages --> */}
-           
 
-               <SidebarLinkGroup
+              <SidebarLinkGroup
                 activeCondition={
                   pathname === '/exam' || pathname.includes('exam')
                 }
@@ -1176,8 +1168,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                       <NavLink
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/exam' ||
-                            pathname.includes('exam')) &&
+                          (pathname === '/exam' || pathname.includes('exam')) &&
                           'bg-graydark dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
@@ -1241,40 +1232,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         }`}
                       >
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <NavLink
-                              to="/exam/examgrading"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Marks Grading
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/exam/newexam"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-1 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                            Add Exam 
-                            
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/exam/examlist"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-1 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                             Search Exam 
-                            </NavLink>
-                          </li>
+                       
                           <li>
                             <NavLink
                               to="/exam/examgroup"
@@ -1283,29 +1241,63 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Exam Group
+                              Exam Cartegory
                             </NavLink>
                           </li>
+
                           <li>
                             <NavLink
-                              to="/exam/result"
+                              to="/exam/newexam"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Add Result
+                            </NavLink>
+                          </li>
+                         
+                          <li>
+                            <NavLink
+                              to="/exam/examlist"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Search Result
+                            </NavLink>
+                          </li>
+                          
+                          <li>
+                            <NavLink
+                              to="/exam/report"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
                               }
                             >
-                              Exam Results
+                              Exam Reports
                             </NavLink>
                           </li>
-                          
-                 
+                          <li>
+                            <NavLink
+                              to="/exam/examgrading"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Marks Grade
+                            </NavLink>
+                          </li>
                         </ul>
                       </div>
                     </React.Fragment>
                   );
                 }}
-              </SidebarLinkGroup> 
-          
+              </SidebarLinkGroup>
+
               {/* <SidebarLinkGroup
                 activeCondition={
                   pathname === '/onlineexam' 
@@ -1434,7 +1426,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 }}
               </SidebarLinkGroup> */}
 
-              
               <SidebarLinkGroup
                 activeCondition={
                   pathname === '/settings' || pathname.includes('settings')

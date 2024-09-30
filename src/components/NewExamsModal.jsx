@@ -11,19 +11,24 @@ import {
 import SectionSelect1 from './SectionsSelect1';
 import ExamGroupSelect from './ExamGroupSelect';
 import SubjectSelect from './SubjectSelect';
-import { resetcreatesubject } from '../redux/slices/subjectSlice';
+import {
+  fetchSubjectAction,
+  resetcreatesubject,
+} from '../redux/slices/subjectSlice';
 import SectionSelect3 from './SectionsSelect3';
 import ExamGrading from './ExamGradingSelect';
+import SubjectSelect1 from './SubjectSelect1';
+import SessionSelect from './SessionSelect';
+import { useNavigate } from 'react-router-dom';
 
-const NewExamModal = (props) => {
+const NewExamsModal = (props) => {
   const dispatch = useDispatch();
   const [display, setDisplay] = useState(0);
   const [selectedArr, setselectedArr] = useState([]);
   const [chosen, setchosendata] = useState([]);
   const [grades, setGrades] = useState([]);
 
-  const [clazz, setclazz] = useState('None');
-  const [sectionzz, setsectionzz] = useState(null);
+  const [selectsubject, setselectsubject] = useState('NONE');
   const [examgroupoption, setexamgroupoption] = useState('None');
   const [examgradeoption, setexamgradeoption] = useState('None');
 
@@ -47,6 +52,9 @@ const NewExamModal = (props) => {
       setsession(data?.sessionname);
     }
   }, [fetchsessionactive]);
+  useEffect(() => {
+    dispatch(fetchSubjectAction());
+  }, []);
 
   let grady =
     chosen[0]?.gradeid +
@@ -58,28 +66,31 @@ const NewExamModal = (props) => {
     chosen[0]?.classworkpercent +
     '-' +
     chosen[0]?.otherscorepercent;
+  let navigate = useNavigate()
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
       examgroup: examgroupoption,
-      section: sectionzz,
-      class: clazz,
-      subjects: finalArray,
+      section: props.val?.section,
+      class: props.val?.title == undefined ? props.val?.class :props.val?.title,
+      subjects: selectsubject,
       session: sessionz,
-      createdby: 'Asante',
-      note: ' ',
       examtable: 'exam' + sessionz.split(' ').join(''),
-      chosengrade: grady,
-    };
+      chosengrade:  chosen[0]?.gradetitle,
+      examgrade:  chosen[0]?.exampercent  ,
+      classgrade:  chosen[0]?.classworkpercent  ,
+      othergrade:  chosen[0]?.otherscorepercent  ,
 
-    console.log('aaaaaaaaaaaa');
+
+    };
 
 
     console.log(data);
     navigate('/exam/addresult', {
       state: { action: 1, value: data},
     });
-   // dispatch(CreateExamAction(data));
+    // dispatch(CreateExamAction(data));
   };
 
   useEffect(() => {
@@ -132,7 +143,7 @@ const NewExamModal = (props) => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">
               <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                 <h3 className="font-medium  text-black dark:text-white">
-                  Add Exam
+                  Add Exam Result
                 </h3>
               </div>
               <div className="px-1 py-3">
@@ -147,32 +158,21 @@ const NewExamModal = (props) => {
                         className="mb-2 block text-sm font-medium text-black dark:text-white"
                         htmlFor=""
                       >
-                        Select Class
-                      </label>{' '}
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                        <ClassSelect3 setsectionprop={setclazz} clazz={clazz} />
-                      </div>
-                    </div>
-                    <div className="w-full mb-1 sm:w-2/2">
-                      <label
-                        className="mb-2 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Select Section
-                      </label>
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                        <SectionSelect3 setsectionprop={setsectionzz} />
-                      </div>
-                    </div>
-                    <div className="w-full mb-1 sm:w-2/2">
-                      <label
-                        className="mb-2 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Select Exam Group
+                        Select Exam Cartegory
                       </label>{' '}
                       <div className="relative z-20 bg-white dark:bg-form-input">
                         <ExamGroupSelect setsectionprop={setexamgroupoption} />
+                      </div>
+                    </div>
+                    <div className="w-full mb-1 sm:w-2/2">
+                      <label
+                        className="mb-2 block text-sm font-medium text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        Select Session
+                      </label>{' '}
+                      <div className="relative z-20 bg-white dark:bg-form-input">
+                        <SessionSelect setsectionprop={setsession} />
                       </div>
                     </div>
                     <div className="w-full mb-1 sm:w-2/2">
@@ -204,7 +204,7 @@ const NewExamModal = (props) => {
                           className="mb-1 block text-sm font-medium text-black dark:text-white"
                           htmlFor=""
                         >
-                          Select Subjects Applicable
+                          Select Subject
                         </label>{' '}
                         <button
                           onClick={(e) => {
@@ -220,7 +220,7 @@ const NewExamModal = (props) => {
                           </label>
                         </button>
                       </div>
-                      <div
+                      {/* <div
                         className={
                           fetchAllSubject?.data?.length == 0 ? '' : 'hidden'
                         }
@@ -231,17 +231,11 @@ const NewExamModal = (props) => {
                         >
                           * No Subjects Available
                         </label>{' '}
-                      </div>
-                      <div>
-                        {fetchAllSubject?.data?.map((item, index) => (
-                          <SubjectSelect
-                            key={item.id}
-                            info={fetchAllSubject?.data?.[index]}
-                            selectedarr={selectedArr}
-                            selected={setselectedArr}
-                          />
-                        ))}
-                      </div>
+                      </div> */}
+
+                      <SubjectSelect1 setsectionprop={setselectsubject} />
+
+                      <div></div>
                     </div>
                   </div>
                 </form>
@@ -252,21 +246,18 @@ const NewExamModal = (props) => {
                     type=""
                     onClick={(e) => {
                       e.preventDefault();
-                      if (selectedArr.length == 0) {
-                        toast.error('Select Subjects Applicable');
-                        console.log(selectedArr);
-                      } else if (clazz == 'None') {
-                        toast.error('Select Class');
-                        console.log(selectedArr);
+                      if (selectsubject == 'NONE') {
+                        toast.error('Select Subject');
+                      } else if (chosen.length == 0) {
+                        toast.error('Select Grading Type');
                       } else if (examgroupoption == 'None') {
-                        toast.error('Select Exam Group');
-                        console.log(selectedArr);
+                        toast.error('Select Exam Cartegory');
                       } else {
                         handleSubmit(e);
                       }
                     }}
                   >
-                    Submit
+                    Next
                   </button>
                   <button
                     className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
@@ -289,4 +280,4 @@ const NewExamModal = (props) => {
   );
 };
 
-export default NewExamModal;
+export default NewExamsModal;

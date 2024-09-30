@@ -26,24 +26,17 @@ import TableBtn from '../../components/Svgs/TableBtn';
 import { Dialog } from 'primereact/dialog';
 
 import {
-  FetchExamCustomAction,
   FetchExamGroupAction,
   FetchExamListAction,
   resetcreateexam,
 } from '../../redux/slices/examSlice';
-import ExamListModal from '../../components/NewExamModal';
 import NewExamModal from '../../components/NewExamModal';
 import { fetchSubjectAction } from '../../redux/slices/subjectSlice';
 import NewSubjectModal from '../../components/NewSubjectModal';
-import ClassSelect from '../../components/ClassSelect';
-import SectionSelect1 from '../../components/SectionsSelect1';
-import SessionSelect from '../../components/SessionSelect';
-import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
-import ExamGroupSelect from '../../components/ExamGroupSelect';
 import ExamResultChoiceModal from '../../components/ExamResultChoiceModal';
 import NewExamsModal from '../../components/NewExamsModal';
 
-const ExamList = () => {
+const AddExam1 = () => {
   const formRef1 = useRef();
   function resetFormStates() {
     // formRef.current.reset();
@@ -52,25 +45,26 @@ const ExamList = () => {
   }
 
   const exam = useSelector((state) => state?.exam);
-  const { FetchExamList, Createexam, FetchExamCustom } = exam;
+  const { FetchExamList, Createexam } = exam;
 
   const [pagesval, setpagesval] = useState(30);
 
   const [loader, setLoader] = useState(true);
 
   const [nodes, setdata] = useState([]);
-  const [datacart, setdatacart] = useState([]);
-  const [val, setVal1] = useState([]);
+  const [value, setValue] = useState([]);
 
-  
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(FetchExamListAction());
+    dispatch(fetchAllClassAction());
+    dispatch(fetchAllSectionAction());
   }, []);
 
   useEffect(() => {
+    dispatch(fetchSubjectAction());
     dispatch(FetchExamGroupAction());
   }, []);
 
@@ -90,11 +84,7 @@ const ExamList = () => {
       setVisible(false);
       dispatch(resetcreateexam());
     }
-    if (FetchExamCustom?.success == 1) {
-      let data = FetchExamCustom?.data;
-      setdata(data);
-    }
-  }, [FetchExamList, Createexam, FetchExamCustom]);
+  }, [FetchExamList, Createexam]);
 
   let data = { nodes };
 
@@ -119,7 +109,7 @@ const ExamList = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:   28% 40% 20% 10%;
+      --data-table-library_grid-template-columns:   20% 43% 15%  22%;
     `,
       Row: `
   &:nth-of-type(odd) {
@@ -140,41 +130,26 @@ const ExamList = () => {
     },
     onChange: onPaginationChange,
   });
-  const [visible2, setVisible2] = useState(false);
+  const [visible1, setVisible1] = useState(false);
 
   function onPaginationChange(action, state) {}
 
   const [search, setSearch] = useState('');
-  const [clazz, setclazz] = useState();
-  const [sectionzz, setsectionzz] = useState();
+
   data = {
     nodes: data.nodes.filter((item) =>
-      item.examgroup.toLowerCase().includes(search.toLowerCase()),
+      item.class.toLowerCase().includes(search.toLowerCase()),
     ),
   };
 
   function onPaginationChange(action, state) {}
 
   const [visible, setVisible] = useState(false);
+  const [visible2, setVisible2] = useState(false);
+
   const [visible4, setVisible4] = useState(false);
   const [classes, setClass] = useState();
-  
-  const [visible6, setvisible6] = useState(false);
-
-  const [position, setPosition] = useState('center');
-
-  const mydata = {
-    session: sectionzz,
-    examgroup: clazz,
-  };
-  function handleGetData() {
-    dispatch(FetchExamCustomAction(mydata));
-  }
-  useEffect(() => {
-    dispatch(fetchAllsessionAction());
-    // dispatch(fetchAllClass());
-  }, []);
-  console.log(val)
+  console.log(data);
 
   return loader ? (
     <Loader />
@@ -183,13 +158,13 @@ const ExamList = () => {
       <Dialog
         visible={visible}
         position={'top'}
-        style={{ height: 'auto', width: '35%' }}
+        style={{ height: 'auto', width: '33%' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
         }}
       >
-        <NewExamModal close={setVisible} newsubject={setVisible4} />
+        <NewExamsModal close={setVisible} value={classes} newsubject={setVisible4} />
       </Dialog>
       <Dialog
         visible={visible4}
@@ -200,29 +175,18 @@ const ExamList = () => {
           setVisible4(false);
         }}
       >
-        <NewSubjectModal close={setVisible4} />
+        <NewSubjectModal close={setVisible4}  />
       </Dialog>
       <Dialog
         visible={visible2}
         position={'top'}
-        style={{ height: 'auto', width: '40%' }}
+        style={{ height: 'auto', width: '45%' }}
         onHide={() => {
           if (!visible2) return;
-          setVisible2(false);
+          visible2(false);
         }}
       >
         <ExamResultChoiceModal close={setVisible2} value={classes} />
-      </Dialog>
-      <Dialog
-        visible={visible6}
-        position={'top'}
-        style={{ height: 'auto', width: '33%' }}
-        onHide={() => {
-          if (!visible6) return;
-          setVisible(false);
-        }}
-      >
-        <NewExamsModal close={setvisible6} val={val} newsubject={setVisible4} />
       </Dialog>
 
       <div className=" flex-col">
@@ -245,71 +209,18 @@ const ExamList = () => {
           }
         >
           <div className="w-full  flex gap-7">
-            <div className=" flex w-9/12 gap-3">
-              <div className="sm:w-2/5 ">
-                <div>
-                  <label
-                    className="mb-1 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="fullName"
-                  >
-                    Exam Group
-                  </label>
-
-                  <div className="relative z-20 bg-white dark:bg-form-input">
-                    <ExamGroupSelect setsectionprop={setclazz} clazz={clazz} />
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full sm:w-2/5">
-                <label
-                  className="mb-1 block text-sm font-medium text-black dark:text-white"
-                  htmlFor="phoneNumber"
+            <div className=" flex w-9/12 justify-between gap-4">
+              <div className=" ">
+                <button
+                  className="flex  justify-center rounded bg-primary py-2 px-5 font-medium text-gray hover:bg-opacity-90"
+                  type=""
+                  onClick={() => {
+                    setVisible(true);
+                  }}
                 >
-                  Session{' '}
-                </label>
-                <div className="relative z-20 bg-white dark:bg-form-input">
-                  <SessionSelect setsectionprop={setsectionzz} />
-                </div>
+                  Add Exam
+                </button>
               </div>
-              <div className="w-full sm:w-2/5">
-                <label
-                  className="mb-1 block text-sm font-medium  dark:text-black"
-                  htmlFor=""
-                >
-                  .{' '}
-                </label>
-                <div className="sm:w-1/5 flex gap-2">
-                  <div className="relative  z-20 bg-white dark:bg-form-input">
-                    <button
-                      onClick={() => handleGetData()}
-                      className="btn h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
-                      type="submit"
-                    >
-                      Search
-                    </button>
-                  </div>
-                  <div className="relative  z-20 bg-white dark:bg-form-input">
-                    <button
-                      onClick={() => {
-                        setdata(FetchExamList?.data);
-                      }}
-                      className="btn h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
-                      type="submit"
-                    >
-                      &#10227;
-                    </button>
-                  </div>
-                </div>
-              </div>
-              {/* <div className="w-full sm:w-1/3 flex  justify-end align-top  ">
-                    <button onClick={(e)=>{handleDownloadPdf()}}
-                      className="btn sm:w-2/3 h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
-                      type="submit"
-                    >
-                      Search
-                    </button>
-                  </div> */}
             </div>
             <div className={' w-3/12 flex flex-col '}>
               <div className="flex justify-between align-middle ">
@@ -317,7 +228,7 @@ const ExamList = () => {
                   className=" w-2/2  block text-sm font-medium text-black dark:text-white"
                   htmlFor=" "
                 >
-                  Search By Class{' '}
+                  Search Class{' '}
                 </label>
               </div>
 
@@ -352,10 +263,10 @@ const ExamList = () => {
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
                         <HeaderCell>Class/Section</HeaderCell>
-                      
 
                         <HeaderCell>Exam Group/Session</HeaderCell>
-                        <HeaderCell>Subject</HeaderCell>
+
+                        <HeaderCell>Date Created</HeaderCell>
 
                         {/* <HeaderCell>Created By</HeaderCell> */}
                         <HeaderCell>Action</HeaderCell>
@@ -367,15 +278,14 @@ const ExamList = () => {
                         <Row key={item.examcode} item={item} className=" ">
                           <Cell className="  ">
                             {item.class}{' '}
-                            {item.section == '-' ? '' : ` /  ${item.section}`}
+                            {item.section == null ? '' : ` /  ${item.section}`}
                           </Cell>
                           <Cell className="  ">
                             {item.examgroup}
                             {' / '} {item.session}
                           </Cell>
 
-                          <Cell className="  ">{item.subject}</Cell>
-
+                          <Cell className="  ">{item.createdat}</Cell>
 
                           {/* <Cell className="  ">{item.createdby }</Cell> */}
 
@@ -385,44 +295,24 @@ const ExamList = () => {
                                 clickFunction={() => {
                                   setClass(item);
                                   setVisible2(true);
-                                  
-    navigate('/exam/viewresult', {
-      state: {
-        action: 1,
-        value: item,
-        chosensubject: item.subject,
-        examgroup: item.examgroup,
-        session: item.session,
-        createdat: item.createdat,
-        createdby: item.createdby,
-        examid:item.code
-
-      },
-    });
                                 }}
-                                text={'View Result'}
+                                text={' Results '}
                                 color={'bg-primary'}
                               />
-                              {/* <TableBtn
-                                  clickFunction={() => {
-                                    setvisible6(true);
-                                
-                                    setVal1(item);
-
-                                    navigate('/exam/addresult', {
-                                      state: { action: 1, value: item},
-                                    });
-
-
-                                  }}
-                                  text={'Update Result'}
-                                  color={'bg-primary'}
-                                /> */}
+                              <TableBtn
+                                clickFunction={() => {
+                                  setClass(item);
+                                }}
+                                text={' View/Edit '}
+                                color={'bg-primary'}
+                              />
                               {/* <ViewSVG
                                 clickFunction={() => item.amount == null ?"" : handleViewbtn(item.title)}
                               /> */}
 
-                            
+                              <DeleteSVG
+                                clickFunction={() => handleViewbtn(item)}
+                              />
                             </div>
                           </Cell>
                         </Row>
@@ -515,4 +405,4 @@ const ExamList = () => {
   );
 };
 
-export default ExamList;
+export default AddExam1;

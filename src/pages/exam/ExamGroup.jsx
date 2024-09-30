@@ -30,7 +30,11 @@ import DeleteSVG from '../../components/Svgs/delete';
 import Loader from '../../common/Loader';
 import DefaultLayout from '../../layout/DefaultLayout';
 import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
-import { CreateExamGroupAction, FetchExamGroupAction, resetcreategroup } from '../../redux/slices/ExamSlice';
+import {
+  CreateExamGroupAction,
+  FetchExamGroupAction,
+  resetcreategroup,
+} from '../../redux/slices/examSlice';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 
 const ExamGroup = () => {
@@ -47,25 +51,21 @@ const ExamGroup = () => {
   const dispatch = useDispatch();
 
   const exam = useSelector((state) => state?.exam);
-  const {examgroup,createxamgroup  } = exam;
-
+  const { examgroup, createxamgroup } = exam;
 
   useEffect(() => {
     dispatch(FetchExamGroupAction());
     dispatch(fetchAllsessionAction());
-
   }, []);
-
- 
 
   useEffect(() => {
     if (createxamgroup?.success == 0) {
       dispatch(resetcreategroup());
     }
     if (createxamgroup?.success == 1) {
-      dispatch(resetcreategroup());
-      let data = examgroup?.data;
+      let data = createxamgroup?.data;
       setdata(data);
+      dispatch(resetcreategroup());
 
     }
   }, [createxamgroup]);
@@ -77,7 +77,6 @@ const ExamGroup = () => {
       let data = examgroup?.data;
       setdata(data);
     }
-
   }, [examgroup]);
 
   let data = { nodes };
@@ -95,8 +94,8 @@ const ExamGroup = () => {
       padding: 5px 0px;
     }
   `,
-  Table: `
-  --data-table-library_grid-template-columns:  45% 30%  25%;
+      Table: `
+  --data-table-library_grid-template-columns:  70%   30%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -147,8 +146,8 @@ const ExamGroup = () => {
   };
 
   const subdata = {
-    session: sessionoption,
-    title: name,
+    // session: sessionoption,
+    title: name.toUpperCase(),
     createdby: 'Asante',
   };
   const handlecreateSection = (e) => {
@@ -182,73 +181,75 @@ const ExamGroup = () => {
   ) : (
     <DefaultLayout>
       <div className={'flex gap-2 w-full'}>
-        <div className="flex w-4/12 gap-8">
-          <div className="w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                Add Exam Group
-              </h3>
-            </div>
-            <div className="p-7">
-              <form action="#">
-                <div className="w-full mb-2 ">
-                  <label
-                    className="mb-1 block text-sm font-small text-black dark:text-white"
-                    htmlFor=""
-                  >
-                    Group Title
-                  </label>
-                  <input
-                    className="w-full rounded border uppercase border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name=""
-                    id=""
-                    placeholder=""
-                    defaultValue=""
-                    onChange={(e) => setname(e.target.value)}
-                  />
-                </div>
-                <div className="w-full mb-4 sm:w-2/2">
-                    <div className=" flex gap-2 ">
-                      <div className="w-full mb-1 sm:w-full">
-                        <label
-                          className="mb-1 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="fullName"
-                        >
-                          Session
-                        </label>
-
-                        <div className="relative z-20 bg-white dark:bg-form-input">
-                          <SessionSelect setsectionprop={setSessionoption} />
-                        </div>
-                      </div>
-                
-                    </div>
+        <div className=" w-4/12  gap-8">
+          <div className="col-span-12">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
+                <h3 className="font-medium text-black dark:text-white">
+                  Add New Cartegory
+                </h3>
+              </div>
+              <div className="p-7">
+                <form action="#">
+                  <div className="w-full mb-10 ">
+                    <label
+                      className="mb-1 block text-sm font-small text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      Cartegory Title
+                    </label>
+                    <input
+                      className="w-full uppercase rounded border  border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name=""
+                      id=""
+                      placeholder="END OF TERM EXamination"
+                      defaultValue=""
+                      onChange={(e) => setname(e.target.value)}
+                    />
                   </div>
-                
+                  {/* <div className="w-full mb-4 sm:w-2/2">
+        <div className=" flex gap-2 ">
+          <div className="w-full mb-1 sm:w-full">
+            <label
+              className="mb-1 block text-sm font-medium text-black dark:text-white"
+              htmlFor="fullName"
+            >
+              Session
+            </label>
 
-                <div className="flex justify-end  gap-4.5">
-                  <button
-                    className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                    type=""
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlecreateSection();
-                    }}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                    type="reset"
-                  >
-                    Reset
-                  </button>
-                </div>
-              </form>
+            <div className="relative z-20 bg-white dark:bg-form-input">
+              <SessionSelect setsectionprop={setSessionoption} />
+            </div>
+          </div>
+    
+        </div>
+      </div> */}
+
+                  <div className="flex justify-end  gap-4.5">
+                    <button
+                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlecreateSection();
+                      }}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      type="reset"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
+
         <div className="w-8/12 flex-col">
           <div
             className={
@@ -258,7 +259,7 @@ const ExamGroup = () => {
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
-                  Groups List
+                  Cartegory List
                 </h3>
               </div>
             </div>
@@ -327,17 +328,20 @@ const ExamGroup = () => {
           >
             <div className="flex gap-3  flex-col">
               <div className="px-2">
-                <Table data={data} pagination={pagination} layout={{ custom: true }} theme={theme}>
+                <Table
+                  data={data}
+                  pagination={pagination}
+                  layout={{ custom: true }}
+                  theme={theme}
+                >
                   {(tableList) => (
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
                           <HeaderCell>Title</HeaderCell>
 
-                          <HeaderCell>Session</HeaderCell>
 
                           <HeaderCell>Actions</HeaderCell>
-
                         </HeaderRow>
                       </Header>
 
@@ -345,8 +349,6 @@ const ExamGroup = () => {
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
                             <Cell className="  ">{item.grouptitle}</Cell>
-
-                            <Cell className="  ">{item.session}</Cell>
 
 
                             <Cell>
@@ -457,3 +459,14 @@ const ExamGroup = () => {
 };
 
 export default ExamGroup;
+
+{
+  /* <div className="grid  w-4/12  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+<div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
+  <h3 className="font-medium text-black dark:text-white">
+    Add Exam Cartegory
+  </h3>
+</div>
+
+</div> */
+}

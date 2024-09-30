@@ -6,7 +6,7 @@ import { AssignFeesAction } from '../redux/slices/feeSlice';
 import toast from 'react-hot-toast';
 import ClassSelect2 from './ClassSelect2';
 import AssignFeeClassSelect from './AssignFeeClassSelect';
-import { CreatesGradeGroupAction } from '../redux/slices/ExamSlice';
+import { CreatesGradeGroupAction } from '../redux/slices/examSlice';
 
 const ExamGradeModal = (props) => {
   const dispatch = useDispatch();

@@ -104,6 +104,23 @@ export const fetchAllClassNoAction = createAsyncThunk(
     }
   },
 );
+export const fetchAllClassExamAction = createAsyncThunk(
+  'fetch/AllClassExam',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/class/allclassexam`,payload
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const fetchAllSectionAction = createAsyncThunk(
   'fetch/AllSection',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -319,9 +336,14 @@ const ClassSlices = createSlice({
     resetUpdateSection(state) {
       state.updateSection = false;
     },
+    
     resetdeleteclass(state) {
       state.deletesectionbyclass = null;
     },
+    resetfetchAllClassExam(state) {
+      state.fetchAllClassExam = null;
+    },
+
   },
   extraReducers: (builder) => {
     builder.addCase(CreatesClassAction.pending, (state, action) => {
@@ -388,9 +410,25 @@ const ClassSlices = createSlice({
       state.fetchAllClass = undefined;
       state.fetchAllClassloading = undefined;
     });
+    
+    builder.addCase(fetchAllClassExamAction.pending, (state, action) => {
+      state.fetchAllClassExamloading = true;
+      state.fetchAllClassExam = false;
+    });
+    builder.addCase(fetchAllClassExamAction.fulfilled, (state, action) => {
+      state.fetchAllClassExam = action?.payload;
+      state.fetchAllClassExamloading = false;
+      state.fetchAllClassExamerror = undefined;
+    });
+    builder.addCase(fetchAllClassExamAction.rejected, (state, action) => {
+      state.fetchAllClassExamerror = action.payload;
+      state.fetchAllClassExam = undefined;
+      state.fetchAllClassExamloading = undefined;
+    });
+
 
     builder.addCase(fetchAllClassNoAction.pending, (state, action) => {
-      state.fetchAllClassloadingNo = true;
+      state.fetchAllClassExamloading = true;
       state.fetchAllClassNo = false;
     });
     builder.addCase(fetchAllClassNoAction.fulfilled, (state, action) => {
@@ -403,6 +441,7 @@ const ClassSlices = createSlice({
       state.fetchAllClassNo = undefined;
       state.fetchAllClassloadingNo = undefined;
     });
+
 
     builder.addCase(fetchSectionbyclassAction.pending, (state, action) => {
       state.sectionbyclassloading = true;
@@ -576,6 +615,7 @@ export const {
   resetUdateClass,
   resetdeleteclass,
   resetcreatesection,
+  resetfetchAllClassExam
 } = ClassSlices.actions;
 
 export default ClassSlices.reducer;

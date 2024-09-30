@@ -41,7 +41,7 @@ import { FetchExamGroupAction } from '../../redux/slices/examSlice';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import ExamResultChoiceModal from '../../components/ExamResultChoiceModal';
 
-const NewExam = () => {
+const ExamReport = () => {
   const formRef1 = useRef();
   function resetFormStates() {
     // formRef.current.reset();
@@ -120,7 +120,7 @@ const NewExam = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  50% 30%  20%;
+      --data-table-library_grid-template-columns:  50% 40%  10%;
     `,
       Row: `
   &:nth-of-type(odd) {
@@ -216,7 +216,7 @@ const NewExam = () => {
           >
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
-                <h3 className="font-medium text-black  dark:text-white">
+                <h3 className="font-medium text-black dark:text-white">
                   All Classes
                 </h3>
               </div>
@@ -299,7 +299,7 @@ const NewExam = () => {
                             </Cell>
                             <Cell className="  ">
                               {/* {item.section ? item.section : '-'} */}
-                              {/* <Cell className="  ">
+                            {/* <Cell className="  ">
                               {item?.val == (item?.section == null ? '-' : item?.section)? (
                                 <TableBtn
                                   clickFunction={() => {
@@ -321,23 +321,25 @@ const NewExam = () => {
                               )}
                             </Cell> */}
 
+                          
                               <div className="gap-2 flex">
                                 <TableBtn
                                   clickFunction={() => {
-                                    setVisible(true);
-                                    setVal(item);
+                                    navigate("/exam/reportdetail", {
+                                      state: { action: 1, value: item },
+                                    });
                                   }}
-                                  text={'Add Result'}
+                                  text={'Select'}
                                   color={'bg-primary'}
                                 />
-                                <TableBtn
+                                {/* <TableBtn
                                   clickFunction={() => {
                                     setVisible3(true);
                                     setVal1(item);
                                   }}
                                   text={'View Result'}
                                   color={'bg-primary'}
-                                />
+                                /> */}
                                 {/* <TableBtn
                                   clickFunction={() => handleViewbtn(item)}
                                   text={'Select'}
@@ -436,4 +438,4 @@ const NewExam = () => {
   );
 };
 
-export default NewExam;
+export default ExamReport;

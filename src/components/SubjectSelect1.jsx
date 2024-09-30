@@ -3,33 +3,30 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
-const SectionSelect1 = (props) => {
+const SubjectSelect1 = (props) => {
   const [sections, setsections] = useState([]);
   const [sectionzz, setsectionzz] = useState();
 
-  const clad = useSelector((state) => state?.classes);
-
-  const {  sectionloading, fetchSection } =
-    clad;
-
+  const sub = useSelector((state) => state?.subject);
+  const { fetchAllSubject } = sub;
     useEffect(() => {
         props.setsectionprop(sectionzz)
     }, [sectionzz]);
 
 
   useEffect(() => {
-    if (fetchSection?.success == 1) {
-      let arrr = ['All Sections'];
+    if (fetchAllSubject?.success == 1) {
+      let arrr = ['NONE'];
       let i = 0;
-      while (i < clad?.fetchSection?.data.length) {
-        arrr.push(clad?.fetchSection?.data[i]?.sectionName);
+      while (i < sub?.fetchAllSubject?.data.length) {
+        arrr.push(sub?.fetchAllSubject?.data[i]?.subjectname);
         i++;
       }
 
       setsections(arrr);
       setsectionzz(arrr[0]);
     }
-  }, [sectionloading]);
+  }, [fetchAllSubject]);
 
   return (
     <>
@@ -42,4 +39,4 @@ const SectionSelect1 = (props) => {
   );
 };
 
-export default SectionSelect1;
+export default SubjectSelect1;
