@@ -159,7 +159,6 @@ export const FetchAllGradeGroupAction = createAsyncThunk(
   },
 );
 
-
 export const FetchSingleGradeGroupAction = createAsyncThunk(
   'get/singleGradeGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -223,7 +222,6 @@ export const FetchExamResultByIdAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/getexamresult`,
         payload,
       );
-      
 
       if (data?.success == 0) {
         toast.error(data?.message);
@@ -322,14 +320,68 @@ export const FetchExamCustomAction = createAsyncThunk(
     }
   },
 );
+export const FetchClassReportAction = createAsyncThunk(
+  'get/customsearch',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/searchcustom`,
+        payload,
+      );
+      if (data?.success == 1 && data?.data.length == 0) {
+        toast.success('No Search Results');
+      }
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const FetchSingleReportAction = createAsyncThunk(
+  'get/singlereport',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/singlereport`,
+        payload,
+      );
+      if (data?.success == 1 && data?.data.length == 0) {
+        toast.success('No Search Results');
+      }
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
 const ExamSlices = createSlice({
   name: 'Exam',
   initialState: {
-    ExamResultArray : []
+    ExamResultArray: [],
   },
   reducers: {
-    setExamResult(state,data) {
+    setExamResult(state, data) {
       state.ExamResultArray = data;
     },
     resetcreateGradeGroup(state) {
@@ -360,8 +412,22 @@ const ExamSlices = createSlice({
       state.Gradegrouperror = action.payload;
       state.Gradegroup = undefined;
     });
-    
-    
+
+    builder.addCase(FetchSingleReportAction.pending, (state, action) => {
+      state.SingleReportloading = true;
+      state.SingleReport = false;
+    });
+    builder.addCase(FetchSingleReportAction.fulfilled, (state, action) => {
+      state.SingleReport = action?.payload;
+      state.SingleReportloading = false;
+      state.SingleReporterror = undefined;
+    });
+    builder.addCase(FetchSingleReportAction.rejected, (state, action) => {
+      state.SingleReportloading = false;
+      state.SingleReporterror = action.payload;
+      state.SingleReport = undefined;
+    });
+
     builder.addCase(FetchexamSubjectAction.pending, (state, action) => {
       state.FetchexamSubjectloading = true;
       state.FetchexamSubject = false;
@@ -390,8 +456,6 @@ const ExamSlices = createSlice({
       state.submitResultperror = action.payload;
       state.submitResult = undefined;
     });
-
-    
 
     builder.addCase(FetchExamResultByIdAction.pending, (state, action) => {
       state.FetchExamResultloading = true;
@@ -547,7 +611,12 @@ const ExamSlices = createSlice({
   },
 });
 
-export const { resetcreateGradeGroup, resetcreategroup, resetcreateexam,setExamResult,resetsubmitresult } =
-  ExamSlices.actions;
+export const {
+  resetcreateGradeGroup,
+  resetcreategroup,
+  resetcreateexam,
+  setExamResult,
+  resetsubmitresult,
+} = ExamSlices.actions;
 
 export default ExamSlices.reducer;

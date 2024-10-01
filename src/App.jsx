@@ -83,6 +83,7 @@ import ViewExamResult from './pages/exam/ViewExamResult';
 import AddExamResult from './pages/exam/AddExamResult';
 import AddExam1 from './pages/exam/NewExam copy';
 import ExamReport from './pages/exam/ExamReport';
+import ExamReportDetail from './pages/exam/ReportDetail';
 
   
 function App() {
@@ -646,7 +647,7 @@ function App() {
             element={
               <>
                 <PageTitle title="Calendar " />
-                <ExamReport />
+                <ExamReportDetail />
               </>
             }
           />

@@ -216,8 +216,8 @@ const NewExam = () => {
           >
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
-                <h3 className="font-medium text-black  dark:text-white">
-                  All Classes
+                <h3 className="font-medium py-3 text-black  dark:text-white">
+                  Classes List
                 </h3>
               </div>
             </div>

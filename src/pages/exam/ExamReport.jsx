@@ -216,7 +216,7 @@ const ExamReport = () => {
           >
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
-                <h3 className="font-medium text-black dark:text-white">
+                <h3 className="font-medium text-black py-3 dark:text-white">
                   All Classes
                 </h3>
               </div>
@@ -325,8 +325,11 @@ const ExamReport = () => {
                               <div className="gap-2 flex">
                                 <TableBtn
                                   clickFunction={() => {
+                                 console.log('itemmmmmmmmmm')
+                                 console.log(item)
+
                                     navigate("/exam/reportdetail", {
-                                      state: { action: 1, value: item },
+                                      state: { action: 1, value: item},
                                     });
                                   }}
                                   text={'Select'}
