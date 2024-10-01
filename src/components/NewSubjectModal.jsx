@@ -9,7 +9,7 @@ import {
   CreatesSubjectAction,
   resetcreatesubject,
 } from '../redux/slices/subjectSlice';
-import { resetcreateexam } from '../redux/slices/ExamSlice';
+import { resetcreateexam } from '../redux/slices/examSlice';
 
 const NewSubject = (props) => {
   const [pagesval, setpagesval] = useState(30);

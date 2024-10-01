@@ -111,7 +111,7 @@ const Student = () => {
 
   
 
-  }, [ fetchStudentcustomloading ]);
+  }, [ fetchStudentcustom ]);
 
   useEffect(() => {
    

@@ -26,11 +26,14 @@ import TableBtn from '../../components/Svgs/TableBtn';
 import { Dialog } from 'primereact/dialog';
 
 import {
+  FetchClassReportAction,
   FetchExamCustomAction,
   FetchExamGroupAction,
   FetchExamListAction,
   FetchSingleReportAction,
+  resetclassreport,
   resetcreateexam,
+  resetsinglereport,
 } from '../../redux/slices/examSlice';
 import ExamListModal from '../../components/NewExamModal';
 import NewExamModal from '../../components/NewExamModal';
@@ -47,6 +50,7 @@ import ViewSVG from '../../components/Svgs/View';
 import { fetchStudentsClassAction } from '../../redux/slices/studentSlice';
 import toast from 'react-hot-toast';
 import ExamReportModal from '../../components/ExamReportModal';
+import ClassReportModal from '../../components/ClassReportModal';
 
 const ExamReportDetail = () => {
   const formRef1 = useRef();
@@ -57,7 +61,7 @@ const ExamReportDetail = () => {
   }
   
   const exam = useSelector((state) => state?.exam);
-  const { SingleReport } = exam;
+  const { SingleReport,ClassReport } = exam;
 
   const student = useSelector((state) => state?.student);
   const { fetchcustom } = student;
@@ -70,6 +74,8 @@ const ExamReportDetail = () => {
 
   const [nodes, setdata] = useState([]);
   const [singledata, setsingledata] = useState([]);
+  const [classdata, setClassdata] = useState([]);
+
 
   const [datacart, setdatacart] = useState([]);
   const [val, setVal] = useState([]);
@@ -86,7 +92,24 @@ const ExamReportDetail = () => {
   }, []);
 
  
+  useEffect(() => {
+
+    if (ClassReport?.success == 0) {
+    }
+    if (ClassReport?.success == 1) {
+      let data = ClassReport?.data;
+      console.log(data)
+      if(data.length == 0){
+        return  toast.error('No Results Available');
+      }
+      setClassdata(data);
+     setVisible4(true)
+     dispatch(resetclassreport())
+    }
+
   
+  }, [ClassReport]);
+
 
   useEffect(() => {
 
@@ -94,8 +117,13 @@ const ExamReportDetail = () => {
     }
     if (SingleReport?.success == 1) {
       let data = SingleReport?.data;
+      if(data.length == 0){
+        return  toast.error('No Results Available');
+      }
       setsingledata(data);
      setVisible(true)
+     dispatch(resetsinglereport())
+
     }
 
   
@@ -201,6 +229,7 @@ let examinfo ={
   function handleGetData() {
     dispatch(FetchExamCustomAction(mydata));
   }
+  
   function handleGetstudentreport(val) {
     let data = {
       stdid: val,
@@ -208,6 +237,15 @@ let examinfo ={
       examgroup: clazz,
     };
     dispatch(FetchSingleReportAction(data));
+  }
+  function handleGetClassreport() {
+    let data = {
+      clazz: info?.title,
+      section :info?.section,
+      session: sectionzz,
+      examgroup: clazz,
+    };
+    dispatch(FetchClassReportAction(data));
   }
   useEffect(() => {
     dispatch(fetchAllsessionAction());
@@ -248,37 +286,16 @@ let examinfo ={
       </Dialog>
       <Dialog
         visible={visible4}
-        position={'top-right'}
-        style={{ height: 'auto', width: '25%' }}
+        position={'top'}
+        style={{ height: 'auto', width: '65%' }}
         onHide={() => {
           if (!visible4) return;
           setVisible4(false);
         }}
       >
-        <NewSubjectModal close={setVisible4} />
+        <ClassReportModal close={setVisible4} val={info}  examinfo={examinfo}  result={classdata}/>
       </Dialog>
-      <Dialog
-        visible={visible2}
-        position={'top'}
-        style={{ height: 'auto', width: '40%' }}
-        onHide={() => {
-          if (!visible2) return;
-          setVisible2(false);
-        }}
-      >
-        <ExamResultChoiceModal close={setVisible2} value={classes} />
-      </Dialog>
-      <Dialog
-        visible={visible6}
-        position={'top'}
-        style={{ height: 'auto', width: '33%' }}
-        onHide={() => {
-          if (!visible6) return;
-          setVisible(false);
-        }}
-      >
-        <NewExamsModal close={setvisible6} val={val} newsubject={setVisible4} />
-      </Dialog>
+   
 
       <div className=" flex-col">
         <div
@@ -382,6 +399,18 @@ let examinfo ={
               {/* <button onClick={() => toPDF()}>Download PDF</button> */}
             </div>
           </div>
+
+          <button
+                  className="flex  justify-center rounded bg-primary py-1 px-3 font-medium text-gray hover:bg-opacity-90"
+                  type=""
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    handleGetClassreport()
+                  //  await ref.current.openPrintDialog();
+                  }}
+                >
+                  Get Class Report
+                </button>
         </div>
         <div
           className={

@@ -640,6 +640,24 @@ const StudentSlices = createSlice({
         state.fetchStudentcustomloading = undefined;
       },
     );
+    
+
+    builder.addCase(fetchCustomStudentsClassAction.pending, (state, action) => {
+      state.fetchcustomloading = true;
+      state.fetchcustom = false;
+    });
+    builder.addCase(fetchCustomStudentsClassAction.fulfilled, (state, action) => {
+      state.fetchcustom = action?.payload;
+      state.fetchcustomloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(fetchCustomStudentsClassAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.fetchcustom = undefined;
+      state.fetchcustomloading = undefined;
+    });
+
+
 
     builder.addCase(fetchStudentsClassAction.pending, (state, action) => {
       state.fetchcustomloading = true;

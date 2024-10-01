@@ -4,14 +4,16 @@ import {
   fetchInventCartegoryAction,
   resetcreatecart,
 } from '../redux/slices/inventSlice';
+
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import FeeRadio from './FeeRadio';
 import { PayFeeAction } from '../redux/slices/feeSlice';
 import { Print } from 'print-react';
 import userThree from '../images/user/user-03.png';
+import jsPDF from 'jspdf';
 
-const ExamReportModal = (props) => {
+const ClassReportModal = (props) => {
   const ref = useRef({ openPrintDialog: () => Promise });
 
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
@@ -43,6 +45,9 @@ const ExamReportModal = (props) => {
     //   setClasss(arr);
     // }
   }, [allschool]);
+
+  const handleDownloadPdf = async () => {
+     };
 
   const session = useSelector((state) => state?.session);
   const { fetchsessionactive, fetchsession } = session;
@@ -94,8 +99,8 @@ const ExamReportModal = (props) => {
       dispatch(PayFeeAction(data));
     }
   };
-  console.log(pictureurl);
   console.log(props);
+
 
   return (
     <div className="w-full">
@@ -124,7 +129,7 @@ const ExamReportModal = (props) => {
                   type=""
                   onClick={(e) => {
                     e.preventDefault();
-                    props.close(false);
+                    handleDownloadPdf()
                   }}
                 >
                   Save PDF
@@ -155,9 +160,10 @@ const ExamReportModal = (props) => {
                   setPrintDialogOpen(false);
                 }}
               >
+                                    {props?.result?.map((value, index) => (
                 <div
                   className="w-full flex flex-col   py-3"
-                  style={{  }}
+                  style={{pageBreakAfter:'always' }}
                 >
                   <div className="w-full ">
                     <div className="flex border-b justify-between pb-2 border-stroke  dark:border-strokedark">
@@ -204,15 +210,17 @@ const ExamReportModal = (props) => {
                         </div>
 
                         <div className="w-4/12 text-sm">
-                          <p>Student id : {props.val?.student_id}</p>
+                          <p>Student id : {props.result[index][index]?.student_id}</p>
 
                           <p>
+                            
+
                             Name :{' '}
-                            {props.val?.firstName +
+                            {value[index]?.firstName +
                               ' ' +
-                              props.val?.otherName +
+                              value[index]?.otherName +
                               ' ' +
-                              props.val?.lastName}
+                              value[index]?.lastName}
                           </p>
 
                           <p></p>
@@ -220,8 +228,8 @@ const ExamReportModal = (props) => {
                         <div className="w-full flex gap-1">
                           <p className="text-sm  ">Class / Section :</p>
                           <p className="text-sm  ">
-                            {props.val?.class}
-                            {props.val?.section == 'NONE'
+                            {props.val?.title}
+                            {props.val?.section == 'NONE' || props.val?.section == null 
                               ? ''
                               : '/' + props.val?.section}
                           </p>
@@ -271,13 +279,13 @@ const ExamReportModal = (props) => {
                           </tr>
                         </thead>
                         <tbody className="w-full border  text-start  border-stroke  dark:border-strokedark">
-                          {props.examinfo?.result?.map((item, index) => (
+                          {value?.map((item, index) => (
                             <tr className=" ">
                               <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1  w-1/12">
-                                {item.examid}
+                                {props.result[index][index]?.examid}
                               </td>
                               <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-5/12">
-                                {item.subject}
+                                {props.result[index][index]?.subject}
                               </td>
                               <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-2/12">
                                 {item.totalscore} {' %'}
@@ -378,8 +386,8 @@ const ExamReportModal = (props) => {
                     </div>
                   </div> */}
                   </div>
-                  <div  style={{  pageBreakAfter: 'always' }}  >
-                    <div className="text-sm mt-6  w-full">
+                  <div>
+                    <div className="text-sm mt-6  w-full mb-5">
                       <p className=" ">Teacher's Remark</p>
                       <p className="">.........................</p>
                       <p className="text-center w-4/12 ">
@@ -387,8 +395,11 @@ const ExamReportModal = (props) => {
                       </p>
                     </div>
                   </div>
-                  
+                  <hr></hr>
+
                 </div>
+                          ))}
+
               </Print>
             </div>
           </div>
@@ -398,4 +409,4 @@ const ExamReportModal = (props) => {
   );
 };
 
-export default ExamReportModal;
+export default ClassReportModal;

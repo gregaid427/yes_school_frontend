@@ -321,15 +321,15 @@ export const FetchExamCustomAction = createAsyncThunk(
   },
 );
 export const FetchClassReportAction = createAsyncThunk(
-  'get/customsearch',
+  'get/classreport',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/exam/searchcustom`,
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/getClassreport`,
         payload,
       );
       if (data?.success == 1 && data?.data.length == 0) {
-        toast.success('No Search Results');
+        toast.success('No Class Peports Available');
       }
 
       if (data?.success == 0) {
@@ -375,12 +375,19 @@ export const FetchSingleReportAction = createAsyncThunk(
   },
 );
 
+
 const ExamSlices = createSlice({
   name: 'Exam',
   initialState: {
     ExamResultArray: [],
   },
   reducers: {
+    resetsinglereport(state, data) {
+      state.SingleReport = null;
+    },
+    resetclassreport(state, data) {
+      state.ClassReport = null;
+    },
     setExamResult(state, data) {
       state.ExamResultArray = data;
     },
@@ -411,6 +418,22 @@ const ExamSlices = createSlice({
       state.Gradegrouploading = false;
       state.Gradegrouperror = action.payload;
       state.Gradegroup = undefined;
+    });
+    
+
+    builder.addCase(FetchClassReportAction.pending, (state, action) => {
+      state.ClassReportloading = true;
+      state.ClassReport = false;
+    });
+    builder.addCase(FetchClassReportAction.fulfilled, (state, action) => {
+      state.ClassReport = action?.payload;
+      state.ClassReportloading = false;
+      state.ClassReporterror = undefined;
+    });
+    builder.addCase(FetchClassReportAction.rejected, (state, action) => {
+      state.ClassReportloading = false;
+      state.ClassReporterror = action.payload;
+      state.ClassReport = undefined;
     });
 
     builder.addCase(FetchSingleReportAction.pending, (state, action) => {
@@ -613,7 +636,7 @@ const ExamSlices = createSlice({
 
 export const {
   resetcreateGradeGroup,
-  resetcreategroup,
+  resetcreategroup,resetsinglereport,resetclassreport,
   resetcreateexam,
   setExamResult,
   resetsubmitresult,
