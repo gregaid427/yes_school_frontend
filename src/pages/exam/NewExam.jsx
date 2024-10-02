@@ -24,13 +24,9 @@ import autoTable from 'jspdf-autotable';
 import Loader from '../../common/Loader';
 import toast from 'react-hot-toast';
 import {
-  CreatesBulkClassAction,
-  CreatesClassAction,
-  deleteSingleClassAction,
-  fetchAllClassAction,
+
   fetchAllClassNoAction,
-  fetchSingleClassAction,
-  resetcreateClass,
+
 } from '../../redux/slices/classSlice';
 import TableBtn from '../../components/Svgs/TableBtn';
 import { Dialog } from 'primereact/dialog';

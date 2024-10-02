@@ -330,11 +330,7 @@ const ExamReportModal = (props) => {
                       </thead> */}
                         <div className="w-full flex"> </div>
 
-                        <thead
-                          className={
-                            props?.val?.scholarship < 1 ? 'hidden' : 'w-full'
-                          }
-                        >
+                       
                           <tr className="w-full  border-stroke  dark:border-strokedark ">
                             {' '}
                             <th className="text-sm  font-light w-1/12"></th>
@@ -345,7 +341,6 @@ const ExamReportModal = (props) => {
                               .........
                             </th>
                           </tr>
-                        </thead>
                         <thead className="w-full   ">
                           <tr className="w-full border-t border-stroke  dark:border-strokedark ">
                             {' '}
@@ -381,7 +376,7 @@ const ExamReportModal = (props) => {
                   <div  style={{  pageBreakAfter: 'always' }}  >
                     <div className="text-sm mt-6  w-full">
                       <p className=" ">Teacher's Remark</p>
-                      <p className="">.........................</p>
+                      <p className=""> {props.examinfo?.result[0]?.teacherreamark } </p>
                       <p className="text-center w-4/12 ">
                         {props?.response?.collectedby}
                       </p>

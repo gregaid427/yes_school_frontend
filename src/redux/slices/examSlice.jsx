@@ -347,6 +347,33 @@ export const FetchClassReportAction = createAsyncThunk(
     }
   },
 );
+export const TeacherRemarkAction = createAsyncThunk(
+  'get/teacheremark',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/setremark`,
+        payload,
+      );
+      if (data?.success == 1 ) {
+        toast.success('Remark Recorded Successfully');
+      }
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const FetchSingleReportAction = createAsyncThunk(
   'get/singlereport',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -382,6 +409,9 @@ const ExamSlices = createSlice({
     ExamResultArray: [],
   },
   reducers: {
+    ResetTeacherRemark(state, data) {
+      state.TeacherRemark = null;
+    },
     resetsinglereport(state, data) {
       state.SingleReport = null;
     },
@@ -420,6 +450,21 @@ const ExamSlices = createSlice({
       state.Gradegroup = undefined;
     });
     
+      builder.addCase(TeacherRemarkAction.pending, (state, action) => {
+        state.TeacherRemarkloading = true;
+        state.TeacherRemark = false;
+      });
+      builder.addCase(TeacherRemarkAction.fulfilled, (state, action) => {
+        state.TeacherRemark = action?.payload;
+        state.TeacherRemarkloading = false;
+        state.TeacherRemarkerror = undefined;
+      });
+      builder.addCase(TeacherRemarkAction.rejected, (state, action) => {
+        state.TeacherRemarkloading = false;
+        state.TeacherRemarkerror = action.payload;
+        state.TeacherRemark = undefined;
+      });
+
 
     builder.addCase(FetchClassReportAction.pending, (state, action) => {
       state.ClassReportloading = true;
@@ -640,6 +685,7 @@ export const {
   resetcreateexam,
   setExamResult,
   resetsubmitresult,
+  ResetTeacherRemark
 } = ExamSlices.actions;
 
 export default ExamSlices.reducer;

@@ -51,6 +51,7 @@ import { fetchStudentsClassAction } from '../../redux/slices/studentSlice';
 import toast from 'react-hot-toast';
 import ExamReportModal from '../../components/ExamReportModal';
 import ClassReportModal from '../../components/ClassReportModal';
+import RemarksExamModal from '../../components/RemarksExamModal';
 
 const ExamReportDetail = () => {
   const formRef1 = useRef();
@@ -59,9 +60,9 @@ const ExamReportDetail = () => {
     formRef1.current.reset();
     console.log('reset');
   }
-  
+
   const exam = useSelector((state) => state?.exam);
-  const { SingleReport,ClassReport } = exam;
+  const { SingleReport, ClassReport, FetchExamCustom } = exam;
 
   const student = useSelector((state) => state?.student);
   const { fetchcustom } = student;
@@ -75,7 +76,6 @@ const ExamReportDetail = () => {
   const [nodes, setdata] = useState([]);
   const [singledata, setsingledata] = useState([]);
   const [classdata, setClassdata] = useState([]);
-
 
   const [datacart, setdatacart] = useState([]);
   const [val, setVal] = useState([]);
@@ -91,57 +91,43 @@ const ExamReportDetail = () => {
     dispatch(FetchExamGroupAction());
   }, []);
 
- 
   useEffect(() => {
-
     if (ClassReport?.success == 0) {
     }
     if (ClassReport?.success == 1) {
       let data = ClassReport?.data;
-      console.log(data)
-      if(data.length == 0){
-        return  toast.error('No Results Available');
+      console.log(data);
+      if (data.length == 0) {
+        return toast.error('No Results Available');
       }
       setClassdata(data);
-     setVisible4(true)
-     dispatch(resetclassreport())
+      setVisible4(true);
+      dispatch(resetclassreport());
     }
-
-  
   }, [ClassReport]);
 
-
   useEffect(() => {
-
     if (SingleReport?.success == 0) {
     }
     if (SingleReport?.success == 1) {
       let data = SingleReport?.data;
-      if(data.length == 0){
-        return  toast.error('No Results Available');
+      if (data.length == 0) {
+        return toast.error('No Results Available');
       }
       setsingledata(data);
-     setVisible(true)
-     dispatch(resetsinglereport())
-
+      setVisible(true);
+      dispatch(resetsinglereport());
     }
-
-  
   }, [SingleReport]);
 
   useEffect(() => {
-
     if (fetchcustom?.success == 0) {
     }
     if (fetchcustom?.success == 1) {
       let data = fetchcustom?.data;
       setdata(data);
     }
-
-  
   }, [fetchcustom]);
-
-
 
   let data = { nodes };
 
@@ -196,21 +182,21 @@ const ExamReportDetail = () => {
   const [clazz, setclazz] = useState();
   const [sectionzz, setsectionzz] = useState();
   const [info, setInfo] = useState();
-let examinfo ={
-  session: sectionzz,
-  examgroup: clazz,
-  result: singledata
-}
-  
-  // data = {
-  //   nodes: data.nodes.filter((item) =>
-  //     searchval === 'First Name'
-  //       ? item.firstName.toLowerCase().includes(search.toLowerCase())
-  //       : searchval == 'Last Name'
-  //         ? item.lastName.toLowerCase().includes(search.toLowerCase())
-  //         : item.student_id.toLowerCase().includes(search.toLowerCase()),
-  //   ),
-  // };
+  let examinfo = {
+    session: sectionzz,
+    examgroup: clazz,
+    result: singledata,
+  };
+
+  data = {
+    nodes: data.nodes.filter((item) =>
+      searchval === 'First Name'
+        ? item.firstName.toLowerCase().includes(search.toLowerCase())
+        : searchval == 'Last Name'
+          ? item.lastName.toLowerCase().includes(search.toLowerCase())
+          : item.student_id.toLowerCase().includes(search.toLowerCase()),
+    ),
+  };
 
   function onPaginationChange(action, state) {}
 
@@ -218,9 +204,12 @@ let examinfo ={
   const [visible4, setVisible4] = useState(false);
   const [classes, setClass] = useState();
 
-  const [visible6, setvisible6] = useState(false);
+  const [visible5, setVisible5] = useState(false);
+
+  const [display, setDisplay] = useState(false);
 
   const [position, setPosition] = useState('center');
+  const [val2, setVal2] = useState(false);
 
   const mydata = {
     session: sectionzz,
@@ -229,7 +218,19 @@ let examinfo ={
   function handleGetData() {
     dispatch(FetchExamCustomAction(mydata));
   }
-  
+
+  useEffect(() => {
+    console.log(FetchExamCustom?.data?.length)
+    if (FetchExamCustom?.data?.length >0) {
+      let data = FetchExamCustom?.data;
+      setDisplay(true);
+    }
+    else{
+      setDisplay(false);
+
+    }
+  }, [FetchExamCustom]);
+
   function handleGetstudentreport(val) {
     let data = {
       stdid: val,
@@ -241,7 +242,7 @@ let examinfo ={
   function handleGetClassreport() {
     let data = {
       clazz: info?.title,
-      section :info?.section,
+      section: info?.section,
       session: sectionzz,
       examgroup: clazz,
     };
@@ -249,7 +250,6 @@ let examinfo ={
   }
   useEffect(() => {
     dispatch(fetchAllsessionAction());
-  
   }, []);
   console.log(location?.state?.value);
 
@@ -259,15 +259,14 @@ let examinfo ={
     } else {
       const { value } = location?.state;
       console.log(value);
-    setInfo(value)
+      setInfo(value);
       let data = {
         class: value?.title,
-        section: value?.section == "-" ? null : value?.section,
-      }
-       dispatch(fetchStudentsClassAction(data));
+        section: value?.section == '-' ? null : value?.section,
+      };
+      dispatch(fetchStudentsClassAction(data));
     }
   }, [location?.state]);
-
 
   return loader ? (
     <Loader />
@@ -282,7 +281,12 @@ let examinfo ={
           setVisible(false);
         }}
       >
-        <ExamReportModal close={setVisible} val={val} examinfo={examinfo}   newsubject={setVisible4} />
+        <ExamReportModal
+          close={setVisible}
+          val={val}
+          examinfo={examinfo}
+          newsubject={setVisible4}
+        />
       </Dialog>
       <Dialog
         visible={visible4}
@@ -293,9 +297,30 @@ let examinfo ={
           setVisible4(false);
         }}
       >
-        <ClassReportModal close={setVisible4} val={info}  examinfo={examinfo}  result={classdata}/>
+        <ClassReportModal
+          close={setVisible4}
+          val={info}
+          examinfo={examinfo}
+          result={classdata}
+        />
       </Dialog>
-   
+
+      <Dialog
+        visible={visible5}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible5) return;
+          setVisible5(false);
+        }}
+      >
+        <RemarksExamModal
+          close={setVisible5}
+          val2={val2}
+          examinfo={examinfo}
+          result={classdata}
+        />
+      </Dialog>
 
       <div className=" flex-col">
         <div
@@ -306,7 +331,8 @@ let examinfo ={
           <div className="w-full overflow-x-auto">
             <div className="w-full  flex justify-between  ">
               <h3 className="font-medium text-black py-3 dark:text-white">
-                Exam Report : {info?.title} {" "} {info?.section == null ? '' : '/ '+info?.section}
+                Exam Report : {info?.title}{' '}
+                {info?.section == null ? '' : '/ ' + info?.section}
               </h3>
             </div>
           </div>
@@ -399,18 +425,19 @@ let examinfo ={
               {/* <button onClick={() => toPDF()}>Download PDF</button> */}
             </div>
           </div>
-
-          <button
-                  className="flex  justify-center rounded bg-primary py-1 px-3 font-medium text-gray hover:bg-opacity-90"
-                  type=""
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    handleGetClassreport()
-                  //  await ref.current.openPrintDialog();
-                  }}
-                >
-                  Get Class Report
-                </button>
+          <div className={display == true ? '' : 'hidden'}>
+            <button
+              className="flex  justify-center rounded bg-primary py-1 px-3 font-medium text-gray hover:bg-opacity-90"
+              type=""
+              onClick={async (e) => {
+                e.preventDefault();
+                handleGetClassreport();
+                //  await ref.current.openPrintDialog();
+              }}
+            >
+              Get Class Report
+            </button>
+          </div>
         </div>
         <div
           className={
@@ -419,12 +446,15 @@ let examinfo ={
         >
           <div className="flex gap-3  flex-col">
             <div className="px-2">
+            <div className={display == true ? '' : 'hidden'}>
               <Table
                 data={data}
                 pagination={pagination}
                 layout={{ custom: true }}
                 theme={theme}
               >
+                      
+
                 {(tableList) => (
                   <>
                     <Header>
@@ -436,7 +466,7 @@ let examinfo ={
                       </HeaderRow>
                     </Header>
 
-                    <Body>
+                    <Body  >
                       {tableList.map((item) => (
                         <Row key={item?.student_id} item={item} className="">
                           <Cell className="  ">
@@ -453,35 +483,30 @@ let examinfo ={
                           <Cell>
                             <div className="gap-2 flex">
                               <TableBtn
-                                   clickFunction={() => {
-                                    if(clazz == 'None' ) return toast.error('Select Exam Group');
-                                    else if(sectionzz == undefined ) return toast.error('Select Session');
-                                    setVal(item)
+                                clickFunction={() => {
+                                  if (clazz == 'None')
+                                    return toast.error('Select Exam Group');
+                                  else if (sectionzz == undefined)
+                                    return toast.error('Select Session');
+                                  setVal2(item);
 
-                                    handleGetstudentreport(item?.student_id);
-                                  }}
-                                text={'Add Remarks'}
+                                  setVisible5(true);
+                                }}
+                                text={'Update Remarks'}
                                 color={'bg-primary'}
                               />
-                              <TableBtn
-                                  clickFunction={() => {
-                                    if(clazz == 'None' ) return toast.error('Select Exam Group');
-                                    else if(sectionzz == undefined ) return toast.error('Select Session');
-                                    setVal(item)
-                                    handleGetstudentreport(item?.student_id);
-                                  }}
-                                text={'View'}
-                                color={'bg-primary'}
-                              />
+
                               <TableBtn
                                 clickFunction={() => {
-                                  if(clazz == 'None' ) return toast.error('Select Exam Group');
-                                  else if(sectionzz == undefined ) return toast.error('Select Session');
-                                  setVal(item)
+                                  if (clazz == 'None')
+                                    return toast.error('Select Exam Group');
+                                  else if (sectionzz == undefined)
+                                    return toast.error('Select Session');
+                                  setVal(item);
 
                                   handleGetstudentreport(item?.student_id);
                                 }}
-                                text={'Print'}
+                                text={'View / Print'}
                                 color={'bg-primary'}
                               />
                             </div>
@@ -491,7 +516,10 @@ let examinfo ={
                     </Body>
                   </>
                 )}
+
               </Table>
+              </div>
+
             </div>
             <div
               className=" align-middle"
@@ -537,6 +565,7 @@ let examinfo ={
                 ))}
               </span>
             </div>
+
             <div className="hidden">
               <Table
                 id="my-table"
@@ -553,6 +582,7 @@ let examinfo ={
                     </Header>
 
                     <Body>
+                      
                       {tableList.map((item) => (
                         <Row
                           key={item.examsid}
