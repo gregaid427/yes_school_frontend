@@ -66,29 +66,27 @@ const NewExamsModal = (props) => {
     chosen[0]?.classworkpercent +
     '-' +
     chosen[0]?.otherscorepercent;
-  let navigate = useNavigate()
-
+  let navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
       examgroup: examgroupoption,
       section: props.val?.section,
-      class: props.val?.title == undefined ? props.val?.class :props.val?.title,
+      class:
+        props.val?.title == undefined ? props.val?.class : props.val?.title,
       subjects: selectsubject,
       session: sessionz,
       examtable: 'exam' + sessionz.split(' ').join(''),
-      chosengrade:  chosen[0]?.gradetitle,
-      examgrade:  chosen[0]?.exampercent  ,
-      classgrade:  chosen[0]?.classworkpercent  ,
-      othergrade:  chosen[0]?.otherscorepercent  ,
-
-
+      chosengrade: chosen[0]?.gradetitle,
+      examgrade: chosen[0]?.exampercent,
+      classgrade: chosen[0]?.classworkpercent,
+      othergrade: chosen[0]?.otherscorepercent,
+      classcode: props.val?.classId,
     };
-
 
     console.log(data);
     navigate('/exam/addresult', {
-      state: { action: 1, value: data},
+      state: { action: 1, value: data },
     });
     // dispatch(CreateExamAction(data));
   };

@@ -322,6 +322,7 @@ const NewExam = () => {
                                   clickFunction={() => {
                                     setVisible(true);
                                     setVal(item);
+                                   // console.log(item)
                                   }}
                                   text={'Add Result'}
                                   color={'bg-primary'}

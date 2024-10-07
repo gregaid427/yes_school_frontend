@@ -162,7 +162,7 @@ const ClassReportModal = (props) => {
               >
                                     {props?.result?.map((value, index) => (
                 <div
-                  className="w-full flex flex-col   py-3"
+                  className="w-full flex flex-col   py-10"
                   style={{pageBreakAfter:'always' }}
                 >
                   <div className="w-full ">
@@ -343,14 +343,15 @@ const ClassReportModal = (props) => {
                             props?.val?.scholarship < 1 ? 'hidden' : 'w-full'
                           }
                         >
-                          <tr className="w-full  border-stroke  dark:border-strokedark ">
+                         <tr className="w-full  border-stroke  dark:border-strokedark ">
                             {' '}
                             <th className="text-sm  font-light w-1/12"></th>
                             <th className="text-sm text-right font-light w-6/12">
-                              ........{' '}
+                              Class Rank :
                             </th>
-                            <th className="text-sm font-light w-4/12">
-                              .........
+                            <th className="text-sm font-light w-full">
+                           {value[0]?.overallposition }  of  {value[0]?.classize }  
+
                             </th>
                           </tr>
                         </thead>
@@ -389,7 +390,8 @@ const ClassReportModal = (props) => {
                   <div>
                     <div className="text-sm mt-6  w-full mb-5">
                       <p className=" ">Teacher's Remark</p>
-                      <p className="">.........................</p>
+                      <p className=""> {props.examinfo?.result[0]?.teacherreamark } </p>
+
                       <p className="text-center w-4/12 ">
                         {props?.response?.collectedby}
                       </p>

@@ -136,7 +136,7 @@ const ExamResultModal = (props) => {
   return (
     <div className="flex gap-2 row">
       <div className="w-full flex-col">
-        <div className="mb-4">
+        <div className="mb-4 ">
           <div className="rounded-sm border flex justify-between border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <h3 className="font-medium py-3 px-2 text-black dark:text-white">
               Examination Result
@@ -263,7 +263,7 @@ const ExamResultModal = (props) => {
                               <span>{item.examremark}</span>
                             </Cell>
                             <Cell className="  ">
-                              <span>{item.positions}</span>
+                              <span>{item.classposition}</span>
                             </Cell>
                           </Row>
                         ))}

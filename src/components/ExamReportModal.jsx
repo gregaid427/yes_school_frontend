@@ -335,10 +335,11 @@ const ExamReportModal = (props) => {
                             {' '}
                             <th className="text-sm  font-light w-1/12"></th>
                             <th className="text-sm text-right font-light w-6/12">
-                              ........{' '}
+                              Class Rank :
                             </th>
-                            <th className="text-sm font-light w-4/12">
-                              .........
+                            <th className="text-sm font-light w-full">
+                           {props.examinfo?.result[0]?.overallposition }  of  {props.examinfo?.result[0]?.classize }  
+
                             </th>
                           </tr>
                         <thead className="w-full   ">

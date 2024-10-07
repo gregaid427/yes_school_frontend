@@ -325,7 +325,7 @@ export const FetchClassReportAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/exam/getClassreport`,
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/generatexlassreport`,
         payload,
       );
       if (data?.success == 1 && data?.data.length == 0) {

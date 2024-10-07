@@ -208,7 +208,7 @@ const ExamReportDetail = () => {
 
   const [display, setDisplay] = useState(false);
 
-  const [position, setPosition] = useState('center');
+  const [btn, setBtn] = useState('center');
   const [val2, setVal2] = useState(false);
 
   const mydata = {
@@ -216,12 +216,13 @@ const ExamReportDetail = () => {
     examgroup: clazz,
   };
   function handleGetData() {
+    setBtn(true)
     dispatch(FetchExamCustomAction(mydata));
   }
 
   useEffect(() => {
     console.log(FetchExamCustom?.data?.length)
-    if (FetchExamCustom?.data?.length >0) {
+    if (FetchExamCustom?.data?.length >0 && btn) {
       let data = FetchExamCustom?.data;
       setDisplay(true);
     }
@@ -241,6 +242,7 @@ const ExamReportDetail = () => {
   }
   function handleGetClassreport() {
     let data = {
+      classcode: info?.classId,
       clazz: info?.title,
       section: info?.section,
       session: sectionzz,
@@ -248,6 +250,7 @@ const ExamReportDetail = () => {
     };
     dispatch(FetchClassReportAction(data));
   }
+
   useEffect(() => {
     dispatch(fetchAllsessionAction());
   }, []);
@@ -343,8 +346,8 @@ const ExamReportDetail = () => {
           }
         >
           <div className="w-full  flex gap-7">
-            <div className=" flex w-9/12 gap-3">
-              <div className="sm:w-2/5 ">
+            <div className=" flex w-10/12 gap-3">
+              <div className="sm:w-3/5 ">
                 <div>
                   <label
                     className="mb-1 block text-sm font-medium text-black dark:text-white"
@@ -435,9 +438,10 @@ const ExamReportDetail = () => {
                 //  await ref.current.openPrintDialog();
               }}
             >
-              Get Class Report
+              Generate Class Report
             </button>
           </div>
+          
         </div>
         <div
           className={

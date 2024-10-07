@@ -234,8 +234,10 @@ const AddExamResult = (props) => {
     otherpercent: value?.othergrade,
     gradeArray: singleGrade,
     classes: value?.class,
+    classcode: value?.classcode,
     section: value?.section == null ? '-' : value?.section,
     createdby: 'Asante',
+    classsize: nodes.length
   };
   function handleSubmitResult() {
     //when no student
@@ -274,7 +276,7 @@ const AddExamResult = (props) => {
       <Dialog
         visible={visible}
         position={'top'}
-        style={{ height: 'auto', width: '70%' ,margin:'50px 0 0 125px'}}
+        style={{ height: 'auto', width: '75%' ,margin:'50px 0 0 125px'}}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
