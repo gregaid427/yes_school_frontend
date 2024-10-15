@@ -165,7 +165,7 @@ const ExamResultModal = (props) => {
                   Download Page (Excel)
                 </label>
               </div>
-              
+
               <div className="w-full sm:w-2/5">
                 <label
                   className="pt-2 block text-sm font-medium text-ash dark:text-white"
@@ -174,7 +174,7 @@ const ExamResultModal = (props) => {
                     props.close(false);
                   }}
                 >
-            Close Page
+                  Close Page
                 </label>
               </div>
             </div>

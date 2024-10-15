@@ -54,7 +54,7 @@ const ExamList = () => {
   const exam = useSelector((state) => state?.exam);
   const { FetchExamList, Createexam, FetchExamCustom } = exam;
 
-  const [pagesval, setpagesval] = useState(30);
+  const [pagesval, setpagesval] = useState(50);
 
   const [loader, setLoader] = useState(true);
 
@@ -62,7 +62,6 @@ const ExamList = () => {
   const [datacart, setdatacart] = useState([]);
   const [val, setVal1] = useState([]);
 
-  
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -136,7 +135,7 @@ const ExamList = () => {
   const pagination = usePagination(data, {
     state: {
       page: 0,
-      size: 30,
+      size: 50,
     },
     onChange: onPaginationChange,
   });
@@ -158,7 +157,7 @@ const ExamList = () => {
   const [visible, setVisible] = useState(false);
   const [visible4, setVisible4] = useState(false);
   const [classes, setClass] = useState();
-  
+
   const [visible6, setvisible6] = useState(false);
 
   const [position, setPosition] = useState('center');
@@ -174,7 +173,7 @@ const ExamList = () => {
     dispatch(fetchAllsessionAction());
     // dispatch(fetchAllClass());
   }, []);
-  console.log(val)
+  console.log(val);
 
   return loader ? (
     <Loader />
@@ -352,7 +351,6 @@ const ExamList = () => {
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
                         <HeaderCell>Class/Section</HeaderCell>
-                      
 
                         <HeaderCell>Exam Group/Session</HeaderCell>
                         <HeaderCell>Subject</HeaderCell>
@@ -376,7 +374,6 @@ const ExamList = () => {
 
                           <Cell className="  ">{item.subject}</Cell>
 
-
                           {/* <Cell className="  ">{item.createdby }</Cell> */}
 
                           <Cell>
@@ -385,20 +382,19 @@ const ExamList = () => {
                                 clickFunction={() => {
                                   setClass(item);
                                   setVisible2(true);
-                                  
-    navigate('/exam/viewresult', {
-      state: {
-        action: 1,
-        value: item,
-        chosensubject: item.subject,
-        examgroup: item.examgroup,
-        session: item.session,
-        createdat: item.createdat,
-        createdby: item.createdby,
-        examid:item.code
 
-      },
-    });
+                                  navigate('/exam/viewresult', {
+                                    state: {
+                                      action: 1,
+                                      value: item,
+                                      chosensubject: item.subject,
+                                      examgroup: item.examgroup,
+                                      session: item.session,
+                                      createdat: item.createdat,
+                                      createdby: item.createdby,
+                                      examid: item.code,
+                                    },
+                                  });
                                 }}
                                 text={'View Result'}
                                 color={'bg-primary'}
@@ -421,8 +417,6 @@ const ExamList = () => {
                               {/* <ViewSVG
                                 clickFunction={() => item.amount == null ?"" : handleViewbtn(item.title)}
                               /> */}
-
-                            
                             </div>
                           </Cell>
                         </Row>
@@ -446,7 +440,7 @@ const ExamList = () => {
                   </span>
                   <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
                     <SelectGroupTwo
-                      values={[30, 50, 100, 200, 500, 'All']}
+                      values={[ 50, 100, 200, 500, 'All']}
                       setSelectedOption={(val) => setpagesval(val)}
                       selectedOption={pagesval}
                     />

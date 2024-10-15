@@ -39,6 +39,38 @@ export const CreatesGradeGroupAction = createAsyncThunk(
   },
 );
 
+export const UpdateGradeGroupAction = createAsyncThunk(
+  'create/UpdateGradeGroup',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/updategradegroup`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Updated Successfully');
+      }
+
+      if (data?.success == undefined && data?.data == undefined) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+      if (data?.success == 0 && data?.data == null) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const CreateExamGroupAction = createAsyncThunk(
   'create/ExamGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -74,6 +106,35 @@ export const FetchExamGroupAction = createAsyncThunk(
         payload,
       );
 
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const SubmitUpdatedResultAction = createAsyncThunk(
+  'create/UpdateExamResult',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/Updateexamresult`,
+        payload,
+      );
+
+      if (data?.success == 1) {
+        toast.success('Result Submitted Successfully');
+
+        // toast.error(data.message);
+      }
       if (data?.success == 0) {
         toast.error(data?.message);
 
@@ -374,6 +435,23 @@ export const TeacherRemarkAction = createAsyncThunk(
     }
   },
 );
+export const fetchExamByCodeAction = createAsyncThunk(
+  'fetch/ClassExam',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/exambycode`,payload
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const FetchSingleReportAction = createAsyncThunk(
   'get/singlereport',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -402,11 +480,64 @@ export const FetchSingleReportAction = createAsyncThunk(
   },
 );
 
+export const GetgradegroupAction = createAsyncThunk(
+  'get/gradegroupid',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/gradegroupbyid`,
+        payload,
+      );
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const UpdateExamCartegoryAction = createAsyncThunk(
+  'update/examCartegory',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/updateexamcartegory`,
+        payload,
+      );
+      if (data?.success == 1 ) {
+        toast.success('Updated Successfully');
+      }
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 
 const ExamSlices = createSlice({
   name: 'Exam',
   initialState: {
     ExamResultArray: [],
+    ExamGradeResult : []
   },
   reducers: {
     ResetTeacherRemark(state, data) {
@@ -420,6 +551,7 @@ const ExamSlices = createSlice({
     },
     setExamResult(state, data) {
       state.ExamResultArray = data;
+      console.log(state.ExamResultArray)
     },
     resetcreateGradeGroup(state) {
       state.Gradegroup = null;
@@ -433,6 +565,19 @@ const ExamSlices = createSlice({
     resetsubmitresult(state) {
       state.submitResult = null;
     },
+    resetExamCart(state) {
+      state.UpdateExamCartegory = null;
+    },
+    resetcreateGetGradeGroup(state) {
+      state.Getgradegroup = null;
+      state.UpdateGradeGroup = null;
+
+    },
+    ExamResultGrade(state,data) {
+      state.ExamGradeResult = data;
+
+    },
+    
   },
   extraReducers: (builder) => {
     builder.addCase(CreatesGradeGroupAction.pending, (state, action) => {
@@ -449,7 +594,60 @@ const ExamSlices = createSlice({
       state.Gradegrouperror = action.payload;
       state.Gradegroup = undefined;
     });
+
+
+    builder.addCase(UpdateGradeGroupAction.pending, (state, action) => {
+      state.UpdateGradeGrouploading = true;
+      state.UpdateGradeGroup = false;
+    });
+    builder.addCase(UpdateGradeGroupAction.fulfilled, (state, action) => {
+      state.UpdateGradeGroup = action?.payload;
+      state.UpdateGradeGrouploading = false;
+      state.UpdateGradeGrouperror = undefined;
+    });
+    builder.addCase(UpdateGradeGroupAction.rejected, (state, action) => {
+      state.UpdateGradeGrouploading = false;
+      state.UpdateGradeGrouperror = action.payload;
+      state.UpdateGradeGroup = undefined;
+    });
+
     
+    builder.addCase(GetgradegroupAction.pending, (state, action) => {
+      state.Getgradegrouploading = true;
+      state.Getgradegroup = false;
+    });
+    builder.addCase(GetgradegroupAction.fulfilled, (state, action) => {
+      state.Getgradegroup = action?.payload;
+      state.Getgradegrouploading = false;
+      state.Getgradegrouperror = undefined;
+    });
+    builder.addCase(GetgradegroupAction.rejected, (state, action) => {
+      state.Getgradegrouploading = false;
+      state.Getgradegrouperror = action.payload;
+      state.Getgradegroup = undefined;
+    });
+
+    
+      builder.addCase(UpdateExamCartegoryAction.pending, (state, action) => {
+        state.UpdateExamCartegoryloading = true;
+        state.UpdateExamCartegory = false;
+      });
+      
+      builder.addCase(UpdateExamCartegoryAction.fulfilled, (state, action) => {
+        state.UpdateExamCartegory = action?.payload;
+        state.createxamgroup = action?.payload;
+
+        state.UpdateExamCartegoryloading = false;
+        state.UpdateExamCartegoryerror = undefined;
+      });
+      builder.addCase(UpdateExamCartegoryAction.rejected, (state, action) => {
+        state.UpdateExamCartegoryloading = false;
+        state.UpdateExamCartegoryerror = action.payload;
+        state.UpdateExamCartegory = undefined;
+        state.createxamgroup = undefined;
+
+      });
+
       builder.addCase(TeacherRemarkAction.pending, (state, action) => {
         state.TeacherRemarkloading = true;
         state.TeacherRemark = false;
@@ -480,7 +678,20 @@ const ExamSlices = createSlice({
       state.ClassReporterror = action.payload;
       state.ClassReport = undefined;
     });
-
+    builder.addCase(fetchExamByCodeAction.pending, (state, action) => {
+      state.fetchExamByCodeloading = true;
+      state.fetchExamByCode = false;
+    });
+    builder.addCase(fetchExamByCodeAction.fulfilled, (state, action) => {
+      state.fetchExamByCode = action?.payload;
+      state.fetchExamByCodeloading = false;
+      state.fetchExamByCodeerror = undefined;
+    });
+    builder.addCase(fetchExamByCodeAction.rejected, (state, action) => {
+      state.fetchExamByCodeloading = false;
+      state.fetchExamByCodeerror = action.payload;
+      state.fetchExamByCode = undefined;
+    });
     builder.addCase(FetchSingleReportAction.pending, (state, action) => {
       state.SingleReportloading = true;
       state.SingleReport = false;
@@ -520,6 +731,20 @@ const ExamSlices = createSlice({
       state.submitResulterror = undefined;
     });
     builder.addCase(SubmitResultAction.rejected, (state, action) => {
+      state.submitResultloading = false;
+      state.submitResultperror = action.payload;
+      state.submitResult = undefined;
+    });
+    builder.addCase(SubmitUpdatedResultAction.pending, (state, action) => {
+      state.submitResultloading = true;
+      state.submitResult = false;
+    });
+    builder.addCase(SubmitUpdatedResultAction.fulfilled, (state, action) => {
+      state.submitResult = action?.payload;
+      state.submitResultloading = false;
+      state.submitResulterror = undefined;
+    });
+    builder.addCase(SubmitUpdatedResultAction.rejected, (state, action) => {
       state.submitResultloading = false;
       state.submitResultperror = action.payload;
       state.submitResult = undefined;
@@ -685,7 +910,10 @@ export const {
   resetcreateexam,
   setExamResult,
   resetsubmitresult,
-  ResetTeacherRemark
+  ResetTeacherRemark,
+  resetExamCart,
+  resetcreateGetGradeGroup,
+  ExamResultGrade
 } = ExamSlices.actions;
 
 export default ExamSlices.reducer;

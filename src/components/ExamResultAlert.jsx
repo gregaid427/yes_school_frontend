@@ -40,8 +40,8 @@ const ExamResultAlert = (props) => {
                   type=""
                   onClick={(e) => {
                     e.preventDefault();
-                    navigate("/exam/editResult", {
-                      state: { action: 1, value: props.info },
+                    navigate("/exam/editresult", {
+                      state: { action: 1, value: props.info ,examdetail :props.response},
                     });
                     props.close(false);
                   }}

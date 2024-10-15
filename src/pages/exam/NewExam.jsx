@@ -36,6 +36,8 @@ import { fetchSubjectAction } from '../../redux/slices/subjectSlice';
 import { FetchExamGroupAction } from '../../redux/slices/examSlice';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import ExamResultChoiceModal from '../../components/ExamResultChoiceModal';
+import NewExamImportModal from '../../components/NewExamImportModal';
+import { fetchCustomStudentsClassAction, fetchStudentsClassAction, resetFetchCustom } from '../../redux/slices/studentSlice';
 
 const NewExam = () => {
   const formRef1 = useRef();
@@ -68,21 +70,41 @@ const NewExam = () => {
   const [sections, setsections] = useState([]);
 
   const [nodes, setdata] = useState([]);
+  const [classinfo, setClassInfo] = useState();
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
   const ref = useRef({ openPrintDialog: () => Promise });
 
+  const student = useSelector((state) => state?.student);
+
+  const { fetchcustom } = student;
   const clad = useSelector((state) => state?.classes);
 
   const { fetchAllClassNo } = clad;
   const [visible, setVisible] = useState(false);
+  const [visible7, setVisible7] = useState(false);
 
+  
   useEffect(() => {
     // dispatch(fetchAllClass());
     dispatch(fetchAllClassNoAction());
   }, []);
+
+  useEffect(() => {
+
+    if (fetchcustom?.success == 1) {
+      console.log(fetchcustom)
+
+      let data = fetchcustom?.data;
+      setClassInfo(data);
+    if(data?.length)  setVisible7(true)
+      dispatch(resetFetchCustom())
+      console.log(fetchcustom)
+    }
+  }, [fetchcustom]);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -116,7 +138,7 @@ const NewExam = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  50% 30%  20%;
+      --data-table-library_grid-template-columns:  40% 30%  30%;
     `,
       Row: `
   &:nth-of-type(odd) {
@@ -165,7 +187,26 @@ const NewExam = () => {
     dispatch(FetchExamGroupAction());
     dispatch(fetchAllsessionAction());
   }, []);
+  function handleGetClassData(item) {
+    console.log(item);
 
+    let data = {
+      class: item.title,
+      section: item.section,
+    };
+    let data1 = {
+      class: item.title,
+      section: "All Sections" ,
+    };
+    console.log(data);
+    if (item.section == null || item.section == '-') {
+      //  item(clazz)
+      dispatch(fetchStudentsClassAction(data1));
+    }
+    if (item.section) {
+      dispatch(fetchCustomStudentsClassAction(data));
+    }
+  }
   return loader ? (
     <Loader />
   ) : (
@@ -180,6 +221,17 @@ const NewExam = () => {
         }}
       >
         <NewExamsModal close={setVisible} val={val} newsubject={setVisible4} />
+      </Dialog>
+      <Dialog
+        visible={visible7}
+        position={'top'}
+        style={{ height: 'auto', width: '33%' }}
+        onHide={() => {
+          if (!visible7) return;
+          setVisible7(false);
+        }}
+      >
+        <NewExamImportModal close={setVisible7} val={val} student={classinfo} newsubject={setVisible} />
       </Dialog>
       <Dialog
         visible={visible3}
@@ -325,6 +377,17 @@ const NewExam = () => {
                                    // console.log(item)
                                   }}
                                   text={'Add Result'}
+                                  color={'bg-primary'}
+                                />
+                                  <TableBtn
+                                  clickFunction={() => {
+                                   // setVisible7(true);
+                                    setVal(item);
+                                    handleGetClassData(item)
+
+                                   // console.log(item)
+                                  }}
+                                  text={'Import Result'}
                                   color={'bg-primary'}
                                 />
                                 <TableBtn

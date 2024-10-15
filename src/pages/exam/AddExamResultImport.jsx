@@ -54,7 +54,7 @@ import {
 import ExamResultAlert from '../../components/ExamResultAlert';
 import ExamResultModal from '../../components/ExamResultModal';
 
-const AddExamResult = (props) => {
+const AddExamResultImport = (props) => {
   const location = useLocation();
   let student = useSelector((state) => state?.student);
   const [pagesval, setpagesval] = useState(30);
@@ -65,14 +65,13 @@ const AddExamResult = (props) => {
 
   const [FinalResult, setFinalResult] = useState([]);
   const [singleGrade, setSingleGrade] = useState();
-  const [response, setResponse] = useState();
 
-  
   const { fetchcustomstudent } = student;
 
   const exam = useSelector((state) => state?.exam);
-  const { FetchExamResult, SingleGradegroup, ExamResultArray,submitResult } = exam;
-
+  const { FetchExamResult, SingleGradegroup, ExamResultArray, submitResult } =
+    exam;
+  console.log(nodes);
   useEffect(() => {
     if (location?.state == null) {
       return navigate(-1);
@@ -81,22 +80,20 @@ const AddExamResult = (props) => {
       console.log(value);
 
       setVal(value);
-
-      console.log(value);
+      setdata(value?.result);
+      console.log(value?.result);
       console.log(value?.gradingtype);
 
       dispatch(FetchSingleGradeGroupAction({ title: value?.chosengrade }));
 
-      dispatch(
-        fetchStudentsCustomAction({
-          class: value?.class,
-          section: value?.section,
-        }),
-      );
+      // dispatch(
+      //   fetchStudentsCustomAction({
+      //     class: value?.class,
+      //     section: value?.section,
+      //   }),
+      // );
     }
   }, []);
-  console.log(ExamResultArray);
-  console.log('Exam result Array is');
 
   useEffect(() => {
     if (value?.class) {
@@ -122,7 +119,6 @@ const AddExamResult = (props) => {
       let data = fetchAllClassExam?.data;
       console.log(data);
       if (data.length != 0) {
-        setResponse(data)
         setVisible1(true);
         //setdata([])
 
@@ -145,9 +141,8 @@ const AddExamResult = (props) => {
 
   const [value1, setVal1] = useState('Loading...');
 
-
   useEffect(() => {
-    setdata([]);
+    //setdata([]);
   }, []);
 
   let data = { nodes };
@@ -195,21 +190,8 @@ const AddExamResult = (props) => {
   });
 
   function onPaginationChange(action, state) {}
-  
+
   const [Modaldata, setModaldata] = useState();
-
-  const [search, setSearch] = useState('');
-  const [searchval, setSearchval] = useState('First Name');
-
-  data = {
-    nodes: data.nodes.filter((item) =>
-      searchval === 'First Name'
-        ? item.firstName.toLowerCase().includes(search.toLowerCase())
-        : searchval == 'Last Name'
-          ? item.lastName.toLowerCase().includes(search.toLowerCase())
-          : item.student_id.toLowerCase().includes(search.toLowerCase()),
-    ),
-  };
 
   const csvConfig = mkConfig({
     useKeysAsHeaders: true,
@@ -229,7 +211,7 @@ const AddExamResult = (props) => {
     subject: value?.subjects,
     session: value?.session,
     examid: examinationid,
-    result: ExamResultArray.payload,
+    result: value?.result,
     examtable: value?.examtable,
     examgroup: value?.examgroup,
     exampercent: value?.examgrade,
@@ -240,31 +222,31 @@ const AddExamResult = (props) => {
     classcode: value?.classcode,
     section: value?.section == null ? '-' : value?.section,
     createdby: 'Asante',
-    classsize: nodes.length
+    classsize: nodes.length,
   };
   function handleSubmitResult() {
     //when no student
-    if (FinalResult?.length == 0) return toast.error('No Result To Updoad');
     console.log(resultdata);
+
+    if (value?.result?.length == 0) return toast.error('No Result To Updoad');
 
     dispatch(SubmitResultAction(resultdata));
   }
-  useEffect(() => {
-    if (fetchcustomstudent?.success == 1) {
-      let data = fetchcustomstudent?.data;
-      setdata(data);
-      setFinalResult(data);
-    }
-  }, [fetchcustomstudent]);
+  // useEffect(() => {
+  //   if (fetchcustomstudent?.success == 1) {
+  //     let data = fetchcustomstudent?.data;
+  //     setdata(data);
+  //     setFinalResult(data);
+  //   }
+  // }, [fetchcustomstudent]);
 
   useEffect(() => {
     if (submitResult?.success == 1) {
       let data = submitResult?.data;
       setModaldata(data);
-      setVisible(true)
-      dispatch(resetsubmitresult())
-      dispatch(setExamResult([]))
-
+      setVisible(true);
+      dispatch(resetsubmitresult());
+      dispatch(setExamResult([]));
     }
   }, [submitResult]);
 
@@ -279,7 +261,7 @@ const AddExamResult = (props) => {
       <Dialog
         visible={visible}
         position={'top'}
-        style={{ height: 'auto', width: '75%' ,margin:'50px 0 0 125px'}}
+        style={{ height: 'auto', width: '75%', margin: '50px 0 0 125px' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
@@ -294,13 +276,13 @@ const AddExamResult = (props) => {
         position={'top'}
         style={{ height: 'auto', width: '50%' }}
         onHide={() => {
-          if (!visible1) return;
+          if (!visible) return;
           setVisible1(false);
         }}
         draggable={false}
         resizable={false}
       >
-        <ExamResultAlert info={value} response={response} close={setVisible1} />
+        <ExamResultAlert info={value} close={setVisible1} />
       </Dialog>
 
       <div className="flex gap-2 row">
@@ -354,34 +336,9 @@ const AddExamResult = (props) => {
               </div>
               <div className={nodes.length == 0 ? 'hidden' : ''}>
                 <div className="px-7 flex gap-4 justify-between  mb-4">
-                  <div className="w-3/5">
-                    Excel Options
-                    <div className="flex mb-2 gap-4.5">
-                      <button
-                        className="flex w- gap-1 justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={() => {
-                          handleDownloadCSV();
-                        }}
-                      >
-                        <Downloadicon />
-                        Class List (Excel)
-                      </button>
-                      <button
-                        className="flex w- justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handlecreateSection();
-                        }}
-                      >
-                        Upload Result (Excel)
-                      </button>
-                    </div>
-                  </div>
+                  <div></div>
 
                   <div className=" ">
-                    Upload Result
                     <div className="flex   gap-4.5">
                       <button
                         className="flex w- gap-1 justify-center rounded bg-primary py-2 px-5 font-medium text-gray hover:bg-opacity-90"
@@ -456,17 +413,21 @@ const AddExamResult = (props) => {
                                   <span>{item.student_id}</span>
                                 </Cell>
                                 <Cell className="capitalize">
-                                  {item.firstName +
-                                    ' ' +
-                                    item.otherName +
-                                    ' ' +
-                                    item.lastName}
+                                  {item?.firstName == undefined
+                                    ? ''
+                                    : item?.firstName}{' '}
+                                  {item?.otherName == undefined
+                                    ? ''
+                                    : item?.otherName}{' '}
+                                  {item?.lastName == undefined
+                                    ? ''
+                                    : item?.lastName}
                                 </Cell>
                                 <Cell className="  ">
-                                  <span>{item.class}</span>
+                                  <span>{item?.class}</span>
                                 </Cell>
                                 <Cell className="  ">
-                                  <span>{item.section}</span>
+                                  <span>{item?.section}</span>
                                 </Cell>
 
                                 <Cell>
@@ -475,50 +436,56 @@ const AddExamResult = (props) => {
                                       className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       //  key={1}
                                       type="number"
-                                      onChange={(e) => {
-                                        var newData = FinalResult.map((el) => {
-                                          if (el.student_id == item.student_id)
-                                            return Object.assign({}, el, {
-                                              examScore: e.target.value,
-                                            });
-                                          return el;
-                                        });
-                                        setFinalResult(newData);
-                                        dispatch(setExamResult(newData));
-                                      }}
+                                      disabled
+                                      defaultValue={item?.examScore}
+                                      // onChange={(e) => {
+                                      //   var newData = FinalResult.map((el) => {
+                                      //     if (el.student_id == item.student_id)
+                                      //       return Object.assign({}, el, {
+                                      //         examScore: e.target.value,
+                                      //       });
+                                      //     return el;
+                                      //   });
+                                      //   setFinalResult(newData);
+                                      //   dispatch(setExamResult(newData));
+                                      // }}
                                     />
 
                                     <input
                                       className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       //key={1}
                                       type="number"
-                                      onChange={(e) => {
-                                        var newData = FinalResult.map((el) => {
-                                          if (el.student_id == item.student_id)
-                                            return Object.assign({}, el, {
-                                              classWorkScore: e.target.value,
-                                            });
-                                          return el;
-                                        });
-                                        setFinalResult(newData);
-                                        dispatch(setExamResult(newData));
-                                      }}
+                                      defaultValue={item?.classWorkScore}
+                                      disabled
+                                      // onChange={(e) => {
+                                      //   var newData = FinalResult.map((el) => {
+                                      //     if (el.student_id == item.student_id)
+                                      //       return Object.assign({}, el, {
+                                      //         classWorkScore: e.target.value,
+                                      //       });
+                                      //     return el;
+                                      //   });
+                                      //   setFinalResult(newData);
+                                      //   dispatch(setExamResult(newData));
+                                      // }}
                                     />
                                     <input
                                       className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       // key={1}
                                       type="number"
-                                      onChange={(e) => {
-                                        var newData = FinalResult.map((el) => {
-                                          if (el.student_id == item.student_id)
-                                            return Object.assign({}, el, {
-                                              othersScore: e.target.value,
-                                            });
-                                          return el;
-                                        });
-                                        setFinalResult(newData);
-                                        dispatch(setExamResult(newData));
-                                      }}
+                                      defaultValue={item?.othersScore}
+                                      disabled
+                                      // onChange={(e) => {
+                                      //   var newData = FinalResult.map((el) => {
+                                      //     if (el.student_id == item.student_id)
+                                      //       return Object.assign({}, el, {
+                                      //         othersScore: e.target.value,
+                                      //       });
+                                      //     return el;
+                                      //   });
+                                      //   setFinalResult(newData);
+                                      //   dispatch(setExamResult(newData));
+                                      // }}
                                     />
                                   </div>
                                 </Cell>
@@ -615,4 +582,4 @@ const AddExamResult = (props) => {
   );
 };
 
-export default AddExamResult;
+export default AddExamResultImport;

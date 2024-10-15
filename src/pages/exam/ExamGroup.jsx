@@ -34,8 +34,12 @@ import {
   CreateExamGroupAction,
   FetchExamGroupAction,
   resetcreategroup,
+  resetExamCart,
 } from '../../redux/slices/examSlice';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
+import { Dialog } from 'primereact/dialog';
+import NewExamsModal from '../../components/NewExamsModal';
+import ExamCartegoryModal from '../../components/ExamCartegoryModal';
 
 const ExamGroup = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -51,12 +55,22 @@ const ExamGroup = () => {
   const dispatch = useDispatch();
 
   const exam = useSelector((state) => state?.exam);
-  const { examgroup, createxamgroup } = exam;
+  const { examgroup, createxamgroup,UpdateExamCartegory } = exam;
 
   useEffect(() => {
     dispatch(FetchExamGroupAction());
     dispatch(fetchAllsessionAction());
   }, []);
+
+  useEffect(() => {
+    if (UpdateExamCartegory?.success == 0) {
+    }
+    if (UpdateExamCartegory?.success == 1) {
+      setVisible(false)
+      
+      dispatch(resetExamCart());
+    }
+  }, [UpdateExamCartegory]);
 
   useEffect(() => {
     if (createxamgroup?.success == 0) {
@@ -137,12 +151,11 @@ const ExamGroup = () => {
   function onPaginationChange(action, state) {}
 
   const handleEditbtn = (value) => {
-    navigate('/academics/subject/editsubject', {
-      state: { info: value },
-    });
+    setVisible(true)
+    setVal(value)
   };
   const handledeletebtn = (value) => {
-    dispatch(DeleteSingleSubjectAction(value));
+   // dispatch(DeleteSingleSubjectAction(value));
   };
 
   const subdata = {
@@ -175,11 +188,24 @@ const ExamGroup = () => {
     const csv = generateCsv(csvConfig)(nodes);
     download(csvConfig)(csv);
   };
-
+  const [visible, setVisible] = useState(false);
+  const [val, setVal] = useState('Loading...');
   return loader ? (
     <Loader />
   ) : (
+    
     <DefaultLayout>
+       <Dialog
+        visible={visible}
+        position={'top'}
+        style={{ height: 'auto', width: '30%' }}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}
+      >
+        <ExamCartegoryModal close={setVisible} val={val}/>
+      </Dialog>
       <div className={'flex gap-2 w-full'}>
         <div className=" w-4/12  gap-8">
           <div className="col-span-12">

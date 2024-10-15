@@ -1,6 +1,3 @@
-
-
-
 import { useEffect, useRef, useState } from 'react';
 import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
 import DefaultLayout from '../../layout/DefaultLayout';
@@ -50,8 +47,13 @@ import AssignFeeModal from '../../components/AssignFeeModal';
 import AssignFeeModalClass from '../../components/AssignFeeModalClass';
 import AssignFeeModalPartial from '../../components/AssignFeeModalPartial';
 import ExamGradeModal from '../../components/ExamGradeModal';
-import { FetchAllGradeGroupAction, FetchGradeGroupAction, resetcreateGradeGroup } from '../../redux/slices/ExamSlice';
-
+import {
+  FetchGradeGroupAction,
+  GetgradegroupAction,
+  resetcreateGetGradeGroup,
+  resetcreateGradeGroup,
+} from '../../redux/slices/examSlice';
+import ExamGradeEditModal from '../../components/ExamGradeEditModal';
 
 const ExamGrade = () => {
   const formRef1 = useRef();
@@ -60,11 +62,10 @@ const ExamGrade = () => {
     formRef1.current.reset();
     console.log('reset');
   }
-  
+
   const exam = useSelector((state) => state?.exam);
-  const { Gradegroup,fetchGradegroup } = exam;
+  const { Gradegroup, fetchGradegroup, Getgradegroup } = exam;
   const fee = useSelector((state) => state?.fees);
-  const { cartegory, Assignfee, AssignfeeGroup,AllAssignfee } = fee;
 
   const [pagesval, setpagesval] = useState(30);
   const [classs, setClass] = useState();
@@ -74,11 +75,8 @@ const ExamGrade = () => {
   const [classname, setclasname] = useState('');
   const [sectionname, setsectionname] = useState('');
 
-
   const [classTitle, setClassTitle] = useState('');
   const [classInstructor, setClassInstructor] = useState('');
-
-  const [propdata, setpropdata] = useState();
 
   const [nodes, setdata] = useState([]);
   const [datacart, setdatacart] = useState([]);
@@ -88,29 +86,18 @@ const ExamGrade = () => {
 
   const clad = useSelector((state) => state?.classes);
 
-  const {
-    fetchAllClassloading,
-    fetchAllClass,
-    sectionloading,
-    CreateClasses,
-    CreateClassesloading,
-  } = clad;
-
   useEffect(() => {
     dispatch(FetchGradeGroupAction());
-   // dispatch(FetchAllGradeGroupAction());
-
-   
+    // dispatch(FetchAllGradeGroupAction());
   }, []);
 
   useEffect(() => {
     if (fetchGradegroup?.success == 0) {
-   
     }
     if (fetchGradegroup?.success == 1) {
       let data = fetchGradegroup?.data;
       setdata(data);
-      console.log(data)
+      console.log(data);
     }
   }, [fetchGradegroup]);
 
@@ -119,24 +106,14 @@ const ExamGrade = () => {
 
     if (Gradegroup?.success == 1) {
       let data = Gradegroup?.data;
+      console.log('response')
+
+      console.log(data)
       setdata(data);
       setVisible(false);
-      dispatch(resetcreateGradeGroup())
+      dispatch(resetcreateGradeGroup());
     }
   }, [Gradegroup]);
-
-  
-  useEffect(() => {
-    setTimeout(() => setLoader(false), 1000);
-
-    if (Gradegroup?.success == 1) {
-      let data = Gradegroup?.data;
-      setdata(data);
-      setVisible(false);
-      dispatch(resetcreateGradeGroup())
-    }
-  }, [Gradegroup]);
-
 
   let data = { nodes };
 
@@ -197,139 +174,31 @@ const ExamGrade = () => {
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
-    setVisible1(true);
-    console.log(AllAssignfee);
-    let myArr = [];
-    myArr = AllAssignfee?.data.filter((item) =>
-      item.class.toLowerCase().includes(value.toLowerCase()),
-    );
-    setpropdata(myArr);
+    console.log(value)
+    dispatch(GetgradegroupAction({ code: value?.gradecode }));
   };
-  const handleEditbtn = (value) => {
-    dispatch(
-      fetchSingleClassAction({
-        classId: value.classId,
-        classTitle: value.title,
-      }),
-    );
-    navigate('/academics/class/editclass', {
-      state: { action: 2, value: value },
-    });
-  };
-
-  useEffect(() => {
-    dispatch(fetchfeeCartegoryAction());
-  }, []);
-
-  useEffect(() => {
-    if (Assignfee?.success == 1) {
-     setVisible(false)
-     setVisible1(false)
-     setVisible2(false)
-
-    }
-  }, [Assignfee]);
-
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (cartegory?.success == 1) {
-      let data = cartegory?.data;
-      setdatacart(data);
+    if (Getgradegroup?.success == 1) {
+      let data = Getgradegroup?.data;
+      console.log(data)
+      setClass(data);
+      setVisible1(true);
+      dispatch(resetcreateGetGradeGroup());
     }
-    // if (loading == false) {
-    //   dispatch(fetchBulkStudent());
-    // }
-
-    // }
-    // datas = data;
-  }, [cartegory]);
-  const classdata = {
-    title: classTitle.toUpperCase(),
-    createdBy: 'Asante',
-    instructor: classInstructor,
+  }, [Getgradegroup]);
+  const handleEditbtn = (value) => {
+    setVisible1(true);
   };
 
-
-
-  
-
-  const csvConfig = mkConfig({
-    useKeysAsHeaders: true,
-    filename: `Admission Template`,
-  });
-  let template = {
-    firstName: '',
-    otherName: '',
-    lastName: '',
-    religion: '',
-    gender: '',
-    dateofbirth: '',
-    accountbalance: '',
-  };
-  const handleDownloadCSV = async () => {
-    const csv = generateCsv(csvConfig)([template]);
-    download(csvConfig)(csv);
-  };
-
-  const [classData, setClassData] = useState([]);
-  const [classData1, setClassData1] = useState([]);
-  const [check, setCheck] = useState(true);
-
-  function handleFileUpload(e) {
-    console.log('called');
-    setCheck(false);
-    const reader = new FileReader();
-    reader.readAsBinaryString(e.target.files[0]);
-    reader.onload = (e) => {
-      const data = e.target.result;
-      const workbook = XLSX.read(data, { type: 'binary' });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const parsedData = XLSX.utils.sheet_to_json(sheet);
-      setClassData(parsedData);
-
-      const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789';
-
-      function generateString(length) {
-        let result = '';
-        const charactersLength = characters.length;
-        for (let i = 0; i < length; i++) {
-          result += characters.charAt(
-            Math.floor(Math.random() * charactersLength),
-          );
-        }
-
-        return result;
-      }
-
-      let newArr1 = parsedData.map((v) => ({
-        ...v,
-        password: generateString(5),
-        email: v.firstName + generateString(3).toLocaleLowerCase(),
-        class: classname,
-        section: sectionname,
-      }));
-      setClassData1(newArr1);
-    };
-  }
-  useEffect(() => {
-    console.log(classData1);
-  }, [classData, check]);
   const [visible, setVisible] = useState(false);
-  const [visible2, setVisible2] = useState(false);
-
 
   const [position, setPosition] = useState('center');
 
   const show = (position) => {
     setPosition(position);
     setVisible(true);
-  };
-  const show1 = (position) => {
-    setPosition(position);
-    setVisible1(true);
   };
 
   return loader ? (
@@ -350,26 +219,15 @@ const ExamGrade = () => {
       <Dialog
         visible={visible1}
         position={'top'}
-        style={{ height: 'auto', width: '35%' }}
+        style={{ height: 'auto', width: '65%' }}
         onHide={() => {
           if (!visible1) return;
           setVisible1(false);
         }}
       >
-        <AssignFeeModalClass close={setVisible1} data={propdata} />
+        <ExamGradeEditModal close={setVisible1} info={classs} />
       </Dialog>
-      <Dialog
-        visible={visible2}
-        position={'top'}
-        style={{ height: 'auto', width: '35%' }}
-        onHide={() => {
-          if (!visible2) return;
-          setVisible2(false);
-        }}
-      >
-        <AssignFeeModalPartial close={setVisible2} data={classs} />
-      </Dialog>
-      
+
       <div className=" flex-col">
         <div
           className={
@@ -379,7 +237,7 @@ const ExamGrade = () => {
           <div className="w-full overflow-x-auto">
             <div className="w-full  flex justify-between  ">
               <h3 className="font-medium text-black py-3 dark:text-white">
-               Marks Grading List
+                Marks Grading List
               </h3>
             </div>
           </div>
@@ -402,7 +260,6 @@ const ExamGrade = () => {
                   Add Grading Group
                 </button>
               </div>
-             
             </div>
             <div className={' w-3/12 flex flex-col '}>
               <div className="flex justify-between align-middle ">
@@ -458,30 +315,35 @@ const ExamGrade = () => {
 
                     <Body>
                       {tableList.map((item) => (
-                        <Row key={item.title} item={item} className=" ">
+                        <Row key={item.gradeid} item={item} className=" ">
                           <Cell className="  ">{item.gradetitle}</Cell>
 
-                          <Cell className="  ">{item.exampercent + ' %' }</Cell>
+                          <Cell className="  ">{item.exampercent + ' %'}</Cell>
 
-                          <Cell className="  ">{item.classworkpercent  + ' %'}</Cell>
-                          <Cell className="  ">{item.otherscorepercent  + ' %'}</Cell>
+                          <Cell className="  ">
+                            {item.classworkpercent + ' %'}
+                          </Cell>
+                          <Cell className="  ">
+                            {item.otherscorepercent + ' %'}
+                          </Cell>
 
                           {/* <Cell className="  ">{item.createdby }</Cell> */}
 
                           <Cell>
                             <div className="gap-1 flex">
-                            <TableBtn
-                                  clickFunction={() => { setClass(item?.title)
-                                    setVisible2(true)}}
-                                  text={' View/Edit '}
-                                  color={'bg-primary'}
-                                />
+                              <TableBtn
+                                clickFunction={() => {
+                                  handleViewbtn(item);
+                                }}
+                                text={' View/Edit '}
+                                color={'bg-primary'}
+                              />
                               {/* <ViewSVG
                                 clickFunction={() => item.amount == null ?"" : handleViewbtn(item.title)}
                               /> */}
 
                               <DeleteSVG
-                                clickFunction={() => handleViewbtn(item)}
+                              // clickFunction={() => handleViewbtn(item)}
                               />
                             </div>
                           </Cell>
@@ -581,10 +443,3 @@ const ExamGrade = () => {
 };
 
 export default ExamGrade;
-
-
-
-
-
-
-  

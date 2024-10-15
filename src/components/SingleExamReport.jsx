@@ -10,6 +10,8 @@ import FeeRadio from './FeeRadio';
 import { PayFeeAction } from '../redux/slices/feeSlice';
 import { Print } from 'print-react';
 import userThree from '../images/user/user-03.png';
+import DefaultLayout from '../layout/DefaultLayout';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 const ExamReportModal = (props) => {
   const ref = useRef({ openPrintDialog: () => Promise });
@@ -17,7 +19,7 @@ const ExamReportModal = (props) => {
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
   const dispatch = useDispatch();
   const inventory = useSelector((state) => state?.inventory);
-
+const navigate = useNavigate()
   const { CreateInventorycart } = inventory;
   const user = useSelector((state) => state?.user);
   const { allschool } = user;
@@ -49,10 +51,29 @@ const ExamReportModal = (props) => {
   const [amount, setAmount] = useState(0);
   const [mode, setmode] = useState('Cash');
   const [sessionz, setsession] = useState(null);
+  const [examinfo, setexaminfo] = useState();
+  const [val, setVal] = useState();
 
+  
   const [pictureurl, setPictureurl] = useState(null);
 
   const formRef1 = useRef();
+  const location = useLocation()
+
+  useEffect(() => {
+    console.log(location?.state)
+    if (location?.state == null) {
+     
+     // return navigate(-1);
+    } else {
+      const { val, examinfo} = location?.state;
+      console.log(val);
+      console.log(examinfo);
+      setexaminfo(examinfo);
+
+      setVal(val);
+    }
+  }, []);
   useEffect(() => {
     if (fetchsessionactive?.success == 1) {
       let data = fetchsessionactive?.data[0];
@@ -64,40 +85,11 @@ const ExamReportModal = (props) => {
     // formRef.current.reset();
     formRef1.current.reset();
   }
-  let balanceresult = eval(
-    parseInt(props.val?.accountbalance) + parseInt(amount),
-  );
-  function receiptidGen() {
-    const max = 100;
-    return Math.floor(Math.random() * (max + 1));
-  }
-  let receiptid = receiptidGen();
-  console.log(receiptid);
-  let date = new Date();
-  date = date.toUTCString().slice(0, 17);
-  let data = {
-    id: props.val?.student_id,
-    class: props.val?.class,
-    section: props.val?.section,
-    collectedby: 'asante',
-    amountpaid: amount,
-    mode: mode,
-    balbeforepayment: props.val?.accountbalance,
-    balanceafterpayment: balanceresult,
-    receiptid: receiptid,
-  };
-  console.log(data);
-  const handleSubmit = (e) => {
-    if (amount < 1) {
-      toast.error('Error - Enter Valid Amount');
-    } else {
-      dispatch(PayFeeAction(data));
-    }
-  };
-  console.log(pictureurl);
-  console.log(props);
+
 
   return (
+    <DefaultLayout>
+
     <div className="w-full">
       <div className="grid  gap-8">
         <div className="col-span-12">
@@ -124,7 +116,7 @@ const ExamReportModal = (props) => {
                   type=""
                   onClick={(e) => {
                     e.preventDefault();
-                    props.close(false);
+                    close(false);
                   }}
                 >
                   Save PDF
@@ -134,10 +126,11 @@ const ExamReportModal = (props) => {
                   type=""
                   onClick={(e) => {
                     e.preventDefault();
-                    props.close(false);
+                    
+                    navigate(-1)
                   }}
                 >
-                  Close
+                  Back
                 </button>
               </div>
             </div>
@@ -198,21 +191,21 @@ const ExamReportModal = (props) => {
                         <div className="w-full flex gap-1">
                           <p className="text-sm  ">Exam :</p>
                           <p className="text-sm  ">
-                            {props?.examinfo?.examgroup} -{' '}
-                            {props?.examinfo?.session}
+                            {examinfo?.examgroup} -{' '}
+                            {examinfo?.session}
                           </p>
                         </div>
 
                         <div className="w-4/12 text-sm">
-                          <p>Student id : {props.val?.student_id}</p>
+                          <p>Student id : {examinfo?.result[0]?.student_id}</p>
 
                           <p>
                             Name :{' '}
-                            {props.val?.firstName +
+                            {val?.firstName +
                               ' ' +
-                              props.val?.otherName +
+                              val?.otherName +
                               ' ' +
-                              props.val?.lastName}
+                              val?.lastName}
                           </p>
 
                           <p></p>
@@ -220,15 +213,15 @@ const ExamReportModal = (props) => {
                         <div className="w-full flex gap-1">
                           <p className="text-sm  ">Class / Section :</p>
                           <p className="text-sm  ">
-                            {props.val?.class}
-                            {props.val?.section == 'NONE'
+                            {val?.class}
+                            {val?.section == 'NONE'
                               ? ''
-                              : '/' + props.val?.section}
+                              : '/' + val?.section}
                           </p>
                         </div>
                         {/* <div className="w-4/12 text-right text-sm">
                         <p>{date}</p>
-                        <p>Receipt No : {props?.response?.receiptid}</p>
+                        <p>Receipt No : {response?.receiptid}</p>
                       </div> */}
                       </div>
                     </div>{' '}
@@ -271,8 +264,8 @@ const ExamReportModal = (props) => {
                           </tr>
                         </thead>
                         <tbody className="w-full border  text-start  border-stroke  dark:border-strokedark">
-                          {props.examinfo?.result?.map((item, index) => (
-                            <tr className=" ">
+                          {examinfo?.result?.map((item, index) => (
+                            <tr key={index} className=" ">
                               <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1  w-1/12">
                                 {item.examid}
                               </td>
@@ -297,7 +290,7 @@ const ExamReportModal = (props) => {
                         {}
                         {/* <thead className="w-full  ">
 
-                        {props.cart?.map((item, index) => (
+                        {cart?.map((item, index) => (
                           <tr className="w-full  ">
                             {' '}
                             <th className="text-sm float-start  font-light w-4/12">
@@ -307,7 +300,7 @@ const ExamReportModal = (props) => {
                               {item?.feename}{' '}
                             </th>
                             <th className="text-sm font-light w-4/12">
-                              {props.val?.preference?.includes(item?.feename)
+                              {val?.preference?.includes(item?.feename)
                                 ? 0
                                 : item?.amount}
                             </th>
@@ -323,7 +316,7 @@ const ExamReportModal = (props) => {
                             Previous Session Arrears 
                             </th>
                             <th className="text-sm font-light w-4/12">
-                            {props?.response?.arrears}
+                            {response?.arrears}
                             </th>
                           </tr>           
 
@@ -338,7 +331,7 @@ const ExamReportModal = (props) => {
                               Class Rank :
                             </th>
                             <th className="text-sm font-light w-full">
-                           {props.examinfo?.result[0]?.overallposition }  of  {props.examinfo?.result[0]?.classize }  
+                           {examinfo?.result[0]?.overallposition }  of  {examinfo?.result[0]?.classize }  
 
                             </th>
                           </tr>
@@ -357,29 +350,29 @@ const ExamReportModal = (props) => {
 
                     {/* <div className="border-l font-thin px-3 text-sm flex float-end flex-col w-5/12 border-stroke  dark:border-strokedark">
                     <div className="flex w-full justify-between float-end">
-                     <p>Amount Paid </p>  {props?.response?.amountpaid}
+                     <p>Amount Paid </p>  {response?.amountpaid}
                     </div> */}
                     {/* <div className="flex float-end">
-                       Arrears : {eval(props.val?.feepayable - props?.response?.balbeforepayment)}
+                       Arrears : {eval(val?.feepayable - response?.balbeforepayment)}
                     </div> */}
                     {/* <div className="flex w-full justify-between float-end">
-                     <p>Previous Session Arrears  </p> {props?.response?.arrears}
+                     <p>Previous Session Arrears  </p> {response?.arrears}
                     </div> */}
                     {/* <div className="flex w-full justify-between float-end">
-                     <p>Balance Before Payment </p> {props?.response?.balbeforepayment}
+                     <p>Balance Before Payment </p> {response?.balbeforepayment}
                     </div>
 
                     <div className="flex w-full justify-between font-bold float-end">
-                     <p>Current Balance </p>  {props?.response?.balanceafterpayment}
+                     <p>Current Balance </p>  {response?.balanceafterpayment}
                     </div>
                   </div> */}
                   </div>
                   <div  style={{  pageBreakAfter: 'always' }}  >
                     <div className="text-sm mt-6  w-full">
                       <p className=" ">Teacher's Remark</p>
-                      <p className=""> {props.examinfo?.result[0]?.teacherreamark } </p>
+                      <p className=""> {examinfo?.result[0]?.teacherreamark } </p>
                       <p className="text-center w-4/12 ">
-                        {props?.response?.collectedby}
+                       
                       </p>
                     </div>
                   </div>
@@ -391,6 +384,8 @@ const ExamReportModal = (props) => {
         </div>
       </div>
     </div>
+    </DefaultLayout>
+
   );
 };
 

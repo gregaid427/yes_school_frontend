@@ -49,7 +49,7 @@ import NewExamsModal from '../../components/NewExamsModal';
 import ViewSVG from '../../components/Svgs/View';
 import { fetchStudentsClassAction } from '../../redux/slices/studentSlice';
 import toast from 'react-hot-toast';
-import ExamReportModal from '../../components/ExamReportModal';
+import ExamReportModal from '../../components/SingleExamReport';
 import ClassReportModal from '../../components/ClassReportModal';
 import RemarksExamModal from '../../components/RemarksExamModal';
 
@@ -78,7 +78,7 @@ const ExamReportDetail = () => {
   const [classdata, setClassdata] = useState([]);
 
   const [datacart, setdatacart] = useState([]);
-  const [val, setVal] = useState([]);
+  const [val, setVal] = useState();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -100,9 +100,15 @@ const ExamReportDetail = () => {
       if (data.length == 0) {
         return toast.error('No Results Available');
       }
+     // setVisible4(true);
+     dispatch(resetclassreport());
+     if(classdata)
+      navigate("/exam/classreport", {
+        state: { action: 1, val: info, examinfo : examinfo, result: data, },
+      });
       setClassdata(data);
-      setVisible4(true);
-      dispatch(resetclassreport());
+
+
     }
   }, [ClassReport]);
 
@@ -115,8 +121,18 @@ const ExamReportDetail = () => {
         return toast.error('No Results Available');
       }
       setsingledata(data);
-      setVisible(true);
+
+    //  setVisible(true);
+    let examinfo = {
+      session: sectionzz,
+      examgroup: clazz,
+      result: data,
+    };
+      navigate("/exam/singlereport", {
+        state: { action: 1, val: val, examinfo : examinfo},
+      });
       dispatch(resetsinglereport());
+
     }
   }, [SingleReport]);
 
@@ -234,7 +250,7 @@ const ExamReportDetail = () => {
 
   function handleGetstudentreport(val) {
     let data = {
-      stdid: val,
+      stdid: val?.student_id,
       session: sectionzz,
       examgroup: clazz,
     };
@@ -258,10 +274,11 @@ const ExamReportDetail = () => {
 
   useEffect(() => {
     if (location?.state == null) {
-      return navigate(-1);
+      //return navigate(-1);
     } else {
       const { value } = location?.state;
       console.log(value);
+      console.log(value)
       setInfo(value);
       let data = {
         class: value?.title,
@@ -508,7 +525,7 @@ const ExamReportDetail = () => {
                                     return toast.error('Select Session');
                                   setVal(item);
 
-                                  handleGetstudentreport(item?.student_id);
+                                  handleGetstudentreport(item);
                                 }}
                                 text={'View / Print'}
                                 color={'bg-primary'}

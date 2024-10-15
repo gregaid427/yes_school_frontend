@@ -2,9 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ClassSelect3 from './ClassSelect3';
 import toast from 'react-hot-toast';
-import { CreatesGradeGroupAction } from '../redux/slices/examSlice';
+import {
+  CreatesGradeGroupAction,
+  UpdateGradeGroupAction,
+} from '../redux/slices/examSlice';
 
-const ExamGradeModal = (props) => {
+const ExamGradeEditModal = (props) => {
+  // console.log(props);
   const dispatch = useDispatch();
   const [display, setDisplay] = useState(0);
   const [display7, setDisplay7] = useState(false);
@@ -81,10 +85,90 @@ const ExamGradeModal = (props) => {
   const [name, setName] = useState('');
   const [classScore, setclassScore] = useState(0);
   const [examScore, setExamScore] = useState(0);
+  useEffect(() => {
+    setDesc(props?.info?.[0]?.desc);
+    setGrade1(props?.info?.[0]?.grades);
+    setMin1(props?.info?.[0]?.min1);
+    setMax1(props?.info?.[0]?.max1);
+    setRemark1(props?.info?.[0]?.scoreremarks);
+
+    setGrade2(props?.info?.[0]?.grade2);
+    setMin2(props?.info?.[0]?.min2);
+    setMax2(props?.info?.[0]?.max2);
+    setRemark2(props?.info?.[0]?.scoreremarks);
+
+    setGrade3(props?.info?.[0]?.grade3);
+    setMin3(props?.info?.[0]?.min3);
+    setMax3(props?.info?.[0]?.max3);
+    setRemark3(props?.info?.[0]?.scoreremarks);
+
+    setGrade4(props?.info?.[0]?.grade4);
+    setMin4(props?.info?.[0]?.min4);
+    setMax4(props?.info?.[0]?.max4);
+    setRemark4(props?.info?.[0]?.scoreremarks);
+
+    setGrade5(props?.info?.[0]?.grade5);
+    setMin5(props?.info?.[0]?.min5);
+    setMax5(props?.info?.[0]?.max5);
+    setRemark5(props?.info?.[0]?.scoreremarks);
+
+    setGrade6(props?.info?.[0]?.grade6);
+    setMin6(props?.info?.[0]?.min6);
+    setMax6(props?.info?.[0]?.max6);
+    setRemark6(props?.info?.[0]?.scoreremarks);
+
+    setGrade7(props?.info?.[0]?.grade7);
+    setMin7(props?.info?.[0]?.min7);
+    setMax7(props?.info?.[0]?.max7);
+    setRemark7(props?.info?.[0]?.scoreremarks);
+
+    setGrade8(props?.info?.[0]?.grade8);
+    setMin8(props?.info?.[0]?.min8);
+    setMax8(props?.info?.[0]?.max8);
+    setRemark8(props?.info?.[0]?.scoreremarks);
+
+    setGrade9(props?.info?.[0]?.grade9);
+    setMin9(props?.info?.[0]?.min9);
+    setMax9(props?.info?.[0]?.max9);
+    setRemark9(props?.info?.[0]?.scoreremarks);
+
+    setGrade10(props?.info?.[0]?.grade10);
+    setMin10(props?.info?.[0]?.min10);
+    setMax10(props?.info?.[0]?.max10);
+    setRemark10(props?.info?.[0]?.scoreremarks);
+
+    setName(props?.info?.[0]?.gradetitle);
+    setclassScore(props?.info?.[0]?.classworkpercent);
+    setExamScore(props?.info?.[0]?.exampercent);
+    setOtherScore(props?.info?.[0]?.otherscorepercent);
+    setDesc(props?.info?.[0]?.notes);
+
+
+
+
+  }, [props]);
+   console.log(props);
+  let obj = {
+    title: props?.info?.gradetitle,
+    notes: props?.info?.notes,
+    class: props?.info?.notes,
+    exam: props?.info?.exam,
+    other: props?.info?.other,
+  };
+
+  useEffect(() => {
+    console.log(props)
+    obj['notes'] = props?.info?.[0]?.notes
+    obj['class'] =  props?.info?.[0]?.classworkpercent,
+    obj['title'] = props?.info?.[0]?.gradetitle,
+    obj['exam']  = props?.info?.[0]?.exampercent,
+    obj['other'] = props?.info?.[0]?.otherscorepercent
+    console.log(obj)
+  }, []);
 
   let finalArray = [];
-  console.log(typeof classScore + typeof examScore);
-  const handleSubmit = () => {
+  //  console.log(typeof classScore + typeof examScore);
+  async function handleSubmit(obj) {
     if (name == '') {
       return toast.error('Error -Grade title canot Be Empty');
     } else if (
@@ -132,25 +216,44 @@ const ExamGradeModal = (props) => {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
       let code = getRandomNumber(1000, 100);
-      const data = {
-        code: code,
-        title: name,
-        classscore: classScore,
-        examScore: examScore,
-        otherScore: otherScore,
+      async function getarray(newArray) {
+        let arrays = [];
+        for (const i of newArray) {
+          arrays.push([i.minscore, i.maxscore, i.grades, i.scoreremarks]);
+          // setData1()
+          // console.log(i);
+          // console.log(arrays);
+          //  setNewArray(arrays)
+          newArray = arrays;
+        }
+        return arrays;
+      }
+      async function main(newArray) {
+        console.log('Array.forEach() has finished running.');
 
-        notes: desc,
-        grades: finalArray,
+        return await getarray(newArray);
+      }
+
+      let result = await main(newArray);
+      console.log(obj)
+
+      const data = {
+        code: props?.info[0]?.gradecode,
+        title: obj?.title,
+        classscore: obj?.class,
+        examScore: obj?.exam,
+        otherScore: obj?.other,
+        notes: obj.notes,
+        grades: newArray,
         createdby: 'Asante',
       };
 
       console.log(data);
-      console.log(finalArray);
+      //  console.log(finalArray);
 
-      dispatch(CreatesGradeGroupAction(data));
+        dispatch(UpdateGradeGroupAction(data));
     }
-  };
-
+  }
   useEffect(() => {
     if (Gradegroup?.success == 0) {
       finalArray = [];
@@ -159,6 +262,29 @@ const ExamGradeModal = (props) => {
       finalArray = [];
     }
   }, [Gradegroup]);
+  const [newdata, setData] = useState([]);
+  //let newArray = [...props?.info]
+
+  let newArray1 = JSON.parse(JSON.stringify(props?.info));
+  let newArray = newArray1;
+  // const [newdata, setData] = useState([]);
+  // //let newArray = [...props?.info]
+  // const [newdata1, setData1] = useState([]);
+  //  const [newdata11, setData11] = useState([]);
+  // let newArray = [];
+  // useEffect(() => {
+  //   // let newArray1 = JSON.parse(JSON.stringify(props?.info));
+  //   let arrays = [];
+  //   for (const i of JSON.parse(JSON.stringify(props?.info))) {
+  //     arrays.push([i.minscore, i.maxscore, i.grades, i.scoreremarks]);
+  //     // setData1()
+  //     console.log(i);
+  //     console.log(arrays);
+  //     //  setNewArray(arrays)
+  //     newArray = arrays;
+  //   }
+  //   console.log('newdata1 vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')
+  // }, []);
 
   return (
     <div className="w-full">
@@ -168,7 +294,7 @@ const ExamGradeModal = (props) => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">
               <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                 <h3 className="font-medium  text-black dark:text-white">
-                  Add Marks Grading Group
+                  Edit Marks Grading Group
                 </h3>
               </div>
               <div className="px-1 py-3">
@@ -193,8 +319,18 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
-                            onChange={(e) => setName(e.target.value)}
+                            defaultValue={props?.info?.[0].gradetitle}
+                            onChange={(e) => {
+                              // for (let i = 0; i < newArray.length; i++) {
+                              //  let val = newArray[i]
+                              //   val['gradetitle'] = e.target.value;
+                              // }
+                              // let val = props?.info
+                              // console.log(val)
+                              obj['title'] = e.target.value;
+                              //setName(e.target.value);
+                              // setData(newArray);
+                            }}
                           />
                         </div>
 
@@ -212,10 +348,14 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={0}
-                              onChange={(e) =>
-                                setclassScore(parseFloat(e.target.value))
-                              }
+                              defaultValue={props?.info?.[0].classworkpercent}
+                              onChange={(e) => {
+                                // for (let i = 0; i < newArray.length; i++) {
+                                //   newArray[i].classworkpercent = e.target.value;
+                                // }
+                                obj['class'] = e.target.value;
+                                //setData(newArray);
+                              }}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/3">
@@ -231,10 +371,13 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={0}
-                              onChange={(e) =>
-                                setExamScore(parseFloat(e.target.value))
-                              }
+                              defaultValue={props?.info?.[0].exampercent}
+                              onChange={(e) => {
+                                // for (let i = 0; i < newArray.length; i++) {
+                                //   newArray[i].exampercent = e.target.value;
+                                // }
+                                obj['exam'] = e.target.value;
+                              }}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/3">
@@ -250,10 +393,14 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={0}
-                              onChange={(e) =>
-                                setOtherScore(parseFloat(e.target.value))
-                              }
+                              defaultValue={props?.info?.[0].otherscorepercent}
+                              onChange={(e) => {
+                                // for (let i = 0; i < newArray.length; i++) {
+                                //   newArray[i].otherscorepercent =
+                                //     e.target.value;
+                                // }
+                                obj['other'] = e.target.value;
+                              }}
                             />
                           </div>
                         </div>
@@ -271,8 +418,16 @@ const ExamGradeModal = (props) => {
                               name="bio"
                               id="bio"
                               rows={2}
-                              placeholder=""
-                              onChange={(e) => setDesc(e.target.value)}
+                              defaultValue={props?.info?.[0]?.notes}
+                              onChange={(e) => {
+                                // for (let i = 0; i < newArray.length; i++) {
+                                //   newArray[i].notes = e.target.value;
+                                // }
+                                // setDesc(e.target.value);
+                                // setData(newArray);
+                                obj['notes'] = e.target.value;
+
+                              }}
                             ></textarea>
                           </div>
                         </div>
@@ -284,7 +439,7 @@ const ExamGradeModal = (props) => {
                             type=""
                             onClick={(e) => {
                               e.preventDefault();
-                              handleSubmit(e);
+                              handleSubmit(obj);
                             }}
                           >
                             Save
@@ -302,7 +457,7 @@ const ExamGradeModal = (props) => {
                             type=""
                             onClick={(e) => {
                               e.preventDefault();
-                              props.close(false);
+                              props?.close(false);
                             }}
                           >
                             Close
@@ -311,7 +466,96 @@ const ExamGradeModal = (props) => {
                       </div>
                     </div>
                     <div className="py-3 w-7/12">
-                      <div className="flex row gap-1">
+                      {props.info?.map((item, index) => (
+                        <div className="flex row gap-1">
+                          <div className="w-full mb-1 sm:w-1/6">
+                            <label
+                              className="mb-1 block text-sm font-medium text-black dark:text-white"
+                              htmlFor=""
+                            >
+                              Min %{' '}
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="number"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={props?.info?.[index].minscore}
+                              onChange={(e) => {
+                                newArray[index].minscore = e.target.value;
+                                // setData(newArray);
+                                console.log(newArray);
+                              }}
+                            />
+                          </div>
+                          <div className="w-full mb-2 sm:w-1/6">
+                            <label
+                              className="mb-1 block text-sm font-medium text-black dark:text-white"
+                              htmlFor=""
+                            >
+                              Max %{' '}
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="number"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={props?.info?.[index].maxscore}
+                              onChange={(e) => {
+                                newArray[index].maxscore = e.target.value;
+                                // setData(newArray);
+                                console.log(newArray);
+                              }}
+                            />
+                          </div>
+                          <div className="w-full mb-2 sm:w-1/6">
+                            <label
+                              className="mb-1 block text-sm font-medium text-black dark:text-white"
+                              htmlFor=""
+                            >
+                              Grade{' '}
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={props?.info?.[index].grades}
+                              onChange={(e) => {
+                                newArray[index].grades = e.target.value;
+                                //   setData(newArray);
+                                console.log(newArray);
+                              }}
+                            />
+                          </div>
+                          <div className="w-full mb-2 sm:w-3/6">
+                            <label
+                              className="mb-1 block text-sm font-medium text-black dark:text-white"
+                              htmlFor=""
+                            >
+                              Remarks{' '}
+                            </label>
+                            <input
+                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name=""
+                              id=""
+                              placeholder=""
+                              defaultValue={props?.info?.[0].scoreremarks}
+                              onChange={(e) => {
+                                let val = newArray[index];
+                                console.log(val);
+                                val['scoreremarks'] = e.target.value;
+                                // setData(newArray);
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                      {/* <div className="flex row gap-1">
                         <div className="w-full mb-1 sm:w-1/6">
                           <label
                             className="mb-1 block text-sm font-medium text-black dark:text-white"
@@ -325,77 +569,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
-                            onChange={(e) => setMin1(e.target.value)}
-                          />
-                        </div>
-                        <div className="w-full mb-2 sm:w-1/6">
-                          <label
-                            className="mb-1 block text-sm font-medium text-black dark:text-white"
-                            htmlFor=""
-                          >
-                            Max %{' '}
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="number"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue=""
-                            onChange={(e) => setMax1(e.target.value)}
-                          />
-                        </div>
-                        <div className="w-full mb-2 sm:w-1/6">
-                          <label
-                            className="mb-1 block text-sm font-medium text-black dark:text-white"
-                            htmlFor=""
-                          >
-                            Grade{' '}
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue=""
-                            onChange={(e) => setGrade1(e.target.value)}
-                          />
-                        </div>
-                        <div className="w-full mb-2 sm:w-3/6">
-                          <label
-                            className="mb-1 block text-sm font-medium text-black dark:text-white"
-                            htmlFor=""
-                          >
-                            Remarks{' '}
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue=""
-                            onChange={(e) => setRemark1(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="flex row gap-1">
-                        <div className="w-full mb-1 sm:w-1/6">
-                          <label
-                            className="mb-1 block text-sm font-medium text-black dark:text-white"
-                            htmlFor=""
-                          >
-                            Min %{' '}
-                          </label>
-                          <input
-                            className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="number"
-                            name=""
-                            id=""
-                            placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[1].minscore}
                             onChange={(e) => setMin2(e.target.value)}
                           />
                         </div>
@@ -412,7 +586,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[1].maxscore}
                             onChange={(e) => setMax2(e.target.value)}
                           />
                         </div>
@@ -429,7 +603,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[1].grades}
                             onChange={(e) => setGrade2(e.target.value)}
                           />
                         </div>
@@ -446,7 +620,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[1].scoreremarks}
                             onChange={(e) => setRemark2(e.target.value)}
                           />
                         </div>
@@ -465,7 +639,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[2].minscore}
                             onChange={(e) => setMin3(e.target.value)}
                           />
                         </div>
@@ -482,7 +656,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[2].maxscore}
                             onChange={(e) => setMax3(e.target.value)}
                           />
                         </div>
@@ -499,7 +673,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[2].grades}
                             onChange={(e) => setGrade3(e.target.value)}
                           />
                         </div>
@@ -516,7 +690,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[2].scoreremarks}
                             onChange={(e) => setRemark3(e.target.value)}
                           />
                         </div>
@@ -535,7 +709,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[3].minscore}
                             onChange={(e) => setMin4(e.target.value)}
                           />
                         </div>
@@ -552,7 +726,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[3].maxscore}
                             onChange={(e) => setMax4(e.target.value)}
                           />
                         </div>
@@ -569,7 +743,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[3].grades}
                             onChange={(e) => setGrade4(e.target.value)}
                           />
                         </div>
@@ -586,7 +760,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[3].scoreremarks}
                             onChange={(e) => setRemark4(e.target.value)}
                           />
                         </div>
@@ -605,7 +779,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[4].minscore}
                             onChange={(e) => setMin5(e.target.value)}
                           />
                         </div>
@@ -622,7 +796,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[4].maxscore}
                             onChange={(e) => setMax5(e.target.value)}
                           />
                         </div>
@@ -639,7 +813,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[4].maxscore}
                             onChange={(e) => setGrade5(e.target.value)}
                           />
                         </div>
@@ -656,7 +830,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[4].scoreremarks}
                             onChange={(e) => setRemark5(e.target.value)}
                           />
                         </div>
@@ -675,7 +849,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[5].minscore}
                             onChange={(e) => {
                               setMin6(e.target.value);
                               setDisplay7(true);
@@ -695,7 +869,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[5].maxscore}
                             onChange={(e) => setMax6(e.target.value)}
                           />
                         </div>
@@ -712,7 +886,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[5].grades}
                             onChange={(e) => setGrade6(e.target.value)}
                           />
                         </div>
@@ -729,7 +903,7 @@ const ExamGradeModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue=""
+                             defaultValue={props?.info?.[5].scoreremarks}
                             onChange={(e) => {
                               setRemark6(e.target.value);
                             }}
@@ -756,7 +930,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[6].minscore}
                               onChange={(e) => {
                                 setMin7(e.target.value);
                                 setDisplay8(true);
@@ -776,7 +950,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[6].maxscore}
                               onChange={(e) => setMax7(e.target.value)}
                             />
                           </div>
@@ -793,7 +967,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[6].grades}
                               onChange={(e) => setGrade7(e.target.value)}
                             />
                           </div>
@@ -810,7 +984,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[6].scoreremarks}
                               onChange={(e) => setRemark7(e.target.value)}
                             />
                           </div>
@@ -833,7 +1007,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[7].minscore}
                               onChange={(e) => {
                                 setMin8(e.target.value);
                                 setDisplay9(true);
@@ -853,7 +1027,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[7].maxscore}
                               onChange={(e) => setMax8(e.target.value)}
                             />
                           </div>
@@ -870,7 +1044,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[7].grades}
                               onChange={(e) => setGrade8(e.target.value)}
                             />
                           </div>
@@ -887,7 +1061,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[7].scoreremarks}
                               onChange={(e) => setRemark8(e.target.value)}
                             />
                           </div>
@@ -910,7 +1084,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[8].minscore}
                               onChange={(e) => {
                                 setMin9(e.target.value);
 
@@ -931,7 +1105,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[8].maxscore}
                               onChange={(e) => setMax9(e.target.value)}
                             />
                           </div>
@@ -948,7 +1122,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[8].grades}
                               onChange={(e) => setGrade9(e.target.value)}
                             />
                           </div>
@@ -965,7 +1139,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[8].scoreremarks}
                               onChange={(e) => setRemark9(e.target.value)}
                             />
                           </div>
@@ -988,7 +1162,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[9].minscore}
                               onChange={(e) => setMin10(e.target.value)}
                             />
                           </div>
@@ -1005,7 +1179,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[9].maxscore}
                               onChange={(e) => setMax10(e.target.value)}
                             />
                           </div>
@@ -1022,7 +1196,7 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[9].grades}
                               onChange={(e) => setGrade10(e.target.value)}
                             />
                           </div>
@@ -1039,342 +1213,13 @@ const ExamGradeModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue=""
+                               defaultValue={props?.info?.[9].scoreremarks}
                               onChange={(e) => setRemark10(e.target.value)}
                             />
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-                <form className={display == 1 ? '' : 'hidden'}>
-                  <div className="flex gap-4">
-                    <div className="w-full">
-                      <div className="w-full mb-2 sm:w-2/2">
-                        <label
-                          className="mb-1 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Class
-                        </label>
-                        <div className="relative z-20 bg-white dark:bg-form-input">
-                          <ClassSelect3
-                            setsectionprop={setclazz}
-                            clazz={clazz}
-                          />
-                        </div>
-                      </div>
-
-                      {/* <div className="w-full mb-1 sm:w-2/2">
-                        <label
-                          className="mb-2 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Academic Session
-                        </label>
-                        <div className="relative z-20 bg-white dark:bg-form-input">
-                          <SessionSelect1 setsectionprop={setSessionoption} />
-                        </div>
                       </div> */}
-                      {/* <div className="w-full  sm:w-2/2">
-                        <div className="flex w-full ">
-                          <div className=" flex   sm:w-1/2">
-                            <div className=" flex  sm:w-full">
-                              <label
-                                className="mb-1 block text-sm font-medium text-black dark:text-white"
-                                htmlFor="checkboxLabelOne"
-                              >
-                                {'Apply'}
-                              </label>
-                            </div>
-
-                            <div className="flex justify-start sm:w-2/4">
-                              <label
-                                htmlFor={'type'}
-                                className="flex cursor-pointer select-none "
-                              >
-                                <div className="relative ">
-                                  <input
-                                    title={'type'}
-                                    type="checkbox"
-                                    id={'type'}
-                                    className="sr-only"
-                                    onChange={() => {
-                                      setIsChecked1(true);
-                                      setType(true);
-                                    }}
-                                  />
-                                  <div
-                                    className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                      isChecked1 &&
-                                      'border-primary bg-gray dark:bg-transparent'
-                                    }`}
-                                  >
-                                    <span
-                                      className={`h-2.5 w-2.5 rounded-sm ${isChecked1 && 'bg-primary'}`}
-                                    ></span>
-                                  </div>
-                                </div>
-                              </label>
-                            </div>
-                          </div>
-
-                          <div className="mb-2 flex   sm:w-1/2">
-                            <div className=" flex  sm:w-full">
-                              <label
-                                className="mb-1 block text-sm font-medium text-black dark:text-white"
-                                htmlFor="checkboxLabelOne"
-                              >
-                                {'Pending'}
-                              </label>
-                            </div>
-
-                            <div className="flex justify-start sm:w-2/4">
-                              <label
-                                htmlFor={'type2'}
-                                className="flex cursor-pointer select-none "
-                              >
-                                <div className="relative ">
-                                  <input
-                                    title={'type2'}
-                                    type="checkbox"
-                                    id={'type2'}
-                                    className="sr-only"
-                                    onChange={() => {
-                                      setIsChecked1(false);
-                                      setType(false);
-                                    }}
-                                  />
-                                  <div
-                                    className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                      !isChecked1 &&
-                                      'border-primary bg-gray dark:bg-transparent'
-                                    }`}
-                                  >
-                                    <span
-                                      className={`h-2.5 w-2.5 rounded-sm ${!isChecked1 && 'bg-primary'}`}
-                                    ></span>
-                                  </div>
-                                </div>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div> */}
-                      <div className="mb-5.5">
-                        <label
-                          className="mb-1 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="emailAddress"
-                        >
-                          Description/Notes
-                        </label>
-                        <div className="relative">
-                          <textarea
-                            className="w-full rounded border border-stroke bg-gray py-2  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            name="bio"
-                            id="bio"
-                            rows={2}
-                            placeholder=""
-                            onChange={(e) => setDesc(e.target.value)}
-                          ></textarea>
-                        </div>
-                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type=""
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setDisplay(2);
-                      }}
-                    >
-                      Next
-                    </button>
-                    <button
-                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="reset"
-                      onClick={(e) => {
-                        e.preventDefault();
-
-                        props.close(false);
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-
-                <form className={display == 2 ? '' : 'hidden'}>
-                  <div className="flex gap-4">
-                    <div className="w-full">
-                      <div className="w-full mb-2 sm:w-2/2">
-                        <div className="w-full">
-                          <div className="flex justify-between">
-                            <label
-                              className="mb-1 py-auto block text-sm font-medium text-black dark:text-white"
-                              htmlFor=""
-                            >
-                              Fee Cartegories
-                            </label>
-                            <label
-                              className="mb-1 py-auto block text-sm font-medium text-black dark:text-white"
-                              htmlFor=""
-                            >
-                              Amount To Charge
-                            </label>
-                          </div>
-                          {cartegory?.data.map((item, index) => (
-                            <div className="flex   " key={item.id}>
-                              <div className="w-4/6 flex  ">
-                                {' '}
-                                <label
-                                  className=" my-auto  block text-sm font-medium text-black dark:text-white"
-                                  htmlFor=""
-                                >
-                                  {item.name}
-                                </label>
-                              </div>{' '}
-                              <div className="  w-2/6">
-                                <input
-                                  className="w-full rounded border border-stroke bg-gray py-1.5 mb-1 px-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                  type="number"
-                                  name=""
-                                  id=""
-                                  placeholder=""
-                                  defaultValue="0"
-                                  onChange={(e) => {
-                                    obj[item.name] = parseInt(e.target.value);
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type=""
-                      onClick={(e) => {
-                        e.preventDefault();
-                        console.log(obj);
-                        if (Object.entries(obj).length == 1) {
-                          toast.error('Error - Fee Cartegory Cannot Be Empty');
-                        } else {
-                          e.preventDefault();
-                          setDisplay(3);
-                          delete data2.test;
-                          setdata2(obj);
-                          setdata3(Object.values(obj).reduce((a, b) => a + b));
-                        }
-                      }}
-                    >
-                      Next
-                    </button>
-                    <button
-                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="reset"
-                      onClick={(e) => {
-                        e.preventDefault();
-
-                        props.close(false);
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-
-                <form className={display == 3 ? '' : 'hidden'}>
-                  <div className="flex gap-4">
-                    <div className="w-full">
-                      <div className="w-full mb-2 sm:w-2/2">
-                        <div className="w-full">
-                          <div className="flex justify-between">
-                            <label
-                              className="mb-1 py-auto block text-sm font-medium text-black dark:text-white"
-                              htmlFor=""
-                            >
-                              Class
-                            </label>
-                            <label
-                              className="mb-1 py-auto block text-sm font-medium text-black dark:text-white"
-                              htmlFor=""
-                            >
-                              {clazz}
-                            </label>
-                          </div>
-                          {/* 
-                          <div className="flex justify-between">
-                            <label
-                              className="mb-1 py-auto block text-sm font-medium text-black dark:text-white"
-                              htmlFor=""
-                            >
-                              Session
-                            </label>
-                            <label
-                              className="mb-1 py-auto block text-sm font-medium text-black dark:text-white"
-                              htmlFor=""
-                            >
-                              {sessionoption}
-                            </label>
-                          </div> */}
-
-                          <div className="flex justify-between">
-                            <div className=" flex  ">
-                              {' '}
-                              <label
-                                className=" my-auto    block text-sm font-medium text-black dark:text-white"
-                                htmlFor=""
-                              >
-                                Total Fees
-                              </label>
-                            </div>{' '}
-                            <div className="  ">
-                              <label
-                                className=" my-auto    block text-sm font-medium text-black dark:text-white"
-                                htmlFor=""
-                              >
-                                {display == 3
-                                  ? !data2
-                                    ? 0
-                                    : Object.values(data2).reduce(
-                                        (a, b) => a + b,
-                                      )
-                                  : 0}
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4.5">
-                    <button
-                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type=""
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleSubmit();
-                      }}
-                    >
-                      Save
-                    </button>
-                    <button
-                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="reset"
-                      onClick={() => props.close(false)}
-                    >
-                      Cancel
-                    </button>
                   </div>
                 </form>
               </div>
@@ -1386,4 +1231,4 @@ const ExamGradeModal = (props) => {
   );
 };
 
-export default ExamGradeModal;
+export default ExamGradeEditModal;

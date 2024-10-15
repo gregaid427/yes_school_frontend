@@ -25,8 +25,8 @@ import UserStudents from './pages/UserStudents';
 import Grades from './pages/Grades';
 import Marks from './pages/Marks';
 import Promotion from './pages/Promotion';
-import AddExpense from './pages/AddExpense';
-import ManageExpense from './pages/ManageExpense';
+// import AddExpense from './pages/AddExpense';
+// import ManageExpense from './pages/ManageExpense';
 import Section from './pages/section';
 import Subject from './pages/Subject';
 import GeneralSettings from './pages/GeneralSettings';
@@ -73,17 +73,22 @@ import PreferenceList from './pages/Fees/PreferenceList';
 import SearchRecords from './pages/Fees/SearchRecords';
 import Finance from './pages/settings/Finance';
 import ExamList from './pages/exam/ExamList';
-import ExamResult from './pages/exam/ExamResult';
+// import ExamResult from './pages/exam/ExamResult';
 import ExamGrade from './pages/exam/ExamGrade';
 import ExamGroup from './pages/exam/ExamGroup';
 import AddExam from './pages/exam/NewExam';
-import ViewResult from './pages/exam/AddExamResult';
-import AddResult from './pages/exam/ViewExamResult';
+// import ViewResult from './pages/exam/AddExamResult';
+// import AddResult from './pages/exam/ViewExamResult';
 import ViewExamResult from './pages/exam/ViewExamResult';
 import AddExamResult from './pages/exam/AddExamResult';
 import AddExam1 from './pages/exam/NewExam copy';
 import ExamReport from './pages/exam/ExamReport';
 import ExamReportDetail from './pages/exam/ReportDetail';
+import ExamReportModal from './components/SingleExamReport';
+import ClassReportModal from './components/ClassReportModal';
+import AddExamResultImport from './pages/exam/AddExamResultImport';
+import EditExamResult from './pages/exam/EditExamResult';
+import MarkAttendance from './pages/MarkAttendance';
 
   
 function App() {
@@ -578,7 +583,43 @@ function App() {
                 <ExamGroup />
               </>
             }
+          />  <Route
+          path="/exam/singlereport"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <ExamReportModal />
+            </>
+          }
+        />
+             <Route
+            path="/exam/addimportresult"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <AddExamResultImport />
+              </>
+            }
           />
+         <Route
+            path="/exam/editresult"
+            element={
+              <>
+                <PageTitle title="Calendar | " />
+                <EditExamResult />
+              </>
+            }
+          />
+         <Route
+          path="/exam/classreport"
+          element={
+            <>
+              <PageTitle title="Calendar | " />
+              <ClassReportModal />
+            </>
+          }
+        />
+        
             <Route
             path="/exam/viewresult"
             element={
@@ -682,6 +723,35 @@ function App() {
               </>
             }
           />
+            <Route
+            path="/attendance/list"
+            element={
+              <>
+                <PageTitle title="Profile | " />
+                {/* <AttendanceList /> */}
+                <MarkAttendance />
+
+              </>
+            }
+          />  <Route
+          path="/attendance/search"
+          element={
+            <>
+              <PageTitle title="Profile | " />
+              {/* <SearchchAttendance /> */}
+              <MarkAttendance />
+
+            </>
+          }
+        />  <Route
+        path="/attendance/markattendance"
+        element={
+          <>
+            <PageTitle title="Attendance | " />
+            <MarkAttendance />
+          </>
+        }
+      />
           <Route
             path="/profile"
             element={

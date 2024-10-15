@@ -121,6 +121,7 @@ export const fetchAllClassExamAction = createAsyncThunk(
     }
   },
 );
+
 export const fetchAllSectionAction = createAsyncThunk(
   'fetch/AllSection',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -363,6 +364,7 @@ const ClassSlices = createSlice({
       state.CreateClasses = undefined;
     });
 
+    
     builder.addCase(CreatesBulkClassAction.pending, (state, action) => {
       state.CreateClassesloading = true;
       state.CreateClasses = false;
