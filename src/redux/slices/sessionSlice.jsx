@@ -146,7 +146,7 @@ const SessionSlices = createSlice({
     builder.addCase(updatesessionAction.pending, (state, action) => {
       state.updatesessionloading = true;
       state.updatesession = false;
-      state.fetchsession = fetchAllSectionAction;
+      state.fetchsession = false;
 
     });
     builder.addCase(updatesessionAction.fulfilled, (state, action) => {

@@ -9,7 +9,9 @@ import statistics from "../slices/statisticsSlice";
 import expense from "../slices/expenseSlice";
 import session from "../slices/sessionSlice";
 import fees from "../slices/feeSlice";
-import exam from "../slices/ExamSlice";
+import exam from "../slices/examSlice";
+import attendance from "../slices/attendanceSlice";
+
 
 
 
@@ -29,8 +31,8 @@ const store = configureStore({
     expense: expense,
     session: session,
     fees: fees,
-    exam: exam
-
+    exam: exam,
+    attendance: attendance
   },
 });
 

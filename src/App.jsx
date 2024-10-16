@@ -88,7 +88,11 @@ import ExamReportModal from './components/SingleExamReport';
 import ClassReportModal from './components/ClassReportModal';
 import AddExamResultImport from './pages/exam/AddExamResultImport';
 import EditExamResult from './pages/exam/EditExamResult';
-import MarkAttendance from './pages/MarkAttendance';
+import MarkAttendance from './pages/Attendance/MarkAttendance';
+import SearchAttendance from './pages/Attendance/SearchAttendance';
+import SearchDetail from './pages/Attendance/SearchDetail';
+import UpdateDetail from './pages/Attendance/UpdateDetail';
+import AttendanceList from './pages/Attendance/AttendanceList';
 
   
 function App() {
@@ -729,21 +733,46 @@ function App() {
               <>
                 <PageTitle title="Profile | " />
                 {/* <AttendanceList /> */}
-                <MarkAttendance />
+                <AttendanceList />
 
               </>
             }
-          />  <Route
+          />  
+          <Route
           path="/attendance/search"
           element={
             <>
               <PageTitle title="Profile | " />
               {/* <SearchchAttendance /> */}
-              <MarkAttendance />
+              <SearchAttendance />
 
             </>
           }
-        />  <Route
+        /> 
+         <Route
+          path="/attendance/searchdetail"
+          element={
+            <>
+              <PageTitle title="Profile | " />
+              {/* <SearchchAttendance /> */}
+              <SearchDetail />
+
+            </>
+          }
+        /> 
+           <Route
+          path="/attendance/updatedetail"
+          element={
+            <>
+              <PageTitle title="Profile | " />
+              {/* <SearchchAttendance /> */}
+              <UpdateDetail />
+
+            </>
+          }
+        /> 
+        
+         <Route
         path="/attendance/markattendance"
         element={
           <>

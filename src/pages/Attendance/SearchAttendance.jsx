@@ -1,12 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
-import userThree from '../images/user/user-03.png';
-import DefaultLayout from '../layout/DefaultLayout';
+
+import DefaultLayout from '../../layout/DefaultLayout';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import ViewSVG from '../components/Svgs/View';
-import DeleteSVG from '../components/Svgs/delete';
-import EditSVG from '../components/Svgs/edit';
+
 import { useTheme } from '@table-library/react-table-library/theme';
 import { getTheme } from '@table-library/react-table-library/baseline';
 import { usePagination } from '@table-library/react-table-library/pagination';
@@ -26,23 +22,28 @@ import {
 } from '@table-library/react-table-library/table';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Loader from '../common/Loader';
+import Loader from '../../common/Loader';
 
-import SectionSelect1 from '../components/SectionsSelect1';
-import ClassSelect from '../components/ClassSelect';
-import PromotionRadio from '../components/PromotionRadio';
+import SectionSelect1 from '../../components/SectionsSelect1';
+import ClassSelect from '../../components/ClassSelect';
 import toast, { Toaster } from 'react-hot-toast';
 import {
   fetchCustomStudentsClassPromoteAction,
   fetchStudentsClassPromoteAction,
-} from '../redux/slices/studentSlice';
-import AttendanceRadio from '../components/AttendanceRadio';
-import PromoteModal from '../components/PromoteModal';
-import AttendanceModal from '../components/AttendanceModal';
-const MarkAttendance = () => {
+} from '../../redux/slices/studentSlice';
+import AttendanceRadio from '../../components/AttendanceRadio';
+import AttendanceModal from '../../components/AttendanceModal';
+import {
+  CreateAttendanceAction,
+  GetRecordByDateAction,
+  GetSesionRecordsAction,
+  resetcreateattendance,
+} from '../../redux/slices/attendanceSlice';
+import TableBtn from '../../components/Svgs/TableBtn';
+const SearchAttendance = () => {
   ///////////////////////////////////
   let today = new Date();
-  today = today.toLocaleDateString("en-CA");
+  today = today.toLocaleDateString('en-CA');
   const [date, setDate] = useState(today);
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState('top');
@@ -70,16 +71,24 @@ const MarkAttendance = () => {
   const [nodes, setdata] = useState([]);
   const [classs, setClasss] = useState();
   const [sections, setsections] = useState([]);
+  const [name, setname] = useState([]);
+
   const [clazz, setclazz] = useState();
+  const [classid, setclassId] = useState();
+  const [ids, setIds] = useState([]);
+  const [idsName, setIdsName] = useState([]);
+
   const [nextClass, setNextclass] = useState();
 
   const [sectionzz, setsectionzz] = useState();
   const [isChecked1, setIsChecked1] = useState(false);
   const [type, setType] = useState('All');
-
+  const [sessionzz, setsession] = useState();
+  const session = useSelector((state) => state?.session);
+  const { fetchsessionactive, fetchsession } = session;
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
-  const classes = useSelector((state) => state?.classes);
+  const attendance = useSelector((state) => state?.attendance);
 
   const {
     loading,
@@ -94,32 +103,33 @@ const MarkAttendance = () => {
     studentPromote,
   } = student;
   console.log(repeat);
-  const { fetchAllClassloading, fetchAllClass } = classes;
+  const { GetSesionRecords,GetRecordByDate } = attendance;
 
   useEffect(() => {
-    if (fetchcustom?.success == 1) {
-      let data = fetchcustom?.data;
+    if (GetRecordByDate?.success == 1) {
+      let data = GetRecordByDate?.data;
       setdata(data);
+   
     }
-  }, [fetchcustom]);
-
+    if (GetSesionRecords?.success == 1) {
+      let data = GetSesionRecords?.data;
+      setdata(data);
+   
+    }
+  }, [GetRecordByDate,GetSesionRecords]);
+  console.log(ids);
+  useEffect(() => {
+    if (fetchsessionactive?.success == 1) {
+      let data = fetchsessionactive?.data[0];
+      setsession(data?.sessionname);
+    }
+  }, [fetchsessionactive]);
   useEffect(() => {
     if (fetchStudentcustom?.success == 1) {
       let data = fetchStudentcustom?.data;
       setdata(data);
     }
   }, [fetchStudentcustomloading]);
-
-  useEffect(() => {
-    if (studentPromote?.success == 1) {
-      setdata([]);
-      setRepeat([]);
-      setType('All');
-      setIsChecked1(false);
-      setradioReset(!radioReset);
-    }
-    // dispatch(resetPromote());
-  }, [studentPromote]);
 
   useEffect(() => {
     setdata([]);
@@ -150,7 +160,7 @@ const MarkAttendance = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  15% 27% 24%  17% 17%;
+  --data-table-library_grid-template-columns:  30% 20% 20% 15%   15%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -204,27 +214,32 @@ const MarkAttendance = () => {
       nextclass: nextClass,
       prevclass: clazz,
     };
-   // dispatch(PromoteAllAction(data));
-  };
-  const handlePromoteselected = () => {
-    const data = {
-      value: repeat,
-      nextclass: nextClass,
-      prevclass: clazz,
-    };
-    console.log(data);
-   // dispatch(PromoteSelectedAction(data));
+    // dispatch(PromoteAllAction(data));
   };
 
-  data = {
-    nodes: data.nodes.filter((item) =>
-      searchval === 'First Name'
-        ? item.firstName.toLowerCase().includes(search.toLowerCase())
-        : searchval == 'Last Name'
-          ? item.lastName.toLowerCase().includes(search.toLowerCase())
-          : item.student_id.toLowerCase().includes(search.toLowerCase()),
-    ),
+  const handleCurrentSession = () => {
+    const data = {
+      //    name : name,
+      session: sessionzz,
+      class: clazz,
+
+      section: sectionzz,
+    };
+    console.log(data);
+    dispatch(GetSesionRecordsAction(data));
   };
+  const handleDate = () => {
+    const data = {
+      date: date,
+      class: clazz,
+
+      section: sectionzz,
+    };
+    console.log(data);
+    dispatch(GetRecordByDateAction(data));
+  };
+ 
+
 
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
@@ -247,8 +262,7 @@ const MarkAttendance = () => {
     download(csvConfig)(csv);
   };
   function handleGetClassData() {
-    setradioReset(!radioReset);
-    setRepeat([]);
+ 
     let data = {
       class: clazz,
       section: sectionzz,
@@ -265,22 +279,8 @@ const MarkAttendance = () => {
       console.log('custom');
     }
   }
-  const footerContent = (
-    <div>
-      <button
-        label="No"
-        icon="pi pi-times"
-        onClick={() => setVisible(false)}
-        className="p-button-text"
-      />
-      <button
-        label="Yes"
-        icon="pi pi-check"
-        onClick={() => setVisible(false)}
-        autoFocus
-      />
-    </div>
-  );
+ 
+
   return loader ? (
     <Loader />
   ) : (
@@ -293,12 +293,11 @@ const MarkAttendance = () => {
         onHide={() => {
           if (!visible) return;
           setVisible(false);
- 
         }}
         draggable={false}
         resizable={false}
-        >
-        <AttendanceModal next={nextClass} prev={clazz} promoteAction={handlePromoteselected} type={allStudent} repeatNo={repeat.length} close={setVisible} />
+      >
+       
       </Dialog>
       <div className=" flex-col">
         <div
@@ -307,9 +306,9 @@ const MarkAttendance = () => {
           }
         >
           <div className="max-w-full overflow-x-auto">
-            <div className="w-full  flex justify-between ">
-              <div className=" flex w-7/12 gap-3">
-                <div className="sm:w-2/6 ">
+            <div className="w-full  flex  ">
+              <div className=" flex w-6/12 gap-3">
+                <div className="sm:w-3/6 ">
                   <div>
                     <label
                       className="mb-2 block text-sm font-medium text-black dark:text-white"
@@ -324,7 +323,7 @@ const MarkAttendance = () => {
                   </div>
                 </div>
 
-                <div className="w-full sm:w-2/6">
+                <div className="w-full sm:w-3/6">
                   <label
                     className="mb-2 block text-sm font-medium text-black dark:text-white"
                     htmlFor="phoneNumber"
@@ -335,52 +334,51 @@ const MarkAttendance = () => {
                     <SectionSelect1 setsectionprop={setsectionzz} />
                   </div>
                 </div>
-                <div className="w-full sm:w-2/6">
+              </div>
+              <div className="flex ml-3 w-6/12">
+                <div className={' w-3/6 flex flex-col  '}>
                   <label
-                    className="mb-2 block text-sm font-medium  dark:text-black"
+                    className="mb-2 block text-sm font-medium text-black dark:text-white"
                     htmlFor=""
                   >
-                    .{' '}
+                    Select Period
                   </label>
-                  <div className="relative sm:w-full z-20 bg-white dark:bg-form-input">
+                  <button
+                    onClick={() => handleCurrentSession()}
+                    className="btn h-10  w-4/6   flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
+                    type="submit"
+                  >
+                    Current Session
+                  </button>
+                </div>
+
+                <div className={' w-3/6 flex flex-col  '}>
+                  <label
+                    className="mb-2  text-sm font-medium text-black dark:text-black"
+                    htmlFor="phoneNumber"
+                  >
+                    .
+                  </label>
+                  <div className="flex gap-1">
+                    <input
+                      className="w-4/6 rounded border border-stroke bg-gray py-1 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="date"
+                      name=""
+                      id=""
+                      format="DD-MM-YYYY"
+                      placeholder=""
+                      defaultValue={today}
+                      onChange={(e) => setDate(e.target.value)}
+                    />
                     <button
-                      onClick={() => handleGetClassData()}
-                      className="btn h-10  w-full   flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
+                      onClick={() => handleDate()}
+                      className="btn h-10 w-2/6    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
-                      Get Class List
+                      Select
                     </button>
                   </div>
                 </div>
-                {/* <div className="w-full sm:w-1/3 flex  justify-end align-top  ">
-                    <button onClick={(e)=>{handleDownloadPdf()}}
-                      className="btn sm:w-2/3 h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
-                      type="submit"
-                    >
-                      Search
-                    </button>
-                  </div> */}
-              </div>
-
-              <div className={' w-3/12 flex flex-col float-right '}>
-              <label
-                    className="mb-2 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="phoneNumber"
-                  >
-                    Slect Date{' '}
-                  </label>
-
-                <input
-                  className="w-full rounded border border-stroke bg-gray py-1 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  type="date"
-                  name=""
-                  id=""
-                  format = "DD-MM-YYYY"
-                  placeholder=""
-                  defaultValue={today}
-                  onChange={(e) => setDate(e.target.value)}
-                />
-                {/* <button onClick={() => toPDF()}>Download PDF</button> */}
               </div>
             </div>
             {/* <div className={nodes[0] ?? 'hidden '}>
@@ -479,56 +477,55 @@ const MarkAttendance = () => {
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <HeaderCell className="">ID</HeaderCell>
-                        <HeaderCell>Name</HeaderCell>
+                     
                         <HeaderCell>Class (Section)</HeaderCell>
-                        <HeaderCell>status</HeaderCell>
-
+                        <HeaderCell>Section</HeaderCell>
+                        <HeaderCell>Taken By</HeaderCell>
+                        <HeaderCell className="">Date Taken</HeaderCell>
+                      
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
 
                     <Body>
                       {tableList.map((item) => (
-                        <Row key={item.student_id} item={item} className="">
+                        <Row key={item.id} item={item} className="">
                           <Cell className="  ">
-                            <span>{item.student_id}</span>
+                            <span>{item.classid}</span>
                           </Cell>
-                          <Cell className="capitalize">
-                            {item.firstName +
-                              ' ' +
-                              item.otherName +
-                              ' ' +
-                              item.lastName}
+                          
+                          <Cell className="  ">
+                            
+                            <span>{item.section  ? item.section : 'None'}</span>
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.class}</span> (
-                            <span>{item.section ? item.section : 'None'}</span>)
+                          <span>{item.createdby}</span>
                           </Cell>
-
                           <Cell className="  ">
-                            <span>{item.status}</span>
+                            <span>{item.datetaken}</span>
                           </Cell>
-
-                          <Cell>
-                            <div>
-                              <AttendanceRadio
-                                reset={radioReset}
-                                setRepeated={setRepeat}
-                                repeat={repeat}
-                                stdId={item.student_id}
-                              />
-                              {/* <ViewSVG
-                                clickFunction={() => handleviewbtn(item)}
-                              />
-                              <EditSVG
-                                clickFunction={() => handleEditbtn(item)}
-                              />
-
-                              <DeleteSVG
-                                clickFunction={() => handledeletbtn(item.student_id)}
-                              /> */}
-                            </div>
+                          
+                          <Cell className="  ">
+                            <div className='flex gap-1'>
+                          <TableBtn
+                                  clickFunction={() => {
+                                    navigate("/attendance/searchdetail", {
+                                      state: { action: 1, value: item },
+                                    });
+                                  }}
+                                  text={'View'}
+                                  color={'bg-primary'}
+                                />
+                                <TableBtn
+                                  clickFunction={() => {
+                                    navigate("/attendance/updatedetail", {
+                                      state: { action: 1, value: item },
+                                    });
+                                  }}
+                                  text={'Update'}
+                                  color={'bg-primary'}
+                                />
+                                </div>
                           </Cell>
                         </Row>
                       ))}
@@ -536,17 +533,7 @@ const MarkAttendance = () => {
                   </>
                 )}
               </Table>
-              <div className={nodes[0] ?? 'hidden '}>
-                <div className="flex w-3/12  pb-5 float-start py-5   gap-4.5">
-                  <button
-                    className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                    type=""
-                    onClick={() => show('top-right')}
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
+           
             </div>
           </div>
         </div>{' '}
@@ -555,4 +542,4 @@ const MarkAttendance = () => {
   );
 };
 
-export default MarkAttendance;
+export default SearchAttendance;

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 
 const AttendanceModal = (props) => {
+  console.log(props)
   return (
     <div className="w-full">
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">
@@ -20,18 +21,18 @@ const AttendanceModal = (props) => {
                     className="mb-2 block text-center mx-auto text-sm font-medium text-black dark:text-white"
                     htmlFor=""
                   >
-                    {props.type == true
-                      ? ` Promote All Students From ${props.prev} To ${props.next} ?`
-                      : ` Promote Selected Students From ${props.prev} To ${props.next} ?`}
+                    {props.absent == 0
+                      ? `Are You Sure To Mark All Present ?`
+                      : ` Are You Sure To Mark ${props.absent} Out Of ${props.total} Absent ?`}
                   </label>
 
-                  <label
+                  {/* <label
                     className="mb-2 block text-center mx-auto text-sm font-medium text-black dark:text-white"
                     htmlFor=""
                   >
-                    {props.type != true ?
+                    {props.absent != 0 ?
                       `All But ${props.repeatNo} Student(s) Are Selected To Repeat In ${props.prev}` :null}
-                  </label>
+                  </label> */}
                 </div>
               </div>
             </div>

@@ -1074,17 +1074,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                           <li>
                             <NavLink
-                              to="/attendance/search"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Search Records
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
                               to="/attendance/list"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
@@ -1094,6 +1083,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Attendance List
                             </NavLink>
                           </li>
+                          <li>
+                            <NavLink
+                              to="/attendance/search"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Search Records
+                            </NavLink>
+                          </li>
+                       
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
