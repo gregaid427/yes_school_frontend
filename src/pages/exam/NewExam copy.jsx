@@ -276,7 +276,11 @@ const AddExam1 = () => {
 
                       <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
-                        <Row key={item.examcode} item={item} className=" ">
+                        <Row key={item.examcode}
+                            item={item}
+                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                          
+                          >
                           <Cell className="  ">
                             {item.class}{' '}
                             {item.section == null ? '' : ` /  ${item.section}`}

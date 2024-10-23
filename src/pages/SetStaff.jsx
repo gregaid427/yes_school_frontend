@@ -799,7 +799,11 @@ console.log(data.nodes)
   
                       <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
-                          <Row key={item.id} item={item} className=" ">
+                          <Row key={item.id}
+                            item={item}
+                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                          
+                          >
                             <Cell className="  ">
                               {item.sFirstName} {item.sOtherName}{' '}
                               {item.sLastName}

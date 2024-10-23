@@ -458,7 +458,11 @@ console.log(tabledata1)
   
                       <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
-                          <Row key={item.id} item={item} className=" ">
+                          <Row key={item.id}
+                            item={item}
+                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                          
+                          >
                             <Cell className="  ">{item.title}</Cell>
                             <Cell className="  ">
                               {item.section ? item.section : '-'}
@@ -687,7 +691,11 @@ console.log(tabledata1)
   
                       <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
-                          <Row key={item.STUDENT_PASSWORD} item={item} className=" ">
+                          <Row key={item.STUDENT_PASSWORD}
+                            item={item}
+                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                          
+                          >
                             <Cell className=" ">{ <span className='py-1'>{item.FIRST_NAME}</span>}{` `}{item.LAST_NAME}</Cell>
                           
                             <Cell className="  ">
