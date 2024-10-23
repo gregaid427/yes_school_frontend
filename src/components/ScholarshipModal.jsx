@@ -22,7 +22,9 @@ const ScholarshipModal = (props) => {
   const { Assignbycustom, cartegory } = fee;
   const [amount, setAmount] = useState(0);
   const [chosen, setchosen] = useState('');
-  const [chosendata, setchosendata] = useState([]);
+  const [custom, setCustom] = useState([{title:''}]);
+
+  const [chosendata, setchosendata] = useState([{title:'loading...'}]);
 
   const formRef1 = useRef();
 
@@ -33,15 +35,27 @@ const ScholarshipModal = (props) => {
   let balanceresult = eval(
     parseInt(props?.val?.accountbalance) + parseInt(amount),
   );
+  console.log(props?.cartinfo)
   useEffect(() => {
-    setchosendata(
-      props?.cartinfo?.data?.filter((item) => item?.title.includes(chosen)),
-    );
+  console.log(props?.cartinfo)
+    console.log(props?.cartinfo)
+if(props?.cartinfo){
+  setchosendata(
+    custom.filter((item) => item?.title.includes(chosen)),
+  );
+}
+    
+
   }, [chosen]);
 
   useEffect(() => {
     dispatch(fetchfeeCartegoryAction());
+    setCustom(props?.cartinfo)
   }, []);
+
+  useEffect(() => {
+    setCustom(props?.cartinfo)
+  }, [props]);
   const [scholarr, setScholarr] = useState('');
   const [scholarrid, setScholarrId] = useState('');
   const [cover, setcover] = useState('');
@@ -100,7 +114,7 @@ const ScholarshipModal = (props) => {
   }, [chosendata]);
 
   console.log(chosendata);
-  console.log(props.cartinfo.data);
+
   let data = {
     id: props.val?.student_id,
     class: props.val?.class,

@@ -112,7 +112,7 @@ const ExamList = () => {
   `,
       BaseCell: `
         font-size: 15px;
-        color:white;
+        //color:white;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
@@ -120,15 +120,15 @@ const ExamList = () => {
       Table: `
       --data-table-library_grid-template-columns:   28% 40% 20% 10%;
     `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+    //       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
 
@@ -360,7 +360,8 @@ const ExamList = () => {
                       </HeaderRow>
                     </Header>
 
-                    <Body>
+
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
                         <Row key={item.examcode} item={item} className=" ">
                           <Cell className="  ">
@@ -485,7 +486,8 @@ const ExamList = () => {
                       </HeaderRow>
                     </Header>
 
-                    <Body>
+
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
                         <Row
                           key={item.examsid}

@@ -84,15 +84,15 @@ const ExamResultModal = (props) => {
       //   //  background-color: #24303F;
 
        `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+    //       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
 
@@ -221,9 +221,13 @@ const ExamResultModal = (props) => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item, index) => (
-                          <Row key={item.student_id} item={item} className="">
+                          <Row key={item.student_id}
+                            item={item}
+                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                          >
                             <Cell className="  ">
                               <span>{item.student_id}</span>
                             </Cell>
@@ -305,7 +309,8 @@ const ExamResultModal = (props) => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.student_id}

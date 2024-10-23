@@ -35,9 +35,9 @@ const fetchUserdatEdit = () => {
   const student = useSelector((state) => state?.student);
   const { fetchUserdatloading, updateStudent } = student;
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState('');
   const [paramaction, setParamaction] = useState(1);
-  const [pictureurlshow, setPictureurlshow] = useState(null);
+  const [pictureurlshow, setPictureurlshow] = useState('');
 
   const [studentID, setStudentID] = useState('');
 
@@ -82,9 +82,13 @@ const fetchUserdatEdit = () => {
   const [classs, setClasss] = useState([]);
   const [file, setfileName] = useState();
   const [link, setimagelink] = useState();
+  const [g1id, setg1id] = useState();
+  const [g2id, setg2id] = useState();
+
+
   const [picturename, setPicturename] = useState();
 
-  const [pictureurl, setPictureurl] = useState(null);
+  const [pictureurl, setPictureurl] = useState('');
 
   const pic = location.state.pic;
   const files = location.state.file;
@@ -138,10 +142,7 @@ const fetchUserdatEdit = () => {
       firstName: firstName,
       lastName: lastName,
       otherName: otherName,
-      contact1: gcontact1,
-      contact2: gcontact2,
-      contact3: gcontact3,
-      contact4: gcontact4,
+
       gender: gender,
       classes: clazz,
       section: sectionzz,
@@ -149,18 +150,29 @@ const fetchUserdatEdit = () => {
       dateofbirth: dateofbirth,
       createdBy: createdBy,
       role: 'student',
-      gfName1: gfName1,
-      glName1: glName1,
-      glName2: glName2,
-      gfName2: gfName2,
-      gAddress1: gAddress1,
-      gAddress2: gAddress2,
-      gemail1: gemail1,
-      gemail2: gemail2,
-      gRelation1: gRelation1,
-      gRelation2: gRelation2,
-      gsex1: gsex1,
-      gsex2: gsex2,
+      g1: {
+        id : g1id,
+        gfName: gfName1,
+        glName: glName1,
+        gAddress: gAddress1,
+        gemail: gemail1,
+        gRelation: gRelation1,
+        gsex: gsex1,
+        contact1: gcontact1,
+        contact2: gcontact2,
+      },
+      g2: {
+        id : g2id,
+        glName: glName2,
+        gfName: gfName2,
+        gAddress: gAddress2,
+        gemail: gemail2,
+        gRelation: gRelation2,
+        gsex: gsex2,
+        contact1: gcontact3,
+        contact2: gcontact4,
+      },
+
       feeArrears: feeArrears,
       feeCredit: feeCredit,
     };
@@ -198,6 +210,9 @@ const fetchUserdatEdit = () => {
       //let data = fetchUserdat?.data[0];
       setStudentID(value.student_id);
       setID(value.userId);
+      setg1id(fetchUserdat?.data[0]?.userId);
+      setg2id(fetchUserdat?.data[1]?.userId);
+
 
       setStudentfirstName(value.firstName);
       setStudentlastName(value.lastName);
@@ -502,7 +517,7 @@ const fetchUserdatEdit = () => {
               <div className="p-2 ">
                 <div className="w-full flex justify-center items-center">
                   <img
-                    src={pictureurl == null ? userThree : pictureurl}
+                    src={pictureurl == '' ? userThree : pictureurl}
                     className="h-40"
                   />
                 </div>
@@ -514,7 +529,7 @@ const fetchUserdatEdit = () => {
                 <div>
                   <div
                     className={
-                      pictureurlshow != null ? 'hidden' : 'flex flex-col gap-1'
+                      pictureurlshow != '' ? 'hidden' : 'flex flex-col gap-1'
                     }
                   >
                     {' '}
@@ -560,7 +575,7 @@ const fetchUserdatEdit = () => {
                       className="flex mt-2  w-full justify-center rounded bg-black py-2 px- font-medium text-gray hover:bg-opacity-90"
                       type=""
                       onClick={(e) => {
-                        setPictureurl(null);
+                        setPictureurl('');
                       }}
                     >
                       Cancel{' '}
@@ -653,7 +668,7 @@ const fetchUserdatEdit = () => {
                                 <SelectGroupTwo
                                   values={[data[0]?.gSex, 'Male', 'Female']}
                                   setSelectedOption={(val) => setgsex1(val)}
-                                  selectedOption={data[0]?.gSex}
+                                  selectedOption={gsex1}
                                 />
                               </div>
                             </div>
@@ -812,8 +827,8 @@ const fetchUserdatEdit = () => {
                               <div className="relative z-20 bg-white dark:bg-form-input">
                                 <SelectGroupTwo
                                   values={[data[1]?.gSex, 'Male', 'Female']}
-                                  setSelectedOption={(val) => setgsex1(val)}
-                                  selectedOption={data[1]?.gsex}
+                                  setSelectedOption={(val) => setgsex2(val)}
+                                  selectedOption={gsex2}
                                 />
                               </div>
                             </div>
@@ -925,181 +940,8 @@ const fetchUserdatEdit = () => {
         <div className="flex flex-row w-4/6    gap-3" style={{}}>
           <div className="w-full ">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Student Financial Information
-                </h3>
-              </div>
-              <div className="p-7">
-                <form>
-                  {/* <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="fullName"
-                      >
-                        Account Balance
-                      </label>
-                      <input
-                        className="w-full required rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue={data[0]?.accountBalance}
-                        onChange={(e) => setFeeArrears(e.target.value)}
-                      />
-                    </div>
-
-                    <div className="w-full sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
-                      >
-                        Status
-                      </label>
-                      <input
-                        className="w-full required rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue={
-                          (data[0]?.accountBalance) > -1 ? 'Credit' : 'Owing'
-                        }
-                        onChange={(e) => setFeeCredit(e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full sm:w-2/4">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
-                      >
-                        Scholarships
-                      </label>
-                    </div>
-                  </div> */}
-
-                  <div className="mb-2 flex   sm:flex-row">
-                    <div className=" flex  sm:w-2/4">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="checkboxLabelOne"
-                      >
-                        Partial Scholarshp{' '}
-                      </label>
-                    </div>
-
-                    <div className="flex justify-start sm:w-1/4">
-                      <label
-                        htmlFor="checkboxLabelOne"
-                        className="flex cursor-pointer select-none "
-                      >
-                        <div className="relative ">
-                          <input
-                            type="checkbox"
-                            id="checkboxLabelOne"
-                            className="sr-only"
-                            onChange={() => {
-                              setIsChecked(!isChecked);
-                            }}
-                          />
-                          <div
-                            className={` flex h-5 w-5 items-center justify-center rounded border ${
-                              isChecked &&
-                              'border-primary bg-gray dark:bg-transparent'
-                            }`}
-                          >
-                            <span
-                              className={`h-2.5 w-2.5 rounded-sm ${isChecked && 'bg-primary'}`}
-                            ></span>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="mb-2 flex   sm:flex-row">
-                    <div className=" flex  sm:w-2/4">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="checkboxLabelOne"
-                      >
-                        Full Scholarshp{' '}
-                      </label>
-                    </div>
-
-                    <div className="flex justify-start sm:w-1/4">
-                      <label
-                        htmlFor="checkboxLabelOne"
-                        className="flex cursor-pointer select-none "
-                      >
-                        <div className="relative ">
-                          <input
-                            type="checkbox"
-                            id="checkboxLabelOne"
-                            className="sr-only"
-                            onChange={() => {
-                              setIsChecked(!isChecked);
-                            }}
-                          />
-                          <div
-                            className={` flex h-5 w-5 items-center justify-center rounded border ${
-                              isChecked &&
-                              'border-primary bg-gray dark:bg-transparent'
-                            }`}
-                          >
-                            <span
-                              className={`h-2.5 w-2.5 rounded-sm ${isChecked && 'bg-primary'}`}
-                            ></span>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="mb-2 flex   sm:flex-row">
-                    <div className=" flex  sm:w-2/4">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="checkboxLabelOne"
-                      >
-                        GetFund Scholarshp{' '}
-                      </label>
-                    </div>
-
-                    <div className="flex justify-start sm:w-1/4">
-                      <label
-                        htmlFor="checkboxLabelOne"
-                        className="flex cursor-pointer select-none "
-                      >
-                        <div className="relative ">
-                          <input
-                            type="checkbox"
-                            id="checkboxLabelOne"
-                            className="sr-only"
-                            onChange={() => {
-                              setIsChecked(!isChecked);
-                            }}
-                          />
-                          <div
-                            className={` flex h-5 w-5 items-center justify-center rounded border ${
-                              isChecked &&
-                              'border-primary bg-gray dark:bg-transparent'
-                            }`}
-                          >
-                            <span
-                              className={`h-2.5 w-2.5 rounded-sm ${isChecked && 'bg-primary'}`}
-                            ></span>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                </form>
-
-                <div className="flex mt-10 justify-end gap-4.5">
+              <div className="px-7 py-2">
+                <div className="flex justify-end gap-4.5">
                   <button
                     className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                     type=""

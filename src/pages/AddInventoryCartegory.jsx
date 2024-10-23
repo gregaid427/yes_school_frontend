@@ -25,7 +25,13 @@ import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
 
 import InventNewCartegory from '../components/InventNewCartegory';
-import { deleteSingleCartAction, fetchInventCartegoryAction } from '../redux/slices/inventSlice';
+import {
+  deleteSingleCartAction,
+  fetchInventCartegoryAction,
+} from '../redux/slices/inventSlice';
+import InventNewCartegory1 from '../components/InventNewCartegory1';
+import EditInventoryCartegory from '../components/EditInvenoryCartModal';
+import { Dialog } from 'primereact/dialog';
 
 const AddInventoryCartegory = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -94,25 +100,26 @@ const AddInventoryCartegory = () => {
       border-bottom: 1px solid #a0a8ae;
       padding: 5px 0px;
     }
-  `,Table: `
+  `,
+      Table: `
   --data-table-library_grid-template-columns:  60% 40%;
 `,
       BaseCell: `
         font-size: 15px;
-        color:white;
+        //color:white;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
       `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+    //       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
 
@@ -137,16 +144,11 @@ const AddInventoryCartegory = () => {
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
- 
-    navigate('/inventory/editcartegory', {
-      state: {action:2, info: value },
-    });
+setVisible(true)
   };
   const handleEditbtn = (value) => {
     console.log(value.type);
-    navigate('/inventory/editcartegory', {
-      state: {action:1, info: value },
-    });
+setVisible(true)
   };
   const handledeletebtn = (value) => {
     dispatch(deleteSingleCartAction(value));
@@ -182,12 +184,32 @@ const AddInventoryCartegory = () => {
     const csv = generateCsv(csvConfig)(nodes);
     download(csvConfig)(csv);
   };
-
+  const [visible, setVisible] = useState(false);
+  const [val, setVal] = useState(false);
   return loader ? (
     <Loader />
   ) : (
+  
+    
+
     <DefaultLayout>
-      <div className={'flex gap-1  w-full'}>
+        <Dialog
+    visible={visible}
+    position={'top'}
+    style={{ height: 'auto', width: '35%'}}
+    onHide={() => {
+      if (!visible) return;
+      setVisible(false);
+    }}
+    draggable={false}
+    resizable={false}
+  >
+    <EditInventoryCartegory info={val} close={setVisible} />
+  </Dialog>
+      <div className={'flex gap-2  w-full'}>
+      <div className="w-4/12 ">
+          <InventNewCartegory1 close={setClasss} />
+        </div>
         <div className="w-7/12 flex-col">
           <div
             className={
@@ -266,7 +288,12 @@ const AddInventoryCartegory = () => {
           >
             <div className="flex gap-3  flex-col">
               <div className="px-2">
-                <Table data={data} pagination={pagination} layout={{ custom: true }} theme={theme}> 
+                <Table
+                  data={data}
+                  pagination={pagination}
+                  layout={{ custom: true }}
+                  theme={theme}
+                >
                   {(tableList) => (
                     <>
                       <Header>
@@ -277,7 +304,8 @@ const AddInventoryCartegory = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
                             <Cell className="  ">{item.cartegoryname}</Cell>
@@ -285,10 +313,14 @@ const AddInventoryCartegory = () => {
                             <Cell>
                               <div className="gap-2 flex">
                                 <ViewSVG
-                                  clickFunction={() => handleViewbtn(item)}
+                                  clickFunction={() =>{ setVal(item)
+                                    handleViewbtn(item)} }
                                 />
                                 <EditSVG
-                                  clickFunction={() => handleEditbtn(item)}
+                                  clickFunction={() =>{
+setVal(item)
+                                  handleEditbtn(item)}
+                                  }
                                 />
                                 <DeleteSVG
                                   clickFunction={() => handledeletebtn(item.id)}
@@ -357,13 +389,14 @@ const AddInventoryCartegory = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
-                        <HeaderCell>Cartegory Name</HeaderCell>
+                          <HeaderCell>Cartegory Name</HeaderCell>
 
-<HeaderCell>Actions</HeaderCell>
+                          <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.id}
@@ -371,7 +404,6 @@ const AddInventoryCartegory = () => {
                             className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                           >
                             <Cell className="  ">{item.cartegoryname}</Cell>
-
                           </Row>
                         ))}
                       </Body>
@@ -382,9 +414,7 @@ const AddInventoryCartegory = () => {
             </div>
           </div>{' '}
         </div>
-        <div className="w-2/12 mr-5">
-         <InventNewCartegory close={setClasss} />
-        </div>
+       
       </div>{' '}
     </DefaultLayout>
   );

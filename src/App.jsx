@@ -47,7 +47,6 @@ import SingleSectionEdit from './pages/SingleSectionedit';
 import SingleSubjectEdit from './pages/SingleSubjectEdit';
 import AddInventoryStock from './pages/AddInventoryStock';
 import AddInventoryCartegory from './pages/AddInventoryCartegory';
-import EditInventoryCartegory from './pages/EditInventorycartegory';
 import EditInventoryitem from './pages/EditInventoryitem';
 import AddExpenseHead from './pages/addExpenseHead';
 import SearchExpense from './pages/SearchExpense';
@@ -434,15 +433,7 @@ function App() {
               </>
             }
           />
-             <Route
-            path="/inventory/editcartegory"
-            element={
-              <>
-                <PageTitle title="Calendar | " />
-                <EditInventoryCartegory/>
-              </>
-            }
-          />
+           
           <Route
             path="/settings/general"
             element={

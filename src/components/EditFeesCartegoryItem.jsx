@@ -5,41 +5,32 @@ import {
   CreatesfeeCartegoryAction,
   fetchfeeCartegoryAction,
   resetcreatefee,
+  resetUpdateFeeCart,
+  UpdateFeeCartAction,
 } from '../redux/slices/feeSlice';
 
-const FeesCartegoryItem = (props) => {
+const EditFeesCartegoryItem = (props) => {
   const dispatch = useDispatch();
   const fees = useSelector((state) => state?.fees);
 
-  const { Createfeecart } = fees;
+  const { Createfeecart, UpdateFeeCart } = fees;
   useEffect(() => {
-    if (Createfeecart?.success == 0) {
+    if (UpdateFeeCart?.success == 0) {
       //    dispatch(resetcreatecart())
       // dispatch(fetchAllClassAction())
+      console.log(UpdateFeeCart)
     }
-    if (Createfeecart?.success == 1) {
-      dispatch(fetchfeeCartegoryAction());
-      resetFormStates();
-      setcartegoryName('');
-      dispatch(resetcreatefee());
+    if (UpdateFeeCart?.success == 1) {
+      dispatch(resetUpdateFeeCart());
       props.close(false);
+
+      // }
     }
-
-    // if (fetchAllClass?.success == 1) {
-    //   let i = 0;
-    //   let arr = [];
-    //   while (i < clad?.fetchAllClass?.data.length) {
-    //     arr.push(clad?.fetchAllClass?.data[i].title);
-    //     i++;
-    //   }
-
-    //   setClasss(arr);
-    // }
-  }, [Createfeecart]);
+  }, [UpdateFeeCart]);
 
   const [cartegoryName, setcartegoryName] = useState();
 
-  const [description, setDesription] = useState();
+  const [description, setDesription] = useState('');
 
   const formRef1 = useRef();
 
@@ -50,6 +41,8 @@ const FeesCartegoryItem = (props) => {
 
   let data = {
     name: cartegoryName,
+    id: props.data?.id,
+
     createdby: 'asante',
     description: description,
   };
@@ -57,7 +50,7 @@ const FeesCartegoryItem = (props) => {
     if (cartegoryName == '') {
       toast.error('Error - Name Cannot Be Empty');
     } else {
-      dispatch(CreatesfeeCartegoryAction(data));
+      dispatch(UpdateFeeCartAction(data));
     }
   };
 
@@ -70,7 +63,7 @@ const FeesCartegoryItem = (props) => {
       >
         <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
           <h3 className="font-medium text-black dark:text-white">
-            Add Fee Cartegory
+            Update Fee Cartegory
           </h3>
         </div>
         <div className="p-5">
@@ -88,7 +81,7 @@ const FeesCartegoryItem = (props) => {
                 name=""
                 id=""
                 placeholder=""
-                defaultValue=""
+                defaultValue={props.data?.name}
                 onChange={(e) => setcartegoryName(e.target.value.toUpperCase())}
               />
             </div>
@@ -107,7 +100,7 @@ const FeesCartegoryItem = (props) => {
                   id="bio"
                   rows={2}
                   placeholder=""
-                  defaultValue=""
+                  defaultValue={props.data?.description}
                   onChange={(e) => setDesription(e.target.value)}
                 ></textarea>
               </div>
@@ -142,4 +135,4 @@ const FeesCartegoryItem = (props) => {
   );
 };
 
-export default FeesCartegoryItem;
+export default EditFeesCartegoryItem;

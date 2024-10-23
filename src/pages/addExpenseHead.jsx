@@ -29,6 +29,8 @@ import {
   deleteSingleExpenseHeadAction,
   FetchExpenseHeadAction,
 } from '../redux/slices/expenseSlice';
+import { Dialog } from 'primereact/dialog';
+import ExpenseHeadModal from '../components/UpdateExpenseHeadModal.jsx';
 
 const AddExpenseHead = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -87,33 +89,18 @@ const AddExpenseHead = () => {
 
   const theme = useTheme([
     {
-      // HeaderRow: `
-      // background-color: #313D4A;
-      // border-bottom: 1px solid #fff !important;
-
-      // `,
       HeaderRow: `
     .th {
       border-bottom: 1px solid #a0a8ae;
       padding: 5px 0px;
     }
   `,
+
       BaseCell: `
         font-size: 15px;
-        color:white;
-      //   border-bottom: 1px solid #313D4A !important;
-      //   //  background-color: #24303F;
+      
 
-      `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
-
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+       `,
     },
   ]);
 
@@ -138,15 +125,11 @@ const AddExpenseHead = () => {
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
-    navigate('/inventory/editcartegory', {
-      state: { action: 2, info: value },
-    });
+    setVisible(true);
   };
   const handleEditbtn = (value) => {
     console.log(value.type);
-    navigate('/inventory/editcartegory', {
-      state: { action: 1, info: value },
-    });
+    setVisible(true);
   };
   const handledeletebtn = (value) => {
     dispatch(deleteSingleExpenseHeadAction(value));
@@ -156,13 +139,6 @@ const AddExpenseHead = () => {
     type: type,
     subjectName: subjectName,
     createdBy: 'Asante',
-  };
-  const handlecreateSection = (e) => {
-    if (subjectName == '') {
-      toast.error('Error - subject Name Cannot Be Empty');
-    } else {
-      dispatch(CreatesSubjectAction(subdata));
-    }
   };
 
   const handleDownloadPdf = async () => {
@@ -182,23 +158,38 @@ const AddExpenseHead = () => {
     const csv = generateCsv(csvConfig)(nodes);
     download(csvConfig)(csv);
   };
+  const [visible, setVisible] = useState(false);
+  const [val, setVal] = useState(false);
 
   return loader ? (
     <Loader />
   ) : (
     <DefaultLayout>
-      <div className={'flex gap-7  w-full'}>
-      <div className="w-4/12 ">
+      <Dialog
+        visible={visible}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <ExpenseHeadModal info={val} close={setVisible} />
+      </Dialog>
+      <div className={'flex gap-2 w-full'}>
+        <div className="w-4/12 ">
           <ExpenseHeadCom close={setClasss} />
         </div>
-       
+
         <div className="w-7/12 flex-col">
           <div
             className={
               'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
             }
           >
-            <div className="max-w-full overflow-x-auto">
+            <div className="">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
                   Expense Head List
@@ -250,7 +241,7 @@ const AddExpenseHead = () => {
                   </div>
 
                   <input
-                    className="w-full rounded border border-stroke bg-gray py-2 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className="w-full rounded border border-stroke bg-gray py-1 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                     key={1}
                     type="search"
                     placeholder={'type here'}
@@ -274,7 +265,7 @@ const AddExpenseHead = () => {
                   {(tableList) => (
                     <>
                       <Header>
-                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
+                        <HeaderRow className="dark:bg-meta-4 border-stroke bg-white dark:text-white flex ">
                           <HeaderCell>Expense Head</HeaderCell>
 
                           <HeaderCell>Actions</HeaderCell>
@@ -283,16 +274,28 @@ const AddExpenseHead = () => {
 
                       <Body>
                         {tableList.map((item) => (
-                          <Row key={item.id} item={item} className=" ">
+                          <Row
+                            key={item.id}
+                            item={item}
+                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                          >
                             <Cell className="  ">{item.expensehead}</Cell>
 
                             <Cell>
                               <div className="gap-2 flex">
                                 <ViewSVG
-                                  clickFunction={() => handleViewbtn(item)}
+                                  clickFunction={() => {
+                                    setVal(item);
+
+                                    handleViewbtn(item);
+                                  }}
                                 />
                                 <EditSVG
-                                  clickFunction={() => handleEditbtn(item)}
+                                  clickFunction={() => {
+                                    setVal(item);
+
+                                    handleEditbtn(item);
+                                  }}
                                 />
                                 <DeleteSVG
                                   clickFunction={() => handledeletebtn(item.id)}
@@ -367,7 +370,7 @@ const AddExpenseHead = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.id}
@@ -387,7 +390,6 @@ const AddExpenseHead = () => {
             </div>
           </div>{' '}
         </div>
-     
       </div>{' '}
     </DefaultLayout>
   );

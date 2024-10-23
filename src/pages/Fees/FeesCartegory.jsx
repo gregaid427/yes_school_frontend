@@ -23,11 +23,15 @@ import autoTable from 'jspdf-autotable';
 
 import Loader from '../../common/Loader';
 import toast from 'react-hot-toast';
-import { deleteSinglefeeAction, deleteSingleFeeCartAction, fetchfeeCartegoryAction } from '../../redux/slices/feeSlice';
+import {
+  deleteSinglefeeAction,
+  deleteSingleFeeCartAction,
+  fetchfeeCartegoryAction,
+} from '../../redux/slices/feeSlice';
 import FeesCartegoryItem from '../../components/FeesCartegoryItem';
 import { deleteSingleCartAction } from '../../redux/slices/inventSlice';
-
-
+import { Dialog } from 'primereact/dialog';
+import EditFeesCartegoryItem from '../../components/EditFeesCartegoryItem';
 
 const FeesGroup = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -43,6 +47,7 @@ const FeesGroup = () => {
   const [subjectName, setSubjectName] = useState([]);
 
   const [nodes, setdata] = useState([]);
+  const [val, setval] = useState();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -102,20 +107,20 @@ const FeesGroup = () => {
 `,
       BaseCell: `
         font-size: 15px;
-        color:white;
+        //color:white;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
       `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+    //       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
 
@@ -140,37 +145,22 @@ const FeesGroup = () => {
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
-    navigate('/inventory/editFeeegory', {
-      state: { action: 2, info: value },
-    });
+    setVisible(true);
+    setval(value);
   };
   const handleEditbtn = (value) => {
-    console.log(value.type);
-    navigate('/inventory/editFeeegory', {
-      state: { action: 1, info: value },
-    });
+    setVisible(true);
+    setval(value);
   };
   const handledeletebtn = (value) => {
-    const data ={
-      id:value.id,
-      name: value.feeid
-    }
+    const data = {
+      id: value.id,
+      name: value.feeid,
+    };
     dispatch(deleteSingleFeeCartAction(data));
   };
 
-  
-  const subdata = {
-    type: type,
-    subjectName: subjectName,
-    createdBy: 'Asante',
-  };
-  const handlecreateSection = (e) => {
-    if (subjectName == '') {
-      toast.error('Error - subject Name Cannot Be Empty');
-    } else {
-      dispatch(CreatesSubjectAction(subdata));
-    }
-  };
+ 
 
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
@@ -189,13 +179,29 @@ const FeesGroup = () => {
     const csv = generateCsv(csvConfig)(nodes);
     download(csvConfig)(csv);
   };
+  const [visible, setVisible] = useState(false);
 
   return loader ? (
     <Loader />
   ) : (
     <DefaultLayout>
+      <Dialog
+        resizable={false}
+        draggable={false}
+        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
+        visible={visible}
+        className=""
+        position={'top'}
+        style={{ width: '35%', color: 'white' }}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}
+      >
+        <EditFeesCartegoryItem close={setVisible} data={val} />
+      </Dialog>
       <div className={'flex gap-2  w-full'}>
-      <div className="w-4/12">
+        <div className="w-4/12">
           <FeesCartegoryItem close={setClasss} />
         </div>
         <div className="w-7/12 flex-col">
@@ -292,16 +298,17 @@ const FeesGroup = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
                             <Cell className="  ">{item.name}</Cell>
 
                             <Cell>
                               <div className="gap-2 flex">
-                                <ViewSVG
+                                {/* <ViewSVG
                                   clickFunction={() => handleViewbtn(item)}
-                                />
+                                /> */}
                                 <EditSVG
                                   clickFunction={() => handleEditbtn(item)}
                                 />
@@ -378,7 +385,8 @@ const FeesGroup = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.id}
@@ -396,7 +404,6 @@ const FeesGroup = () => {
             </div>
           </div>{' '}
         </div>
-       
       </div>{' '}
     </DefaultLayout>
   );

@@ -86,6 +86,9 @@ const BulkAdmission = () => {
     fetchAllClassNo,
     CreateClassesloading,
   } = clad;
+  
+  const [CSVTemplate, setCSVTemplate] = useState([]);
+
   const [classData, setClassData] = useState([]);
   const [classData1, setClassData1] = useState([]);
   const [check, setCheck] = useState(true);
@@ -137,6 +140,7 @@ console.log(data)
     }
   `,
       BaseCell: `
+         padding: 8px 0;
         font-size: 15px;
         color:white;
       //   border-bottom: 1px solid #313D4A !important;
@@ -146,18 +150,18 @@ console.log(data)
       Table: `
       --data-table-library_grid-template-columns:  50% 30% 20%;
     `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+    //       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
-
+ // --data-table-library_grid-template-columns:  20%  15% 15%  20% 15% 15%;
   const pagination = usePagination(data, {
     state: {
       page: 0,
@@ -210,9 +214,24 @@ console.log(data)
   };
 console.log(tabledata1)
   const handlecreateClass = () => {
+    if (classname == '') {
+      return toast.error('Error - Select Class');
+    }
     if (classData1.length == 0) {
       return toast.error('File Error- Choose File Again');
-    } else {
+    } 
+    if (classData1[0].FIRST_NAME == undefined) {
+      return toast.error('File Error- Select Appropriate File');
+    }else {
+    
+      let absent = [];
+      for (const val of classData1) {
+
+       
+         absent.push({'Student First Name': val?.FIRST_NAME ,'Student Other Names': val?.OTHER_NAMES,'Student Last Name':val?.LAST_NAME  ,'Student Username': val?.EMAIL,'Student Password': val?.STUDENT_PASSWORD  ,'Guardian First Name': val?.GUARDIAN_1_FIRST_NAME ,'Guardian Last Name':  val?.GUARDIAN_1_LAST_NAME
+          ,'Guardian Username': val?.GUARDIAN_1_EMAIL,'Guardian Password': val?.GUARD1_PASSWORD})
+          setCSVTemplate(absent)
+      }
       settabledata(classData1)
       dispatch(CreatesBulkClassAction(classData1));
     }
@@ -234,6 +253,32 @@ console.log(tabledata1)
     useKeysAsHeaders: true,
     filename: classname+" / "+sectionname,
   });
+  // let template = {
+  //   FIRST_NAME: '',
+  //   OTHER_NAMES: '',
+  //   LAST_NAME: '',
+  //   RELIGION: '',
+  //   GENDER: '',
+  //   DATE_OF_BIRTH_DDMMYYYY: '',
+  //   GUARDIAN_1_FIRST_NAME: '',
+  //   GUARDIAN_1_LAST_NAME: '',
+  //   GUARDIAN_1_GENDER: '',
+  //   GUARDIAN_1_RELATION: '',
+  //   GUARDIAN_1_CONTACT1: '',
+  //   GUARDIAN_1_CONTACT2: '',
+  //   GUARDIAN_1_ADDRESS: '',
+  //   GUARDIAN_1_EMAIL: '',
+
+  //   GUARDIAN_2_FIRST_NAME: '',
+  //   GUARDIAN_2_LAST_NAME: '',
+  //   GUARDIAN_2_GENDER: '',
+  //   GUARDIAN_2_RELATION: '',
+  //   GUARDIAN_2_CONTACT1: '',
+  //   GUARDIAN_2_CONTACT2: '',
+  //   GUARDIAN_2_ADDRESS: '',
+  //   GUARDIAN_2_EMAIL: '',
+  // };
+
   let template = {
     FIRST_NAME: '',
     OTHER_NAMES: '',
@@ -250,20 +295,21 @@ console.log(tabledata1)
     GUARDIAN_1_ADDRESS: '',
     GUARDIAN_1_EMAIL: '',
 
-    GUARDIAN_2_FIRST_NAME: '',
-    GUARDIAN_2_LAST_NAME: '',
-    GUARDIAN_2_GENDER: '',
-    GUARDIAN_2_RELATION: '',
-    GUARDIAN_2_CONTACT1: '',
-    GUARDIAN_2_CONTACT2: '',
-    GUARDIAN_2_ADDRESS: '',
-    GUARDIAN_2_EMAIL: '',
+    // GUARDIAN_2_FIRST_NAME: '',
+    // GUARDIAN_2_LAST_NAME: '',
+    // GUARDIAN_2_GENDER: '',
+    // GUARDIAN_2_RELATION: '',
+    // GUARDIAN_2_CONTACT1: '',
+    // GUARDIAN_2_CONTACT2: '',
+    // GUARDIAN_2_ADDRESS: '',
+    // GUARDIAN_2_EMAIL: '',
   };
   console.log(tabledata1.nodes)
 
   const handleDownloadCSV1 = async () => {
     const {nodes} = tabledata1
-    const csv = generateCsv(csvConfig)(nodes);
+    console.log(CSVTemplate)
+    const csv = generateCsv(csvConfig)(CSVTemplate);
     download(csvConfig1)(csv);
   };
   const handleDownloadCSV = async () => {
@@ -409,7 +455,8 @@ console.log(tabledata1)
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
                             <Cell className="  ">{item.title}</Cell>
@@ -492,7 +539,8 @@ console.log(tabledata1)
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.id}
@@ -540,7 +588,7 @@ console.log(tabledata1)
             }
           >
             <div className="w-full  flex gap">
-              <div className=" flex w-7/12 gap-4">
+              <div className=" flex w-full gap-4">
                 <div className="">
                   <button
                     className="flex  justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
@@ -576,8 +624,16 @@ console.log(tabledata1)
                 </div>
               </div>
               
-
-           
+              <button
+                    className="flex float-end justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
+                    type=""
+                    onClick={async () => {
+                     navigate('/student/admission')
+                    }}
+                  >
+                    Back
+                  </button>
+              
             </div>
           </div>
           <div
@@ -610,25 +666,29 @@ console.log(tabledata1)
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
-                          <HeaderCell>Student</HeaderCell>
-                          <HeaderCell>Username</HeaderCell>
+                          <HeaderCell>Student Name</HeaderCell>
+                          
+                          <HeaderCell>Student Username</HeaderCell>
 
-                          <HeaderCell>Password</HeaderCell>
-                          <HeaderCell>Guard. Username</HeaderCell>
+                          <HeaderCell>Student Password</HeaderCell>
+                          <HeaderCell>Guardian Name</HeaderCell>
 
-                          <HeaderCell>Password</HeaderCell>
-                          <HeaderCell>Guard. Username</HeaderCell>
+                          <HeaderCell>Guardian Username</HeaderCell>
 
-                          <HeaderCell>Password</HeaderCell>
+                           <HeaderCell>Guardian Password</HeaderCell>
+                          {/* <HeaderCell>Guard. Username</HeaderCell>
+
+                          <HeaderCell>Password</HeaderCell> */}
 
 
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
-                          <Row key={item.id} item={item} className=" ">
-                            <Cell className="  ">{item.FIRST_NAME}{` `}{item.LAST_NAME}</Cell>
+                          <Row key={item.STUDENT_PASSWORD} item={item} className=" ">
+                            <Cell className=" ">{ <span className='py-1'>{item.FIRST_NAME}</span>}{` `}{item.LAST_NAME}</Cell>
                           
                             <Cell className="  ">
                               {item.EMAIL ? item.EMAIL : '-'}
@@ -637,17 +697,20 @@ console.log(tabledata1)
                               {item.STUDENT_PASSWORD ? item.STUDENT_PASSWORD : '-'}
                             </Cell>
                             <Cell className="  ">
+                              {item.GUARDIAN_1_FIRST_NAME ?( item.GUARDIAN_1_FIRST_NAME +" "+ (item?.GUARDIAN_1_LAST_NAME == undefined ? '': item?.GUARDIAN_1_LAST_NAME)): '-' }
+                            </Cell>
+                            <Cell className="  ">
                               {item.GUARD1_USERNAME ? item.GUARD1_USERNAME : '-'}
                             </Cell>
                             <Cell className="  ">
                               {item.GUARD1_PASSWORD ? item.GUARD1_PASSWORD : '-'}
                             </Cell>
-                            <Cell className="  ">
+                            {/* <Cell className="  ">
                               {item.GUARD2_USERNAME ? item.GUARD2_USERNAME : '-'}
                             </Cell>
                             <Cell className="  ">
                               {item.GUARD2_PASSWORD ? item.GUARD2_PASSWORD : '-'}
-                            </Cell>
+                            </Cell> */}
 
                             {/* <Cell>
                               <div className="gap-2 flex">
@@ -725,7 +788,8 @@ console.log(tabledata1)
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.id}
@@ -773,6 +837,7 @@ console.log(tabledata1)
                     type="text"
                     name=""
                     id=""
+                    disabled
                     placeholder=""
                     defaultValue={classname}
                   />
@@ -790,6 +855,7 @@ console.log(tabledata1)
                     type="text"
                     name=""
                     id=""
+                    disabled
                     placeholder=""
                     defaultValue={sectionname}
                   />

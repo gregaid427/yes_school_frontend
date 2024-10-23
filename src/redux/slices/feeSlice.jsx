@@ -592,6 +592,31 @@ export const updatefeeAction = createAsyncThunk(
   },
 );
 
+export const UpdateFeeCartAction = createAsyncThunk(
+  'update/updatefeecart',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/feecart`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Cartegory Updated Successfully');
+      }
+
+      if (data.success == 0) {
+        toast.error('Error Updating Cartegory');
+      }
+      console.log(data)
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const updatefeeItemAction = createAsyncThunk(
   'update/feeitem',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -734,7 +759,7 @@ export const deleteSingleFeeCartAction = createAsyncThunk(
 );
 
 export const AssignFeesAction = createAsyncThunk(
-  'delete/assignfee',
+  'create/assignfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
@@ -786,6 +811,9 @@ const FeeSlices = createSlice({
     resetcreatefee(state) {
       state.Createfee = null;
     },
+    resetUpdateFeeCart(state) {
+      state.UpdateFeeCart = null;
+    },
     resetpreference(state) {
       state.Preferences = null;
     },
@@ -828,6 +856,27 @@ const FeeSlices = createSlice({
       state.error = action.payload;
       state.Createfee = undefined;
       state.fetchAllfee = undefined;
+    });
+    
+
+    builder.addCase(UpdateFeeCartAction.pending, (state, action) => {
+      state.UpdateFeeCartloading = true;
+      state.UpdateFeeCart = false;
+      state.cartegory = false;
+      
+    });
+    builder.addCase(UpdateFeeCartAction.fulfilled, (state, action) => {
+      state.UpdateFeeCart = action?.payload;
+      state.cartegory = action?.payload;
+
+      state.UpdateFeeCartloading = false;
+      state.UpdateFeeCarterror = undefined;
+    });
+    builder.addCase(UpdateFeeCartAction.rejected, (state, action) => {
+      state.UpdateFeeCartloading = false;
+      state.UpdateFeeCarterror = action.payload;
+      state.UpdateFeeCart = undefined;
+      state.cartegory = undefined;
     });
 
     builder.addCase(FetchPaymentsAction.pending, (state, action) => {
@@ -1396,6 +1445,7 @@ const FeeSlices = createSlice({
 
 export const {
   resetpayfee,
+  resetUpdateFeeCart,
   resetUpdatefeeItem,
   resetcreatefee,
   resetUpdatefee,

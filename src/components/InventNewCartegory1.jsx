@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 
 
-const InventNewCartegory = (props) => {
+const InventNewCartegory1 = (props) => {
     const dispatch = useDispatch();
     const inventory = useSelector((state) => state?.inventory);
 
@@ -71,15 +71,14 @@ const handleSubmit=(e)=>{
 
   return (
     <div className="w-full">
-          <div className="grid  gap-8">
-            <div className="col-span-12">
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-form-input">
+ 
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                   <h3 className="font-medium text-black dark:text-white">
                     Add Item Cartegory
                   </h3>
                 </div>
-                <div className="p-7">
+                <div className="py-7 px-4">
                 <form ref={formRef1}>                   
                  <div className="w-full mb-4 sm:w-2/2">
                       <label
@@ -152,9 +151,8 @@ const handleSubmit=(e)=>{
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+       
   )
 }
 
-export default InventNewCartegory
+export default InventNewCartegory1

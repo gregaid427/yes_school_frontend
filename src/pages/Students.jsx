@@ -26,7 +26,6 @@ import {
 } from '@table-library/react-table-library/table';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  
   deleteSingleStudentAction,
   fetchBulkStudent,
   fetchCustomStudentsClassAction,
@@ -64,7 +63,7 @@ const Student = () => {
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
   const [classs, setClasss] = useState();
-  const [sections, setsections] = useState([]);
+  const [CSVTemplate, setCSVTemplate] = useState([]);
   const [clazz, setclazz] = useState();
   const [sectionzz, setsectionzz] = useState();
 
@@ -72,12 +71,19 @@ const Student = () => {
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
 
+  const {
+    loading,
+    error,
+    fetchStudent,
+    fetchStudentcustom,
+    fetchcustom,
+    fetchStudentcustomloading,
+    fetchcustomloading,
+    singleStudent,
+    singleStudentloading,
+  } = student;
 
-  const { loading, error, fetchStudent, fetchStudentcustom, fetchcustom, fetchStudentcustomloading, fetchcustomloading,singleStudent, singleStudentloading } = student;
-  
-  const {fetchAllClassloading,fetchAllClass}= classes
-
-  
+  const { fetchAllClassloading, fetchAllClass } = classes;
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -85,6 +91,20 @@ const Student = () => {
     if (fetchcustom?.success == 1) {
       let data = fetchcustom?.data;
       setdata(data);
+
+      let absent = [];
+      for (const val of data) {
+        absent.push({
+          'Student ID': val?.student_id,
+          'Student First Name': val?.firstName,
+          'Student Other Names': val?.otherName,
+          'Student Last Name': val?.lastName,
+          Gender: val?.gender,
+          Class: val?.class,
+          Section: val?.section,
+        });
+        setCSVTemplate(absent);
+      }
     }
 
     // if (fetchAllClass?.success == 1) {
@@ -97,8 +117,7 @@ const Student = () => {
     //   setClasss(arr);
     // //  setclazz(arr[0])
     // }
-
-  }, [fetchAllClassloading , fetchcustomloading ]);
+  }, [fetchAllClassloading, fetchcustomloading]);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -106,18 +125,11 @@ const Student = () => {
     if (fetchStudentcustom?.success == 1) {
       let data = fetchStudentcustom?.data;
       setdata(data);
-
     }
-
-  
-
-  }, [ fetchStudentcustom ]);
+  }, [fetchStudentcustom]);
 
   useEffect(() => {
-   
-    setdata([])
-  
-
+    setdata([]);
   }, []);
 
   useEffect(() => {
@@ -130,7 +142,7 @@ const Student = () => {
   }, [fetchStudent]);
 
   // useEffect(() => {
-   
+
   //   if (fetchSection?.success == 1) {
   //    let arrr = ['All Sections']
   //     let i = 0;
@@ -145,39 +157,25 @@ const Student = () => {
   //   }
   // }, [sectionloading]);
 
-
   let data = { nodes };
 
- const theme = useTheme([
+  const theme = useTheme([
     {
-      // HeaderRow: `
-      // background-color: #313D4A;
-      // border-bottom: 1px solid #fff !important;
-
-      // `,
       HeaderRow: `
-    .th {
-      border-bottom: 1px solid #a0a8ae;
-      padding: 5px 0px;
-    }
-  `,Table: `
-  --data-table-library_grid-template-columns:  12% 35% 18% 10% 25%;
+  .th {
+    border-bottom: 1px solid #a0a8ae;
+    padding: 5px 0px;
+  }
 `,
-         BaseCell: `
-        font-size: 15px;
-        color:white;
-      //   border-bottom: 1px solid #313D4A !important;
-      //   //  background-color: #24303F;
 
-       `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+      BaseCell: `
+      font-size: 15px;
+    
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
+     `,
+
+      Table: `
+  --data-table-library_grid-template-columns:  12% 35% 18% 10% 25%;
 `,
     },
   ]);
@@ -189,31 +187,35 @@ const Student = () => {
     },
     onChange: onPaginationChange,
   });
+  const pagination1 = usePagination(data, {
+    state: {
+      page: 0,
+      size: 90000000000000000,
+    },
+    onChange: onPaginationChange,
+  });
 
   function onPaginationChange(action, state) {}
 
   var data2;
   const [search, setSearch] = useState('');
- const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleviewbtn = (value) => {
-    navigate("/student/editinfo", {state:{action: 1,value:value}})
-    dispatch(fetchUserdataAction({role:'student',id:value.student_id}));
-
+    navigate('/student/editinfo', { state: { action: 1, value: value } });
+    dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
   };
   const handleEditbtn = (value) => {
-    dispatch(fetchUserdataAction({role:'student',id:value.student_id}));
-    navigate("/student/editinfo", {state:{action: 2,value:value}})
-
+    dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
+    navigate('/student/editinfo', { state: { action: 2, value: value } });
   };
   const handledeletbtn = (value) => {
     let data = {
-      "class" : clazz,
-      "section":sectionzz,
-      "id" : value
-    }
+      class: clazz,
+      section: sectionzz,
+      id: value,
+    };
     dispatch(deleteSingleStudentAction(data));
-
   };
 
   data = {
@@ -237,32 +239,31 @@ const Student = () => {
     setVisible(false);
   }
 
-  const csvConfig = mkConfig({ useKeysAsHeaders: true, filename:`${clazz} : ${sectionzz} `});
+  const csvConfig = mkConfig({
+    useKeysAsHeaders: true,
+    filename: `${clazz} : ${sectionzz} `,
+  });
 
   const handleDownloadCSV = async () => {
-    const csv = generateCsv(csvConfig)(nodes);
+    const csv = generateCsv(csvConfig)(CSVTemplate);
     download(csvConfig)(csv);
   };
   function handleGetClassData() {
-    console.log(clazz)
+    console.log(clazz);
 
     let data = {
-      "class" : clazz,
-      "section":sectionzz
+      class: clazz,
+      section: sectionzz,
+    };
+    console.log(data);
+    if (sectionzz == 'All Sections') {
+      //  setclazz(clazz)
+      dispatch(fetchStudentsClassAction(data));
     }
-    console.log(data)
-    if(sectionzz == "All Sections"){
-    //  setclazz(clazz)
-      dispatch(fetchStudentsClassAction(data))
-
+    if (sectionzz != 'All Sections') {
+      setsectionzz(sectionzz);
+      dispatch(fetchCustomStudentsClassAction(data));
     }
-    if(sectionzz != "All Sections"){
-      setsectionzz(sectionzz)
-      dispatch(fetchCustomStudentsClassAction(data))
-
-    }
-
-
   }
   const footerContent = (
     <div>
@@ -319,9 +320,7 @@ const Student = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz}
-                       clazz={clazz}
-                      />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
                     </div>
                   </div>
                   <label
@@ -343,8 +342,7 @@ const Student = () => {
                     Section{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SectionSelect1 setsectionprop={setsectionzz}
-                    />
+                    <SectionSelect1 setsectionprop={setsectionzz} />
                   </div>
                   <label
                     className="pt-4 block text-sm font-medium text-ash dark:text-white"
@@ -365,8 +363,7 @@ const Student = () => {
                   </label>
                   <div className="relative sm:w-1/5 z-20 bg-white dark:bg-form-input">
                     <button
-                      onClick={() => handleGetClassData()
-                      }
+                      onClick={() => handleGetClassData()}
                       className="btn h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
@@ -425,13 +422,14 @@ const Student = () => {
               <Table
                 data={data}
                 pagination={pagination}
-                theme={theme} layout={{ custom: true }}
+                theme={theme}
+                layout={{ custom: true }}
               >
                 {(tableList) => (
                   <>
                     <Header>
-                      <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <HeaderCell className="">ID</HeaderCell>
+                    <HeaderRow className="dark:bg-meta-4 border-stroke bg-white dark:text-white flex ">
+                    <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
                         <HeaderCell>Section</HeaderCell>
                         <HeaderCell>Gender</HeaderCell>
@@ -440,13 +438,12 @@ const Student = () => {
                       </HeaderRow>
                     </Header>
 
-                    <Body>
+                    <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
-                        <Row
-                          key={item.student_id}
-                          item={item}
-                          className=""
-                        >
+                        <Row key={item.student_id}
+                            item={item}
+                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                          >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -463,7 +460,6 @@ const Student = () => {
                           <Cell className="  ">
                             <span>{item.gender}</span>
                           </Cell>
-                        
 
                           <Cell>
                             <div className="gap-2 flex">
@@ -475,7 +471,9 @@ const Student = () => {
                               />
 
                               <DeleteSVG
-                                clickFunction={() => handledeletbtn(item.student_id)}
+                                clickFunction={() =>
+                                  handledeletbtn(item.student_id)
+                                }
                               />
                             </div>
                           </Cell>
@@ -500,7 +498,7 @@ const Student = () => {
                   </span>
                   <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
                     <SelectGroupTwo
-                      values={[ 30, 50, 100, 200, 500, 'All']}
+                      values={[30, 50, 100, 200, 500, 'All']}
                       setSelectedOption={(val) => setpagesval(val)}
                       selectedOption={pagesval}
                     />
@@ -530,12 +528,11 @@ const Student = () => {
                 ))}
               </span>
             </div>
-            <div className='hidden'>
+            <div className="hidden">
               <Table
                 id="my-table"
-                
                 data={data}
-                pagination={pagination}
+                pagination={pagination1}
                 theme={theme}
               >
                 {(tableList) => (
@@ -549,13 +546,12 @@ const Student = () => {
                       </HeaderRow>
                     </Header>
 
-                    <Body>
+                    <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
-                        <Row
-                          key={item.student_id}
-                          item={item}
-                          className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
-                        >
+                        <Row key={item.student_id}
+                            item={item}
+                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                          >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -572,8 +568,6 @@ const Student = () => {
                           <Cell className="  ">
                             <span>{item.gender}</span>
                           </Cell>
-                        
-
                         </Row>
                       ))}
                     </Body>

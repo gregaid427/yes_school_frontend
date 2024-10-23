@@ -114,20 +114,20 @@ const Subject = () => {
 `,
       BaseCell: `
         font-size: 15px;
-        color:white;
+       color:white;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
       `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+//       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
 
@@ -196,18 +196,18 @@ const Subject = () => {
   ) : (
     <DefaultLayout>
       <div className={'flex gap-2 w-full'}>
-        <div className="flex w-4/12 gap-8">
-          <div className="w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+     
+          <div className="h-max w-4/12 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
                 Add New Subject
               </h3>
             </div>
-            <div className="p-7">
+            <div className="py-7 px-4">
               <form action="#">
-                <div className="w-full mb-4 ">
+                <div className="w-full mb-1 ">
                   <label
-                    className="mb-3 block text-sm font-small text-black dark:text-white"
+                    className="mb-1 block text-md font-small text-black dark:text-white"
                     htmlFor=""
                   >
                     Subject Name
@@ -335,27 +335,25 @@ const Subject = () => {
               </form>
             </div>
           </div>
-        </div>
-        <div className="w-8/12 flex-col">
+    
+       
           <div
             className={
-              'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
+              'rounded-sm  w-8/12 border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark '
             }
           >
-            <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
-                <h3 className="font-medium text-black py-3 dark:text-white">
+                <h3 className="font-medium text-black py-3 px-7 dark:text-white">
                   Subject List
                 </h3>
-              </div>
             </div>
-          </div>
+          
           <div
             className={
-              'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+              'rounded-sm   border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
             }
           >
-            <div className="max-w-full overflow-x-auto">
+            <div className=" overflow-x-auto">
               <div className="w-full  flex justify-between ">
                 <div className=" flex w-7/12 gap-3">
                   <div className="sm:w-2/5 ">
@@ -409,7 +407,7 @@ const Subject = () => {
           </div>
           <div
             className={
-              'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
+              'rounded-sm  w-full  border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
             }
           >
             <div className="flex gap-3  flex-col">
@@ -427,7 +425,8 @@ const Subject = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
                             <Cell className="  ">{item.subjectname}</Cell>
@@ -516,7 +515,8 @@ const Subject = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.id}

@@ -3,8 +3,7 @@ import DefaultLayout from '../layout/DefaultLayout';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CreatestudentAction } from '../redux/slices/studentSlice';
-import {  toast } from 'react-hot-toast';
-
+import { toast } from 'react-hot-toast';
 
 import { reset } from '../redux/slices/studentSlice';
 import ClassSelect from '../components/ClassSelect';
@@ -108,13 +107,9 @@ const Admission = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-
-
-
     // if(!picture) return console.log('no image')
 
     if (firstName == '') return toast.error('Please Fill Out Required Fields');
-
 
     let data = {
       firstName: firstName,
@@ -146,10 +141,8 @@ const Admission = () => {
       feeArrears: feeArrears,
       feeCredit: feeCredit,
       createdBy: 'Asante',
-
-  
     };
-   
+
     dispatch(CreatestudentAction(data));
   };
 
@@ -179,7 +172,9 @@ const Admission = () => {
       dispatch(reset());
       // setTimeout(() => setLoader(false), 1000);
 
-      navigate('/student/studentcredential',{state:{pic:null,file:null}});
+      navigate('/student/studentcredential', {
+        state: { pic: null, file: null },
+      });
       //  dispatch(reset())
     }
     if (CreateStudent?.success == 0) {
@@ -314,7 +309,7 @@ const Admission = () => {
                       </label>
 
                       <input
-                        className=" w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-2 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                        className=" w-full rounded border-[1.5px] border-stroke bg-transparent px-2 py-2 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                         placeholder="12/10/2021"
                         // data-class="flatpickr-right"
                         name="dateofbirth"
@@ -352,7 +347,6 @@ const Admission = () => {
                       </div>
                     </div>
                   </div>
-              
                 </form>
                 <div className="flex mt-10  gap-4.5">
                   <button
@@ -363,11 +357,9 @@ const Admission = () => {
                     Next
                   </button>
                 </div>
-                
               </div>
             </div>
           </div>
-      
         </div>
 
         <div
@@ -433,7 +425,7 @@ const Admission = () => {
                           </label>
                           <input
                             className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
+                            type="email"
                             name=""
                             id=""
                             placeholder=""
@@ -529,7 +521,7 @@ const Admission = () => {
                             className="w-full dark:bg-form-input rounded border border-stroke  py-2  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark  dark:text-white dark:focus:border-primary"
                             name="bio"
                             id="bio"
-                            rows={1}
+                            rows={2}
                             placeholder=""
                             // defaultValue={data?.gAddress}
                             onChange={(e) => setgAddress1(e.target.value)}
@@ -591,7 +583,7 @@ const Admission = () => {
                           </label>
                           <input
                             className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
+                            type="email"
                             name=""
                             id=""
                             placeholder=""
@@ -687,7 +679,7 @@ const Admission = () => {
                             className="w-full dark:bg-form-input rounded border border-stroke  py-2  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark  dark:text-white dark:focus:border-primary"
                             name="bio"
                             id="bio"
-                            rows={1}
+                            rows={2}
                             placeholder=""
                             // defaultValue={data?.gAddress}
                             onChange={(e) => setgAddress2(e.target.value)}
@@ -698,7 +690,7 @@ const Admission = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex w-4/12 mx-8 pb-5   gap-4.5">
+              <div className="flex mt-10 w-7/12 justify-end gap-4.5">
                 <button
                   className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                   type=""
@@ -709,9 +701,9 @@ const Admission = () => {
                 <button
                   className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                   type=""
-                  onClick={(e) => handleNextButton()}
+                  onClick={(e) => handleSubmit()}
                 >
-                  Next
+                  Save
                 </button>
               </div>
             </div>
@@ -720,7 +712,7 @@ const Admission = () => {
 
         {/* Fees Management info */}
 
-        <div
+        {/* <div
           className="flex flex-row w-full    gap-3"
           style={{
             display: buttonState == 3 ? 'flex' : 'none',
@@ -899,30 +891,14 @@ const Admission = () => {
                     </div>
                   </div>
                 </form>
-                <div className="flex mt-10 w-7/12 justify-end gap-4.5">
-                  <button
-                    className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                    type=""
-                    onClick={(e) => handleBackButton()}
-                  >
-                    Back
-                  </button>
-                  <button
-                    className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                    type=""
-                    onClick={(e) => handleSubmit()}
-                  >
-                    Save
-                  </button>
-                </div>
+          
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </DefaultLayout>
   );
 };
 
 export default Admission;
-

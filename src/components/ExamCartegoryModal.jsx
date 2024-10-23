@@ -17,7 +17,11 @@ const ExamCartegoryModal = (props) => {
     dispatch(UpdateExamCartegoryAction(data));
   }
  
-  
+  useEffect(() => {
+    setname(props?.item?.grouptitle)
+  }, [props]);
+console.log(name)
+console.log(props)
 
   return (
     <div className=" w-full  gap-8">

@@ -163,21 +163,21 @@ const Promotion = () => {
 `,
       BaseCell: `
         font-size: 15px;
-        color:white;
+        //color:white;
         padding: 5px 0px;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
        `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+    //       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
 
@@ -216,6 +216,7 @@ const Promotion = () => {
     dispatch(PromoteAllAction(data));
   };
   const handlePromoteselected = () => {
+  
 
     const data = {
       value: repeat,
@@ -616,9 +617,13 @@ const Promotion = () => {
                       </HeaderRow>
                     </Header>
 
-                    <Body>
+
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
-                        <Row key={item.student_id} item={item} className="">
+                        <Row key={item.student_id}
+                            item={item}
+                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                          >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -669,9 +674,11 @@ const Promotion = () => {
                   <button
                     className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                     type=""
-                    onClick={() =>     show('top-right')
+                    onClick={() =>    { 
+                      if(nextClass == clazz) return  toast.error('Error: Cannot Promote To Same Class');
+                      show('top-right')
 
-                      
+                    }
                       }
                   >
                     Promote Students

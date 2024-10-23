@@ -109,7 +109,8 @@ export const fetchAllClassExamAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/class/allclassexam`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/class/allclassexam`,
+        payload,
       );
 
       return data;
@@ -146,6 +147,25 @@ export const deleteSectionByClass = createAsyncThunk(
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/single/sectiondelete`,
+        payload,
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const FetchClassWithSectionAction = createAsyncThunk(
+  'fetch/singleclassSection',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/class/getclasswithsection`,
         payload,
       );
 
@@ -202,6 +222,17 @@ export const updateClassAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/class/`,
         payload,
       );
+      if (data?.success == 1) {
+        toast.success('Record Updated Successfully');
+      }
+
+      if (data?.success == 0) {
+        toast.error('Error Updating Data');
+
+        // toast.error(data.message);
+      }
+
+
 
       return data;
     } catch (error) {
@@ -337,16 +368,36 @@ const ClassSlices = createSlice({
     resetUpdateSection(state) {
       state.updateSection = false;
     },
-    
+    resetgetclass(state) {
+      state.ClassWithSection = null;
+    },
     resetdeleteclass(state) {
       state.deletesectionbyclass = null;
     },
     resetfetchAllClassExam(state) {
       state.fetchAllClassExam = null;
     },
-
   },
   extraReducers: (builder) => {
+
+    builder.addCase(FetchClassWithSectionAction.pending, (state, action) => {
+      state.ClassWithSectionloading = true;
+      state.ClassWithSection = false;
+    });
+    builder.addCase(FetchClassWithSectionAction.fulfilled, (state, action) => {
+      state.ClassWithSection = action?.payload;
+
+      state.ClassWithSectionloading = false;
+      state.ClassWithSectionerror = undefined;
+    });
+    builder.addCase(FetchClassWithSectionAction.rejected, (state, action) => {
+      state.ClassWithSectionloading = false;
+      state.ClassWithSectionerror = action.payload;
+      state.ClassWithSection = undefined;
+    });
+
+
+
     builder.addCase(CreatesClassAction.pending, (state, action) => {
       state.CreateClassesloading = true;
       state.CreateClasses = false;
@@ -364,7 +415,6 @@ const ClassSlices = createSlice({
       state.CreateClasses = undefined;
     });
 
-    
     builder.addCase(CreatesBulkClassAction.pending, (state, action) => {
       state.CreateClassesloading = true;
       state.CreateClasses = false;
@@ -412,7 +462,7 @@ const ClassSlices = createSlice({
       state.fetchAllClass = undefined;
       state.fetchAllClassloading = undefined;
     });
-    
+
     builder.addCase(fetchAllClassExamAction.pending, (state, action) => {
       state.fetchAllClassExamloading = true;
       state.fetchAllClassExam = false;
@@ -428,7 +478,6 @@ const ClassSlices = createSlice({
       state.fetchAllClassExamloading = undefined;
     });
 
-
     builder.addCase(fetchAllClassNoAction.pending, (state, action) => {
       state.fetchAllClassExamloading = true;
       state.fetchAllClassNo = false;
@@ -443,7 +492,6 @@ const ClassSlices = createSlice({
       state.fetchAllClassNo = undefined;
       state.fetchAllClassloadingNo = undefined;
     });
-
 
     builder.addCase(fetchSectionbyclassAction.pending, (state, action) => {
       state.sectionbyclassloading = true;
@@ -617,7 +665,8 @@ export const {
   resetUdateClass,
   resetdeleteclass,
   resetcreatesection,
-  resetfetchAllClassExam
+  resetfetchAllClassExam,
+  resetgetclass
 } = ClassSlices.actions;
 
 export default ClassSlices.reducer;

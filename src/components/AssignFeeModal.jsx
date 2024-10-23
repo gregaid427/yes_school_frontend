@@ -12,7 +12,7 @@ const AssignFeeModal = (props) => {
   const [display, setDisplay] = useState(0);
 
   const [clazz, setclazz] = useState();
-  const [isChecked1, setIsChecked1] = useState();
+  const [isChecked1, setIsChecked1] = useState(false);
   const [selectedArr, setselectedArr] = useState([]);
 
   const [desc, setDesc] = useState('');
@@ -49,7 +49,7 @@ const AssignFeeModal = (props) => {
     return pp;
   }
   const handleSubmit = () => {
-    data4['class'] = clazz;
+    data4['class'] = isChecked1 == false ? [clazz] : selectedArr;
     data4['session'] = sessionoption;
     data4['total'] = data3;
     data4['createdby'] = 'Asante';
@@ -65,6 +65,7 @@ const AssignFeeModal = (props) => {
       dispatch(AssignFeesAction(data4));
     }
   };
+  console.log(isChecked1);
 
   useEffect(() => {
     if (fetchAllClass?.success == 0) {
@@ -510,10 +511,20 @@ const AssignFeeModal = (props) => {
                               Class
                             </label>
                             <label
-                              className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
+                              className={isChecked1 == false ? "mb-3 py-auto block text-sm font-medium text-black dark:text-white" : 'hidden'}
                               htmlFor=""
                             >
                               {clazz}
+                       
+                          
+                            </label>
+                            <label
+                              className={isChecked1 == true ? "mb-3 py-auto block text-sm font-medium text-black dark:text-white" : 'hidden'}
+                              htmlFor=""
+                            >
+                              {selectedArr.join(', ')}
+                       
+                          
                             </label>
                           </div>
 {/* 

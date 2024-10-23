@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
 import DefaultLayout from '../layout/DefaultLayout';
-import { Link, useNavigate } from 'react-router-dom';;
+import { Link, useNavigate } from 'react-router-dom';
 import ViewSVG from '../components/Svgs/View';
 import DeleteSVG from '../components/Svgs/delete';
 import EditSVG from '../components/Svgs/edit';
@@ -23,7 +23,13 @@ import autoTable from 'jspdf-autotable';
 
 import Loader from '../common/Loader';
 import toast from 'react-hot-toast';
-import {  createSectionAction, deleteSectiongroupAction, fetchAllSectionAction, fetchSingleClassAction, resetcreatesection } from '../redux/slices/classSlice';
+import {
+  createSectionAction,
+  deleteSectiongroupAction,
+  fetchAllSectionAction,
+  fetchSingleClassAction,
+  resetcreatesection,
+} from '../redux/slices/classSlice';
 
 const Section = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -32,20 +38,27 @@ const Section = () => {
   const [loader, setLoader] = useState(true);
 
   const [isChecked1, setIsChecked1] = useState(false);
-  const [sectionTitle, setsectionTitle] = useState("");
-  const [classInstructor, setClassInstructor] = useState("");
+  const [sectionTitle, setsectionTitle] = useState('');
+  const [classInstructor, setClassInstructor] = useState('');
 
   const [sections, setsections] = useState([]);
 
   const [nodes, setdata] = useState([]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const clad = useSelector((state) => state?.classes);
 
-  const {createClassSection, fetchAllClassloading, fetchAllClass, sectionloading, fetchSection, CreateClasses,CreateClassesloading } =
-    clad;
+  const {
+    createClassSection,
+    fetchAllClassloading,
+    fetchAllClass,
+    sectionloading,
+    fetchSection,
+    CreateClasses,
+    CreateClassesloading,
+  } = clad;
 
   // useEffect(() => {
   //     dispatch(fetchAllClass());
@@ -68,20 +81,15 @@ const Section = () => {
 
   useEffect(() => {
     if (createClassSection?.success == 0) {
-      toast.error("Error - Section Name Already Exists");
-       dispatch(resetcreatesection())
+      toast.error('Error - Section Name Already Exists');
+      dispatch(resetcreatesection());
       // dispatch(fetchAllClassAction())
-
-
-      }
+    }
     if (createClassSection?.success == 1) {
       toast.success('New Section Added Successfully');
-       dispatch(resetcreatesection())
-    //   dispatch(fetchAllSectionAction())
-
-
-      }
-    
+      dispatch(resetcreatesection());
+      //   dispatch(fetchAllSectionAction())
+    }
 
     // if (fetchAllClass?.success == 1) {
     //   let i = 0;
@@ -125,24 +133,25 @@ const Section = () => {
       padding: 5px 0px;
     }
   `,
-        BaseCell: `
+      BaseCell: `
         font-size: 15px;
-        color:white;
+        //color:white;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
-      `, Table: `
+      `,
+      Table: `
       --data-table-library_grid-template-columns:  65% 35%;
     `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+    //       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
 
@@ -158,8 +167,6 @@ const Section = () => {
 
   const [search, setSearch] = useState('');
 
-
-
   data = {
     nodes: data.nodes.filter((item) =>
       item.sectionName.toLowerCase().includes(search.toLowerCase()),
@@ -168,7 +175,6 @@ const Section = () => {
 
   function onPaginationChange(action, state) {}
 
- 
   const handleEditbtn = (value) => {
     navigate('/academics/section/edit', {
       state: { sectionName: value.sectionName, sectionId: value.id },
@@ -189,9 +195,6 @@ const Section = () => {
       dispatch(createSectionAction(classdata));
     }
   };
-
-
-  
 
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
@@ -215,40 +218,34 @@ const Section = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-      <div className={'flex gap-8  w-full'}>
-        
-        <div className="w-4/12 ">
-          <div className="grid  gap-8">
-            <div className="col-span-12">
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                  <h3 className="font-medium text-black dark:text-white">
-                    Add New Section
-                  </h3>
-                </div>
-                <div className="p-7">
-                  <form action="#">
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-small text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Section Name
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue=""
-                        onChange={(e) => setsectionTitle(e.target.value)}
-                      />
-                    </div>
+      <div className={'flex gap-2  w-full'}>
+        <div className="h-max w-4/12 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
+            <h3 className="font-medium text-black dark:text-white">
+              Add New Section
+            </h3>
+          </div>
+          <div className="py-7 px-3">
+            <form action="#">
+              <div className="w-full mb-4 sm:w-2/2">
+                <label
+                  className="mb-3 block text-md font-small text-black dark:text-white"
+                  htmlFor=""
+                >
+                  Section Name
+                </label>
+                <input
+                  className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                  type="text"
+                  name=""
+                  id=""
+                  placeholder=""
+                  defaultValue=""
+                  onChange={(e) => setsectionTitle(e.target.value)}
+                />
+              </div>
 
-                
-
-                  {/* <div className="pb-10 mt-3">
+              {/* <div className="pb-10 mt-3">
                  <div className='flex my-5 justify-between align-middle'>
                  <label className=' block text-sm align-middle font-medium text-black dark:text-white'>Class Sections</label>
                  <button
@@ -310,34 +307,32 @@ const Section = () => {
 
                   </div> */}
 
-                    <div className="flex justify-end mt-5 gap-4.5">
-                      <button
-                        className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault()
-                          handlecreateSection();
-                        }}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                        type="reset"
-                      >
-                        Reset
-                      </button>
-                    </div>
-                  </form>
-                </div>
+              <div className="flex justify-end mt-5 gap-4.5">
+                <button
+                  className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                  type=""
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlecreateSection();
+                  }}
+                >
+                  Save
+                </button>
+                <button
+                  className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                  type="reset"
+                >
+                  Reset
+                </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
-        <div className="w-6/12 flex-col">
+
+        <div className="w-8/12 flex-col">
           <div
             className={
-              'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
+              'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark  '
             }
           >
             <div className="max-w-full overflow-x-auto">
@@ -350,14 +345,14 @@ const Section = () => {
           </div>
           <div
             className={
-              'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+              'rounded-sm border max-w-full border-stroke bg-white px-5 pt-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
             }
           >
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between ">
                 <div className=" flex w-7/12 gap-3">
                   <div className="sm:w-2/5 ">
-                    <label
+                    {/* <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
                       style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
@@ -365,11 +360,11 @@ const Section = () => {
                       }}
                     >
                       Download Page (PDF)
-                    </label>
+                    </label> */}
                   </div>
 
                   <div className="w-full sm:w-2/5">
-                    <label
+                    {/* <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
                       style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
@@ -377,14 +372,14 @@ const Section = () => {
                       }}
                     >
                       Download Page (Excel)
-                    </label>
+                    </label> */}
                   </div>
                 </div>
 
                 <div className={' w-5/12 flex flex-col float-right '}>
-                  <div className="flex justify-between align-middle mb-2">
+                  <div className="flex justify-between align-middle ">
                     <label
-                      className=" w-2/2 pt-2 block text-sm font-medium text-black dark:text-white"
+                      className=" w-2/2  block text-sm font-medium text-black dark:text-white"
                       htmlFor=" "
                     >
                       Search Section{' '}
@@ -407,36 +402,35 @@ const Section = () => {
           </div>
           <div
             className={
-              'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
+              'rounded-sm  w-full border border-stroke bg-white px-2  pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
             }
           >
             <div className="flex gap-3  flex-col">
               <div className="px-2">
-                <Table data={data} pagination={pagination} theme={theme}  layout={{ custom: true }}>
+                <Table
+                  data={data}
+                  pagination={pagination}
+                  theme={theme}
+                  layout={{ custom: true }}
+                >
                   {(tableList) => (
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
-
                           <HeaderCell>Section</HeaderCell>
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
-                           
-                            <Cell className="  ">
-                              {item.sectionName}
-                            </Cell>
-
-                    
+                            <Cell className="  ">{item.sectionName}</Cell>
 
                             <Cell>
                               <div className="gap-2 flex">
-                               
                                 <EditSVG
                                   clickFunction={() => handleEditbtn(item)}
                                 />
@@ -503,7 +497,6 @@ const Section = () => {
                   data={data}
                   pagination={pagination}
                   theme={theme}
-
                 >
                   {(tableList) => (
                     <>
@@ -513,17 +506,14 @@ const Section = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.id}
                             item={item}
                             className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
-                          >
-                           
-
-                          
-                          </Row>
+                          ></Row>
                         ))}
                       </Body>
                     </>

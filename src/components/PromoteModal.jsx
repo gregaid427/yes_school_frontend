@@ -25,13 +25,13 @@ const PromoteModal = (props) => {
                       : ` Promote Selected Students From ${props.prev} To ${props.next} ?`}
                   </label>
 
-                  <label
+                  {/* <label
                     className="mb-2 block text-center mx-auto text-sm font-medium text-black dark:text-white"
                     htmlFor=""
                   >
                     {props.type != true ?
-                      `All But ${props.repeatNo} Student(s) Are Selected To Repeat In ${props.prev}` :null}
-                  </label>
+                      `All  Student(s) Are Selected To Repeat In ${props.prev}` :null}
+                  </label> */}
                 </div>
               </div>
             </div>

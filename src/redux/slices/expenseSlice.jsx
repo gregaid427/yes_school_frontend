@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 
 
@@ -38,7 +39,13 @@ export const CreatesExpenseHeadAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/expense/head`,payload
         
       );
+      if (data?.success == 1) {
+        toast.success(' Created Successfully');
+      }
 
+      if (data == 0) {
+        toast.error('Error Creating Head');
+      }
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -218,14 +225,23 @@ export const updateExpenseAction = createAsyncThunk(
 );
 
 export const updateExpenseItemAction = createAsyncThunk(
-  "ExpenseItem/Update",
+  "ExpenseItem/Updatehead",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.patch(
-        `${import.meta.env.VITE_APP_BASE_URL}/Expense/item`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/updatehead`, payload
         
       );
+      if (data?.success == 1) {
+        toast.success('Record Updated Successfully');
+      }
 
+      if (data == 0) {
+        toast.error('Error Updating Record');
+      }
+      // if (data?.success == 0) {
+      //   toast.error(data.message);
+      // }
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -357,6 +373,9 @@ const ExpenseSlices = createSlice({
     resetdeleteExpense(state) {
       state.deletesectionbyExpense = null
     } ,
+    resetUpdateHead(state) {
+      state.updateExpenseItem = null
+    } ,
   },
   extraReducers: builder => {
     builder.addCase(CreatesExpenseAction.pending, (state, action) => {
@@ -421,17 +440,23 @@ const ExpenseSlices = createSlice({
     builder.addCase(updateExpenseItemAction.pending, (state, action) => {
       state.updateExpenseItemloading = true;
       state.updateExpenseItem = false;
+      state.CreateExpenseHead = false;
+
       
     });
     builder.addCase(updateExpenseItemAction.fulfilled, (state, action) => {
       state.updateExpenseItem = action?.payload;
       state.updateExpenseItemloading = false;
       state.error = undefined;
+      state.CreateExpenseHead = action?.payload;
+
     });
     builder.addCase(updateExpenseItemAction.rejected, (state, action) => {
       state.error = action.payload;
       state.updateExpenseItem = undefined;
       state.updateExpenseItemloading = undefined;
+      state.CreateExpenseHead = undefined;
+
 
     });
 
@@ -656,7 +681,7 @@ const ExpenseSlices = createSlice({
 });
 
 
-export const {resetcreatestock, resetUpdateExpenseItem,resetcreateExpense,resetUpdateExpense,resetdeleteExpense ,resetcreateExpenseHead } = ExpenseSlices.actions
+export const {resetcreatestock, resetUpdateHead,resetUpdateExpenseItem,resetcreateExpense,resetUpdateExpense,resetdeleteExpense ,resetcreateExpenseHead } = ExpenseSlices.actions
 
 export default ExpenseSlices.reducer;
 

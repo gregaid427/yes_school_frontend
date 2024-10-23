@@ -28,8 +28,10 @@ import {
   deleteSingleClassAction,
   fetchAllClassAction,
   fetchAllClassNoAction,
+  FetchClassWithSectionAction,
   fetchSingleClassAction,
   resetcreateClass,
+  resetgetclass,
 } from '../redux/slices/classSlice';
 import ClassCheckbox from '../components/ClassCheckbox';
 import SectionModal from '../components/SectionModal';
@@ -61,6 +63,7 @@ const Class = () => {
     fetchAllClass,
     CreateClasses,
     CreateClassesloading,
+    ClassWithSection
   } = clad;
 
   useEffect(() => {
@@ -115,23 +118,23 @@ const Class = () => {
   `,
       BaseCell: `
         font-size: 15px;
-        color:white;
+        //color:white;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  45% 20% 35%;
+      --data-table-library_grid-template-columns:  60%  40%;
     `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+    //       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
 
@@ -167,16 +170,28 @@ const Class = () => {
     });
   };
   const handleEditbtn = (value) => {
-    dispatch(
-      fetchSingleClassAction({
-        classId: value.classId,
-        classTitle: value.title,
-      }),
-    );
-    navigate('/academics/class/editclass', {
-      state: { action: 2, value: value },
-    });
+  
+
+  
   };
+
+  useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
+
+   
+    if (ClassWithSection?.success == 1) {
+      navigate('/academics/class/editclass', {
+        state: { action: 2, value: ClassWithSection?.data },
+      });
+      dispatch(resetgetclass())
+    }
+    //   // setTimeout(() => toast.success('New Student Added Successfully'), 900);
+    //  if(singleStudent?.data == undefined )
+    //  navigate("/student/info")
+  }, [ClassWithSection]);
+
+
+
   const handledeletbtn = (value) => {
     dispatch(deleteSingleClassAction(value));
     // dispatch(fetchAllClassAction());
@@ -244,20 +259,20 @@ const Class = () => {
       >
         <SectionModal close={setVisible} changeval={change} change={setChange} />
       </Dialog>
-      <div className={'flex row gap-8  w-full'}>
+      <div className={'flex row gap-3  w-full'}>
         <div className="grid w-4/12  gap-8">
-          <div className="col-span-12">
+          
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
                   Add New Class
                 </h3>
               </div>
-              <div className="p-7">
+              <div className="py-3 px-3">
                 <form action="#">
-                  <div className="w-full mb-4 sm:w-2/2">
+                  <div className="w-full mb-2 sm:w-2/2">
                     <label
-                      className="mb-3 block text-sm font-small text-black dark:text-white"
+                      className="mb-1 block text-sm font-small text-black dark:text-white"
                       htmlFor=""
                     >
                       Class Name
@@ -275,7 +290,7 @@ const Class = () => {
 
                   <div className="w-full sm:w-2/2">
                     <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      className="mb-1 block text-sm font-medium text-black dark:text-white"
                       htmlFor="phoneNumber"
                     >
                       Class Instructor{' '}
@@ -292,13 +307,13 @@ const Class = () => {
                     />
                   </div>
 
-                  <div className="pb-10 mt-3">
+                  <div className="pb-2 mt-2">
                     <div className="flex my-5 justify-between align-middle">
                       <label className=" block text-sm py-1 align-middle font-medium text-black dark:text-white">
                         Class Sections
                       </label>
                       <button
-                        className="flex w-6/12 justify-center rounded-full  bg-black py-1  px-1 font-[6px] text-muted hover:bg-opacity-90"
+                        className="flex w-6/12 justify-center rounded-sm  bg-primary py-1  px-1 font-[6px] text-muted hover:bg-opacity-90"
                         type=""
                         onClick={(e) => {
                           e.preventDefault()
@@ -329,7 +344,7 @@ const Class = () => {
                     ))}
                   </div>
 
-                  <div className="flex justify-end mt-5 gap-4.5">
+                  <div className="flex justify-end mt-53gap-4.5">
                     <button
                       className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                       type=""
@@ -350,7 +365,7 @@ const Class = () => {
                 </form>
               </div>
             </div>
-          </div>
+          
         </div>
         <div className="w-8/12  flex-col">
           <div
@@ -441,19 +456,20 @@ const Class = () => {
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
                           <HeaderCell>Class</HeaderCell>
-                          <HeaderCell>Section</HeaderCell>
+                          {/* <HeaderCell>Section</HeaderCell> */}
 
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
                             <Cell className="  ">{item.title}</Cell>
 
-                            <Cell className="  ">{item.section ? item.section : '-'}</Cell>
+                            {/* <Cell className="  ">{item.section ? item.section : '-'}</Cell> */}
 
 
                             <Cell>
@@ -462,7 +478,14 @@ const Class = () => {
                                   clickFunction={() => handleViewbtn(item)}
                                 />
                                 <EditSVG
-                                  clickFunction={() => handleEditbtn(item)}
+                                  clickFunction={() =>{  
+                                   //')
+                                    dispatch(
+                                    FetchClassWithSectionAction({
+                                     
+                                      title: item.title,
+                                    }),
+                                  )}}
                                 />
 
                                 <DeleteSVG
@@ -539,7 +562,8 @@ const Class = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.id}

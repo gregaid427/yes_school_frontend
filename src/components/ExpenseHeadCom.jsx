@@ -14,14 +14,12 @@ const ExpenseHeadCom = (props) => {
     expense;
     useEffect(() => {
         if (CreateExpenseHead?.success == 0) {
-          toast.error("Error - Adding Expense Head ");
        //    dispatch(resetcreatecart())
           // dispatch(fetchAllClassAction())
     
     
           }
         if (CreateExpenseHead?.success == 1) {
-          toast.success('New Expense Head Added');
           dispatch(FetchExpenseHeadAction());
           resetFormStates()
            dispatch(resetcreateExpenseHead())    
@@ -72,9 +70,8 @@ const handleSubmit=(e)=>{
 
   return (
     <div className="w-full">
-          <div className="grid  gap-8">
-            <div className="col-span-12">
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">
+      
+              <div className="rounded-sm border border-stroke bg-white shadow-default  dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                   <h3 className="font-medium text-black dark:text-white">
                     Add Expense Head
@@ -153,8 +150,7 @@ const handleSubmit=(e)=>{
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          
   )
 }
 

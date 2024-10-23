@@ -35,8 +35,6 @@ import {
 import InvencartegorySelect from '../components/InvencartegorySelect';
 import InventNewCartegory from '../components/InventNewCartegory';
 
-
-
 const AddInventory = () => {
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState('center');
@@ -100,10 +98,8 @@ const AddInventory = () => {
     if (CreateInventory?.success == 1) {
       toast.success('New Item Added Successfully');
       dispatch(resetcreateInventory());
-    //  dispatch(fetchAllInventoryAction());
+      //  dispatch(fetchAllInventoryAction());
     }
-
-   
   }, [CreateInventory]);
   const formRef1 = useRef();
 
@@ -141,25 +137,26 @@ const AddInventory = () => {
       border-bottom: 1px solid #a0a8ae;
       padding: 5px 0px;
     }
-  `,Table: `
+  `,
+      Table: `
   --data-table-library_grid-template-columns:  50% 15% 35%;
 `,
       BaseCell: `
         font-size: 15px;
-        color:white;
+        //color:white;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
       `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+    //       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
 
@@ -184,7 +181,6 @@ const AddInventory = () => {
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
- 
     navigate('/inventory/editinventory', {
       state: { action: 2, info: value },
     });
@@ -267,188 +263,191 @@ const AddInventory = () => {
         <InventNewCartegory close={setVisible} />
       </Dialog>
       <div className={'flex gap-3  w-full'}>
-      <div className="w-4/12 ">
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                  <h3 className="font-medium text-black dark:text-white">
-                    Add Item
-                  </h3>
+        <div className="w-4/12 ">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Add Item
+              </h3>
+            </div>
+            <div className="p-4">
+              <form ref={formRef1}>
+                <div className="w-full mb-4 sm:w-2/2">
+                  <label
+                    className="mb-3 block text-sm font-medium text-black dark:text-white"
+                    htmlFor=""
+                  >
+                    Item
+                  </label>
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    type="text"
+                    name=""
+                    id=""
+                    placeholder=""
+                    defaultValue=""
+                    onChange={(e) => setItem(e.target.value)}
+                  />
                 </div>
-                <div className="p-4">
-                  <form ref={formRef1}>
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Item
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue=""
-                        onChange={(e) => setItem(e.target.value)}
-                      />
-                    </div>
 
-                    <div className="w-full mb-3 sm:w-2/2">
-                      <div className="flex justify-between align-middle">
-                        <label
-                          className="mb-2 block align-middle  text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Item Cartegory{' '}
-                          {/* <span className="small-font">(optional)</span> */}
-                        </label>
-                        <button
-                          className="flex align-middle justify-center rounded-full  bg-[#3c4fe08f] py-0 mb-1 px-2 my-auto text-sm text-white hover:bg-opacity-90"
-                          type=""
-                          onClick={(e) => {
-                            e.preventDefault();
-                            show('top-right');
-                          }}
-                        >
-                          Add New Cartegory
-                        </button>
-                      </div>
+                <div className="w-full mb-3 sm:w-2/2">
+                  <div className="flex justify-between align-middle">
+                    <label
+                      className="mb-2 block align-middle  text-sm font-medium text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      Item Cartegory{' '}
+                      {/* <span className="small-font">(optional)</span> */}
+                    </label>
+                    <button
+                      className="flex align-middle justify-center rounded-full  bg-[#3c4fe08f] py-0 mb-1 px-2 my-auto text-sm text-white hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        show('top-right');
+                      }}
+                    >
+                      Add New Cartegory
+                    </button>
+                  </div>
 
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                        <InvencartegorySelect setsectionprop={setcart}  default={'NONE'}/>
-                      </div>
-                    </div>
-                    <div className="w-full mb-3 sm:w-2/2">
-                      <label
-                        className="mb-2 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Quantity{' '}
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="number"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue="0"
-                        onChange={(e) => setQuantity(e.target.value)}
-                      />
-                    </div>
-                    <div className="w-full mb-3 sm:w-2/2">
-                      <label
-                        className="mb-2 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Supplier Name{' '}
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue=""
-                        onChange={(e) => setSupName(e.target.value)}
-                      />
-                    </div>
-                    <div className="w-full flex gap-1">
-                      <div className="w-full mb-3 sm:w-1/2">
-                        <label
-                          className="mb-2 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Supplier Contact 1{' '}
-                        </label>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name=""
-                          id=""
-                          placeholder=""
-                          defaultValue=""
-                          onChange={(e) => setSupContact1(e.target.value)}
-                        />
-                      </div>
-                      <div className="w-full mb-3 sm:w-1/2">
-                        <label
-                          className="mb-2 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Supplier Contact 2{' '}
-                        </label>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name=""
-                          id=""
-                          placeholder=""
-                          defaultValue=""
-                          onChange={(e) => setSupContact2(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    <div className="mb-5.5">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="emailAddress"
-                      >
-                        Supplier Info
-                      </label>
-                      <div className="relative">
-                        <textarea
-                          className="w-full rounded border border-stroke bg-gray py-3  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          name="bio"
-                          id="bio"
-                          rows={2}
-                          placeholder=""
-                          onChange={(e) => setSupInfo(e.target.value)}
-                        ></textarea>
-                      </div>
-                    </div>
-
-                    <div className="mb-5.5">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="emailAddress"
-                      >
-                        Description/Notes
-                      </label>
-                      <div className="relative">
-                        <textarea
-                          className="w-full rounded border border-stroke bg-gray py-3  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          name="bio"
-                          id="bio"
-                          rows={2}
-                          placeholder=""
-                          onChange={(e) => setDesc(e.target.value)}
-                        ></textarea>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end gap-4.5">
-                      <button
-                        className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleSubmit(e);
-                        }}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                        type="reset"
-                      >
-                        Reset
-                      </button>
-                    </div>
-                  </form>
+                  <div className="relative z-20 bg-white dark:bg-form-input">
+                    <InvencartegorySelect
+                      setsectionprop={setcart}
+                      default={'NONE'}
+                    />
+                  </div>
                 </div>
+                <div className="w-full mb-3 sm:w-2/2">
+                  <label
+                    className="mb-2 block text-sm font-medium text-black dark:text-white"
+                    htmlFor=""
+                  >
+                    Quantity{' '}
+                  </label>
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-2 px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    type="number"
+                    name=""
+                    id=""
+                    placeholder=""
+                    defaultValue="0"
+                    onChange={(e) => setQuantity(e.target.value)}
+                  />
+                </div>
+                <div className="w-full mb-3 sm:w-2/2">
+                  <label
+                    className="mb-2 block text-sm font-medium text-black dark:text-white"
+                    htmlFor=""
+                  >
+                    Supplier Name{' '}
+                  </label>
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-2 px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    type="text"
+                    name=""
+                    id=""
+                    placeholder=""
+                    defaultValue=""
+                    onChange={(e) => setSupName(e.target.value)}
+                  />
+                </div>
+                <div className="w-full flex gap-1">
+                  <div className="w-full mb-3 sm:w-1/2">
+                    <label
+                      className="mb-2 block text-sm font-medium text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      Supplier Contact 1{' '}
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-2 px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name=""
+                      id=""
+                      placeholder=""
+                      defaultValue=""
+                      onChange={(e) => setSupContact1(e.target.value)}
+                    />
+                  </div>
+                  <div className="w-full mb-3 sm:w-1/2">
+                    <label
+                      className="mb-2 block text-sm font-medium text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      Supplier Contact 2{' '}
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-2 px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name=""
+                      id=""
+                      placeholder=""
+                      defaultValue=""
+                      onChange={(e) => setSupContact2(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label
+                    className="mb-1 block text-sm font-medium text-black dark:text-white"
+                    htmlFor="emailAddress"
+                  >
+                    Supplier Info
+                  </label>
+                  <div className="relative">
+                    <textarea
+                      className="w-full rounded border border-stroke bg-gray py-2  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      name="bio"
+                      id="bio"
+                      rows={2}
+                      placeholder=""
+                      onChange={(e) => setSupInfo(e.target.value)}
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div className="mb-5.5">
+                  <label
+                    className="mb-1 block text-sm font-medium text-black dark:text-white"
+                    htmlFor="emailAddress"
+                  >
+                    Description/Notes
+                  </label>
+                  <div className="relative">
+                    <textarea
+                      className="w-full rounded border border-stroke bg-gray py-2  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      name="bio"
+                      id="bio"
+                      rows={2}
+                      placeholder=""
+                      onChange={(e) => setDesc(e.target.value)}
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-4.5">
+                  <button
+                    className="flex w-6/12 justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
+                    type=""
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSubmit(e);
+                    }}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    type="reset"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
+        </div>
         <div className="w-8/12 flex-col">
           <div
             className={
@@ -458,7 +457,7 @@ const AddInventory = () => {
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
-                Inventory Item List
+                  Inventory Item List
                 </h3>
               </div>
             </div>
@@ -527,7 +526,12 @@ const AddInventory = () => {
           >
             <div className="flex gap-3  flex-col">
               <div className="px-2">
-                <Table data={data} pagination={pagination} layout={{ custom: true }} theme={theme}>
+                <Table
+                  data={data}
+                  pagination={pagination}
+                  layout={{ custom: true }}
+                  theme={theme}
+                >
                   {(tableList) => (
                     <>
                       <Header>
@@ -540,7 +544,8 @@ const AddInventory = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row key={item.id} item={item} className=" ">
                             <Cell className="  ">{item.itemName}</Cell>
@@ -630,7 +635,8 @@ const AddInventory = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body>
+  
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.id}
@@ -650,7 +656,6 @@ const AddInventory = () => {
             </div>
           </div>{' '}
         </div>
-       
       </div>{' '}
     </DefaultLayout>
   );

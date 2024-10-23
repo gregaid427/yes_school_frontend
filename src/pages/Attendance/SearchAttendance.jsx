@@ -164,21 +164,21 @@ const SearchAttendance = () => {
 `,
       BaseCell: `
         font-size: 15px;
-        color:white;
+        //color:white;
         padding: 5px 0px;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
        `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+    //       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
 
@@ -361,7 +361,7 @@ const SearchAttendance = () => {
                   </label>
                   <div className="flex gap-1">
                     <input
-                      className="w-4/6 rounded border border-stroke bg-gray py-1 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      className="w-3/6 rounded border border-stroke bg-gray py-1 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="date"
                       name=""
                       id=""
@@ -372,10 +372,10 @@ const SearchAttendance = () => {
                     />
                     <button
                       onClick={() => handleDate()}
-                      className="btn h-10 w-2/6    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
+                      className="btn h-10 w-3/6    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
-                      Select
+                      Get Record
                     </button>
                   </div>
                 </div>
@@ -487,9 +487,13 @@ const SearchAttendance = () => {
                       </HeaderRow>
                     </Header>
 
-                    <Body>
+
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
-                        <Row key={item.id} item={item} className="">
+                        <Row key={item.id}
+                            item={item}
+                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                          >
                           <Cell className="  ">
                             <span>{item.classid}</span>
                           </Cell>

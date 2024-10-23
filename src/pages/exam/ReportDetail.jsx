@@ -162,7 +162,7 @@ const ExamReportDetail = () => {
   `,
       BaseCell: `
         font-size: 15px;
-        color:white;
+        //color:white;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
@@ -170,15 +170,15 @@ const ExamReportDetail = () => {
       Table: `
       --data-table-library_grid-template-columns:   20% 55% 25% ;
     `,
-      Row: `
-  &:nth-of-type(odd) {
-    background-color: #24303F;
-  }
+    //       Row: `
+//   &:nth-of-type(odd) {
+//     background-color: #24303F;
+//   }
 
-  &:nth-of-type(even) {
-    background-color: #202B38;
-  }
-`,
+//   &:nth-of-type(even) {
+//     background-color: #202B38;
+//   }
+// `,
     },
   ]);
 
@@ -489,7 +489,10 @@ const ExamReportDetail = () => {
 
                     <Body  >
                       {tableList.map((item) => (
-                        <Row key={item?.student_id} item={item} className="">
+                        <Row key={item?.student_id}
+                            item={item}
+                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                          >
                           <Cell className="  ">
                             <span>{item?.student_id}</span>
                           </Cell>
@@ -602,7 +605,8 @@ const ExamReportDetail = () => {
                       </HeaderRow>
                     </Header>
 
-                    <Body>
+
+                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
                       
                       {tableList.map((item) => (
                         <Row

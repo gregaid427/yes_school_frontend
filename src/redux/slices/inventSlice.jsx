@@ -160,7 +160,12 @@ export const updateInventoryItemAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/item`,
         payload,
       );
-
+      if (data?.success == 1) {
+        toast.success('Cartegory Updated Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Updating Cartegory ');
+      }
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -354,9 +359,12 @@ const InventorySlices = createSlice({
     builder.addCase(updateCartegoryAction.pending, (state, action) => {
       state.updateCartegoryloading = true;
       state.updateCartegory = false;
+      state.CreateInventorycart = false;
+
     });
     builder.addCase(updateCartegoryAction.fulfilled, (state, action) => {
       state.updateCartegory = action?.payload;
+      state.CreateInventorycart = action?.payload;
       state.updateCartegoryloading = false;
       state.error = undefined;
     });
@@ -364,6 +372,8 @@ const InventorySlices = createSlice({
       state.error = action.payload;
       state.updateCartegory = undefined;
       state.updateCartegorynloading = undefined;
+      state.CreateInventorycart = undefined;
+
     });
 
     builder.addCase(updateInventoryItemAction.pending, (state, action) => {

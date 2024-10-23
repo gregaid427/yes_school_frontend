@@ -313,7 +313,7 @@ const handlesubmit = () => {
                 type=""
                 onClick={(e) => handleDownloadPdf()}
               >
-                Export As PDF
+                Export (PDF)
               </button>
             </div>
           </div>
