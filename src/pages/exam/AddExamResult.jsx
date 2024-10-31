@@ -67,11 +67,16 @@ const AddExamResult = (props) => {
   const [singleGrade, setSingleGrade] = useState();
   const [response, setResponse] = useState();
 
-  
   const { fetchcustomstudent } = student;
 
   const exam = useSelector((state) => state?.exam);
-  const { FetchExamResult, SingleGradegroup, ExamResultArray,submitResult } = exam;
+  const { FetchExamResult, SingleGradegroup, ExamResultArray, submitResult } =
+    exam;
+    const [classData, setClassData] = useState([]);
+    const [classData1, setClassData1] = useState([]);
+    const [check, setCheck] = useState(true);
+
+ 
 
   useEffect(() => {
     if (location?.state == null) {
@@ -122,7 +127,7 @@ const AddExamResult = (props) => {
       let data = fetchAllClassExam?.data;
       console.log(data);
       if (data.length != 0) {
-        setResponse(data)
+        setResponse(data);
         setVisible1(true);
         //setdata([])
 
@@ -144,7 +149,6 @@ const AddExamResult = (props) => {
   const dispatch = useDispatch();
 
   const [value1, setVal1] = useState('Loading...');
-
 
   useEffect(() => {
     setdata([]);
@@ -174,15 +178,15 @@ const AddExamResult = (props) => {
       //   //  background-color: #24303F;
 
        `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -195,7 +199,7 @@ const AddExamResult = (props) => {
   });
 
   function onPaginationChange(action, state) {}
-  
+
   const [Modaldata, setModaldata] = useState();
 
   const [search, setSearch] = useState('');
@@ -240,7 +244,7 @@ const AddExamResult = (props) => {
     classcode: value?.classcode,
     section: value?.section == null ? '-' : value?.section,
     createdby: 'Asante',
-    classsize: nodes.length
+    classsize: nodes.length,
   };
   function handleSubmitResult() {
     //when no student
@@ -261,10 +265,9 @@ const AddExamResult = (props) => {
     if (submitResult?.success == 1) {
       let data = submitResult?.data;
       setModaldata(data);
-      setVisible(true)
-      dispatch(resetsubmitresult())
-      dispatch(setExamResult([]))
-
+      setVisible(true);
+      dispatch(resetsubmitresult());
+      dispatch(setExamResult([]));
     }
   }, [submitResult]);
 
@@ -279,7 +282,7 @@ const AddExamResult = (props) => {
       <Dialog
         visible={visible}
         position={'top'}
-        style={{ height: 'auto', width: '75%' ,margin:'50px 0 0 125px'}}
+        style={{ height: 'auto', width: '75%', margin: '50px 0 0 125px' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
@@ -355,7 +358,7 @@ const AddExamResult = (props) => {
               <div className={nodes.length == 0 ? 'hidden' : ''}>
                 <div className="px-7 flex gap-4 justify-between  mb-4">
                   <div className="w-3/5">
-                    Excel Options
+                    {/* Excel Options
                     <div className="flex mb-2 gap-4.5">
                       <button
                         className="flex w- gap-1 justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
@@ -372,16 +375,16 @@ const AddExamResult = (props) => {
                         type=""
                         onClick={(e) => {
                           e.preventDefault();
-                          handlecreateSection();
+                          handleFileUpload(e);
                         }}
                       >
                         Upload Result (Excel)
                       </button>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className=" ">
-                    Upload Result
+                    {/* Upload Result */}
                     <div className="flex   gap-4.5">
                       <button
                         className="flex w- gap-1 justify-center rounded bg-primary py-2 px-5 font-medium text-gray hover:bg-opacity-90"
@@ -445,13 +448,12 @@ const AddExamResult = (props) => {
                             </HeaderRow>
                           </Header>
 
-      
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                          <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                             {tableList.map((item, index) => (
                               <Row
                                 key={item.student_id}
                                 item={item}
-                                className=""
+                                className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                               >
                                 <Cell className="  ">
                                   <span>{item.student_id}</span>
@@ -577,8 +579,7 @@ const AddExamResult = (props) => {
                           </HeaderRow>
                         </Header>
 
-    
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                        <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                           {tableList.map((item) => (
                             <Row
                               key={item.student_id}

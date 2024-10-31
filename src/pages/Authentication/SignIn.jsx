@@ -1,19 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 // import Logo1 from '../../images/logo/logo.svg';
 import Logo from '../../images/logo/logo.png';
 import DarkModeSwitcher from '../../components/Header/DarkModeSwitcher';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUserAction, reset } from '../../redux/slices/usersSlice';
+import {
+  fetchuserbyidAction,
+  loginUserAction,
+  reset,
+  resetAllUserData,
+  setRoleCode,
+  setUser,
+  setUserMail,
+  setUsername,
+} from '../../redux/slices/usersSlice';
 // import { toast } from 'react-toastify';
-import useAuth from '../../hooks/useAuth';
 import toast, { Toaster } from 'react-hot-toast';
+import useAuth from '../../useAuth';
+import Cookies from 'js-cookie';
+import Loader from '../../common/Loader';
+// import AuthContext from '../../AuthProvider';
 
 // import DefaultLayout from '../../layout/DefaultLayout';
 
 const SignIn = () => {
   useEffect(() => {
     dispatch(reset());
+    dispatch(resetAllUserData())
   }, []);
 
   const [email, setEmail] = useState('');
@@ -21,7 +34,8 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
   const { loginloading, loginerror, loginUser } = user;
-  const { setAuth } = useAuth();
+ const { setAuth } = useAuth();
+  // const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -33,16 +47,45 @@ const SignIn = () => {
     dispatch(loginUserAction(data));
   };
 
+  const { auth } = useAuth();
+
+  
+  const [loading, setLoading] = useState(false);
+
+
+
+
+  
+  //   useEffect(() => {
+  // if(auth){
+  //   navigate('/dashboard', { replace: true });
+  // }
+
+  //   }, []);
+
+  //const token = "ADLYWIJ0wQKoV1ZMaWcpXKz4hJiq";
   useEffect(() => {
     if (loginUser?.success == 1) {
-      const roles = loginUser?.roles;
-      const access_token = loginUser?.roles;
-
-      setAuth({ email, roles, access_token });
+      let data = loginUser?.data;
+let num = (data[0]?.rolecode).split(',').join('')
+console.log(num)
+      //persist data to cookies
+      let servertoken = data[0]?.token + '{|-' + data[0]?.userId + '{|-' + num ;
+      Cookies.set('VyQHVzZXIuY29tIiwia', servertoken, { expires: 1 });
+      //  Cookies.set('smsinfoxyz', dataArray, { expires: 1 });
+      dispatch(setUser(data));
+      // console.log(dataArray);
+      
+      setAuth(data);
+      dispatch(setUsername(data[0]?.data[0]?.sFirstName +" "+  data[0]?.data[0]?.sLastName));
+      dispatch(setUserMail(data[0]?.email));
+      dispatch(setRoleCode([num]));
       setpassword('');
       setEmail('');
+
       navigate('/dashboard', { replace: true });
     }
+
     if (loginUser == false) {
       toast.error('Error Signing In');
     }
@@ -51,7 +94,10 @@ const SignIn = () => {
       // toast.error("Incorrect Email or Password", { className: "toast-message1" });
     }
   }, [loginUser]);
-  return (
+
+  return loading ? (
+    <Loader />
+  ) : (
     <>
       {' '}
       <Toaster position="top-center" reverseOrder={false} />

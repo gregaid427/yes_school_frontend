@@ -31,7 +31,13 @@ import {
   resetcreateClass,
 } from '../redux/slices/classSlice';
 import InactiveSVG from '../components/Svgs/Inactive';
-import { activeStaffAction, CreatesStaffAction, deleteStaffAction, fetchAllstaffAction, inactiveStaffAction } from '../redux/slices/usersSlice';
+import {
+  activeStaffAction,
+  CreatesStaffAction,
+  deleteStaffAction,
+  fetchAllstaffAction,
+  inactiveStaffAction,
+} from '../redux/slices/usersSlice';
 import ActiveSVG from '../components/Svgs/active';
 
 const Staff = () => {
@@ -56,7 +62,6 @@ const Staff = () => {
   const [Academics, setAcademics] = useState(false);
   const [inventory, setInventory] = useState(false);
 
-
   const [isChecked, setIsChecked] = useState(true);
 
   const [nodes, setdata] = useState([]);
@@ -67,7 +72,7 @@ const Staff = () => {
   const users = useSelector((state) => state?.user);
   const formRef1 = useRef();
 
-  const { allstaff, allStaffloading,allstaff1} = users;
+  const { allstaff, allStaffloading, allstaff1 } = users;
   function resetFormStates() {
     // formRef.current.reset();
     formRef1.current.reset();
@@ -82,16 +87,17 @@ const Staff = () => {
     if (allstaff?.success == 1) {
       let data = allstaff?.data;
       setdata(data);
-
-
+      setsettings(false);
+      setAcademics(false);
+      setExpenses(false);
+      setFees(false);
+      setstudent(false);
+      setInventory(false);
     }
   }, [allstaff]);
   useEffect(() => {
-
     if (allstaff1?.success == 1) {
-    
-      resetFormStates()
-
+      resetFormStates();
     }
   }, [allstaff1]);
 
@@ -120,15 +126,15 @@ const Staff = () => {
       //   //  background-color: #24303F;
 
       `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -143,7 +149,7 @@ const Staff = () => {
   function onPaginationChange(action, state) {}
 
   const [search, setSearch] = useState('');
-console.log(data.nodes)
+  console.log(data.nodes);
   data = {
     nodes: data.nodes.filter((item) =>
       item.sFirstName.toLowerCase().includes(search.toLowerCase()),
@@ -177,19 +183,19 @@ console.log(data.nodes)
   const handledeletbtn = (value) => {
     dispatch(deleteStaffAction(value));
     // dispatch(fetchAllClassAction());
-  }
+  };
   const handleinactivebtn = (value) => {
     dispatch(inactiveStaffAction(value));
     // dispatch(fetchAllClassAction());
-  }
+  };
 
   const handleactivebtn = (value) => {
     dispatch(activeStaffAction(value));
     // dispatch(fetchAllClassAction());
-  }
+  };
 
-  let codes = `${student? 1 : 0}${Academics? 1 : 0}${inventory? 1 : 0}${expenses? 1 : 0}${fees? 1 : 0}${settings? 1 : 0}`;
-
+  let codes = `${student ? 1 : 0},${Academics ? 2 : 0},${inventory ? 3 : 0},${expenses ? 4 : 0},${fees ? 5 : 0},${settings ? 6 : 0}`;
+console.log(codes)
   const classdata = {
     fname: fname,
     lname: lname,
@@ -202,7 +208,6 @@ console.log(data.nodes)
     password: password,
     address: address,
     info: info,
-
   };
   const handlecreateStaff = () => {
     if (fname == '') {
@@ -235,40 +240,60 @@ console.log(data.nodes)
   ) : (
     <DefaultLayout>
       <div className={'flex gap-2  w-full'}>
-      <div className="w-4/12 ">
+        <div className="w-4/12 ">
           <div className=" gap-8">
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                  <h3 className="font-medium text-black dark:text-white">
-                    Add New Staff
-                  </h3>
-                </div>
-                <div className="p-4">
-                <form ref={formRef1}>                   
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-small text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        First Name
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue=""
-                        onChange={(e) => setFname(e.target.value)}
-                      />
-                    </div>
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
+                <h3 className="font-medium text-black dark:text-white">
+                  Add New Staff
+                </h3>
+              </div>
+              <div className="p-4">
+                <form ref={formRef1}>
+                  <div className="w-full mb-4 sm:w-2/2">
+                    <label
+                      className="mb-3 block text-sm font-small text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      First Name
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name=""
+                      id=""
+                      placeholder=""
+                      defaultValue=""
+                      onChange={(e) => setFname(e.target.value)}
+                    />
+                  </div>
 
-                    <div className="w-full mb-4 sm:w-2/2">
+                  <div className="w-full mb-4 sm:w-2/2">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="phoneNumber"
+                    >
+                      Last Name{' '}
+                      {/* <span className="small-font">(optional)</span> */}
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name=""
+                      id=""
+                      placeholder=""
+                      defaultValue=""
+                      onChange={(e) => setLname(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex row gap-1 mb-4 ">
+                    {' '}
+                    <div className="w-full sm:w-2/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="phoneNumber"
                       >
-                        Last Name{' '}
+                        Contact 1{' '}
                         {/* <span className="small-font">(optional)</span> */}
                       </label>
                       <input
@@ -278,91 +303,16 @@ console.log(data.nodes)
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setLname(e.target.value)}
+                        onChange={(e) => setContact1(e.target.value)}
                       />
                     </div>
-                    <div className="flex row gap-1 mb-4 ">
-                      {' '}
-                      <div className="w-full sm:w-2/2">
-                        <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="phoneNumber"
-                        >
-                          Contact 1{' '}
-                          {/* <span className="small-font">(optional)</span> */}
-                        </label>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name=""
-                          id=""
-                          placeholder=""
-                          defaultValue=""
-                          onChange={(e) => setContact1(e.target.value)}
-                        />
-                      </div>
-                      <div className="w-full sm:w-2/2">
-                        <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="phoneNumber"
-                        >
-                          Contact 2{' '}
-                          {/* <span className="small-font">(optional)</span> */}
-                        </label>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name=""
-                          id=""
-                          placeholder=""
-                          defaultValue=""
-                          onChange={(e) => setContact2(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex row gap-1 mb-4 ">
-                      {' '}
-                      <div className="w-full sm:w-2/2">
-                        <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="phoneNumber"
-                        >
-                          Sex{' '}
-                          {/* <span className="small-font">(optional)</span> */}
-                        </label>
-                        <div className="relative z-20 bg-white dark:bg-form-input">
-                          <SelectGroupTwo
-                            values={['Male', 'Female']}
-                            setSelectedOption={(val) => setGender(val)}
-                            selectedOption={gender}
-                          />
-                        </div>
-                      </div>
-                      <div className="w-full sm:w-2/2">
-                        <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="phoneNumber"
-                        >
-                          Role{' '}
-                          {/* <span className="small-font">(optional)</span> */}
-                        </label>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name=""
-                          id=""
-                          placeholder=""
-                          defaultValue=""
-                          onChange={(e) => setRole(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    <div className="w-full mb-4 sm:w-2/2">
+                    <div className="w-full sm:w-2/2">
                       <label
-                        className="mb-3 block text-sm font-small text-black dark:text-white"
-                        htmlFor=""
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="phoneNumber"
                       >
-                        Email
+                        Contact 2{' '}
+                        {/* <span className="small-font">(optional)</span> */}
                       </label>
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -371,16 +321,35 @@ console.log(data.nodes)
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setContact2(e.target.value)}
                       />
                     </div>
-
-                    <div className="w-full mb-4 sm:w-2/2">
+                  </div>
+                  <div className="flex row gap-1 mb-4 ">
+                    {' '}
+                    <div className="w-full sm:w-2/2">
                       <label
-                        className="mb-3 block text-sm font-small text-black dark:text-white"
-                        htmlFor=""
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="phoneNumber"
                       >
-                        Password
+                        Sex{' '}
+                        {/* <span className="small-font">(optional)</span> */}
+                      </label>
+                      <div className="relative z-20 bg-white dark:bg-form-input">
+                        <SelectGroupTwo
+                          values={['Male', 'Female']}
+                          setSelectedOption={(val) => setGender(val)}
+                          selectedOption={gender}
+                        />
+                      </div>
+                    </div>
+                    <div className="w-full sm:w-2/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="phoneNumber"
+                      >
+                        Role{' '}
+                        {/* <span className="small-font">(optional)</span> */}
                       </label>
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -389,318 +358,347 @@ console.log(data.nodes)
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setRole(e.target.value)}
                       />
                     </div>
+                  </div>
+                  <div className="w-full mb-4 sm:w-2/2">
+                    <label
+                      className="mb-3 block text-sm font-small text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      Email
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name=""
+                      id=""
+                      placeholder=""
+                      defaultValue=""
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
 
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-small text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Address
+                  <div className="w-full mb-4 sm:w-2/2">
+                    <label
+                      className="mb-3 block text-sm font-small text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      Password
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name=""
+                      id=""
+                      placeholder=""
+                      defaultValue=""
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="w-full mb-4 sm:w-2/2">
+                    <label
+                      className="mb-3 block text-sm font-small text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      Address
+                    </label>
+                    <textarea
+                      className="w-full rounded border border-stroke bg-gray py-3  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      name="bio"
+                      id="bio"
+                      rows={2}
+                      placeholder=""
+                      defaultValue=""
+                      onChange={(e) => setAddress(e.target.value)}
+                    ></textarea>
+                  </div>
+                  <div className="w-full mb-4 sm:w-2/2">
+                    <label
+                      className="mb-3 block text-sm font-small text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      Notes
+                    </label>
+                    <textarea
+                      className="w-full rounded border border-stroke bg-gray py-3  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      name=""
+                      id=""
+                      rows={2}
+                      placeholder=""
+                      defaultValue=""
+                      onChange={(e) => setInfo(e.target.value)}
+                    ></textarea>
+                  </div>
+
+                  <div className="pb-10 mt-3">
+                    <div className="flex my-5 justify-between align-middle">
+                      <label className=" block text-sm align-middle font-medium text-black dark:text-white">
+                        User Roles
                       </label>
-                      <textarea
-                          className="w-full rounded border border-stroke bg-gray py-3  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          name="bio"
-                          id="bio"
-                          rows={2}
-                          placeholder=""
-                          defaultValue=""
-                          onChange={(e) => setAddress(e.target.value)}
-
-                        ></textarea>
-                    </div>
-                    <div className="w-full mb-4 sm:w-2/2">
-                      <label
-                        className="mb-3 block text-sm font-small text-black dark:text-white"
-                        htmlFor=""
-                      >
-                        Notes
-                      </label>
-                      <textarea
-                          className="w-full rounded border border-stroke bg-gray py-3  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          name=""
-                          id=""
-                          rows={2}
-                          placeholder=""
-                          defaultValue=""
-                          onChange={(e) => setInfo(e.target.value)}
-
-                        ></textarea>
                     </div>
 
-                    <div className="pb-10 mt-3">
-                      <div className="flex my-5 justify-between align-middle">
-                        <label className=" block text-sm align-middle font-medium text-black dark:text-white">
-                          User Roles
+                    <div className="mb-2 flex gap-20 sm:flex-row">
+                      <div className=" flex w-2/4 ">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="checkboxLabelOne"
+                        >
+                          - {'Student Management'}
                         </label>
                       </div>
 
-                      <div className="mb-2 flex gap-20 sm:flex-row">
-                        <div className=" flex w-2/4 ">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="checkboxLabelOne"
-                          >
-                            - {'Student Management'}
-                          </label>
-                        </div>
-
-                        <div className="flex">
-                          <label
-                            htmlFor={'nameg'}
-                            className="flex cursor-pointer select-none "
-                          >
-                            <div className="relative ">
-                              <input
-                                title={'nameg'}
-                                type="checkbox"
-                                id={'nameg'}
-                                className="sr-only"
-                                onChange={() => {
-                                  setstudent(!student);
-                                }}
-                              />
-                              <div
-                                className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                  student &&
-                                  'border-primary bg-gray dark:bg-transparent'
-                                }`}
-                              >
-                                <span
-                                  className={`h-2.5 w-2.5 rounded-sm ${student && 'bg-primary'}`}
-                                ></span>
-                              </div>
+                      <div className="flex">
+                        <label
+                          htmlFor={'nameg'}
+                          className="flex cursor-pointer select-none "
+                        >
+                          <div className="relative ">
+                            <input
+                              title={'nameg'}
+                              type="checkbox"
+                              id={'nameg'}
+                              className="sr-only"
+                              onChange={() => {
+                                setstudent(!student);
+                              }}
+                            />
+                            <div
+                              className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                student &&
+                                'border-primary bg-gray dark:bg-transparent'
+                              }`}
+                            >
+                              <span
+                                className={`h-2.5 w-2.5 rounded-sm ${student && 'bg-primary'}`}
+                              ></span>
                             </div>
-                          </label>
-                        </div>
-                      </div>
-                      <div className="mb-2 flex gap-20 sm:flex-row">
-                        <div className=" flex w-2/4 ">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="checkboxLabelOne"
-                          >
-                            - {'Academics'}
-                          </label>
-                        </div>
-
-                        <div className="flex">
-                          <label
-                            htmlFor={'academics'}
-                            className="flex cursor-pointer select-none "
-                          >
-                            <div className="relative ">
-                              <input
-                                title={'academics'}
-                          
-                                type="checkbox"
-                                id={'academics'}
-                                className="sr-only"
-                                onChange={() => {
-                                  setAcademics(!Academics);
-                                }}
-                              />
-                              <div
-                                className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                  Academics &&
-                                  'border-primary bg-gray dark:bg-transparent'
-                                }`}
-                              >
-                                <span
-                                  className={`h-2.5 w-2.5 rounded-sm ${Academics && 'bg-primary'}`}
-                                ></span>
-                              </div>
-                            </div>
-                          </label>
-                        </div>
-                      </div>
-                      <div className="mb-2 flex gap-20 sm:flex-row">
-                        <div className=" flex w-2/4 ">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="checkboxLabelOne"
-                          >
-                            - {'Inventory'}
-                          </label>
-                        </div>
-
-                        <div className="flex">
-                          <label
-                            htmlFor={'name'}
-                            className="flex cursor-pointer select-none "
-                          >
-                            <div className="relative ">
-                              <input
-                                title={'name'}
-                     
-                                type="checkbox"
-                                id={'name'}
-                                className="sr-only"
-                                onChange={() => {
-                                  setInventory(!inventory);
-                                }}
-                              />
-                              <div
-                                className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                  inventory &&
-                                  'border-primary bg-gray dark:bg-transparent'
-                                }`}
-                              >
-                                <span
-                                  className={`h-2.5 w-2.5 rounded-sm ${inventory && 'bg-primary'}`}
-                                ></span>
-                              </div>
-                            </div>
-                          </label>
-                        </div>
-                      </div>
-                      <div className="mb-2 flex gap-20 sm:flex-row">
-                        <div className=" flex w-2/4 ">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="checkboxLabelOne"
-                          >
-                            - {'Expenses'}
-                          </label>
-                        </div>
-
-                        <div className="flex">
-                          <label
-                            htmlFor={'b'}
-                            className="flex cursor-pointer select-none "
-                          >
-                            <div className="relative ">
-                              <input
-                                title={'b'}
-                           
-                                type="checkbox"
-                                id={'b'}
-                                className="sr-only"
-                                onChange={() => {
-                                  setExpenses(!expenses);
-                                }}
-                              />
-                              <div
-                                className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                  expenses &&
-                                  'border-primary bg-gray dark:bg-transparent'
-                                }`}
-                              >
-                                <span
-                                  className={`h-2.5 w-2.5 rounded-sm ${expenses && 'bg-primary'}`}
-                                ></span>
-                              </div>
-                            </div>
-                          </label>
-                        </div>
-                      </div>
-                      <div className="mb-2 flex gap-20 sm:flex-row">
-                        <div className=" flex w-2/4 ">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="checkboxLabelOne"
-                          >
-                            - {'Fees'}
-                          </label>
-                        </div>
-
-                        <div className="flex">
-                          <label
-                            htmlFor={'f'}
-                            className="flex cursor-pointer select-none "
-                          >
-                            <div className="relative ">
-                              <input
-                                title={'f'}
-                             
-                                type="checkbox"
-                                id={'f'}
-                                className="sr-only"
-                                onChange={() => {
-                                  setFees(!fees);
-                                }}
-                              />
-                              <div
-                                className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                  fees &&
-                                  'border-primary bg-gray dark:bg-transparent'
-                                }`}
-                              >
-                                <span
-                                  className={`h-2.5 w-2.5 rounded-sm ${fees && 'bg-primary'}`}
-                                ></span>
-                              </div>
-                            </div>
-                          </label>
-                        </div>
-                      </div>
-                      <div className="mb-2 flex gap-20 sm:flex-row">
-                        <div className=" flex w-2/4 ">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="checkboxLabelOne"
-                          >
-                            - {'Settings'}
-                          </label>
-                        </div>
-
-                        <div className="flex">
-                          <label
-                            htmlFor={'named'}
-                            className="flex cursor-pointer select-none "
-                          >
-                            <div className="relative ">
-                              <input
-                                title={'named'}
-                           
-                                type="checkbox"
-                                id={'named'}
-                                className="sr-only"
-                                onChange={() => {
-                                  setsettings(!settings);
-                                }}
-                              />
-                              <div
-                                className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                  settings &&
-                                  'border-primary bg-gray dark:bg-transparent'
-                                }`}
-                              >
-                                <span
-                                  className={`h-2.5 w-2.5 rounded-sm ${settings && 'bg-primary'}`}
-                                ></span>
-                              </div>
-                            </div>
-                          </label>
-                        </div>
+                          </div>
+                        </label>
                       </div>
                     </div>
+                    <div className="mb-2 flex gap-20 sm:flex-row">
+                      <div className=" flex w-2/4 ">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="checkboxLabelOne"
+                        >
+                          - {'Academics'}
+                        </label>
+                      </div>
 
-                    <div className="flex justify-end mt-5 gap-4.5">
-                      <button
-                        className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault()
-                          handlecreateStaff();
-                        }}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                        type="reset"
-                      >
-                        Reset
-                      </button>
+                      <div className="flex">
+                        <label
+                          htmlFor={'academics'}
+                          className="flex cursor-pointer select-none "
+                        >
+                          <div className="relative ">
+                            <input
+                              title={'academics'}
+                              type="checkbox"
+                              id={'academics'}
+                              className="sr-only"
+                              onChange={() => {
+                                setAcademics(!Academics);
+                              }}
+                            />
+                            <div
+                              className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                Academics &&
+                                'border-primary bg-gray dark:bg-transparent'
+                              }`}
+                            >
+                              <span
+                                className={`h-2.5 w-2.5 rounded-sm ${Academics && 'bg-primary'}`}
+                              ></span>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
                     </div>
-                  </form>
-                </div>
+                    <div className="mb-2 flex gap-20 sm:flex-row">
+                      <div className=" flex w-2/4 ">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="checkboxLabelOne"
+                        >
+                          - {'Inventory'}
+                        </label>
+                      </div>
+
+                      <div className="flex">
+                        <label
+                          htmlFor={'name'}
+                          className="flex cursor-pointer select-none "
+                        >
+                          <div className="relative ">
+                            <input
+                              title={'name'}
+                              type="checkbox"
+                              id={'name'}
+                              className="sr-only"
+                              onChange={() => {
+                                setInventory(!inventory);
+                              }}
+                            />
+                            <div
+                              className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                inventory &&
+                                'border-primary bg-gray dark:bg-transparent'
+                              }`}
+                            >
+                              <span
+                                className={`h-2.5 w-2.5 rounded-sm ${inventory && 'bg-primary'}`}
+                              ></span>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div className="mb-2 flex gap-20 sm:flex-row">
+                      <div className=" flex w-2/4 ">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="checkboxLabelOne"
+                        >
+                          - {'Expenses'}
+                        </label>
+                      </div>
+
+                      <div className="flex">
+                        <label
+                          htmlFor={'b'}
+                          className="flex cursor-pointer select-none "
+                        >
+                          <div className="relative ">
+                            <input
+                              title={'b'}
+                              type="checkbox"
+                              id={'b'}
+                              className="sr-only"
+                              onChange={() => {
+                                setExpenses(!expenses);
+                              }}
+                            />
+                            <div
+                              className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                expenses &&
+                                'border-primary bg-gray dark:bg-transparent'
+                              }`}
+                            >
+                              <span
+                                className={`h-2.5 w-2.5 rounded-sm ${expenses && 'bg-primary'}`}
+                              ></span>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div className="mb-2 flex gap-20 sm:flex-row">
+                      <div className=" flex w-2/4 ">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="checkboxLabelOne"
+                        >
+                          - {'Fees'}
+                        </label>
+                      </div>
+
+                      <div className="flex">
+                        <label
+                          htmlFor={'f'}
+                          className="flex cursor-pointer select-none "
+                        >
+                          <div className="relative ">
+                            <input
+                              title={'f'}
+                              type="checkbox"
+                              id={'f'}
+                              className="sr-only"
+                              onChange={() => {
+                                setFees(!fees);
+                              }}
+                            />
+                            <div
+                              className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                fees &&
+                                'border-primary bg-gray dark:bg-transparent'
+                              }`}
+                            >
+                              <span
+                                className={`h-2.5 w-2.5 rounded-sm ${fees && 'bg-primary'}`}
+                              ></span>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div className="mb-2 flex gap-20 sm:flex-row">
+                      <div className=" flex w-2/4 ">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="checkboxLabelOne"
+                        >
+                          - {'Settings'}
+                        </label>
+                      </div>
+
+                      <div className="flex">
+                        <label
+                          htmlFor={'named'}
+                          className="flex cursor-pointer select-none "
+                        >
+                          <div className="relative ">
+                            <input
+                              title={'named'}
+                              type="checkbox"
+                              id={'named'}
+                              className="sr-only"
+                              onChange={() => {
+                                setsettings(!settings);
+                              }}
+                            />
+                            <div
+                              className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                settings &&
+                                'border-primary bg-gray dark:bg-transparent'
+                              }`}
+                            >
+                              <span
+                                className={`h-2.5 w-2.5 rounded-sm ${settings && 'bg-primary'}`}
+                              ></span>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end mt-5 gap-4.5">
+                    <button
+                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlecreateStaff();
+                      }}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      type="reset"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
+        </div>
         <div className="w-8/12 flex-col">
           <div
             className={
@@ -796,21 +794,19 @@ console.log(data.nodes)
                         </HeaderRow>
                       </Header>
 
-  
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
-                          <Row key={item.id}
+                          <Row
+                            key={item.id}
                             item={item}
-                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
-                          
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                           >
                             <Cell className="  ">
                               {item.sFirstName} {item.sOtherName}{' '}
                               {item.sLastName}
                             </Cell>
                             <Cell className="  ">
-                              {item.active == "True" ? "Active":"Inactive"}
-                        
+                              {item.active == 'True' ? 'Active' : 'Inactive'}
                             </Cell>
 
                             <Cell>
@@ -818,11 +814,19 @@ console.log(data.nodes)
                                 <EditSVG
                                   clickFunction={() => handleEditbtn(item)}
                                 />
-                              {item.active == 'True' ? <InactiveSVG
-                                  clickFunction={() => handleinactivebtn(item.userId)}
-                                />: <ActiveSVG
-                                clickFunction={() => handleactivebtn(item.userId)}
-                              />}
+                                {item.active == 'True' ? (
+                                  <InactiveSVG
+                                    clickFunction={() =>
+                                      handleinactivebtn(item.userId)
+                                    }
+                                  />
+                                ) : (
+                                  <ActiveSVG
+                                    clickFunction={() =>
+                                      handleactivebtn(item.userId)
+                                    }
+                                  />
+                                )}
 
                                 <DeleteSVG
                                   clickFunction={() =>
@@ -899,8 +903,7 @@ console.log(data.nodes)
                         </HeaderRow>
                       </Header>
 
-  
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.id}
@@ -924,7 +927,6 @@ console.log(data.nodes)
             </div>
           </div>{' '}
         </div>
-      
       </div>{' '}
     </DefaultLayout>
   );

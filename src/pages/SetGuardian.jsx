@@ -435,11 +435,11 @@ const SetGuardian = () => {
                     </Header>
 
 
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
                         <Row key={item.student_id}
                             item={item}
-                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                           >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
@@ -544,7 +544,7 @@ const SetGuardian = () => {
                     </Header>
 
 
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
                         <Row
                           key={item.student_id}

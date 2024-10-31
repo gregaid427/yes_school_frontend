@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import userThree from '../../images/user/user-03.png';
 import UserOne from '../../images/user/user-01.png';
-
+import useAuth from '../../useAuth';
+import { useDispatch, useSelector } from 'react-redux';
+import { reset, resetAllUserData } from '../../redux/slices/usersSlice';
+import Cookies from 'js-cookie';
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const dispatch = useDispatch();
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
@@ -34,24 +37,37 @@ const DropdownUser = () => {
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
   });
+  const { setAuth } = useAuth();
+  const user = useSelector((state) => state?.user);
+  const { fetchuserbyid,UserData , username, userMail} = user;
+  const [info1, setInfo1] = useState([]);
+  const [info2, setInfo2] = useState([]);
+  const [info3, setInfo3] = useState([]);
+  const { auth  } = useAuth();
+ 
+  useEffect(() => {
+  // setInfo1(UserData.payload[0]?.data[0]?.sFirstName)
+ 
+  }, [UserData]);
 
   return (
     <div className="relative">
       <Link
         ref={trigger}
+
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4"
         to="#"
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Gregory Sey
+           {username?.payload }
           </span>
-          <span className="block text-xs">Staff</span>
+          <span className="block text-xs">{ userMail?.payload }</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          <img src={UserOne} alt="User" />
+          <img src={userThree} alt="User" className='rounded-full' />
         </span>
 
         <svg
@@ -153,7 +169,11 @@ const DropdownUser = () => {
             </Link>
           </li>
         </ul>
-        <Link to={'/auth/signin'}>
+        <Link to={'/auth/signin'} onClick={()=>{setAuth({})
+        Cookies.remove('VyQHVzZXIuY29tIiwia');
+        dispatch(resetAllUserData())
+      
+      }} >
         <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
           <svg
             className="fill-current"

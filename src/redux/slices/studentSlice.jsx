@@ -497,6 +497,10 @@ const StudentSlices = createSlice({
     resetFetchCustom(state) {
       state.fetchcustom = null;
     },
+    resetFetchCustomStudent(state) {
+      state.fetchcustomstudent = null;
+    },
+    
   },
   extraReducers: (builder) => {
     builder.addCase(CreatestudentAction.pending, (state, action) => {
@@ -800,5 +804,6 @@ export const {
   resetPromote,
   resetSinglestudent,
   resetFetchCustom,
+  resetFetchCustomStudent
 } = StudentSlices.actions;
 export default StudentSlices.reducer;

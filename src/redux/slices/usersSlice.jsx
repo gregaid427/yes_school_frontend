@@ -281,6 +281,29 @@ export const fetchschoolinfoAction = createAsyncThunk(
     }
   },
 );
+export const fetchuserbyidAction = createAsyncThunk(
+  'fetch/userbyid',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/userid/`,payload
+      );
+
+      if (data == null) {
+        toast.error('Error Loading Data');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const updateschoolinfoAction = createAsyncThunk(
   'update/schoool',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -356,7 +379,12 @@ export const SchoollogoAction = createAsyncThunk(
   },
 );
 
-const initialState = {};
+const initialState = {
+  UserData:[],
+  fetchuserbyid:{},
+  loginUser:{}
+
+};
 
 const UsersSlices = createSlice({
   name: 'users',
@@ -370,6 +398,30 @@ const UsersSlices = createSlice({
     resetcreateGuardian(state) {
       state.CreateUser = null;
     },
+    setUser(state,data) {
+      state.UserData = data;
+      console.log('called')
+      console.log(state.UserData )
+
+    },
+    setUsername(state,data) {
+      state.username = data;
+     
+    },
+    setUserMail(state,data) {
+      state.userMail = data;
+     
+    },
+    setRoleCode(state,data) {
+      state.roleCode = data;
+     
+    },
+    
+    resetAllUserData(state){
+      state.UserData=[],
+      state.fetchuserbyid={},
+      state.loginUser={}
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(CreateUserAction.pending, (state, action) => {
@@ -385,11 +437,29 @@ const UsersSlices = createSlice({
       state.error = action.payload;
       state.CreateUser = undefined;
     });
+    
+    builder.addCase(fetchuserbyidAction.pending, (state, action) => {
+      state.fetchuserbyidloading = true;
+      state.fetchuserbyid = false;
+    });
+    builder.addCase(fetchuserbyidAction.fulfilled, (state, action) => {
+      state.fetchuserbyid = action?.payload;
+      state.fetchuserbyidloading = false;
+      state.fetchuserbyiderror = undefined;
+    });
+    builder.addCase(fetchuserbyidAction.rejected, (state, action) => {
+      state.fetchuserbyidloading = false;
+      state.fetchuserbyiderror = action.payload;
+      state.fetchuserbyid = undefined;
+    });
+
 
     builder.addCase(CreateGuardianAction.pending, (state, action) => {
       state.loading = true;
       state.createguard = false;
     });
+
+
     builder.addCase(CreateGuardianAction.fulfilled, (state, action) => {
       state.CreateUser = action?.payload;
       state.createguard = action?.payload;
@@ -582,6 +652,6 @@ const UsersSlices = createSlice({
     });
   },
 });
-export const { reset, resetcreateGuardian } = UsersSlices.actions;
+export const { reset, resetcreateGuardian,setUser,resetAllUserData ,setUserMail,setRoleCode, setUsername} = UsersSlices.actions;
 
 export default UsersSlices.reducer;

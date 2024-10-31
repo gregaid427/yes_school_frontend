@@ -336,11 +336,11 @@ const ViewExamResult = (props) => {
                         </Header>
 
     
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                           {tableList.map((item, index) => (
                             <Row key={item.student_id}
                             item={item}
-                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                           >
                               <Cell className="  ">
                                 <span>{item.student_id}</span>
@@ -361,23 +361,23 @@ const ViewExamResult = (props) => {
                                 <div className="flex row gap-1 w-full">
                                   <div className="w-4/12 ml-1">
                                     {' '}
-                                    <span>{item.examscore}</span>
+                                    <span>{item.examscore == undefined ? 'n/a' : item.examscore}</span>
                                   </div>
                                   <div className="w-4/12 ml-1">
                                     {' '}
-                                    <span>{item.classworkscore}</span>
+                                    <span>{item.classworkscore == undefined ? 'n/a' : item.examscore}</span>
                                   </div>
                                   <div className="w-4/12 ml-1">
                                     {' '}
-                                    <span>{item.othersscore}</span>
+                                    <span>{item.othersscore == undefined ? 'n/a' : item.examscore}</span>
                                   </div>
                                 </div>
                               </Cell>
                               <Cell className="  ">
                                 <span className="ml-1">
-                                  {item.totalscore
+                                  {item.totalscore 
                                     ? item.totalscore + ' %'
-                                    : '-'}
+                                    : 'n/a'}
                                 </span>
                               </Cell>
                               <Cell className="  ">
@@ -459,7 +459,7 @@ const ViewExamResult = (props) => {
                         </Header>
 
     
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                           {tableList.map((item) => (
                             <Row
                               key={item.student_id}

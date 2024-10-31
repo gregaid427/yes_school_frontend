@@ -20,13 +20,29 @@ const Header = (props) => {
   const session = useSelector((state) => state?.session);
   const { fetchsessionactive, fetchsession } = session;
   const [sessionz, setsession] = useState(null);
+  const [school, setschool] = useState([]);
+  
+
+
+  // useEffect(() => {
+  //   dispatch(fetchschoolinfoAction());
+  //   dispatch(fetchActivesessionAction());
+  // }, []);
 
   useEffect(() => {
     if (fetchsessionactive?.success == 1) {
       let data = fetchsessionactive?.data[0];
       setsession(data);
     }
+    
   }, [fetchsessionactive]);
+  
+  useEffect(() => {
+    if (allschool?.success == 1) {
+      let data = allschool?.data;
+      setschool(data);
+    }
+  }, [allschool]);
 
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
@@ -80,7 +96,7 @@ const Header = (props) => {
           </Link> */}
         </div>
         <span className="float-start block text-sm font-medium text-black dark:text-white">
-          {allschool?.data[0]?.name ? allschool?.data[0]?.name : "" }
+          {school[0]?.name ? school[0]?.name : "" }
         </span>
         <span className=" float-start block text-sm font-medium text-black dark:text-white">
           Current Session : {sessionz?.sessionname}

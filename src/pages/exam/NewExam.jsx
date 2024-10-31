@@ -23,11 +23,7 @@ import autoTable from 'jspdf-autotable';
 
 import Loader from '../../common/Loader';
 import toast from 'react-hot-toast';
-import {
-
-  fetchAllClassNoAction,
-
-} from '../../redux/slices/classSlice';
+import { fetchAllClassNoAction } from '../../redux/slices/classSlice';
 import TableBtn from '../../components/Svgs/TableBtn';
 import { Dialog } from 'primereact/dialog';
 import NewExamsModal from '../../components/NewExamsModal';
@@ -37,7 +33,13 @@ import { FetchExamGroupAction } from '../../redux/slices/examSlice';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import ExamResultChoiceModal from '../../components/ExamResultChoiceModal';
 import NewExamImportModal from '../../components/NewExamImportModal';
-import { fetchCustomStudentsClassAction, fetchStudentsClassAction, resetFetchCustom } from '../../redux/slices/studentSlice';
+import {
+  fetchCustomStudentsClassAction,
+  fetchStudentsClassAction,
+  fetchStudentsCustomAction,
+  resetFetchCustom,
+  resetFetchCustomStudent,
+} from '../../redux/slices/studentSlice';
 
 const NewExam = () => {
   const formRef1 = useRef();
@@ -72,7 +74,6 @@ const NewExam = () => {
   const [nodes, setdata] = useState([]);
   const [classinfo, setClassInfo] = useState();
 
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
@@ -80,29 +81,28 @@ const NewExam = () => {
 
   const student = useSelector((state) => state?.student);
 
-  const { fetchcustom } = student;
+  const { fetchcustom, fetchcustomstudent } = student;
   const clad = useSelector((state) => state?.classes);
 
   const { fetchAllClassNo } = clad;
   const [visible, setVisible] = useState(false);
   const [visible7, setVisible7] = useState(false);
 
-  
   useEffect(() => {
     // dispatch(fetchAllClass());
     dispatch(fetchAllClassNoAction());
+    setVisible(false);
   }, []);
 
   useEffect(() => {
-
     if (fetchcustom?.success == 1) {
-      console.log(fetchcustom)
+      console.log(fetchcustom);
 
       let data = fetchcustom?.data;
       setClassInfo(data);
-    if(data?.length)  setVisible7(true)
-      dispatch(resetFetchCustom())
-      console.log(fetchcustom)
+      if (data?.length) setVisible7(true);
+      dispatch(resetFetchCustom());
+      console.log(fetchcustom);
     }
   }, [fetchcustom]);
 
@@ -138,17 +138,17 @@ const NewExam = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  40% 30%  30%;
+      --data-table-library_grid-template-columns:  32% 25%  43%;
     `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -171,6 +171,28 @@ const NewExam = () => {
       item.title.toLowerCase().includes(search.toLowerCase()),
     ),
   };
+
+  function handlegetclasslist(value) {
+    dispatch(
+      fetchStudentsCustomAction({
+        class: value?.title,
+        section: value?.section,
+      }),
+    );
+  }
+
+  useEffect(() => {
+    if (fetchcustomstudent?.success == 1 && fetchcustomstudent?.data != []) {
+      let data = fetchcustomstudent?.data;
+      const csvConfig = mkConfig({
+        useKeysAsHeaders: true,
+        filename: `${val1?.title} : ${val1.section} `,
+      });
+      const csv = generateCsv(csvConfig)(data);
+      download(csvConfig)(csv);
+      dispatch(resetFetchCustomStudent());
+    }
+  }, [fetchcustomstudent]);
 
   function onPaginationChange(action, state) {}
 
@@ -196,7 +218,7 @@ const NewExam = () => {
     };
     let data1 = {
       class: item.title,
-      section: "All Sections" ,
+      section: 'All Sections',
     };
     console.log(data);
     if (item.section == null || item.section == '-') {
@@ -231,7 +253,12 @@ const NewExam = () => {
           setVisible7(false);
         }}
       >
-        <NewExamImportModal close={setVisible7} val={val} student={classinfo} newsubject={setVisible} />
+        <NewExamImportModal
+          close={setVisible7}
+          val={val}
+          student={classinfo}
+          newsubject={setVisible}
+        />
       </Dialog>
       <Dialog
         visible={visible3}
@@ -338,13 +365,12 @@ const NewExam = () => {
                         </HeaderRow>
                       </Header>
 
-  
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
-                          <Row key={item.id}
+                          <Row
+                            key={item.id}
                             item={item}
-                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
-                          
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                           >
                             <Cell className="  ">{item.title}</Cell>
                             <Cell className="  ">
@@ -379,18 +405,18 @@ const NewExam = () => {
                                   clickFunction={() => {
                                     setVisible(true);
                                     setVal(item);
-                                   // console.log(item)
+                                    // console.log(item)
                                   }}
                                   text={'Add Result'}
                                   color={'bg-primary'}
                                 />
-                                  <TableBtn
+                                <TableBtn
                                   clickFunction={() => {
-                                   // setVisible7(true);
+                                    // setVisible7(true);
                                     setVal(item);
-                                    handleGetClassData(item)
+                                    handleGetClassData(item);
 
-                                   // console.log(item)
+                                    // console.log(item)
                                   }}
                                   text={'Import Result'}
                                   color={'bg-primary'}
@@ -401,6 +427,15 @@ const NewExam = () => {
                                     setVal1(item);
                                   }}
                                   text={'View Result'}
+                                  color={'bg-primary'}
+                                />
+                                <TableBtn
+                                  clickFunction={() => {
+                                    // setVisible3(true);
+                                    setVal1(item);
+                                    handlegetclasslist(item);
+                                  }}
+                                  text={'Download Class List'}
                                   color={'bg-primary'}
                                 />
                                 {/* <TableBtn
@@ -472,8 +507,7 @@ const NewExam = () => {
                         </HeaderRow>
                       </Header>
 
-  
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row
                             key={item.id}

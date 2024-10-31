@@ -103,20 +103,18 @@ const SearchAttendance = () => {
     studentPromote,
   } = student;
   console.log(repeat);
-  const { GetSesionRecords,GetRecordByDate } = attendance;
+  const { GetSesionRecords, GetRecordByDate } = attendance;
 
   useEffect(() => {
     if (GetRecordByDate?.success == 1) {
       let data = GetRecordByDate?.data;
       setdata(data);
-   
     }
     if (GetSesionRecords?.success == 1) {
       let data = GetSesionRecords?.data;
       setdata(data);
-   
     }
-  }, [GetRecordByDate,GetSesionRecords]);
+  }, [GetRecordByDate, GetSesionRecords]);
   console.log(ids);
   useEffect(() => {
     if (fetchsessionactive?.success == 1) {
@@ -170,15 +168,15 @@ const SearchAttendance = () => {
       //   //  background-color: #24303F;
 
        `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -238,8 +236,6 @@ const SearchAttendance = () => {
     console.log(data);
     dispatch(GetRecordByDateAction(data));
   };
- 
-
 
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
@@ -262,7 +258,6 @@ const SearchAttendance = () => {
     download(csvConfig)(csv);
   };
   function handleGetClassData() {
- 
     let data = {
       class: clazz,
       section: sectionzz,
@@ -279,7 +274,6 @@ const SearchAttendance = () => {
       console.log('custom');
     }
   }
- 
 
   return loader ? (
     <Loader />
@@ -296,9 +290,7 @@ const SearchAttendance = () => {
         }}
         draggable={false}
         resizable={false}
-      >
-       
-      </Dialog>
+      ></Dialog>
       <div className=" flex-col">
         <div
           className={
@@ -477,59 +469,57 @@ const SearchAttendance = () => {
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                     
                         <HeaderCell>Class (Section)</HeaderCell>
                         <HeaderCell>Section</HeaderCell>
                         <HeaderCell>Taken By</HeaderCell>
                         <HeaderCell className="">Date Taken</HeaderCell>
-                      
+
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
-                        <Row key={item.id}
-                            item={item}
-                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
-                          >
+                        <Row
+                          key={item.id}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
                           <Cell className="  ">
                             <span>{item.classid}</span>
                           </Cell>
-                          
+
                           <Cell className="  ">
-                            
-                            <span>{item.section  ? item.section : 'None'}</span>
+                            <span>{item.section ? item.section : 'None'}</span>
                           </Cell>
                           <Cell className="  ">
-                          <span>{item.createdby}</span>
+                            <span>{item.createdby}</span>
                           </Cell>
                           <Cell className="  ">
                             <span>{item.datetaken}</span>
                           </Cell>
-                          
+
                           <Cell className="  ">
-                            <div className='flex gap-1'>
-                          <TableBtn
-                                  clickFunction={() => {
-                                    navigate("/attendance/searchdetail", {
-                                      state: { action: 1, value: item },
-                                    });
-                                  }}
-                                  text={'View'}
-                                  color={'bg-primary'}
-                                />
-                                <TableBtn
-                                  clickFunction={() => {
-                                    navigate("/attendance/updatedetail", {
-                                      state: { action: 1, value: item },
-                                    });
-                                  }}
-                                  text={'Update'}
-                                  color={'bg-primary'}
-                                />
-                                </div>
+                            <div className="flex gap-1">
+                              <TableBtn
+                                clickFunction={() => {
+                                  navigate('/attendance/searchdetail', {
+                                    state: { action: 1, value: item },
+                                  });
+                                }}
+                                text={'View'}
+                                color={'bg-primary'}
+                              />
+                              <TableBtn
+                                clickFunction={() => {
+                                  navigate('/attendance/updatedetail', {
+                                    state: { action: 1, value: item },
+                                  });
+                                }}
+                                text={'Update'}
+                                color={'bg-primary'}
+                              />
+                            </div>
                           </Cell>
                         </Row>
                       ))}
@@ -537,7 +527,6 @@ const SearchAttendance = () => {
                   </>
                 )}
               </Table>
-           
             </div>
           </div>
         </div>{' '}

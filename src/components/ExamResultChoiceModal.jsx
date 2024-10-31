@@ -269,7 +269,7 @@ const ExamResultChoiceModal = (props) => {
                   ))}
                   {FetchexamSubject?.data?.length == 0}{
                   <label
-                  className="mb-2 block text-md text-center font-medium text-black dark:text-white"
+                  className= {FetchexamSubject?.data?.length == 0 ? "mb-2 block text-md text-center font-medium text-black dark:text-white" : 'hidden'}
                   htmlFor=""
                 >
                 No Results Available

@@ -24,6 +24,7 @@ import {
 import {
   fetchExamByCodeAction,
   FetchSingleGradeGroupAction,
+  resetcreateGetGradeGroup,
   resetsubmitresult,
   setExamResult,
   SubmitUpdatedResultAction,
@@ -44,7 +45,6 @@ const EditExamResult = (props) => {
   const [singleGrade, setSingleGrade] = useState();
   const [detail, setDetail] = useState();
 
-  
   const { fetchcustomstudent } = student;
 
   const exam = useSelector((state) => state?.exam);
@@ -103,7 +103,7 @@ const EditExamResult = (props) => {
         dispatch(setExamResult(data));
         // dispatch(resetfetchAllClassExam());
       } else {
-       // navigate(-1);
+        // navigate(-1);
       }
     }
   }, [fetchExamByCode]);
@@ -145,15 +145,15 @@ const EditExamResult = (props) => {
       //   //  background-color: #24303F;
 
        `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -204,7 +204,7 @@ const EditExamResult = (props) => {
     //when no student
     console.log(Arrays);
 
-    resultdata.result = Arrays
+    resultdata.result = Arrays;
     console.log(resultdata.result);
 
     if (value?.result?.length == 0) return toast.error('No Result To Updoad');
@@ -226,16 +226,16 @@ const EditExamResult = (props) => {
       setVisible(true);
       dispatch(setExamResult(data));
 
-     dispatch(resetsubmitresult());
-     // dispatch(setExamResult([]));
+      dispatch(resetsubmitresult());
+      // dispatch(setExamResult([]));
     }
   }, [submitResult]);
-  
-  useEffect(() => {
-    console.log('cccccccccccccc')
-    console.log(ExamResultArray.payload)
 
-  setArray(ExamResultArray.payload)
+  useEffect(() => {
+    console.log('cccccccccccccc');
+    console.log(ExamResultArray.payload);
+
+    setArray(ExamResultArray.payload);
   }, [FinalResult]);
 
   useEffect(() => {
@@ -390,13 +390,12 @@ const EditExamResult = (props) => {
                             </HeaderRow>
                           </Header>
 
-      
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                          <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                             {tableList.map((item, index) => (
                               <Row
                                 key={item.student_id}
                                 item={item}
-                                className=""
+                                className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                               >
                                 <Cell className="  ">
                                   <span>{item.student_id}</span>
@@ -529,8 +528,7 @@ const EditExamResult = (props) => {
                           </HeaderRow>
                         </Header>
 
-    
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                        <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                           {tableList.map((item) => (
                             <Row
                               key={item.student_id}

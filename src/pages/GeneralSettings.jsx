@@ -23,6 +23,7 @@ import {
   updateschoolinfoAction,
 } from '../redux/slices/usersSlice';
 import toast from 'react-hot-toast';
+import { fetchAllClassAction, fetchAllSectionAction } from '../redux/slices/classSlice';
 
 const GeneralSettings = () => {
   const [visible, setVisible] = useState(false);
@@ -31,7 +32,11 @@ const GeneralSettings = () => {
     setPosition(position);
     setVisible(true);
   };
-
+  
+  // useEffect(() => {
+  //   dispatch(fetchAllClassAction());
+  //   dispatch(fetchAllSectionAction());
+  // }, []);
   const user = useSelector((state) => state?.user);
   const { allschool,logo } = user;
   const [picture, setPicture] = useState();

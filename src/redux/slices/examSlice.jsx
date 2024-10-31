@@ -599,16 +599,21 @@ const ExamSlices = createSlice({
     builder.addCase(UpdateGradeGroupAction.pending, (state, action) => {
       state.UpdateGradeGrouploading = true;
       state.UpdateGradeGroup = false;
+      state.GradeGroup = false;
+      
     });
     builder.addCase(UpdateGradeGroupAction.fulfilled, (state, action) => {
       state.UpdateGradeGroup = action?.payload;
       state.UpdateGradeGrouploading = false;
       state.UpdateGradeGrouperror = undefined;
+      state.Gradegroup = action?.payload;
     });
     builder.addCase(UpdateGradeGroupAction.rejected, (state, action) => {
       state.UpdateGradeGrouploading = false;
       state.UpdateGradeGrouperror = action.payload;
       state.UpdateGradeGroup = undefined;
+      state.GradeGroup = undefined;
+
     });
 
     

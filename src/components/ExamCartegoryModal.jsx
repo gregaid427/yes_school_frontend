@@ -11,7 +11,7 @@ const ExamCartegoryModal = (props) => {
   function handleSubmit() {
     const data = {
       id: props?.val?.id,
-      title: name,
+      title: name.toUpperCase(),
     };
 
     dispatch(UpdateExamCartegoryAction(data));

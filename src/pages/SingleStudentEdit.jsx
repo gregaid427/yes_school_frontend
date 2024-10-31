@@ -89,7 +89,7 @@ const fetchUserdatEdit = () => {
   const [picturename, setPicturename] = useState();
 
   const [pictureurl, setPictureurl] = useState('');
-
+console.log(pictureurl)
   const pic = location.state.pic;
   const files = location.state.file;
   const captureimage = location.state.captureimage;
@@ -517,7 +517,7 @@ const fetchUserdatEdit = () => {
               <div className="p-2 ">
                 <div className="w-full flex justify-center items-center">
                   <img
-                    src={pictureurl == '' ? userThree : pictureurl}
+                    src={pictureurl == null ? userThree : pictureurl}
                     className="h-40"
                   />
                 </div>
@@ -811,7 +811,7 @@ const fetchUserdatEdit = () => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={data[0]?.gEmail}
+                              defaultValue={data[1]?.gEmail}
                               onChange={(e) => setemail2(e.target.value)}
                             />
                           </div>
@@ -867,7 +867,7 @@ const fetchUserdatEdit = () => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={data[0]?.gContact1}
+                              defaultValue={data[1]?.gContact1}
                               onChange={(e) => setgcontact3(e.target.value)}
                             />
                           </div>
@@ -885,7 +885,7 @@ const fetchUserdatEdit = () => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={data[0]?.gContact2}
+                              defaultValue={data[1]?.gContact2}
                               onChange={(e) => setgcontact4(e.target.value)}
                             />
                           </div>
@@ -905,7 +905,7 @@ const fetchUserdatEdit = () => {
                               id="bio"
                               rows={2}
                               placeholder=""
-                              defaultValue={data[0]?.gAddress}
+                              defaultValue={data[1]?.gAddress}
                               // defaultValue={data?.gAddress}
                               onChange={(e) => setgAddress2(e.target.value)}
                             ></textarea>

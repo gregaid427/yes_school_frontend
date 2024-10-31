@@ -155,7 +155,12 @@ const ExamGradeEditModal = (props) => {
     exam: props?.info?.exam,
     other: props?.info?.other,
   };
-
+  console.log( eval(
+    parseFloat(classScore) + parseFloat(examScore) + parseFloat(otherScore),
+  ))
+  console.log( 
+ classScore + examScore + otherScore,
+  )
   useEffect(() => {
     console.log(props)
     obj['notes'] = props?.info?.[0]?.notes
@@ -239,11 +244,11 @@ const ExamGradeEditModal = (props) => {
 
       const data = {
         code: props?.info[0]?.gradecode,
-        title: obj?.title,
-        classscore: obj?.class,
-        examScore: obj?.exam,
-        otherScore: obj?.other,
-        notes: obj.notes,
+        title:name,
+        classscore: classScore,
+        examScore: examScore,
+        otherScore: otherScore,
+        notes: desc,
         grades: newArray,
         createdby: 'Asante',
       };
@@ -267,6 +272,7 @@ const ExamGradeEditModal = (props) => {
 
   let newArray1 = JSON.parse(JSON.stringify(props?.info));
   let newArray = newArray1;
+  console.log(newArray)
   // const [newdata, setData] = useState([]);
   // //let newArray = [...props?.info]
   // const [newdata1, setData1] = useState([]);
@@ -319,15 +325,16 @@ const ExamGradeEditModal = (props) => {
                             name=""
                             id=""
                             placeholder=""
-                            defaultValue={props?.info?.[0].gradetitle}
+                            defaultValue={props?.info?.[0]?.gradetitle}
                             onChange={(e) => {
+                              setName(e.target.value)
                               // for (let i = 0; i < newArray.length; i++) {
                               //  let val = newArray[i]
                               //   val['gradetitle'] = e.target.value;
                               // }
                               // let val = props?.info
                               // console.log(val)
-                              obj['title'] = e.target.value;
+                           //   obj['title'] = e.target.value;
                               //setName(e.target.value);
                               // setData(newArray);
                             }}
@@ -348,12 +355,14 @@ const ExamGradeEditModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={props?.info?.[0].classworkpercent}
+                              defaultValue={props?.info?.[0]?.classworkpercent}
                               onChange={(e) => {
+                                setclassScore(e.target.value)
+
                                 // for (let i = 0; i < newArray.length; i++) {
                                 //   newArray[i].classworkpercent = e.target.value;
                                 // }
-                                obj['class'] = e.target.value;
+                               // obj['class'] = e.target.value;
                                 //setData(newArray);
                               }}
                             />
@@ -371,12 +380,13 @@ const ExamGradeEditModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={props?.info?.[0].exampercent}
+                              defaultValue={props?.info?.[0]?.exampercent}
                               onChange={(e) => {
+                                setExamScore(e.target.value)
                                 // for (let i = 0; i < newArray.length; i++) {
                                 //   newArray[i].exampercent = e.target.value;
                                 // }
-                                obj['exam'] = e.target.value;
+                               // obj['exam'] = e.target.value;
                               }}
                             />
                           </div>
@@ -393,13 +403,14 @@ const ExamGradeEditModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={props?.info?.[0].otherscorepercent}
+                              defaultValue={props?.info?.[0]?.otherscorepercent}
                               onChange={(e) => {
+                                setOtherScore(e.target.value)
                                 // for (let i = 0; i < newArray.length; i++) {
                                 //   newArray[i].otherscorepercent =
                                 //     e.target.value;
                                 // }
-                                obj['other'] = e.target.value;
+                               // obj['other'] = e.target.value;
                               }}
                             />
                           </div>
@@ -414,7 +425,7 @@ const ExamGradeEditModal = (props) => {
                           </label>
                           <div className="relative">
                             <textarea
-                              className="w-full rounded border border-stroke bg-gray py-3  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              className="w-full rounded border border-stroke bg-gray py-3  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                               name="bio"
                               id="bio"
                               rows={2}
@@ -425,7 +436,7 @@ const ExamGradeEditModal = (props) => {
                                 // }
                                 // setDesc(e.target.value);
                                 // setData(newArray);
-                                obj['notes'] = e.target.value;
+                                setDesc(e.target.value)
 
                               }}
                             ></textarea>
@@ -544,12 +555,11 @@ const ExamGradeEditModal = (props) => {
                               name=""
                               id=""
                               placeholder=""
-                              defaultValue={props?.info?.[0].scoreremarks}
+                              defaultValue={props?.info?.[index].scoreremarks}
                               onChange={(e) => {
-                                let val = newArray[index];
-                                console.log(val);
-                                val['scoreremarks'] = e.target.value;
+                                newArray[index].scoreremarks = e.target.value;
                                 // setData(newArray);
+                                console.log(newArray);
                               }}
                             />
                           </div>

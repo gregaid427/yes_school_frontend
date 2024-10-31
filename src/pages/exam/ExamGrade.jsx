@@ -64,7 +64,7 @@ const ExamGrade = () => {
   }
 
   const exam = useSelector((state) => state?.exam);
-  const { Gradegroup, fetchGradegroup, Getgradegroup } = exam;
+  const { Gradegroup, fetchGradegroup, Getgradegroup ,UpdateGradeGroup} = exam;
   const fee = useSelector((state) => state?.fees);
 
   const [pagesval, setpagesval] = useState(30);
@@ -113,7 +113,11 @@ const ExamGrade = () => {
       setVisible(false);
       dispatch(resetcreateGradeGroup());
     }
-  }, [Gradegroup]);
+    if (UpdateGradeGroup?.success == 1) {
+   
+      setVisible1(false);
+    }
+  }, [Gradegroup,UpdateGradeGroup]);
 
   let data = { nodes };
 
@@ -314,11 +318,11 @@ const ExamGrade = () => {
                     </Header>
 
 
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
                         <Row key={item.gradeid}
                             item={item}
-                            className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex "
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                           
                           >
                           <Cell className="  ">{item.gradetitle}</Cell>
@@ -420,10 +424,10 @@ const ExamGrade = () => {
                     </Header>
 
 
-                      <Body className="dark:bg-meta-4  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
                         <Row
-                          key={item.id}
+                          key={item.gradeid}
                           item={item}
                           className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                         >

@@ -7,6 +7,7 @@ import TableOne from '../../components/Tables/TableOne';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { useDispatch, useSelector } from 'react-redux';
 import { chartStatAction, classStatAction, studentStatAction, subjectStatAction, teacherStatAction } from '../../redux/slices/statisticsSlice';
+import useAuth from '../../useAuth';
 
 
 const Dashboard  = () => {
@@ -15,6 +16,7 @@ const dispatch = useDispatch()
 const statistics = useSelector((state) => state?.statistics);
 const { studentStat,classStat, teacherStat,subjectStat,chartStat  } = statistics;
 
+const { setAuth,auth } = useAuth();
 
 
   useEffect(() => {
