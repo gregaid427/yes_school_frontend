@@ -165,21 +165,17 @@ const Staff = () => {
         classTitle: value.title,
       }),
     );
-    navigate('/academics/class/editclass', {
-      state: { action: 1, value: value },
-    });
+    // navigate('/academics/class/editclass', {
+    //   state: { action: 1, value: value },
+    // });
   };
   const handleEditbtn = (value) => {
-    dispatch(
-      fetchSingleClassAction({
-        classId: value.classId,
-        classTitle: value.title,
-      }),
-    );
-    navigate('/academics/class/editclass', {
+  
+    navigate("/settings/updatestaff", {
       state: { action: 2, value: value },
     });
   };
+  
   const handledeletbtn = (value) => {
     dispatch(deleteStaffAction(value));
     // dispatch(fetchAllClassAction());

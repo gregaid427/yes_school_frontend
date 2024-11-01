@@ -113,6 +113,7 @@ import AuthContext, { AuthProvider } from './AuthProvider';
 import Missing from './pages/Authentication/Missing';
 import Unauthorized from './pages/Authentication/Unauthorized';
 import useAuth from './useAuth';
+import StaffEdit from './pages/SetStaffEdit';
 
 function App() {
   const navigate = useNavigate();
@@ -594,6 +595,17 @@ function App() {
                 <>
                   <PageTitle title="Calendar | " />
                   <SetStaff />
+                </>
+              }
+            />{' '}
+          </Route>{' '}
+          <Route element={<RequireAuth allowedRoles={['6']} code={code} />}>
+            <Route
+              path="/settings/updatestaff"
+              element={
+                <>
+                  <PageTitle title="Calendar | " />
+                  <StaffEdit />
                 </>
               }
             />{' '}

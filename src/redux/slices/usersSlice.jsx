@@ -180,6 +180,34 @@ export const CreatesStaffAction = createAsyncThunk(
   },
 );
 
+export const UpdateStaffAction = createAsyncThunk(
+  'create/updatestaff',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/updatestaff`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Updated Successfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Updating Record');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const deleteStaffAction = createAsyncThunk(
   'delete/userstaff',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -438,6 +466,22 @@ const UsersSlices = createSlice({
       state.CreateUser = undefined;
     });
     
+    builder.addCase(UpdateStaffAction.pending, (state, action) => {
+      state.UpdateStaffloading = true;
+      state.UpdateStaff = false;
+    });
+    builder.addCase(UpdateStaffAction.fulfilled, (state, action) => {
+      state.UpdateStaff = action?.payload;
+      state.UpdateStaffloading = false;
+      state.UpdateStafferror = undefined;
+    });
+    builder.addCase(UpdateStaffAction.rejected, (state, action) => {
+      state.UpdateStaffloading = false;
+      state.UpdateStafferror = action.payload;
+      state.UpdateStaff = undefined;
+    });
+
+
     builder.addCase(fetchuserbyidAction.pending, (state, action) => {
       state.fetchuserbyidloading = true;
       state.fetchuserbyid = false;

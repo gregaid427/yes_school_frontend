@@ -31,13 +31,13 @@ const RequireAuth = ({ allowedRoles }) => {
     // return true
 
     <Outlet />
-  ) : userMail ? (
+  ) : myArray ? (
     <div>
       <Unauthorized />
     </div>
   ) : (
     // <Navigate to="/unauthorized" state={{ from: location }} replace />
-    <Navigate to="/auth/signin" state={{ from: location }} replace />
+    <Navigate to="/auth/signin" state={{ from: location }}  />
   );
 };
 
