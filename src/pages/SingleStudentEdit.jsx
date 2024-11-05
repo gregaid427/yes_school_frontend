@@ -107,7 +107,7 @@ console.log(pictureurl)
 
     setPicturename(files?.name);
     console.log(files);
-    setTimeout(() => setLoader(false), 1000);
+    setTimeout(() => setLoader(false), 0);
 
     // console.log(fetchUserdat);
     // if (fetchUserdat == undefined) {

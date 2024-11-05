@@ -48,12 +48,14 @@ import AssignFeeModalClass from '../../components/AssignFeeModalClass';
 import AssignFeeModalPartial from '../../components/AssignFeeModalPartial';
 import ExamGradeModal from '../../components/ExamGradeModal';
 import {
+  DeleteGradeGroupAction,
   FetchGradeGroupAction,
   GetgradegroupAction,
   resetcreateGetGradeGroup,
   resetcreateGradeGroup,
 } from '../../redux/slices/examSlice';
 import ExamGradeEditModal from '../../components/ExamGradeEditModal';
+import DeleteModal from '../../components/DeleteModal';
 
 const ExamGrade = () => {
   const formRef1 = useRef();
@@ -64,7 +66,7 @@ const ExamGrade = () => {
   }
 
   const exam = useSelector((state) => state?.exam);
-  const { Gradegroup, fetchGradegroup, Getgradegroup ,UpdateGradeGroup} = exam;
+  const { Gradegroup, fetchGradegroup, Getgradegroup, UpdateGradeGroup } = exam;
   const fee = useSelector((state) => state?.fees);
 
   const [pagesval, setpagesval] = useState(30);
@@ -76,7 +78,7 @@ const ExamGrade = () => {
   const [sectionname, setsectionname] = useState('');
 
   const [classTitle, setClassTitle] = useState('');
-  const [classInstructor, setClassInstructor] = useState('');
+  const [del, setDel] = useState();
 
   const [nodes, setdata] = useState([]);
   const [datacart, setdatacart] = useState([]);
@@ -98,26 +100,27 @@ const ExamGrade = () => {
       let data = fetchGradegroup?.data;
       setdata(data);
       console.log(data);
+      setVisible2(false)
     }
   }, [fetchGradegroup]);
+
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
     if (Gradegroup?.success == 1) {
       let data = Gradegroup?.data;
-      console.log('response')
+      console.log('response');
 
-      console.log(data)
+      console.log(data);
       setdata(data);
       setVisible(false);
       dispatch(resetcreateGradeGroup());
     }
     if (UpdateGradeGroup?.success == 1) {
-   
       setVisible1(false);
     }
-  }, [Gradegroup,UpdateGradeGroup]);
+  }, [Gradegroup, UpdateGradeGroup]);
 
   let data = { nodes };
 
@@ -144,15 +147,15 @@ const ExamGrade = () => {
       Table: `
       --data-table-library_grid-template-columns:  40% 15%  15% 15%  15%;
     `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -164,6 +167,7 @@ const ExamGrade = () => {
     onChange: onPaginationChange,
   });
   const [visible1, setVisible1] = useState(false);
+  const [visible2, setVisible2] = useState(false);
 
   function onPaginationChange(action, state) {}
 
@@ -178,7 +182,7 @@ const ExamGrade = () => {
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
-    console.log(value)
+    console.log(value);
     dispatch(GetgradegroupAction({ code: value?.gradecode }));
   };
   useEffect(() => {
@@ -186,14 +190,17 @@ const ExamGrade = () => {
 
     if (Getgradegroup?.success == 1) {
       let data = Getgradegroup?.data;
-      console.log(data)
+      console.log(data);
       setClass(data);
       setVisible1(true);
       dispatch(resetcreateGetGradeGroup());
     }
   }, [Getgradegroup]);
-  const handleEditbtn = (value) => {
+  const handleEditbtn = () => {
     setVisible1(true);
+  };
+  const handledeletebtn = () => {
+    dispatch(DeleteGradeGroupAction({ id: del }));
   };
 
   const [visible, setVisible] = useState(false);
@@ -231,7 +238,19 @@ const ExamGrade = () => {
       >
         <ExamGradeEditModal close={setVisible1} info={classs} />
       </Dialog>
-
+      <Dialog
+        visible={visible2}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible2) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletebtn} close={setVisible2} />
+      </Dialog>
       <div className=" flex-col">
         <div
           className={
@@ -317,14 +336,13 @@ const ExamGrade = () => {
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
-                        <Row key={item.gradeid}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          
-                          >
+                        <Row
+                          key={item.gradeid}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
                           <Cell className="  ">{item.gradetitle}</Cell>
 
                           <Cell className="  ">{item.exampercent + ' %'}</Cell>
@@ -352,7 +370,11 @@ const ExamGrade = () => {
                               /> */}
 
                               <DeleteSVG
-                              // clickFunction={() => handleViewbtn(item)}
+                                clickFunction={() => {
+                                  setDel(item?.gradecode);
+
+                                  setVisible2(true);
+                                }}
                               />
                             </div>
                           </Cell>
@@ -423,8 +445,7 @@ const ExamGrade = () => {
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
                         <Row
                           key={item.gradeid}

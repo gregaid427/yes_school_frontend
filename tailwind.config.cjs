@@ -51,6 +51,10 @@ module.exports = {
         success: '#219653',
         danger: '#D34053',
         warning: '#FFA70B',
+        mainblue1: '#3C39AB',
+        mainblue2: '#2696FD',
+        mainblue3: '#504DB4',
+
       },
       fontSize: {
         'title-xxl': ['44px', '55px'],
@@ -61,6 +65,9 @@ module.exports = {
         'title-md2': ['26px', '30px'],
         'title-sm': ['12px', '20px'],
         'title-xsm': ['18px', '24px'],
+      },
+      backgroundImage: {
+        'bgimg': "url('../images/b.jpg')",
       },
       spacing: {
         4.5: '1.125rem',

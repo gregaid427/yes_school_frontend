@@ -32,6 +32,7 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
 import {
   CreateExamGroupAction,
+  DeleteCartecoryAction,
   FetchExamGroupAction,
   resetcreategroup,
   resetExamCart,
@@ -40,6 +41,7 @@ import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import { Dialog } from 'primereact/dialog';
 import NewExamsModal from '../../components/NewExamsModal';
 import ExamCartegoryModal from '../../components/ExamCartegoryModal';
+import DeleteModal from '../../components/DeleteModal';
 
 const ExamGroup = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -48,6 +50,7 @@ const ExamGroup = () => {
   const [sessionoption, setSessionoption] = useState('');
 
   const [name, setname] = useState('');
+  const [del, setDel] = useState();
 
   const [nodes, setdata] = useState([]);
 
@@ -55,7 +58,7 @@ const ExamGroup = () => {
   const dispatch = useDispatch();
 
   const exam = useSelector((state) => state?.exam);
-  const { examgroup, createxamgroup,UpdateExamCartegory } = exam;
+  const { examgroup, createxamgroup, UpdateExamCartegory,DeleteCartecory } = exam;
 
   useEffect(() => {
     dispatch(FetchExamGroupAction());
@@ -66,11 +69,19 @@ const ExamGroup = () => {
     if (UpdateExamCartegory?.success == 0) {
     }
     if (UpdateExamCartegory?.success == 1) {
-      setVisible(false)
-      
+      setVisible(false);
+
       dispatch(resetExamCart());
     }
   }, [UpdateExamCartegory]);
+
+  useEffect(() => {
+    if (DeleteCartecory?.success == 0) {
+    }
+    if (DeleteCartecory?.success == 1) {
+      setVisible1(false);
+    }
+  }, [DeleteCartecory]);
 
   useEffect(() => {
     if (createxamgroup?.success == 0) {
@@ -80,7 +91,6 @@ const ExamGroup = () => {
       let data = createxamgroup?.data;
       setdata(data);
       dispatch(resetcreategroup());
-
     }
   }, [createxamgroup]);
 
@@ -118,15 +128,15 @@ const ExamGroup = () => {
       //   //  background-color: #24303F;
 
       `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -151,11 +161,11 @@ const ExamGroup = () => {
   function onPaginationChange(action, state) {}
 
   const handleEditbtn = (value) => {
-    setVisible(true)
-    setVal(value)
+    setVisible(true);
+    setVal(value);
   };
   const handledeletebtn = (value) => {
-   // dispatch(DeleteSingleSubjectAction(value));
+   dispatch(DeleteCartecoryAction({id:del}));
   };
 
   const subdata = {
@@ -188,14 +198,14 @@ const ExamGroup = () => {
     const csv = generateCsv(csvConfig)(nodes);
     download(csvConfig)(csv);
   };
+  const [visible1, setVisible1] = useState(false);
   const [visible, setVisible] = useState(false);
   const [val, setVal] = useState('Loading...');
   return loader ? (
     <Loader />
   ) : (
-    
     <DefaultLayout>
-       <Dialog
+      <Dialog
         visible={visible}
         position={'top'}
         style={{ height: 'auto', width: '30%' }}
@@ -204,7 +214,20 @@ const ExamGroup = () => {
           setVisible(false);
         }}
       >
-        <ExamCartegoryModal close={setVisible} val={val}/>
+        <ExamCartegoryModal close={setVisible} val={val} />
+      </Dialog>
+      <Dialog
+        visible={visible1}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletebtn} close={setVisible1} />
       </Dialog>
       <div className={'flex gap-2 w-full'}>
         <div className=" w-4/12  gap-8">
@@ -365,22 +388,18 @@ const ExamGroup = () => {
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
                           <HeaderCell>Title</HeaderCell>
-
-
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
                       </Header>
 
-  
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
-                          <Row key={item.id}
+                          <Row
+                            key={item.id}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          
                           >
                             <Cell className="  ">{item.grouptitle}</Cell>
-
 
                             <Cell>
                               <div className="gap-2 flex">
@@ -389,7 +408,10 @@ const ExamGroup = () => {
                                 />
 
                                 <DeleteSVG
-                                  clickFunction={() => handledeletebtn(item.id)}
+                                  clickFunction={() => {
+                                    setDel(item.id);
+                                    setVisible1(true);
+                                  }}
                                 />
                               </div>
                             </Cell>
@@ -464,7 +486,6 @@ const ExamGroup = () => {
                         </HeaderRow>
                       </Header>
 
-  
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row

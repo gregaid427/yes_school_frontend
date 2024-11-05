@@ -30,6 +30,8 @@ import {
   fetchSingleClassAction,
   resetcreatesection,
 } from '../redux/slices/classSlice';
+import DeleteModal from '../components/DeleteModal';
+import { Dialog } from 'primereact/dialog';
 
 const Section = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -39,10 +41,12 @@ const Section = () => {
 
   const [isChecked1, setIsChecked1] = useState(false);
   const [sectionTitle, setsectionTitle] = useState('');
-  const [classInstructor, setClassInstructor] = useState('');
+  const [visible, setVisible] = useState(false);
 
   const [sections, setsections] = useState([]);
+  const [del, setDel] = useState();
 
+  
   const [nodes, setdata] = useState([]);
 
   const navigate = useNavigate();
@@ -58,6 +62,7 @@ const Section = () => {
     fetchSection,
     CreateClasses,
     CreateClassesloading,
+    deletesectiongroup
   } = clad;
 
   // useEffect(() => {
@@ -117,6 +122,15 @@ const Section = () => {
     // }
     // datas = data;
   }, [fetchSection]);
+
+  useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
+
+    if (deletesectiongroup?.success == 1) {
+     setVisible(false)
+    }
+   
+  }, [deletesectiongroup]);
 
   let data = { nodes };
 
@@ -180,8 +194,8 @@ const Section = () => {
       state: { sectionName: value.sectionName, sectionId: value.id },
     });
   };
-  const handledeletebtn = (value) => {
-    dispatch(deleteSectiongroupAction(value));
+  const handledeletebtn = () => {
+    dispatch(deleteSectiongroupAction(del));
   };
 
   const classdata = {
@@ -218,6 +232,19 @@ const Section = () => {
     <Loader />
   ) : (
     <DefaultLayout>
+      <Dialog
+        visible={visible}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletebtn} close={setVisible} />
+      </Dialog>
       <div className={'flex gap-2  w-full'}>
         <div className="h-max w-4/12 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
@@ -440,7 +467,9 @@ const Section = () => {
                                 />
 
                                 <DeleteSVG
-                                  clickFunction={() => handledeletebtn(item.id)}
+                                  clickFunction={() => {
+                                    setVisible(true)
+                                    setDel(item.id)}}
                                 />
                               </div>
                             </Cell>

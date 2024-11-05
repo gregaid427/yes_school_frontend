@@ -392,7 +392,13 @@ export const deleteSingleStudentAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/delete`,
         payload,
       );
+      if (data?.success == 1) {
+        toast.success('Deleted Successfully');
+      }
 
+      if (data == null) {
+        toast.error('Error Deleting Record');
+      }
       return data;
     } catch (error) {
       if (!error?.response) {

@@ -39,7 +39,7 @@ import Subject from './pages/Subject';
 import GeneralSettings from './pages/GeneralSettings';
 import Session from './pages/session';
 import StudentCartegory from './pages/StudentCartegory';
-import AddInventory from './pages/AddInventory';
+
 import RequireAuth from './RequireAuth';
 import Layout from './pages/Layout';
 import Student from './pages/Students';
@@ -55,12 +55,11 @@ import SingleStudentEdit from './pages/SingleStudentEdit';
 import SingleClassEdit from './pages/SingleClassEdit';
 import SingleSectionEdit from './pages/SingleSectionedit';
 import SingleSubjectEdit from './pages/SingleSubjectEdit';
-import AddInventoryStock from './pages/AddInventoryStock';
-import AddInventoryCartegory from './pages/AddInventoryCartegory';
+
 import EditInventoryitem from './pages/EditInventoryitem';
-import AddExpenseHead from './pages/addExpenseHead';
-import SearchExpense from './pages/SearchExpense';
-import AddExpenses from './pages/AddExpense';
+import AddExpenseHead from './pages/Expense/addExpenseHead';
+import SearchExpense from './pages/Expense/SearchExpense';
+import AddExpenses from './pages/Expense/AddExpense';
 import AdmissionCapture from './pages/Admiissioncamera';
 import EditCamera from './pages/editCamera';
 import SetStudent from './pages/Setstudent';
@@ -114,6 +113,9 @@ import Missing from './pages/Authentication/Missing';
 import Unauthorized from './pages/Authentication/Unauthorized';
 import useAuth from './useAuth';
 import StaffEdit from './pages/SetStaffEdit';
+import AddInventory from './pages/Inventory/AddInventory';
+import AddInventoryCartegory from './pages/Inventory/AddInventoryCartegory';
+import AddInventoryStock from './pages/Inventory/AddInventoryStock';
 
 function App() {
   const navigate = useNavigate();
@@ -233,7 +235,7 @@ function App() {
             index
             element={
               <>
-                <PageTitle title="Authentication | " />
+                <PageTitle title="Authentication" />
                 <SignIn />
               </>
             }
@@ -254,7 +256,7 @@ function App() {
               path="/academics/class"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Academics" />
                   <Class />
                 </>
               }
@@ -265,7 +267,7 @@ function App() {
               path="/fees/collectfees"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Fees" />
                   <CollectFees />
                 </>
               }
@@ -276,7 +278,7 @@ function App() {
               path="/fees/preferencelist"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Fees" />
                   <PreferenceList />
                 </>
               }
@@ -287,7 +289,7 @@ function App() {
               path="/fees/scholarship"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Fees" />
                   <Scholarship />
                 </>
               }
@@ -298,7 +300,7 @@ function App() {
               path="/fees/scholarshipenroll"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Fees" />
                   <ScholarshipList />
                 </>
               }
@@ -309,7 +311,7 @@ function App() {
               path="/fees/manage"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Fees" />
                   <ManageFee />
                 </>
               }
@@ -320,7 +322,7 @@ function App() {
               path="/fees/enrollscholarship"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Fees" />
                   <EnrollScholarship />
                 </>
               }
@@ -331,7 +333,7 @@ function App() {
               path="/fees/studentpreference"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Fees" />
                   <StudentPreference />
                 </>
               }
@@ -342,7 +344,7 @@ function App() {
               path="/fees/addfeesgroup"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Fees" />
                   <FeesGroup />
                 </>
               }
@@ -362,7 +364,7 @@ function App() {
               path="/fees/records"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Fees" />
                   <SearchRecords />
                 </>
               }
@@ -373,7 +375,7 @@ function App() {
               path="/academics/class/editclass"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Academics" />
                   <SingleClassEdit />
                 </>
               }
@@ -384,7 +386,7 @@ function App() {
               path="/academics/promotion"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Academics" />
                   <Promotion />
                 </>
               }
@@ -395,7 +397,7 @@ function App() {
               path="/academics/section"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Academics" />
                   <Section />
                 </>
               }
@@ -406,7 +408,7 @@ function App() {
               path="/academics/subject/editsubject"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Academics" />
                   <SingleSubjectEdit />
                 </>
               }
@@ -417,7 +419,7 @@ function App() {
               path="/inventory/editinventory"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Inventory" />
                   <EditInventoryitem />
                 </>
               }
@@ -428,7 +430,7 @@ function App() {
               path="/academics/section/edit"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Academics" />
                   <SingleSectionEdit />
                 </>
               }
@@ -439,7 +441,7 @@ function App() {
               path="/academics/subjects"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Academics" />
                   <Subject />
                 </>
               }
@@ -450,7 +452,7 @@ function App() {
               path="/student/admission"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Student" />
                   <NewStudents />
                 </>
               }
@@ -461,7 +463,7 @@ function App() {
               path="/student/editcapture"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Student" />
                   <EditCamera />
                 </>
               }
@@ -472,7 +474,7 @@ function App() {
               path="/student/admissioncapture"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Student" />
                   <AdmissionCapture />
                 </>
               }
@@ -483,7 +485,7 @@ function App() {
               path="/student/bulkAdmission"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Student" />
                   <BulkAdmission />
                 </>
               }
@@ -494,7 +496,7 @@ function App() {
               path="/student/editinfo"
               element={
                 <>
-                  <PageTitle title="Student | Edit " />
+                  <PageTitle title="Student" />
                   <SingleStudentEdit />
                 </>
               }
@@ -505,7 +507,7 @@ function App() {
               path="/student/singlestudent"
               element={
                 <>
-                  <PageTitle title="student | " />
+                  <PageTitle title="student" />
                   <SingleStudent />
                 </>
               }
@@ -516,7 +518,7 @@ function App() {
               path="/student/cartegory"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Student" />
                   <StudentCartegory />
                 </>
               }
@@ -527,7 +529,7 @@ function App() {
               path="/student/details"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Student" />
                   {/* <Students /> */}
                 </>
               }
@@ -538,7 +540,7 @@ function App() {
               path="/inventory/itemsupplier"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Inventory" />
                   <StudentCartegory />
                 </>
               }
@@ -549,7 +551,7 @@ function App() {
               path="/inventory/additem"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Inventory" />
                   <AddInventory />
                 </>
               }
@@ -560,7 +562,7 @@ function App() {
               path="/inventory/addstock"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Inventory" />
                   <AddInventoryStock />
                 </>
               }
@@ -571,7 +573,7 @@ function App() {
               path="/inventory/addcartegory"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Inventory" />
                   <AddInventoryCartegory />
                 </>
               }
@@ -582,7 +584,7 @@ function App() {
               path="/settings/general"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Settings" />
                   <GeneralSettings />
                 </>
               }
@@ -593,7 +595,7 @@ function App() {
               path="/settings/staff"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Settings" />
                   <SetStaff />
                 </>
               }
@@ -604,7 +606,7 @@ function App() {
               path="/settings/updatestaff"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Settings" />
                   <StaffEdit />
                 </>
               }
@@ -615,7 +617,7 @@ function App() {
               path="/settings/finance"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Settings" />
                   <Finance />
                 </>
               }
@@ -626,7 +628,7 @@ function App() {
               path="/settings/guardian"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Settings" />
                   <SetGuardian />
                 </>
               }
@@ -637,7 +639,7 @@ function App() {
               path="/settings/students"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Settings" />
                   <SetStudent />
                 </>
               }
@@ -648,7 +650,7 @@ function App() {
               path="/settings/newstaff"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Settings" />
                   <NewStaff />
                 </>
               }
@@ -659,18 +661,18 @@ function App() {
               path="/settings/newguardian"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Settings" />
                   <NewGuardian />
                 </>
               }
             />{' '}
           </Route>{' '}
-          <Route element={<RequireAuth allowedRoles={['7']} code={code} />}>
+          <Route element={<RequireAuth allowedRoles={['6']} code={code} />}>
             <Route
               path="/settings/session"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Settings" />
                   <Session />
                 </>
               }
@@ -681,7 +683,7 @@ function App() {
               path="/fees"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Fees" />
                   <Fees />
                 </>
               }
@@ -692,7 +694,7 @@ function App() {
               path="/expense/addexpense"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Expense" />
                   <AddExpenses />
                 </>
               }
@@ -703,7 +705,7 @@ function App() {
               path="/expense/search"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Expense" />
                   <SearchExpense />
                 </>
               }
@@ -714,7 +716,7 @@ function App() {
               path="/fees/Assignfees"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Fees" />
                   <AssignFees />
                 </>
               }
@@ -725,7 +727,7 @@ function App() {
               path="/expense/addexpensehead"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Expense" />
                   <AddExpenseHead />
                 </>
               }
@@ -736,10 +738,11 @@ function App() {
               path="/exam/examgroup"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <ExamGroup />
                 </>
               }
+              
             />{' '}
           </Route>{' '}
           <Route element={<RequireAuth allowedRoles={['2']} code={code} />}>
@@ -747,7 +750,7 @@ function App() {
               path="/exam/singlereport"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <ExamReportModal />
                 </>
               }
@@ -758,7 +761,7 @@ function App() {
               path="/exam/addimportresult"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <AddExamResultImport />
                 </>
               }
@@ -769,7 +772,7 @@ function App() {
               path="/exam/editresult"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <EditExamResult />
                 </>
               }
@@ -780,7 +783,7 @@ function App() {
               path="/exam/classreport"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <ClassReportModal />
                 </>
               }
@@ -791,7 +794,7 @@ function App() {
               path="/exam/viewresult"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <ViewExamResult />
                 </>
               }
@@ -802,7 +805,7 @@ function App() {
               path="/exam/addresult"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <AddExamResult />
                 </>
               }
@@ -813,7 +816,7 @@ function App() {
               path="/exam/newexam"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <AddExam />
                 </>
               }
@@ -825,7 +828,7 @@ function App() {
               path="/exam/examlist"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <ExamList />
                 </>
               }
@@ -836,7 +839,7 @@ function App() {
               path="/exam/examgrading"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <ExamGrade />
                 </>
               }
@@ -847,7 +850,7 @@ function App() {
               path="/exam/report"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <ExamReport />
                 </>
               }
@@ -858,7 +861,7 @@ function App() {
               path="/exam/reportdetail"
               element={
                 <>
-                  <PageTitle title="Calendar " />
+                  <PageTitle title="Exam" />
                   <ExamReportDetail />
                 </>
               }
@@ -869,7 +872,7 @@ function App() {
               path="/exam/grades"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <Grades />
                 </>
               }
@@ -880,7 +883,7 @@ function App() {
               path="/exam/marks"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <Marks />
                 </>
               }
@@ -891,7 +894,7 @@ function App() {
               path="/exam/promotion"
               element={
                 <>
-                  <PageTitle title="Calendar | " />
+                  <PageTitle title="Exam" />
                   <Promotion />
                 </>
               }
@@ -902,7 +905,7 @@ function App() {
               path="/attendance/list"
               element={
                 <>
-                  <PageTitle title="Profile | " />
+                  <PageTitle title="Attendance" />
                   {/* <AttendanceList /> */}
                   <AttendanceList />
                 </>
@@ -914,7 +917,7 @@ function App() {
               path="/attendance/search"
               element={
                 <>
-                  <PageTitle title="Profile | " />
+                  <PageTitle title="Attendance" />
                   {/* <SearchchAttendance /> */}
                   <SearchAttendance />
                 </>
@@ -926,7 +929,7 @@ function App() {
               path="/attendance/searchdetail"
               element={
                 <>
-                  <PageTitle title="Profile | " />
+                  <PageTitle title="Attendance" />
                   {/* <SearchchAttendance /> */}
                   <SearchDetail />
                 </>
@@ -938,7 +941,7 @@ function App() {
               path="/attendance/updatedetail"
               element={
                 <>
-                  <PageTitle title="Profile | " />
+                  <PageTitle title="Attendance" />
                   {/* <SearchchAttendance /> */}
                   <UpdateDetail />
                 </>
@@ -950,7 +953,7 @@ function App() {
               path="/attendance/markattendance"
               element={
                 <>
-                  <PageTitle title="Attendance | " />
+                  <PageTitle title="Attendance" />
                   <MarkAttendance />
                 </>
               }
@@ -961,7 +964,7 @@ function App() {
               path="/profile"
               element={
                 <>
-                  <PageTitle title="Profile | " />
+                  <PageTitle title="Profile" />
                   <Profile />
                 </>
               }
@@ -975,7 +978,7 @@ function App() {
               path="/student/info"
               element={
                 <>
-                  <PageTitle title="Students | " />
+                  <PageTitle title="Students" />
                   <Student />
                 </>
               }
@@ -986,7 +989,7 @@ function App() {
               path="/student/studentcredential"
               element={
                 <>
-                  <PageTitle title="Students | " />
+                  <PageTitle title="Students" />
                   <StudentCredential />
                 </>
               }
@@ -997,7 +1000,7 @@ function App() {
               path="/student/admission"
               element={
                 <>
-                  <PageTitle title="Students | " />
+                  <PageTitle title="Students" />
                   <NewStudents />
                 </>
               }
@@ -1008,7 +1011,7 @@ function App() {
               path="/newstudent"
               element={
                 <>
-                  <PageTitle title="Students | " />
+                  <PageTitle title="Students" />
                   <NewStudents />
                 </>
               }
@@ -1020,7 +1023,7 @@ function App() {
               path="/newstaff"
               element={
                 <>
-                  <PageTitle title="Staff | " />
+                  <PageTitle title="Staff" />
                   <NewStaff />
                 </>
               }
@@ -1031,7 +1034,7 @@ function App() {
               path="/teachers"
               element={
                 <>
-                  <PageTitle title="Teachers | " />
+                  <PageTitle title="Teachers" />
                   <Teachers />
                 </>
               }
@@ -1042,7 +1045,7 @@ function App() {
               path="/settings/users"
               element={
                 <>
-                  <PageTitle title="Users | " />
+                  <PageTitle title="Settings" />
                   <Users />
                 </>
               }
@@ -1053,7 +1056,7 @@ function App() {
               path="/settings"
               element={
                 <>
-                  <PageTitle title="Settings | " />
+                  <PageTitle title="Settings" />
                   <Settings />
                 </>
               }
@@ -1063,7 +1066,7 @@ function App() {
             path="/auth/signin"
             element={
               <>
-                <PageTitle title="Signin | " />
+                <PageTitle title="Authentication" />
                 <SignIn />
               </>
             }
@@ -1081,7 +1084,7 @@ function App() {
             path="/auth/forgotPassword"
             element={
               <>
-                <PageTitle title="Signup | " />
+                <PageTitle title="Authentication" />
                 <ForgotPassword />
               </>
             }

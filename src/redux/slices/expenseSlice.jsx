@@ -1,25 +1,31 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
-
-
-axios.defaults.headers.common = {'Authorization': `Bearer ${localStorage.getItem('token')}` ,   'Content-Type': 'application/json'  }
+axios.defaults.headers.common = {
+  Authorization: `Bearer ${localStorage.getItem('token')}`,
+  'Content-Type': 'application/json',
+};
 
 export const CreatesExpenseAction = createAsyncThunk(
-  "new/NewExpense",
+  'new/NewExpense',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/expense/`,payload,
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/`,
+        payload,
         {
           headers: {
-            'Content-type': "multipart/form-data"
-          }
-        }
-
-        
+            'Content-type': 'multipart/form-data',
+          },
+        },
       );
+      if (data?.success == 1) {
+        toast.success('New Expense Added Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error - Creating Expense');
+      }
 
       return data;
     } catch (error) {
@@ -28,16 +34,45 @@ export const CreatesExpenseAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
-export const CreatesExpenseHeadAction = createAsyncThunk(
-  "new/NewExpenseHead",
+export const UpdateExpenseAction = createAsyncThunk(
+  'update/Expense',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/expense/head`,payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/update`,
+        payload,
+        {
+          headers: {
+            'Content-type': 'multipart/form-data',
+          },
+        },
+      );
+      if (data?.success == 1) {
+        toast.success('Expense Updated Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Updating Expense');
+      }
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const CreatesExpenseHeadAction = createAsyncThunk(
+  'new/NewExpenseHead',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/head`,
+        payload,
       );
       if (data?.success == 1) {
         toast.success(' Created Successfully');
@@ -53,18 +88,16 @@ export const CreatesExpenseHeadAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
-
-
 export const CreatesExpenseCartegoryAction = createAsyncThunk(
-  "new/NewExpensecart",
+  'new/NewExpensecart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/Expense/cart`,payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/cart`,
+        payload,
       );
 
       return data;
@@ -74,16 +107,15 @@ export const CreatesExpenseCartegoryAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const fetchBulkStudentAction = createAsyncThunk(
-  "fetch/allstudent",
+  'fetch/allstudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/student/`
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/student/`,
       );
 
       return data;
@@ -93,15 +125,14 @@ export const fetchBulkStudentAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 export const fetchAllExpenseAction = createAsyncThunk(
-  "fetch/AllExpense",
+  'fetch/AllExpense',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/expense/`
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/`,
       );
 
       return data;
@@ -111,15 +142,14 @@ export const fetchAllExpenseAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 export const fetchExpenseStockAction = createAsyncThunk(
-  "fetch/Expensestock",
+  'fetch/Expensestock',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/Expense/getstock`
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/getstock`,
       );
 
       return data;
@@ -129,15 +159,14 @@ export const fetchExpenseStockAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 export const FetchExpenseHeadAction = createAsyncThunk(
-  "fetch/allExpenseHead",
+  'fetch/allExpenseHead',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/expense/head`
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/head`,
       );
 
       return data;
@@ -147,16 +176,16 @@ export const FetchExpenseHeadAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const deleteSectionByExpense = createAsyncThunk(
-  "fetch/sectiondelete",
+  'fetch/sectiondelete',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/Expense/single/sectiondelete`, payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/single/sectiondelete`,
+        payload,
       );
 
       return data;
@@ -166,15 +195,15 @@ export const deleteSectionByExpense = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 export const fetchSingleExpenseAction = createAsyncThunk(
-  "fetch/singleExpense",
+  'fetch/singleExpense',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/Expense/single/`, payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/single/`,
+        payload,
       );
 
       return data;
@@ -184,15 +213,15 @@ export const fetchSingleExpenseAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 export const fetchInventCartegoryAction = createAsyncThunk(
-  "fetch/sectionExpensecart",
+  'fetch/sectionExpensecart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/Expense/cart`, payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/cart`,
+        payload,
       );
 
       return data;
@@ -202,16 +231,16 @@ export const fetchInventCartegoryAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const updateExpenseAction = createAsyncThunk(
-  "Expense/Update",
+  'Expense/Update',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.patch(
-        `${import.meta.env.VITE_APP_BASE_URL}/Expense/`, payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/`,
+        payload,
       );
 
       return data;
@@ -221,16 +250,16 @@ export const updateExpenseAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const updateExpenseItemAction = createAsyncThunk(
-  "ExpenseItem/Updatehead",
+  'ExpenseItem/Updatehead',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.patch(
-        `${import.meta.env.VITE_APP_BASE_URL}/expense/updatehead`, payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/updatehead`,
+        payload,
       );
       if (data?.success == 1) {
         toast.success('Record Updated Successfully');
@@ -249,17 +278,16 @@ export const updateExpenseItemAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
-
 
 export const GetCustomExpenseAction = createAsyncThunk(
-  "expense/custom",
+  'expense/custom',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/expense/custom`, payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/custom`,
+        payload,
       );
 
       return data;
@@ -269,15 +297,15 @@ export const GetCustomExpenseAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
-export const  createSectionAction = createAsyncThunk(
-  "password/reset",
+export const createSectionAction = createAsyncThunk(
+  'password/reset',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/Expense/section`, payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/section`,
+        payload,
       );
 
       return data;
@@ -287,16 +315,15 @@ export const  createSectionAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
-export const  deleteAllExpenseAction = createAsyncThunk(
-  "Expense/deleteAllExpense",
+export const deleteAllExpenseAction = createAsyncThunk(
+  'Expense/deleteAllExpense',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/Expense/`, 
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/Expense/`,
       );
 
       return data;
@@ -306,16 +333,15 @@ export const  deleteAllExpenseAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
-export const  deleteSingleExpenseHeadAction = createAsyncThunk(
-  "delete/SingleExpenseHead",
+export const deleteSingleExpenseHeadAction = createAsyncThunk(
+  'delete/SingleExpenseHead',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/expense/head/${payload}`, 
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/head/${payload}`,
       );
 
       return data;
@@ -325,17 +351,15 @@ export const  deleteSingleExpenseHeadAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
-
-export const  deleteSingleExpenseAction = createAsyncThunk(
-  "delete/deleteASingleExpense",
+export const deleteSingleExpenseAction = createAsyncThunk(
+  'delete/deleteASingleExpense',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/expense/${payload}`, 
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/expense/${payload}`,
       );
 
       return data;
@@ -345,43 +369,39 @@ export const  deleteSingleExpenseAction = createAsyncThunk(
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
-
 
 const ExpenseSlices = createSlice({
-  name: "Expense",
+  name: 'Expense',
   initialState: {},
   reducers: {
-  
     resetcreateExpense(state) {
-      state.CreateExpense = null
+      state.CreateExpense = null;
     },
     resetcreateExpenseHead(state) {
-      state.CreateExpenseHead = null
+      state.CreateExpenseHead = null;
     },
     resetcreatestock(state) {
-      state.CreateExpensestock = null
-    }
-,   
+      state.CreateExpensestock = null;
+    },
     resetUpdateExpenseItem(state) {
-      state.updateExpenseItem = null
-    } ,
+      state.updateExpenseItem = null;
+    },
     resetUpdateExpense(state) {
-      state.updateCartegory = null
-    } ,
+      state.updateCartegory = null;
+    },
     resetdeleteExpense(state) {
-      state.deletesectionbyExpense = null
-    } ,
+      state.deletesectionbyExpense = null;
+    },
     resetUpdateHead(state) {
-      state.updateExpenseItem = null
-    } ,
+      state.updateExpenseItem = null;
+    },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(CreatesExpenseAction.pending, (state, action) => {
       state.CreateExpenseloading = true;
       state.CreateExpense = false;
-
     });
     builder.addCase(CreatesExpenseAction.fulfilled, (state, action) => {
       state.CreateExpense = action?.payload;
@@ -394,12 +414,30 @@ const ExpenseSlices = createSlice({
       state.CreateExpense = undefined;
     });
 
-    
+    builder.addCase(UpdateExpenseAction.pending, (state, action) => {
+      state.updateExpenseloading = true;
+      state.updateExpense = false;
+      state.CreateExpense = false;
+
+    });
+
+    builder.addCase(UpdateExpenseAction.fulfilled, (state, action) => {
+      state.updateExpense = action?.payload;
+      state.CreateExpense = action?.payload;
+      state.updateExpenseloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(UpdateExpenseAction.rejected, (state, action) => {
+      state.updateExpenseloading = false;
+      state.error = action.payload;
+      state.updateExpense = undefined;
+      state.CreateExpense = false;
+
+    });
 
     builder.addCase(CreatesExpenseHeadAction.pending, (state, action) => {
       state.CreateExpenseHeadloading = true;
       state.CreateExpenseHead = false;
-
     });
     builder.addCase(CreatesExpenseHeadAction.fulfilled, (state, action) => {
       state.CreateExpenseHead = action?.payload;
@@ -412,15 +450,9 @@ const ExpenseSlices = createSlice({
       state.CreateExpenseHead = undefined;
     });
 
-
-
-
-    
-
     builder.addCase(GetCustomExpenseAction.pending, (state, action) => {
       state.GetCustomExpenseloading = true;
       state.GetCustomExpense = false;
-      
     });
     builder.addCase(GetCustomExpenseAction.fulfilled, (state, action) => {
       state.GetCustomExpense = action?.payload;
@@ -431,41 +463,29 @@ const ExpenseSlices = createSlice({
       state.error = action.payload;
       state.GetCustomExpense = undefined;
       state.GetCustomExpenseloading = undefined;
-
     });
-
-
-
 
     builder.addCase(updateExpenseItemAction.pending, (state, action) => {
       state.updateExpenseItemloading = true;
       state.updateExpenseItem = false;
       state.CreateExpenseHead = false;
-
-      
     });
     builder.addCase(updateExpenseItemAction.fulfilled, (state, action) => {
       state.updateExpenseItem = action?.payload;
       state.updateExpenseItemloading = false;
       state.error = undefined;
       state.CreateExpenseHead = action?.payload;
-
     });
     builder.addCase(updateExpenseItemAction.rejected, (state, action) => {
       state.error = action.payload;
       state.updateExpenseItem = undefined;
       state.updateExpenseItemloading = undefined;
       state.CreateExpenseHead = undefined;
-
-
     });
-
-    
 
     builder.addCase(fetchExpenseStockAction.pending, (state, action) => {
       state.fetchExpenseStockloading = true;
       state.fetchExpenseStock = false;
-      
     });
     builder.addCase(fetchExpenseStockAction.fulfilled, (state, action) => {
       state.fetchExpenseStock = action?.payload;
@@ -476,13 +496,11 @@ const ExpenseSlices = createSlice({
       state.error = action.payload;
       state.fetchExpenseStock = undefined;
       state.fetchExpenseStockloading = undefined;
-
     });
 
     builder.addCase(fetchAllExpenseAction.pending, (state, action) => {
       state.fetchAllExpenseloading = true;
       state.fetchAllExpense = false;
-      
     });
     builder.addCase(fetchAllExpenseAction.fulfilled, (state, action) => {
       state.fetchAllExpense = action?.payload;
@@ -493,14 +511,11 @@ const ExpenseSlices = createSlice({
       state.error = action.payload;
       state.fetchAllExpense = undefined;
       state.fetchAllExpenseloading = undefined;
-
     });
-
 
     builder.addCase(fetchInventCartegoryAction.pending, (state, action) => {
       state.cartegoryloading = true;
       state.cartegory = false;
-      
     });
     builder.addCase(fetchInventCartegoryAction.fulfilled, (state, action) => {
       state.cartegory = action?.payload;
@@ -511,35 +526,27 @@ const ExpenseSlices = createSlice({
       state.error = action.payload;
       state.cartegoryloading = undefined;
       state.cartegory = undefined;
-
     });
-
-
-
 
     builder.addCase(deleteSectionByExpense.pending, (state, action) => {
       state.deletesectionbyExpenseloading = true;
       state.deletesectionbyExpense = false;
-      
     });
     builder.addCase(deleteSectionByExpense.fulfilled, (state, action) => {
       state.deletesectionbyExpense = action?.payload;
       state.deletesectionbyExpenseloading = false;
       state.error = undefined;
-      state.deleteExpensesection= false
+      state.deleteExpensesection = false;
     });
     builder.addCase(deleteSectionByExpense.rejected, (state, action) => {
       state.error = action.payload;
       state.deletesectionbyExpense = undefined;
       state.deletesectionbyExpenseloading = undefined;
-      state.deleteExpensesection= true
-
-
+      state.deleteExpensesection = true;
     });
     builder.addCase(fetchSingleExpenseAction.pending, (state, action) => {
       state.singleExpenseloading = true;
       state.singleExpense = false;
-      
     });
     builder.addCase(fetchSingleExpenseAction.fulfilled, (state, action) => {
       state.singleExpense = action?.payload;
@@ -550,15 +557,11 @@ const ExpenseSlices = createSlice({
       state.error = action.payload;
       state.singleExpense = undefined;
       state.singleExpenseloading = undefined;
-
     });
 
-
-    
     builder.addCase(FetchExpenseHeadAction.pending, (state, action) => {
       state.fetchexpenseheadloading = true;
       state.fetchexpensehead = false;
-      
     });
     builder.addCase(FetchExpenseHeadAction.fulfilled, (state, action) => {
       state.fetchexpensehead = action?.payload;
@@ -569,33 +572,23 @@ const ExpenseSlices = createSlice({
       state.error = action.payload;
       state.fetchexpensehead = undefined;
       state.fetchexpenseheadloading = undefined;
-
     });
-
-
-
 
     builder.addCase(updateExpenseAction.pending, (state, action) => {
       state.updatesingleExpenseloading = false;
-      state.updateExpense = false
-      
+      state.updateExpense = false;
     });
     builder.addCase(updateExpenseAction.fulfilled, (state, action) => {
       state.updatesingleExpense = action?.payload;
       state.updatesingleExpenseloading = false;
       state.error = undefined;
-      state.updateExpense = true
-
+      state.updateExpense = true;
     });
     builder.addCase(updateExpenseAction.rejected, (state, action) => {
       state.error = action.payload;
       state.updatesingleExpense = undefined;
       state.updatesingleExpenseloading = undefined;
-
     });
-
-
-
 
     builder.addCase(createSectionAction.pending, (state, action) => {
       state.loading = true;
@@ -611,7 +604,6 @@ const ExpenseSlices = createSlice({
       state.error = action.payload;
       state.createExpenseSection = undefined;
     });
-    
 
     builder.addCase(deleteAllExpenseAction.pending, (state, action) => {
       state.deleteAllExpenseesloading = true;
@@ -627,62 +619,54 @@ const ExpenseSlices = createSlice({
       state.deleteAllExpensees = undefined;
     });
 
-
     builder.addCase(deleteSingleExpenseAction.pending, (state, action) => {
       state.deleteExpenseloading = true;
       state.fetchAllExpense = false;
-
     });
     builder.addCase(deleteSingleExpenseAction.fulfilled, (state, action) => {
       state.deleteExpensees = action?.payload;
       state.deleteExpenseloading = false;
       state.error = undefined;
       state.fetchAllExpense = action?.payload;
-
     });
     builder.addCase(deleteSingleExpenseAction.rejected, (state, action) => {
       state.deleteExpenseloading = false;
       state.error = action.payload;
       state.deleteExpensees = undefined;
       state.fetchAllExpense = undefined;
-
     });
-
-
-
 
     builder.addCase(deleteSingleExpenseHeadAction.pending, (state, action) => {
       state.deleteExpenseheadloading = true;
       state.fetchexpensehead = false;
       state.deleteExpensesHead = false;
-
-
     });
-    builder.addCase(deleteSingleExpenseHeadAction.fulfilled, (state, action) => {
-      state.deleteExpensesHead = action?.payload;
-      state.deleteExpenseheadloading = false;
-      state.error = undefined;
-      state.fetchexpensehead = action?.payload;
-
-    });
+    builder.addCase(
+      deleteSingleExpenseHeadAction.fulfilled,
+      (state, action) => {
+        state.deleteExpensesHead = action?.payload;
+        state.deleteExpenseheadloading = false;
+        state.error = undefined;
+        state.fetchexpensehead = action?.payload;
+      },
+    );
     builder.addCase(deleteSingleExpenseHeadAction.rejected, (state, action) => {
       state.deleteExpenseheadloading = false;
       state.error = action.payload;
       state.deleteExpensesHead = undefined;
       state.fetchexpensehead = undefined;
-
     });
-
-
-
-
-
   },
 });
 
-
-export const {resetcreatestock, resetUpdateHead,resetUpdateExpenseItem,resetcreateExpense,resetUpdateExpense,resetdeleteExpense ,resetcreateExpenseHead } = ExpenseSlices.actions
+export const {
+  resetcreatestock,
+  resetUpdateHead,
+  resetUpdateExpenseItem,
+  resetcreateExpense,
+  resetUpdateExpense,
+  resetdeleteExpense,
+  resetcreateExpenseHead,
+} = ExpenseSlices.actions;
 
 export default ExpenseSlices.reducer;
-
-

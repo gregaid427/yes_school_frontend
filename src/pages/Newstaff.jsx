@@ -1,69 +1,52 @@
-import CheckboxFive from '../components/Checkboxes/CheckboxFive';
-import CheckboxFour from '../components/Checkboxes/CheckboxFour';
 import CheckboxOne from '../components/Checkboxes/CheckboxOne';
-import CheckboxThree from '../components/Checkboxes/CheckboxThree';
-import CheckboxTwo from '../components/Checkboxes/CheckboxTwo';
-import SwitcherFour from '../components/Switchers/SwitcherFour';
-import SwitcherOne from '../components/Switchers/SwitcherOne';
-import SwitcherThree from '../components/Switchers/SwitcherThree';
-import SwitcherTwo from '../components/Switchers/SwitcherTwo';
-import DatePickerOne from '../components/Forms/DatePicker/DatePickerOne';
-import DatePickerTwo from '../components/Forms/DatePicker/DatePickerTwo';
 import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
-import MultiSelect from '../components/Forms/MultiSelect';
 import DefaultLayout from '../layout/DefaultLayout';
 import userThree from '../images/user/user-03.png';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import flatpickr from 'flatpickr';
-import { CreateUserAction  } from "../redux/slices/usersSlice";
+import { CreateUserAction } from '../redux/slices/usersSlice';
 import toast, { Toaster } from 'react-hot-toast';
-
 
 const NewStaff = () => {
   const [age, setAge] = useState('');
   const [isOptionSelected, setIsOptionSelected] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
-  const dispatch = useDispatch()
-const user = useSelector((state) => state?.user);
-const { loading , error ,CreateUser } = user;
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state?.user);
+  const { loading, error, CreateUser } = user;
 
+  const [firstName, setfirstName] = useState('');
+  const [lastName, setlastName] = useState('');
+  const [otherName, setotherName] = useState('');
+  const [contact1, setcontact1] = useState('');
+  const [contact2, setcontact2] = useState('');
+  const [gender, setgender] = useState('Male');
+  const [password, setpassword] = useState('');
+  const [email, setemail] = useState('');
+  const [religion, setreligion] = useState('Christianity');
+  const [createdBy, setcreatedBy] = useState('');
+  const [active, setactive] = useState('');
+  const [address, setaddress] = useState('');
 
-  const [firstName,setfirstName] = useState("")
-  const [lastName, setlastName] = useState("")
-  const [otherName,setotherName] = useState("")
-const [contact1, setcontact1] = useState("")
-const [contact2,setcontact2] = useState("")
-const [gender, setgender] = useState("Male")
-const [password,setpassword] = useState("")
-const [email, setemail] = useState("")
-const [religion,setreligion] = useState("Christianity")
-const [createdBy,setcreatedBy] = useState("")
-const [active, setactive] = useState("")
-const [address, setaddress] = useState("")
-
-
-const handleSubmit = (e) =>  {
-  e.preventDefault();
- const data = {
-  "firstName": firstName,
-  "lastName": lastName,
-  "otherName": otherName,
-  "contact1": contact1,
-  "contact2": contact2,
-  "gender": gender,
-  "password": password,
-  "email": email,
-  "religion": religion,
-  "address": address,
-  "createdBy": createdBy,
-  "active": active,
-  "role": "staff",
-
-  }
-  dispatch(CreateUserAction(data))
-
-}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      firstName: firstName,
+      lastName: lastName,
+      otherName: otherName,
+      contact1: contact1,
+      contact2: contact2,
+      gender: gender,
+      password: password,
+      email: email,
+      religion: religion,
+      address: address,
+      createdBy: createdBy,
+      active: active,
+      role: 'staff',
+    };
+    dispatch(CreateUserAction(data));
+  };
 
   // useEffect(() => {
   //   // Init flatpickr
@@ -73,42 +56,35 @@ const handleSubmit = (e) =>  {
   //     enableTime:false,
   //     monthSelectorType: 'static',
   //     dateFormat: 'd M Y',
- 
+
   //     prevArrow:
-  //       '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><Clip-Path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
+  //       '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><clipPath d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
   //     nextArrow:
-  //       '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><Clip-Path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
+  //       '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><clipPath d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
   //   });
 
-    
   // }, []);
-
-
 
   useEffect(() => {
     if (CreateUser?.success === undefined) {
     }
     if (error) {
-      toast.error("Error Creating New User",);
+      toast.error('Error Creating New User');
     }
     if (CreateUser?.success == 1) {
-      toast.success("New User created Successfully");
+      toast.success('New User created Successfully');
     }
     if (CreateUser?.success == 0) {
-      toast.error("Email Already Taken");
+      toast.error('Email Already Taken');
     }
-
   }, [CreateUser]);
-  
 
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
 
-
-
   return (
     <DefaultLayout>
-         <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
 
       <div className="mx-auto max-w-270">
         <div className="grid grid-cols-5 gap-8">
@@ -120,7 +96,7 @@ const handleSubmit = (e) =>  {
                 </h3>
               </div>
               <div className="p-7">
-              <form action="" onSubmit={ (e) => handleSubmit(e) } >
+                <form action="" onSubmit={(e) => handleSubmit(e)}>
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-2/2">
                       <label
@@ -132,8 +108,7 @@ const handleSubmit = (e) =>  {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={ (e)  => setfirstName(e.target.value)  }
-
+                        onChange={(e) => setfirstName(e.target.value)}
                         placeholder=""
                         defaultValue=""
                       />
@@ -149,8 +124,7 @@ const handleSubmit = (e) =>  {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={ (e)  => setlastName(e.target.value)  }
-
+                        onChange={(e) => setlastName(e.target.value)}
                         placeholder=""
                         defaultValue=""
                       />
@@ -168,8 +142,7 @@ const handleSubmit = (e) =>  {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={ (e)  => setotherName(e.target.value)  }
-
+                        onChange={(e) => setotherName(e.target.value)}
                         placeholder=""
                         defaultValue=""
                       />
@@ -188,7 +161,6 @@ const handleSubmit = (e) =>  {
                             values={['Male', 'Female']}
                             setSelectedOption={setAge}
                             selectedOption={age}
-
                           />
                         </div>
                       </div>
@@ -205,13 +177,11 @@ const handleSubmit = (e) =>  {
                             values={['Christian', 'Muslim']}
                             setSelectedOption={setAge}
                             selectedOption={age}
-
                           />
                         </div>
                       </div>
                     </div>
                   </div>
-
 
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-2/2">
@@ -224,8 +194,7 @@ const handleSubmit = (e) =>  {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={ (e)  => setcontact1(e.target.value)  }
-
+                        onChange={(e) => setcontact1(e.target.value)}
                         placeholder=""
                         defaultValue=""
                       />
@@ -241,8 +210,7 @@ const handleSubmit = (e) =>  {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={ (e)  => setcontact2(e.target.value)  }
-
+                        onChange={(e) => setcontact2(e.target.value)}
                         placeholder=""
                         defaultValue=""
                       />
@@ -265,8 +233,7 @@ const handleSubmit = (e) =>  {
                         id="emailAddress"
                         placeholder=""
                         defaultValue=""
-                        onChange={ (e)  => setemail(e.target.value)  }
-
+                        onChange={(e) => setemail(e.target.value)}
                       />
                     </div>
                   </div>
@@ -282,8 +249,7 @@ const handleSubmit = (e) =>  {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2  px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={ (e)  => setpassword(e.target.value)  }
-
+                        onChange={(e) => setpassword(e.target.value)}
                         placeholder=""
                         defaultValue=""
                       />
@@ -302,8 +268,7 @@ const handleSubmit = (e) =>  {
                         name="bio"
                         id="bio"
                         rows={2}
-                                                onChange={ (e)  => setaddress(e.target.value)  }
-
+                        onChange={(e) => setaddress(e.target.value)}
                         placeholder=""
                         defaultValue=""
                       ></textarea>
@@ -313,22 +278,44 @@ const handleSubmit = (e) =>  {
                   <h3 className="font-medium mb-5.5 text-black dark:text-white">
                     User Roles
                   </h3>
-                  <div className='pb-10'>
-
-                  <CheckboxOne title='Super Admin' isChecked = {isChecked1} toggle={setIsChecked1} id='checkboxLabelOne' />
-                  <CheckboxOne title='Admin' isChecked = {isChecked2} toggle={setIsChecked2} id='checkboxLabelOne1' />
-                  <CheckboxOne title='Teacher' isChecked = {isChecked2} toggle={setIsChecked2} id='checkboxLabelOne1' />
-                  <CheckboxOne title='Fees Management' isChecked = {isChecked2} toggle={setIsChecked2} id='checkboxLabelOne1'/>
-                  <CheckboxOne title='Expenses management' isChecked = {isChecked2} toggle={setIsChecked2} id='checkboxLabelOne1' />
-                  <CheckboxOne title='Examination management' isChecked = {isChecked2} toggle={setIsChecked2} id='checkboxLabelOne1'/>
-
-
-
-
-
+                  <div className="pb-10">
+                    <CheckboxOne
+                      title="Super Admin"
+                      isChecked={isChecked1}
+                      toggle={setIsChecked1}
+                      id="checkboxLabelOne"
+                    />
+                    <CheckboxOne
+                      title="Admin"
+                      isChecked={isChecked2}
+                      toggle={setIsChecked2}
+                      id="checkboxLabelOne1"
+                    />
+                    <CheckboxOne
+                      title="Teacher"
+                      isChecked={isChecked2}
+                      toggle={setIsChecked2}
+                      id="checkboxLabelOne1"
+                    />
+                    <CheckboxOne
+                      title="Fees Management"
+                      isChecked={isChecked2}
+                      toggle={setIsChecked2}
+                      id="checkboxLabelOne1"
+                    />
+                    <CheckboxOne
+                      title="Expenses management"
+                      isChecked={isChecked2}
+                      toggle={setIsChecked2}
+                      id="checkboxLabelOne1"
+                    />
+                    <CheckboxOne
+                      title="Examination management"
+                      isChecked={isChecked2}
+                      toggle={setIsChecked2}
+                      id="checkboxLabelOne1"
+                    />
                   </div>
-
-  
 
                   <div className="flex justify-end gap-4.5">
                     <button
@@ -443,8 +430,6 @@ const handleSubmit = (e) =>  {
           </div>
         </div>
       </div>
-
-    
     </DefaultLayout>
   );
 };

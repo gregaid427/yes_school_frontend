@@ -149,7 +149,16 @@ export const deleteSectionByClass = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/class/single/sectiondelete`,
         payload,
       );
+      if (data?.success == 1) {
+        toast.success('Record Deleted Successfully');
+      }
 
+      if (data == null) {
+        toast.error('Error Deleting Record');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -287,7 +296,16 @@ export const deleteAllClassAction = createAsyncThunk(
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/class/`,
       );
+      if (data?.success == 1) {
+        toast.success('Record Deleted Successfully');
+      }
 
+      if (data == null) {
+        toast.error('Error Deleting Record');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -305,7 +323,16 @@ export const deleteSingleClassAction = createAsyncThunk(
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/class/single/${payload}`,
       );
+      if (data?.success == 1) {
+        toast.success('Record Deleted Successfully');
+      }
 
+      if (data == null) {
+        toast.error('Error Deleting Record');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
       return data;
     } catch (error) {
       if (!error?.response) {

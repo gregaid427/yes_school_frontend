@@ -21,6 +21,8 @@ const ExpenseHeadCom = (props) => {
           }
         if (CreateExpenseHead?.success == 1) {
           dispatch(FetchExpenseHeadAction());
+          setNote('')
+          setcartegoryName('')
           resetFormStates()
            dispatch(resetcreateExpenseHead())    
            props.close((false))
@@ -43,7 +45,7 @@ const ExpenseHeadCom = (props) => {
 
 
     const [cartegoryName, setcartegoryName] = useState('');
-    const [note, setNote] = useState();
+    const [note, setNote] = useState('');
    
    
     const formRef1 = useRef();

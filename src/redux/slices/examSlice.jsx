@@ -71,6 +71,32 @@ export const UpdateGradeGroupAction = createAsyncThunk(
   },
 );
 
+export const DeleteCartecoryAction = createAsyncThunk(
+  'delete/ExamGroup',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/deleteGroup`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Deleted Successfully');
+      }
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const CreateExamGroupAction = createAsyncThunk(
   'create/ExamGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -177,6 +203,8 @@ export const SubmitResultAction = createAsyncThunk(
     }
   },
 );
+
+
 export const FetchExamByIdAction = createAsyncThunk(
   'get/ExamById',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -246,6 +274,33 @@ export const FetchGradeGroupAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/gradegroup`,
         payload,
       );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const DeleteGradeGroupAction = createAsyncThunk(
+  'delete/GradeGroup',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/deletexamgrade`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Deleted Successfully');
+      }
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
 
       return data;
     } catch (error) {
@@ -596,6 +651,25 @@ const ExamSlices = createSlice({
     });
 
 
+    builder.addCase(DeleteCartecoryAction.pending, (state, action) => {
+      state.DeleteCartecoryloading = true;
+      state.DeleteCartecory = false;
+      state.createxamgroup = false;
+    });
+    builder.addCase(DeleteCartecoryAction.fulfilled, (state, action) => {
+      state.DeleteCartecory = action?.payload;
+      state.DeleteCartecoryloading = false;
+      state.DeleteCartecoryerror = undefined;
+      state.createxamgroup = action?.payload;
+    });
+    builder.addCase(DeleteCartecoryAction.rejected, (state, action) => {
+      state.DeleteCartecoryloading = false;
+      state.DeleteCartecoryerror = action.payload;
+      state.DeleteCartecory = undefined;
+      state.createxamgroup = undefined;
+    });
+    
+
     builder.addCase(UpdateGradeGroupAction.pending, (state, action) => {
       state.UpdateGradeGrouploading = true;
       state.UpdateGradeGroup = false;
@@ -783,7 +857,30 @@ const ExamSlices = createSlice({
       state.SingleGradegrouploading = false;
       state.SingleGradegrouperror = action.payload;
       state.SingleGradegroup = undefined;
+      
     });
+    
+    builder.addCase(DeleteGradeGroupAction.pending, (state, action) => {
+      state.DeleteGradeGrouploading = true;
+      state.DeleteGradeGroup = false;
+      state.fetchGradegroup = false;
+
+    });
+    builder.addCase(DeleteGradeGroupAction.fulfilled, (state, action) => {
+      state.DeleteGradeGroup = action?.payload;
+      state.DeleteGradeGrouploading = false;
+      state.DeleteGradeGrouperror = undefined;
+      state.fetchGradegroup = action?.payload;
+
+    });
+    builder.addCase(DeleteGradeGroupAction.rejected, (state, action) => {
+      state.DeleteGradeGrouploading = false;
+      state.DeleteGradeGrouperror = action.payload;
+      state.DeleteGradeGroup = undefined;
+      state.fetchGradegroup = undefined;
+
+    });
+
 
     builder.addCase(FetchGradeGroupAction.pending, (state, action) => {
       state.fetchGradegrouploading = true;

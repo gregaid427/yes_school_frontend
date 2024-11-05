@@ -272,8 +272,8 @@ const SearchDetail = (props) => {
                               <Row
                                 key={item.id}
                                 item={item}
-                                className=""
-                              >
+                                className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                                >
                                 <Cell className="  ">
                                   <span>{item.entityid}</span>
                                 </Cell>

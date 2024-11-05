@@ -21,7 +21,7 @@ import { mkConfig, generateCsv, download } from 'export-to-csv';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-import Loader from '../common/Loader';
+
 import toast from 'react-hot-toast';
 import {
   CreatesClassAction,
@@ -36,6 +36,8 @@ import {
 import ClassCheckbox from '../components/ClassCheckbox';
 import SectionModal from '../components/SectionModal';
 import { Dialog } from 'primereact/dialog';
+import DeleteModal from '../components/DeleteModal';
+import Loader from '../common/Loader';
 
 const Class = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -98,6 +100,7 @@ const Class = () => {
     if (fetchAllClass?.success == 1) {
       let data = fetchAllClass?.data;
       setdata(data);
+      setVisible1(false)
     }
   }, [fetchAllClass ]);
 
@@ -191,12 +194,13 @@ const Class = () => {
   }, [ClassWithSection]);
 
 
-
-  const handledeletbtn = (value) => {
-    dispatch(deleteSingleClassAction(value));
+  const [del, setDel] = useState();
+  const handledeletbtn = () => {
+    dispatch(deleteSingleClassAction(del));
     // dispatch(fetchAllClassAction());
   };
   const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
   const [position, setPosition] = useState('center');
   const show = (position) => {
     setPosition(position);
@@ -248,6 +252,7 @@ const Class = () => {
     <Loader />
   ) : (
     <DefaultLayout>
+      
       <Dialog
         visible={visible}
         position={'top'}
@@ -258,6 +263,19 @@ const Class = () => {
         }}
       >
         <SectionModal close={setVisible} changeval={change} change={setChange} />
+      </Dialog>
+      <Dialog
+        visible={visible1}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletbtn} close={setVisible1} />
       </Dialog>
       <div className={'flex row gap-3  w-full'}>
         <div className="grid w-4/12  gap-8">
@@ -324,7 +342,7 @@ const Class = () => {
                         Create New Section
                       </button>
                     </div>
-                    {sections.map((item) => (
+                    {fetchSection?.data?.map((item) => (
                       <div key={item.id} className="mb- flex gap-2   sm:flex-row">
                          <ClassCheckbox
                           updatesection={() => updatesection(item.sectionName)}
@@ -493,8 +511,12 @@ const Class = () => {
                                 />
 
                                 <DeleteSVG
-                                  clickFunction={() =>
-                                    handledeletbtn(item.classId)
+                                  clickFunction={() =>{
+                                    setDel(item.classId)
+                                    setVisible1(true)
+                                    //handledeletbtn(item.classId)
+                                  }
+                                   
                                   }
                                 />
                               </div>

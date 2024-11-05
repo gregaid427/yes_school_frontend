@@ -38,17 +38,15 @@ import StudentModal from '../components/StudentModal';
 import SectionSelect1 from '../components/SectionsSelect1';
 import ClassSelect from '../components/ClassSelect';
 import { fetchUserdataAction } from '../redux/slices/usersSlice';
+import ExamResultModal from '../components/ExamResultModal';
+import AttendanceModal from '../components/AttendanceModal';
+import DeleteModal from '../components/DeleteModal';
 
 const Student = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState('top');
-
-  const show = (position) => {
-    setPosition(position);
-    setVisible(true);
-  };
 
   //////////////////////////////////////
 
@@ -58,7 +56,7 @@ const Student = () => {
   const [pagesval, setpagesval] = useState(30);
 
   const [searcher, setSearcher] = useState('firstName');
-  const [isChecked2, setIsChecked2] = useState(false);
+  const [Modaldata, setModaldata] = useState(null);
 
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
@@ -66,7 +64,7 @@ const Student = () => {
   const [CSVTemplate, setCSVTemplate] = useState([]);
   const [clazz, setclazz] = useState();
   const [sectionzz, setsectionzz] = useState();
-
+  const [id, setid] = useState();
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
@@ -80,7 +78,7 @@ const Student = () => {
     fetchStudentcustomloading,
     fetchcustomloading,
     singleStudent,
-    singleStudentloading,
+    deleteSingleStudent,
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
@@ -127,6 +125,16 @@ const Student = () => {
       setdata(data);
     }
   }, [fetchStudentcustom]);
+
+
+
+  useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
+
+    if (deleteSingleStudent?.success == 1) {
+    setVisible(false)
+    }
+  }, [deleteSingleStudent]);
 
   useEffect(() => {
     setdata([]);
@@ -209,11 +217,11 @@ const Student = () => {
     dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
     navigate('/student/editinfo', { state: { action: 2, value: value } });
   };
-  const handledeletbtn = (value) => {
+  const handledeletbtn = () => {
     let data = {
       class: clazz,
       section: sectionzz,
-      id: value,
+      id: id?.student_id,
     };
     dispatch(deleteSingleStudentAction(data));
   };
@@ -265,41 +273,23 @@ const Student = () => {
       dispatch(fetchCustomStudentsClassAction(data));
     }
   }
-  const footerContent = (
-    <div>
-      <button
-        label="No"
-        icon="pi pi-times"
-        onClick={() => setVisible(false)}
-        className="p-button-text"
-      />
-      <button
-        label="Yes"
-        icon="pi pi-check"
-        onClick={() => setVisible(false)}
-        autoFocus
-      />
-    </div>
-  );
+
   return loader ? (
     <Loader />
   ) : (
     <DefaultLayout>
       <Dialog
-        header="Student Personal Information"
-        resizable={false}
-        draggable={false}
-        headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
         visible={visible}
-        className=""
-        position={'top-right'}
-        style={{ width: 'w-12/12', color: 'white' }}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
         }}
+        draggable={false}
+        resizable={false}
       >
-        <StudentModal close={() => setModalVisible()} />
+        <DeleteModal delete={handledeletbtn} close={setVisible} />
       </Dialog>
       <div className=" flex-col">
         <div
@@ -428,8 +418,8 @@ const Student = () => {
                 {(tableList) => (
                   <>
                     <Header>
-                    <HeaderRow className="dark:bg-meta-4 border-stroke bg-white dark:text-white flex ">
-                    <HeaderCell className="">ID</HeaderCell>
+                      <HeaderRow className="dark:bg-meta-4 border-stroke bg-white dark:text-white flex ">
+                        <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
                         <HeaderCell>Section</HeaderCell>
                         <HeaderCell>Gender</HeaderCell>
@@ -440,10 +430,11 @@ const Student = () => {
 
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
-                        <Row key={item.student_id}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          >
+                        <Row
+                          key={item.student_id}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -471,9 +462,10 @@ const Student = () => {
                               />
 
                               <DeleteSVG
-                                clickFunction={() =>
-                                  handledeletbtn(item.student_id)
-                                }
+                                clickFunction={() => {
+                                  setid(item);
+                                  setVisible(true);
+                                }}
                               />
                             </div>
                           </Cell>
@@ -548,10 +540,11 @@ const Student = () => {
 
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
-                        <Row key={item.student_id}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          >
+                        <Row
+                          key={item.student_id}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>

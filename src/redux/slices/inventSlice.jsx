@@ -486,7 +486,7 @@ const InventorySlices = createSlice({
     });
 
     builder.addCase(deleteSingleInventoryStockAction.fulfilled, (state, action) => {
-      state.fetchInventoryStock = action?.payload;
+      state.deleteSingleInventorystock = action?.payload;
       state.deleteSingleInventorystockloading = false;
       state.error = undefined;
     //  state.fetchAllInventory = action?.payload;
