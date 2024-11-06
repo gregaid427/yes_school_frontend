@@ -32,6 +32,7 @@ import FeesCartegoryItem from '../../components/FeesCartegoryItem';
 import { deleteSingleCartAction } from '../../redux/slices/inventSlice';
 import { Dialog } from 'primereact/dialog';
 import EditFeesCartegoryItem from '../../components/EditFeesCartegoryItem';
+import DeleteModal from '../../components/DeleteModal';
 
 const FeesGroup = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -78,6 +79,7 @@ const FeesGroup = () => {
     if (cartegory?.success == 1) {
       let data = cartegory?.data;
       setdata(data);
+      setVisible1(false)
     }
     // if (loading == false) {
     //   dispatch(fetchBulkStudent());
@@ -152,10 +154,10 @@ const FeesGroup = () => {
     setVisible(true);
     setval(value);
   };
-  const handledeletebtn = (value) => {
+  const handledeletebtn = () => {
     const data = {
-      id: value.id,
-      name: value.feeid,
+      id: del.id,
+      name: del.feeid,
     };
     dispatch(deleteSingleFeeCartAction(data));
   };
@@ -180,6 +182,8 @@ const FeesGroup = () => {
     download(csvConfig)(csv);
   };
   const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
+  const [del, setDel] = useState(false);
 
   return loader ? (
     <Loader />
@@ -199,6 +203,20 @@ const FeesGroup = () => {
         }}
       >
         <EditFeesCartegoryItem close={setVisible} data={val} />
+      </Dialog>
+
+      <Dialog
+        visible={visible1}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletebtn} close={setVisible1} />
       </Dialog>
       <div className={'flex gap-2  w-full'}>
         <div className="w-4/12">
@@ -317,7 +335,10 @@ const FeesGroup = () => {
                                   clickFunction={() => handleEditbtn(item)}
                                 />
                                 <DeleteSVG
-                                  clickFunction={() => handledeletebtn(item)}
+                                  clickFunction={() =>{ setDel(item)
+
+                                    setVisible1(true)
+                                  }}
                                 />
                               </div>
                             </Cell>

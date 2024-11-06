@@ -188,20 +188,23 @@ const SessionSlices = createSlice({
     builder.addCase(deletesessionByIdAction.pending, (state, action) => {
       state.deletesessionByIdloading = true;
       state.deletesessionById = false;
-      state.fetchsession = action?.payload;
-
+      state.fetchsession = false;
+      state.createsession = false;
+      
     });
     builder.addCase(deletesessionByIdAction.fulfilled, (state, action) => {
       state.deletesessionById = action?.payload;
       state.deletesessionByIdloading = false;
       state.error = undefined;
       state.fetchsession = action?.payload;
+
     });
     builder.addCase(deletesessionByIdAction.rejected, (state, action) => {
       state.error = action.payload;
       state.deletesessionById = undefined;
       state.deletesessionByIdloading = undefined;
-      state.fetchsession = action?.payload;
+      state.fetchsession = undefined;
+
     });
 
     builder.addCase(fetchAllsessionAction.pending, (state, action) => {

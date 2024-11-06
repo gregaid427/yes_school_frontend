@@ -231,6 +231,7 @@ const StaffEdit = () => {
     <Loader />
   ) : (
     <DefaultLayout>
+      
       <div className={'flex gap-2  w-full'}>
         <div className="w-10/12">
           <div className=" gap-8">

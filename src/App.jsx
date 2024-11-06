@@ -116,6 +116,7 @@ import StaffEdit from './pages/SetStaffEdit';
 import AddInventory from './pages/Inventory/AddInventory';
 import AddInventoryCartegory from './pages/Inventory/AddInventoryCartegory';
 import AddInventoryStock from './pages/Inventory/AddInventoryStock';
+import SingleStudentGuardian from './pages/SingleStudentGuardian';
 
 function App() {
   const navigate = useNavigate();
@@ -630,6 +631,18 @@ function App() {
                 <>
                   <PageTitle title="Settings" />
                   <SetGuardian />
+                </>
+              }
+            />{' '}
+          </Route>{' '}
+          
+          <Route element={<RequireAuth allowedRoles={['6']} code={code} />}>
+            <Route
+              path="/settings/studentsGuardian"
+              element={
+                <>
+                  <PageTitle title="Settings" />
+                  <SingleStudentGuardian />
                 </>
               }
             />{' '}

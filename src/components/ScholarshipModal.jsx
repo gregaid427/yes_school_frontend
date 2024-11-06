@@ -37,8 +37,7 @@ const ScholarshipModal = (props) => {
   );
   console.log(props?.cartinfo)
   useEffect(() => {
-  console.log(props?.cartinfo)
-    console.log(props?.cartinfo)
+  
 if(props?.cartinfo){
   setchosendata(
     custom.filter((item) => item?.title.includes(chosen)),
@@ -60,7 +59,7 @@ if(props?.cartinfo){
   const [scholarrid, setScholarrId] = useState('');
   const [cover, setcover] = useState('');
   const [scholarramount, setScholarramount] = useState('');
-  const [scholarrPercent, setScholarrPercent] = useState('');
+  const [scholarrPercent, setScholarrPercent] = useState(null);
   const [type, setType] = useState('');
 
   useEffect(() => {
@@ -236,7 +235,7 @@ if(props?.cartinfo){
                       <p className={scholarramount == '0' ? 'hidden' : ''}>
                         Amount{' '}
                       </p>
-                      <p className={scholarrPercent == 'false' ? 'hidden' : ''}>
+                      <p className={scholarrPercent == 'null' ? 'hidden' : ''}>
                         Percentage{' '}
                       </p>
                       <p>Cartegory Applicable </p>
@@ -250,7 +249,7 @@ if(props?.cartinfo){
                       <p
                         className={
                           scholarrPercent == 'false' ||
-                          scholarrPercent == undefined
+                          scholarrPercent == 'null'
                             ? 'hidden'
                             : ''
                         }

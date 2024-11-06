@@ -37,9 +37,14 @@ import {
 import SessionSelect from '../components/SessionSelect';
 import { Dialog } from 'primereact/dialog';
 import SetSessionAlert from '../components/SetSessionAlert';
+import DeleteModal from '../components/DeleteModal';
 
 const Session = () => {
   const [visible, setVisible] = useState(false);
+  const [visible4, setVisible4] = useState(false);
+  const [del, setDel] = useState(false);
+
+
   const [position, setPosition] = useState('center');
   const show = (position) => {
     setPosition(position);
@@ -98,6 +103,7 @@ const Session = () => {
       show('top-right');
       dispatch(resetcreatesession());
       dispatch(fetchActivesessionAction());
+     
 
       //   dispatch(fetchAllSectionAction())
     }
@@ -107,6 +113,7 @@ const Session = () => {
       show('top-right');
      dispatch(resetUpdatesession());
      dispatch(fetchActivesessionAction());
+
 
       //   dispatch(fetchAllSectionAction())
     }
@@ -121,7 +128,7 @@ const Session = () => {
 
     //   setClasss(arr);
     // }
-  }, [fetchsession]);
+  }, [updatesession,createsession]);
 
   console.log(isChecked);
 
@@ -131,6 +138,8 @@ const Session = () => {
     if (fetchsession?.success == 1) {
       let data = fetchsession?.data;
       setdata(data);
+      setVisible4(false)
+      
     }
     // if (loading == false) {
     //   dispatch(fetchBulkStudent());
@@ -200,8 +209,8 @@ const Session = () => {
       state: { sectionName: value.sectionName, sectionId: value.id },
     });
   };
-  const handledeletebtn = (value) => {
-    dispatch(deletesessionByIdAction(value));
+  const handledeletebtn = () => {
+    dispatch(deletesessionByIdAction(del));
   };
 
   const classdata = {
@@ -262,6 +271,19 @@ const Session = () => {
         resizable={false}
       >
         <SetSessionAlert setYes={setYes} yes={yes} close={setVisible} />
+      </Dialog>
+      <Dialog
+        visible={visible4}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible4) return;
+          setVisible4(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletebtn} close={setVisible4} />
       </Dialog>
       <div className={'flex gap-2  w-full'}>
       <div className="w-4/12  ">
@@ -580,7 +602,10 @@ const Session = () => {
                                 />
 
                                 <DeleteSVG
-                                  clickFunction={() => handledeletebtn(item.id)}
+                                  clickFunction={() =>{
+                                    setDel(item.id)
+                                    setVisible4(true)
+                                  } }
                                 />
                               </div>
                             </Cell>

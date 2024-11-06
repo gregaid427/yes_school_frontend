@@ -22,7 +22,7 @@ import StudentCredential from './Studentscredential';
 import Loader from '../common/Loader';
 // import { useHistory } from 'react-router-dom';
 
-const fetchUserdatEdit = () => {
+const SingleStudentGuardian = () => {
   const [PageAction, setPageAction] = useState();
 
   const location = useLocation();
@@ -973,4 +973,4 @@ console.log(pictureurl)
   );
 };
 
-export default fetchUserdatEdit;
+export default SingleStudentGuardian;

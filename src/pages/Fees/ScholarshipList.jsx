@@ -18,28 +18,17 @@ import {
   Cell,
 } from '@table-library/react-table-library/table';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  deleteSingleStudentAction,
-  fetchBulkStudent,
-  fetchCustomStudentsClassAction,
-  fetchCustomStudentsClassPromoteAction,
-  fetchSingleStudent,
-  fetchStudentsClassAction,
-  fetchStudentsClassPromoteAction,
-  PromoteAllAction,
-  PromoteSelectedAction,
-  resetPromote,
-} from '../../redux/slices/studentSlice';
+
 import toast, { Toaster } from 'react-hot-toast';
 import Loader from '../../common/Loader';
 import DefaultLayout from '../../layout/DefaultLayout';
-import SectionSelect1 from '../../components/SectionsSelect1';
-import ClassSelect from '../../components/ClassSelect';
 import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
-import ViewSVG from '../../components/Svgs/View';
-import EditSVG from '../../components/Svgs/edit';
-import DeleteSVG from '../../components/Svgs/delete';
-import { GetEnrolledStudentAction, RevokeScholarshipAction } from '../../redux/slices/feeSlice';
+
+import {
+  GetEnrolledStudentAction,
+  resetRevoke,
+  RevokeScholarshipAction,
+} from '../../redux/slices/feeSlice';
 import ClassSelect3 from '../../components/ClassSelect3';
 import TableBtn from '../../components/Svgs/TableBtn';
 
@@ -93,7 +82,7 @@ const ScholarshipList = () => {
   const { fetchAllClassloading, fetchAllClass } = classes;
 
   const fee = useSelector((state) => state?.fees);
-  const { Enrolllist } = fee;
+  const { Enrolllist,Revoke } = fee;
 
   useEffect(() => {
     if (fetchcustom?.success == 1) {
@@ -102,13 +91,11 @@ const ScholarshipList = () => {
     }
   }, [fetchcustom]);
 
-
-
   useEffect(() => {
-    let data ={
-      type : "All"
-    }
-    dispatch(GetEnrolledStudentAction(data))
+    let data = {
+      type: 'All',
+    };
+    dispatch(GetEnrolledStudentAction(data));
   }, []);
 
   useEffect(() => {
@@ -119,6 +106,8 @@ const ScholarshipList = () => {
       setdata(data);
     }
   }, [Enrolllist]);
+
+ 
 
   let data = { nodes };
 
@@ -136,7 +125,7 @@ const ScholarshipList = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:   30%  25% 20% 25% ;
+  --data-table-library_grid-template-columns:   30%  30% 25% 15% ;
 `,
       BaseCell: `
         font-size: 15px;
@@ -146,15 +135,15 @@ const ScholarshipList = () => {
       //   //  background-color: #24303F;
 
        `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -177,12 +166,18 @@ const ScholarshipList = () => {
     //   state: { action: 1, value: value.student_id },
     // });
   };
-  
+
   const handleRevoke = (value) => {
-    dispatch(RevokeScholarshipAction({id:value}))
-
+    dispatch(RevokeScholarshipAction({ id: value }));
   };
+  useEffect(() => {
+    setTimeout(() => setLoader(false), 1000);
 
+    if (Revoke?.success == 1) {
+      handleGetClassData1()
+      dispatch(resetRevoke())
+    }
+  }, [Revoke]);
   data = {
     nodes: data.nodes.filter((item) =>
       searchval === 'First Name'
@@ -214,22 +209,28 @@ const ScholarshipList = () => {
     download(csvConfig)(csv);
   };
   function handleGetClassData() {
-  
     let data = {
       class: clazz,
-      type:'custom'
+      type: 'custom',
     };
     console.log(data);
-    if(clazz == 'None'){
+    if (clazz == 'None') {
       toast.error('Pleae Select Class');
-
+    } else {
+      dispatch(GetEnrolledStudentAction(data));
     }
-    else{
-      dispatch(GetEnrolledStudentAction(data))
-
-    }
-
   }
+  function handleGetClassData1() {
+    let data = {
+      class: clazz,
+      type: 'custom',
+    };
+    console.log(data);
+   
+      dispatch(GetEnrolledStudentAction(data));
+    
+  }
+
 
   return loader ? (
     <Loader />
@@ -288,7 +289,7 @@ const ScholarshipList = () => {
                     {/* <SectionSelect1 setsectionprop={setsectionzz} /> */}
                   </div>
                 </div>
-              
+
                 {/* <div className="w-full sm:w-1/3 flex  justify-end align-top  ">
                     <button onClick={(e)=>{handleDownloadPdf()}}
                       className="btn sm:w-2/3 h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
@@ -428,19 +429,17 @@ const ScholarshipList = () => {
                         <HeaderCell>Name</HeaderCell>
                         <HeaderCell>Scholarship</HeaderCell>
                         <HeaderCell>Amount/Cover</HeaderCell>
-
-
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList.map((item) => (
-                        <Row key={item.student_id}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          >
+                        <Row
+                          key={item.student_id}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
                           {/* <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell> */}
@@ -451,35 +450,36 @@ const ScholarshipList = () => {
                               ' ' +
                               item.lastName}
                           </Cell>
-                          
 
                           <Cell className="  ">
                             <span>{item.scholarshiptitle}</span>
                           </Cell>
 
                           <Cell className="  ">
-                            <span>{item.amount +' '+'-'+ ' '+item.cartegorycovering}</span>
+                            <span>
+                              {item.amount +
+                                ' ' +
+                                '-' +
+                                ' ' +
+                                item.cartegorycovering}
+                            </span>
                           </Cell>
 
-                        
-
-                          <Cell >
-                          <div className="gap-2 flex">
-
+                          <Cell>
+                            <div className="gap-2 flex">
+                              {/* 
                               <ViewSVG
                                 clickFunction={() => handleviewbtn(item)}
                               />
                               <EditSVG
                                 clickFunction={() => handleEditbtn(item)}
-                              />
-                               <TableBtn
-                                clickFunction={() =>handleRevoke(item.id)}
-                                text={'Revoke'}
+                              /> */}
+                              <TableBtn
+                                clickFunction={() => handleRevoke(item.id)}
+                                text={'Revoke Scholarship'}
                                 color={'bg-[#e03c3c63]'}
                               />
-
-                          
-                              </div>
+                            </div>
                           </Cell>
                         </Row>
                       ))}

@@ -39,11 +39,16 @@ import SectionSelect1 from '../components/SectionsSelect1';
 import ClassSelect from '../components/ClassSelect';
 import InactiveSVG from '../components/Svgs/Inactive';
 import RemoveSVG from '../components/Svgs/Remove';
+import DeleteModal from '../components/DeleteModal';
 
 const SetStudent = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
+  const [del, setDel] = useState(false);
+
+
   const [position, setPosition] = useState('top');
 
   const show = (position) => {
@@ -125,6 +130,7 @@ const SetStudent = () => {
     if (fetchStudent?.success == 1) {
       let data = fetchStudent?.data;
       setdata(data);
+      setVisible1(false)
     }
   }, [fetchStudent]);
 
@@ -203,14 +209,14 @@ const SetStudent = () => {
   const handleEditbtn = (value) => {
     dispatch(fetchSingleStudent(value.student_id));
     navigate('/student/editinfo', {
-      state: { action: 2, value: value.student_id },
+      state: { action: 2, value: value},
     });
   };
-  const handledeletbtn = (value) => {
+  const handledeletbtn = () => {
     let data = {
       class: clazz,
       section: sectionzz,
-      id: value,
+      id: del,
     };
     dispatch(deleteSingleStudentAction(data));
   };
@@ -297,6 +303,19 @@ const SetStudent = () => {
         }}
       >
         <StudentModal close={() => setModalVisible()} />
+      </Dialog>
+      <Dialog
+        visible={visible1}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletbtn} close={setVisible1} />
       </Dialog>
       <div className=" flex-col">
         <div
@@ -485,8 +504,9 @@ const SetStudent = () => {
                                 }
                               />
                               <RemoveSVG
-                                clickFunction={() =>
-                                  handledeletbtn(item.student_id)
+                                clickFunction={() =>{
+                                  setVisible1(true)
+                                  setDel(item.student_id)}
                                 }
                               />
                             </div>

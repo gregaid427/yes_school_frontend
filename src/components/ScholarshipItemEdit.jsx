@@ -4,12 +4,13 @@ import toast from 'react-hot-toast';
 import {
   CreatesScholarshipAction,
   fetchfeeCartegoryAction,
+  UpdateScholarshipAction,
 } from '../redux/slices/feeSlice';
 import AssignFeeClassSelect from './AssignFeeClassSelect';
 import ScholarshipcartSelect from './ScholarshipcartSelect';
 import FeeCartSelect from './FeecartSelect';
 
-const ScholarshipItem = (props) => {
+const ScholarshipItemEdit = (props) => {
   const dispatch = useDispatch();
   const fees = useSelector((state) => state?.fees);
 
@@ -37,14 +38,16 @@ const ScholarshipItem = (props) => {
   useEffect(() => {
     dispatch(fetchfeeCartegoryAction());
   }, []);
-  const [cartegoryName, setcartegoryName] = useState('');
+  const [cartegoryName, setcartegoryName] = useState(props.info?.title);
   const [description, setDesription] = useState('');
-  const [amount, setAmount] = useState(0.0);
-  const [isChecked1, setIsChecked1] = useState(false);
+  const [amount, setAmount] = useState(props.info?.amount);
+  const [isChecked1, setIsChecked1] = useState(
+    props.info?.type == 'Percentage' ? true : false,
+  );
   const [selectedArr, setselectedArr] = useState([]);
-  const [feecartegory, setfeecart] = useState('FEE PAYABLE');
-  const [percent, setPercent] = useState(false);
-  const [type, settype] = useState('Fixed Value');
+  const [feecartegory, setfeecart] = useState(props.info?.applicable);
+  const [percent, setPercent] = useState(props.info?.percentage);
+  const [type, settype] = useState(props.info?.type);
 
   const formRef1 = useRef();
 
@@ -60,6 +63,7 @@ const ScholarshipItem = (props) => {
     type: type,
     percent: isChecked1 == true ? percent : null,
     applicable: feecartegory,
+    id:props.info.id
   };
 
   const handleSubmit = (e) => {
@@ -72,13 +76,20 @@ const ScholarshipItem = (props) => {
     if (feecartegory == 'FEE PAYABLE' && type == 'Percentage') {
       return toast.error('Error - Please Set Percentage');
     }
+    if (percent == null && type == 'Percentage' && isChecked1 == true) {
+      return toast.error('Error - Please Set Percentsge ');
+    }
+    if (amount < 1 && type == 'Fixed Value' && isChecked1 == false) {
+      return toast.error('Error - Please Set Amount');
+    }
     if (amount < 1 && type == 'Fixed Value') {
       return toast.error('Error - Please Set Amount');
     } else {
-      dispatch(CreatesScholarshipAction(data));
+      dispatch(UpdateScholarshipAction(data));
     }
-  };
 
+  };
+  console.log(props.info);
   return (
     <div className="w-full">
       <div
@@ -88,7 +99,7 @@ const ScholarshipItem = (props) => {
       >
         <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
           <h3 className="font-medium text-black dark:text-white">
-            Add Scholarship
+            Edit Scholarship
           </h3>
         </div>
         <div className="p-5">
@@ -106,7 +117,7 @@ const ScholarshipItem = (props) => {
                 name=""
                 id=""
                 placeholder=""
-                defaultValue=""
+                defaultValue={props.info?.title}
                 onChange={(e) => setcartegoryName(e.target.value.toUpperCase())}
               />
             </div>
@@ -137,6 +148,7 @@ const ScholarshipItem = (props) => {
                                   onChange={() => {
                                     setIsChecked1(false);
                                     settype('Fixed Value');
+                                    setPercent(null)
                                   }}
                                 />
                                 <div
@@ -177,6 +189,7 @@ const ScholarshipItem = (props) => {
                                   onChange={() => {
                                     setIsChecked1(true);
                                     settype('Percentage');
+                                    setAmount(0)
                                   }}
                                 />
                                 <div
@@ -218,7 +231,7 @@ const ScholarshipItem = (props) => {
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue="0.00"
+                        defaultValue={props.info?.amount}
                         onChange={(e) => setAmount(e.target.value)}
                       />
                     </div>
@@ -237,7 +250,7 @@ const ScholarshipItem = (props) => {
                         name=""
                         id=""
                         placeholder=""
-                        defaultValue="0 %"
+                        defaultValue={props.info?.percent}
                         onChange={(e) => setPercent(e.target.value)}
                       />
                     </div>
@@ -248,8 +261,19 @@ const ScholarshipItem = (props) => {
                       >
                         Select Fee Cartegory Applicable
                       </label>{' '}
-                      <div>
-                        <FeeCartSelect setsectionprop={setfeecart} />
+                      <div className="w-full flex align-middle">
+                     
+                        <div className="w-1/2 align-middle flex ">
+                        <label
+                        className="mb-2 block text-sm font-medium my-auto text-black dark:text-white"
+                        htmlFor=""
+                      >
+                          Current : {props.info?.applicable}
+                          </label>{' '}
+                        </div>
+                        <div className="w-1/2">
+                          <FeeCartSelect setsectionprop={setfeecart} />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -286,4 +310,4 @@ const ScholarshipItem = (props) => {
   );
 };
 
-export default ScholarshipItem;
+export default ScholarshipItemEdit;

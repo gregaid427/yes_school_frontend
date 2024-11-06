@@ -667,6 +667,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                           <li>
                             <NavLink
+                              to="/fees/enrollscholarship"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Scholarship Enroll
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
                               to="/fees/Scholarshipenroll"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
@@ -676,6 +687,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Scholarship List
                             </NavLink>
                           </li>
+                         
                           <li>
                             <NavLink
                               to="/fees/manage"

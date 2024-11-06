@@ -39,6 +39,8 @@ import {
   inactiveStaffAction,
 } from '../redux/slices/usersSlice';
 import ActiveSVG from '../components/Svgs/active';
+import DeleteModal from '../components/DeleteModal';
+import { Dialog } from 'primereact/dialog';
 
 const Staff = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -63,7 +65,8 @@ const Staff = () => {
   const [inventory, setInventory] = useState(false);
 
   const [isChecked, setIsChecked] = useState(true);
-
+  const [visible1, setVisible1] = useState(false);
+  const [del, setDel] = useState(true);
   const [nodes, setdata] = useState([]);
 
   const navigate = useNavigate();
@@ -93,6 +96,7 @@ const Staff = () => {
       setFees(false);
       setstudent(false);
       setInventory(false);
+      setVisible1(false)
     }
   }, [allstaff]);
   useEffect(() => {
@@ -176,8 +180,8 @@ const Staff = () => {
     });
   };
   
-  const handledeletbtn = (value) => {
-    dispatch(deleteStaffAction(value));
+  const handledeletbtn = () => {
+    dispatch(deleteStaffAction(del));
     // dispatch(fetchAllClassAction());
   };
   const handleinactivebtn = (value) => {
@@ -208,7 +212,11 @@ console.log(codes)
   const handlecreateStaff = () => {
     if (fname == '') {
       toast.error('Error - Name Cannot Be Empty');
-    } else {
+    }  if (email == '') {
+      toast.error('Error - Email Cannot Be Empty');
+    } if (password == '') {
+      toast.error('Error - Password Cannot Be Empty');
+    }else {
       dispatch(CreatesStaffAction(classdata));
     }
   };
@@ -235,6 +243,19 @@ console.log(codes)
     <Loader />
   ) : (
     <DefaultLayout>
+        <Dialog
+        visible={visible1}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletbtn} close={setVisible1} />
+      </Dialog>
       <div className={'flex gap-2  w-full'}>
         <div className="w-4/12 ">
           <div className=" gap-8">
@@ -370,6 +391,7 @@ console.log(codes)
                       type="text"
                       name=""
                       id=""
+                      required
                       placeholder=""
                       defaultValue=""
                       onChange={(e) => setEmail(e.target.value)}
@@ -388,6 +410,7 @@ console.log(codes)
                       type="text"
                       name=""
                       id=""
+                      required
                       placeholder=""
                       defaultValue=""
                       onChange={(e) => setPassword(e.target.value)}
@@ -825,8 +848,11 @@ console.log(codes)
                                 )}
 
                                 <DeleteSVG
-                                  clickFunction={() =>
-                                    handledeletbtn(item.userId)
+                                  clickFunction={() =>{
+                                    setDel(item.userId)
+                                    setVisible1(true)
+                                  }
+                               
                                   }
                                 />
                               </div>

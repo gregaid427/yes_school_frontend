@@ -125,7 +125,6 @@ export const GenerateFeeAction = createAsyncThunk(
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefee`,
-        
       );
       if (data?.success == 1) {
         toast.success('Fee Generated Successfully');
@@ -147,8 +146,8 @@ export const ResetAllAccountBalanceAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/resetallaccount`,payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/resetallaccount`,
+        payload,
       );
       if (data?.success == 1) {
         toast.success('All Accounts Updated Successfully');
@@ -170,8 +169,8 @@ export const ResetAllAccountBalanceByClassAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/resetclassaccount`,payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/resetclassaccount`,
+        payload,
       );
       if (data?.success == 2) {
         toast.success('Class Has No Students');
@@ -313,6 +312,30 @@ export const CreatesScholarshipAction = createAsyncThunk(
   },
 );
 
+export const UpdateScholarshipAction = createAsyncThunk(
+  'update/Scholarship',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/updatescholarship`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.success('Updated Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Updating Scholarship');
+      }
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const fetchAllfeeAction = createAsyncThunk(
   'fetch/Allfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -383,7 +406,11 @@ export const GetEnrolledStudentAction = createAsyncThunk(
       // if (data?.success == '1' && data?.data[0] == null) {
       //   toast.success('Empty Class List');
       // }
-      if (data?.success == '1' && data?.data[0] == null && data?.type!='All') {
+      if (
+        data?.success == '1' &&
+        data?.data[0] == null &&
+        data?.type != 'All'
+      ) {
         toast.success('Empty Class List');
       }
 
@@ -607,7 +634,7 @@ export const UpdateFeeCartAction = createAsyncThunk(
       if (data.success == 0) {
         toast.error('Error Updating Cartegory');
       }
-      console.log(data)
+      console.log(data);
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -838,6 +865,9 @@ const FeeSlices = createSlice({
     resetGeneratefee(state) {
       state.Generatefee = null;
     },
+    resetRevoke(state) {
+      state.Revoke = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(CreatesfeeAction.pending, (state, action) => {
@@ -857,13 +887,11 @@ const FeeSlices = createSlice({
       state.Createfee = undefined;
       state.fetchAllfee = undefined;
     });
-    
 
     builder.addCase(UpdateFeeCartAction.pending, (state, action) => {
       state.UpdateFeeCartloading = true;
       state.UpdateFeeCart = false;
       state.cartegory = false;
-      
     });
     builder.addCase(UpdateFeeCartAction.fulfilled, (state, action) => {
       state.UpdateFeeCart = action?.payload;
@@ -897,19 +925,19 @@ const FeeSlices = createSlice({
     builder.addCase(AssignFeesAction.pending, (state, action) => {
       state.AssignFeesloading = true;
       state.Assignfee = false;
-       state.AssignfeeGroup = false;
+      state.AssignfeeGroup = false;
     });
     builder.addCase(AssignFeesAction.fulfilled, (state, action) => {
       state.Assignfee = action?.payload;
       state.AssignFeesloading = false;
       state.error = undefined;
-        state.AssignfeeGroup = action?.payload;
+      state.AssignfeeGroup = action?.payload;
     });
     builder.addCase(AssignFeesAction.rejected, (state, action) => {
       state.AssignFeesloading = false;
       state.error = action.payload;
       state.Assignfee = undefined;
-         state.AssignfeeGroup = undefined;
+      state.AssignfeeGroup = undefined;
     });
 
     builder.addCase(EnrollScholarshipAction.pending, (state, action) => {
@@ -929,7 +957,7 @@ const FeeSlices = createSlice({
       state.Enroll = undefined;
       //   state.fetchAllfee = undefined;
     });
-    
+
     builder.addCase(RevokeScholarshipAction.pending, (state, action) => {
       state.Revokeloading = true;
       state.Revoke = false;
@@ -964,7 +992,7 @@ const FeeSlices = createSlice({
       state.Enrolllist = undefined;
       //   state.fetchAllfee = undefined;
     });
-    
+
     builder.addCase(GenerateFeeAction.pending, (state, action) => {
       state.Generatefeeloading = true;
       state.Generatefee = false;
@@ -983,23 +1011,32 @@ const FeeSlices = createSlice({
       //   state.fetchAllfee = undefined;
     });
 
-    builder.addCase(ResetAllAccountBalanceByClassAction.pending, (state, action) => {
-      state.Generatefeeloading = true;
-      state.Generatefee = false;
-      // state.fetchAllfee = false;
-    });
-    builder.addCase(ResetAllAccountBalanceByClassAction.fulfilled, (state, action) => {
-      state.Generatefee = action?.payload;
-      state.Generatefeeloading = false;
-      state.Generatefeerror = undefined;
-      //  state.fetchAllfee = action?.payload;
-    });
-    builder.addCase(ResetAllAccountBalanceByClassAction.rejected, (state, action) => {
-      state.Generatefeeloading = false;
-      state.Generatefeerror = action.payload;
-      state.Generatefee = undefined;
-      //   state.fetchAllfee = undefined;
-    });
+    builder.addCase(
+      ResetAllAccountBalanceByClassAction.pending,
+      (state, action) => {
+        state.Generatefeeloading = true;
+        state.Generatefee = false;
+        // state.fetchAllfee = false;
+      },
+    );
+    builder.addCase(
+      ResetAllAccountBalanceByClassAction.fulfilled,
+      (state, action) => {
+        state.Generatefee = action?.payload;
+        state.Generatefeeloading = false;
+        state.Generatefeerror = undefined;
+        //  state.fetchAllfee = action?.payload;
+      },
+    );
+    builder.addCase(
+      ResetAllAccountBalanceByClassAction.rejected,
+      (state, action) => {
+        state.Generatefeeloading = false;
+        state.Generatefeerror = action.payload;
+        state.Generatefee = undefined;
+        //   state.fetchAllfee = undefined;
+      },
+    );
 
     builder.addCase(ResetAllAccountBalanceAction.pending, (state, action) => {
       state.Generatefeeloading = true;
@@ -1053,7 +1090,7 @@ const FeeSlices = createSlice({
       state.Generatefee = undefined;
       //   state.fetchAllfee = undefined;
     });
-    
+
     builder.addCase(PreferencesAction.pending, (state, action) => {
       state.Preferencesloading = true;
       state.Preferences = false;
@@ -1116,36 +1153,43 @@ const FeeSlices = createSlice({
       state.error = action.payload;
       state.Createfeecart = undefined;
     });
-    
 
+    builder.addCase(
+      fetchfeeAssignGroupRecordAction.pending,
+      (state, action) => {
+        state.AssignfeeGrouploading = true;
+        state.AssignfeeGroup = false;
+      },
+    );
+    builder.addCase(
+      fetchfeeAssignGroupRecordAction.fulfilled,
+      (state, action) => {
+        state.AssignfeeGroup = action?.payload;
+        state.AssignfeeGrouploading = false;
+        state.error = undefined;
+      },
+    );
+    builder.addCase(
+      fetchfeeAssignGroupRecordAction.rejected,
+      (state, action) => {
+        state.AssignfeeGrouploading = false;
+        state.AssignfeeGrouperror = action.payload;
+        state.AssignfeeGroup = undefined;
+      },
+    );
 
-
-    builder.addCase(fetchfeeAssignGroupRecordAction.pending, (state, action) => {
-      state.AssignfeeGrouploading = true;
-      state.AssignfeeGroup = false;
-    });
-    builder.addCase(fetchfeeAssignGroupRecordAction.fulfilled, (state, action) => {
-      state.AssignfeeGroup = action?.payload;
-      state.AssignfeeGrouploading = false;
-      state.error = undefined;
-    });
-    builder.addCase(fetchfeeAssignGroupRecordAction.rejected, (state, action) => {
-      state.AssignfeeGrouploading = false;
-      state.AssignfeeGrouperror = action.payload;
-      state.AssignfeeGroup = undefined;
-    });
-
-
-    
     builder.addCase(fetchAllfeeAssignRecordAction.pending, (state, action) => {
       state.AllAssignfeeloading = true;
       state.AllAssignfee = false;
     });
-    builder.addCase(fetchAllfeeAssignRecordAction.fulfilled, (state, action) => {
-      state.AllAssignfee = action?.payload;
-      state.AllAssignfeeloading = false;
-      state.error = undefined;
-    });
+    builder.addCase(
+      fetchAllfeeAssignRecordAction.fulfilled,
+      (state, action) => {
+        state.AllAssignfee = action?.payload;
+        state.AllAssignfeeloading = false;
+        state.error = undefined;
+      },
+    );
     builder.addCase(fetchAllfeeAssignRecordAction.rejected, (state, action) => {
       state.AllAssignfeeloading = false;
       state.error = action.payload;
@@ -1165,6 +1209,25 @@ const FeeSlices = createSlice({
       state.Assignfeeloading = false;
       state.error = action.payload;
       state.Assignfee = undefined;
+    });
+
+    builder.addCase(UpdateScholarshipAction.pending, (state, action) => {
+      state.CreateScholarloading = true;
+      state.CreateScholar = false;
+      state.UpdateScholar = false;
+    });
+
+    builder.addCase(UpdateScholarshipAction.fulfilled, (state, action) => {
+      state.CreateScholar = action?.payload;
+      state.UpdateScholar = action?.payload;
+      state.CreateScholarloading = false;
+      state.scholarerror = undefined;
+    });
+    builder.addCase(UpdateScholarshipAction.rejected, (state, action) => {
+      state.CreateScholarloading = false;
+      state.scholarerror = action.payload;
+      state.CreateScholar = undefined;
+      state.UpdateScholar = undefined;
     });
 
     builder.addCase(CreatesScholarshipAction.pending, (state, action) => {
@@ -1326,7 +1389,6 @@ const FeeSlices = createSlice({
       state.payfee = undefined;
     });
 
-
     builder.addCase(CustomBalUpdate.pending, (state, action) => {
       state.customloading = true;
       state.custom = false;
@@ -1360,7 +1422,6 @@ const FeeSlices = createSlice({
       state.reverseloading = undefined;
       state.reverse = undefined;
     });
-    
 
     builder.addCase(fetchSinglefeeAction.pending, (state, action) => {
       state.singlefeeloading = true;
@@ -1410,11 +1471,10 @@ const FeeSlices = createSlice({
       state.deleteScholar = undefined;
       state.CreateScholar = undefined;
     });
-    
+
     builder.addCase(DeleteAllAssignedFeeAction.pending, (state, action) => {
       state.deleteAllAssignedloading = true;
       state.deleteAllAssigned = false;
-
     });
     builder.addCase(DeleteAllAssignedFeeAction.fulfilled, (state, action) => {
       state.deleteAllAssigned = action?.payload;
@@ -1453,7 +1513,8 @@ export const {
   resetpreference,
   resetcreatecart,
   resetGeneratefee,
-  resetdeleteassignedfee
+  resetdeleteassignedfee,
+  resetRevoke,
 } = FeeSlices.actions;
 
 export default FeeSlices.reducer;

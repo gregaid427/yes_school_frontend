@@ -28,7 +28,7 @@ const EditFeesCartegoryItem = (props) => {
     }
   }, [UpdateFeeCart]);
 
-  const [cartegoryName, setcartegoryName] = useState();
+  const [cartegoryName, setcartegoryName] = useState('');
 
   const [description, setDesription] = useState('');
 
@@ -40,7 +40,7 @@ const EditFeesCartegoryItem = (props) => {
   }
 
   let data = {
-    name: cartegoryName,
+    name: cartegoryName?.toUpperCase(),
     id: props.data?.id,
 
     createdby: 'asante',
@@ -82,7 +82,7 @@ const EditFeesCartegoryItem = (props) => {
                 id=""
                 placeholder=""
                 defaultValue={props.data?.name}
-                onChange={(e) => setcartegoryName(e.target.value.toUpperCase())}
+                onChange={(e) => setcartegoryName(e.target.value)}
               />
             </div>
 

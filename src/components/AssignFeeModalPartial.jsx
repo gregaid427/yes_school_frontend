@@ -49,7 +49,7 @@ const AssignFeeModalPartial = (props) => {
     return pp;
   }
   const handleSubmit = () => {
-    data4['class'] = props.data;
+    data4['class'] = [props.data];
     data4['session'] = sessionoption;
     data4['total'] = data3;
     data4['createdby'] = 'Asante';

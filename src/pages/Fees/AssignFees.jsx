@@ -487,20 +487,30 @@ const AssignFees = () => {
                           <Cell className="  ">{item.createdby? item.createdby : '-'}</Cell>
 
                           <Cell>
+                            
                             <div className="gap-1 flex">
-                            <TableBtn
-                                  clickFunction={() => { setClass(item?.title)
-                                    setVisible2(true)}}
-                                  text={' Assign '}
-                                  color={'bg-primary'}
-                                />
-                              <ViewSVG
+
+                                
+                            <ViewSVG
                                 clickFunction={() => item.amount == null ?"" : handleViewbtn(item.title)}
                               />
+                            {item.total == null ?   <TableBtn
+                                  clickFunction={() => { setClass(item?.title)
+                                    setVisible2(true)}} 
+                                  text={` Assign `}
+                                  color={'bg-primary'}
+                                /> :    <TableBtn
+                                clickFunction={() => { setClass(item?.title)
+                                  setVisible2(true)}}
+                                text={'Re-Assign '}
+                                color={'bg-primary'}
+                              />}
+                           
+                            
 
-                              <DeleteSVG
+                              {/* <DeleteSVG
                                 clickFunction={() => handleViewbtn(item)}
-                              />
+                              /> */}
                             </div>
                           </Cell>
                         </Row>

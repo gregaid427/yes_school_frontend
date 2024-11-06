@@ -5,9 +5,17 @@ function PreferenceRadio(props) {
 
 
 useEffect(() => {
+  console.log(props.stdId)
+  console.log(props.myarr)
+  props.setRepeated(props.myarr)
 
-  setSelectedValue('option1');
+if(props.myarr.includes(props.stdId)) { 
+  console.log('trueeeeee')
+  setSelectedValue('option2'); }
+  console.log(props.repeat)
+
 }, [props.reset]); 
+console.log(props.repeat)
 
 const handleRadioChange = (value) => {
     setSelectedValue(value);

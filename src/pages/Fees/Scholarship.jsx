@@ -34,10 +34,15 @@ import FeesCartegoryItem from '../../components/FeesCartegoryItem';
 import { deleteSingleCartAction } from '../../redux/slices/inventSlice';
 import ScholarshipItem from '../../components/ScholarshipItem';
 import { Dialog } from 'primereact/dialog';
+import DeleteModal from '../../components/DeleteModal';
+import ScholarshipItemEdit from '../../components/ScholarshipItemEdit';
 
 const Scholarship = () => {
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
+  const [visible3, setVisible3] = useState(false);
+
+  const [del, setDel] = useState(false);
 
   const [position, setPosition] = useState('top');
 
@@ -50,7 +55,7 @@ const Scholarship = () => {
   const [classs, setClasss] = useState([]);
 
   const [loader, setLoader] = useState(true);
-  const [sections, setsections] = useState([]);
+  const [info, setInfo] = useState();
 
   const [isChecked1, setIsChecked1] = useState(false);
   const [sectionTitle, setsectionTitle] = useState('');
@@ -90,6 +95,9 @@ const Scholarship = () => {
       let data = CreateScholar?.data;
       setdata(data);
       setVisible(false);
+      setVisible1(false);
+      setVisible3(false);
+
     }
     // if (loading == false) {
     //   dispatch(fetchBulkStudent());
@@ -124,15 +132,15 @@ const Scholarship = () => {
       //   //  background-color: #24303F;
 
       `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -162,14 +170,13 @@ const Scholarship = () => {
     });
   };
   const handleEditbtn = (value) => {
-    console.log(value.type);
-    navigate('/inventory/editFeeegory', {
-      state: { action: 1, info: value },
-    });
-  };
-  const handledeletebtn = (value) => {
     console.log(value);
-    dispatch(deleteScholarshipAction(value));
+    // navigate('/inventory/editFeeegory', {
+    //   state: { action: 1, info: value },
+    // });
+  };
+  const handledeletebtn = () => {
+    dispatch(deleteScholarshipAction(del));
   };
 
   const handleDownloadPdf = async () => {
@@ -208,6 +215,34 @@ const Scholarship = () => {
         }}
       >
         <ScholarshipItem close={setVisible} cartinfo={CreateScholar} />
+      </Dialog>
+      <Dialog
+        resizable={false}
+        draggable={false}
+        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
+        visible={visible3}
+        className=""
+        position={'top'}
+        style={{ width: '47%', color: 'white' }}
+        onHide={() => {
+          if (!visible3) return;
+          setVisible3(false);
+        }}
+      >
+        <ScholarshipItemEdit close={setVisible3} info={info} />
+      </Dialog>
+      <Dialog
+        visible={visible1}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletebtn} close={setVisible1} />
       </Dialog>
       <div className={'flex gap-2  w-full'}>
         <div className="w-full flex-col">
@@ -326,31 +361,43 @@ const Scholarship = () => {
                         </HeaderRow>
                       </Header>
 
-  
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
-                          <Row key={item.id}
+                          <Row
+                            key={item.id}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          
                           >
                             <Cell className="  ">{item.title}</Cell>
                             <Cell className="  ">{item.type}</Cell>
                             <Cell className="  ">
-                              {item.amount < 1 ?  item.percent+ " %"  : item.amount}
+                              {item.amount < 1
+                                ? item.percent + ' %'
+                                : item.amount}
                             </Cell>
 
                             <Cell className="  ">{item.applicable}</Cell>
                             <Cell>
                               <div className="gap-2 flex">
                                 <ViewSVG
-                                  clickFunction={() => handleViewbtn(item)}
+                                  clickFunction={() => {
+                                    setInfo(item);
+                                    console.log(item);
+                                    setVisible3(true);
+                                  }}
                                 />
                                 <EditSVG
-                                  clickFunction={() => handleEditbtn(item)}
+                                  clickFunction={() => {
+                                    setInfo(item);
+
+                                    setVisible3(true);
+                                  }}
                                 />
                                 <DeleteSVG
-                                  clickFunction={() => handledeletebtn(item.id)}
+                                  clickFunction={() => {
+                                    setDel(item.id);
+                                    setVisible1(true);
+                                  }}
                                 />
                               </div>
                             </Cell>
@@ -422,7 +469,6 @@ const Scholarship = () => {
                         </HeaderRow>
                       </Header>
 
-  
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList.map((item) => (
                           <Row

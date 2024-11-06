@@ -461,9 +461,9 @@ const SetGuardian = () => {
                           <Cell>
                             <div className="gap-2 flex">
                               <EditSVG
-                                clickFunction={(item) =>
-                                  navigate('/settings/newguardian', {
-                                    state: { value: item.student_id },
+                                clickFunction={() =>
+                                  navigate("/settings/studentsGuardian", {
+                                    state: { value: item},
                                   })
                                 }
                               />

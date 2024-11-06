@@ -15,7 +15,7 @@ const StudentPreferenceModal = (props) => {
 
   const fee = useSelector((state) => state?.fees);
   const { cartegory,Preferences } = fee;
-
+console.log(props)
   const { CreateInventorycart } = inventory;
   useEffect(() => {
     if (Preferences?.success == 0) {
@@ -44,10 +44,10 @@ const StudentPreferenceModal = (props) => {
 
   const [amount, setAmount] = useState(0);
   const [repeat, setRepeat] = useState([]);
-  console.log(repeat);
 
 
-
+let arr = props?.val?.preference.split(',')
+console.log(arr)
 
   const formRef1 = useRef();
 
@@ -156,6 +156,8 @@ const StudentPreferenceModal = (props) => {
                           setRepeated={setRepeat}
                           repeat={repeat}
                           stdId={item?.name}
+                          myarr={arr}
+
                           
                           />
                                                   </div>
