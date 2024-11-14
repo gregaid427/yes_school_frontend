@@ -20,7 +20,7 @@ const SetSessionAlert = (props) => {
       // dispatch(fetchAllClassAction())
     }
     if (CreateInventorycart?.success == 1) {
-      toast.success('New Item Cartegory Added Successfully');
+      toast.success('Item Added Successfully');
       dispatch(fetchInventCartegoryAction());
       resetFormStates();
       dispatch(resetcreatecart());

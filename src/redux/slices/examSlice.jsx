@@ -2,6 +2,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+import ErrorToast from '../../components/Toasts/Error';
+import SuccessToast from '../../components/Toasts/Success';
+import WarnToast from '../../components/Toasts/Warning';
+import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+
 axios.defaults.headers.common = {
   Authorization: `Bearer ${localStorage.getItem('token')}`,
   'Content-Type': 'application/json',
@@ -11,11 +16,15 @@ export const CreatesGradeGroupAction = createAsyncThunk(
   'create/GradeGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/gradegroup`,
         payload,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Created Successfully');
       }
 
@@ -29,8 +38,14 @@ export const CreatesGradeGroupAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -43,11 +58,15 @@ export const UpdateGradeGroupAction = createAsyncThunk(
   'create/UpdateGradeGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/updategradegroup`,
         payload,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Updated Successfully');
       }
 
@@ -61,8 +80,14 @@ export const UpdateGradeGroupAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -75,11 +100,15 @@ export const DeleteCartecoryAction = createAsyncThunk(
   'delete/ExamGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/deleteGroup`,
         payload,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Deleted Successfully');
       }
 
@@ -88,8 +117,14 @@ export const DeleteCartecoryAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -101,11 +136,15 @@ export const CreateExamGroupAction = createAsyncThunk(
   'create/ExamGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/examgroup`,
         payload,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Created Successfully');
       }
 
@@ -114,8 +153,14 @@ export const CreateExamGroupAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -126,7 +171,12 @@ export const CreateExamGroupAction = createAsyncThunk(
 export const FetchExamGroupAction = createAsyncThunk(
   'get/ExamGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-    try {
+     try {
+      
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/examgroup`,
         payload,
@@ -137,8 +187,14 @@ export const FetchExamGroupAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -151,12 +207,16 @@ export const SubmitUpdatedResultAction = createAsyncThunk(
   'create/UpdateExamResult',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/Updateexamresult`,
         payload,
       );
 
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Result Submitted Successfully');
 
         // toast.error(data.message);
@@ -166,8 +226,14 @@ export const SubmitUpdatedResultAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -179,12 +245,16 @@ export const SubmitResultAction = createAsyncThunk(
   'create/ExamResult',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/examresult`,
         payload,
       );
 
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Result Submitted Successfully');
 
         // toast.error(data.message);
@@ -194,8 +264,14 @@ export const SubmitResultAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -208,7 +284,12 @@ export const SubmitResultAction = createAsyncThunk(
 export const FetchExamByIdAction = createAsyncThunk(
   'get/ExamById',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-    try {
+     try {
+      
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/exambyid`,
         payload,
@@ -219,8 +300,14 @@ export const FetchExamByIdAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -232,14 +319,25 @@ export const FetchExamByIdAction = createAsyncThunk(
 export const FetchAllGradeGroupAction = createAsyncThunk(
   'get/AllGradeGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-    try {
+     try {
+      
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/detailgradegroup`,
         payload,
       );
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -252,13 +350,23 @@ export const FetchSingleGradeGroupAction = createAsyncThunk(
   'get/singleGradeGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/singlegrade`,
         payload,
       );
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -269,14 +377,25 @@ export const FetchSingleGradeGroupAction = createAsyncThunk(
 export const FetchGradeGroupAction = createAsyncThunk(
   'get/GradeGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-    try {
+     try {
+      
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/gradegroup`,
         payload,
       );
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -288,11 +407,15 @@ export const DeleteGradeGroupAction = createAsyncThunk(
   'delete/GradeGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/deletexamgrade`,
         payload,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Deleted Successfully');
       }
 
@@ -302,8 +425,14 @@ export const DeleteGradeGroupAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -314,14 +443,25 @@ export const DeleteGradeGroupAction = createAsyncThunk(
 export const FetchExamListAction = createAsyncThunk(
   'get/ExamList',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-    try {
+     try {
+      
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/examlist`,
         payload,
       );
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -334,6 +474,10 @@ export const FetchExamResultByIdAction = createAsyncThunk(
   'get/Exambyid',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/getexamresult`,
         payload,
@@ -345,8 +489,14 @@ export const FetchExamResultByIdAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -358,11 +508,15 @@ export const CreateExamAction = createAsyncThunk(
   'create/Exam',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/newexam`,
         payload,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Created Successfully');
       }
 
@@ -372,8 +526,14 @@ export const CreateExamAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -386,6 +546,10 @@ export const FetchexamSubjectAction = createAsyncThunk(
   'get/examsubject',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/examsubject`,
         payload,
@@ -400,8 +564,14 @@ export const FetchexamSubjectAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -413,6 +583,10 @@ export const FetchExamCustomAction = createAsyncThunk(
   'get/customsearch',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/searchcustom`,
         payload,
@@ -427,8 +601,14 @@ export const FetchExamCustomAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -440,6 +620,10 @@ export const FetchClassReportAction = createAsyncThunk(
   'get/classreport',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/generatexlassreport`,
         payload,
@@ -454,8 +638,14 @@ export const FetchClassReportAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -467,6 +657,10 @@ export const TeacherRemarkAction = createAsyncThunk(
   'get/teacheremark',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/setremark`,
         payload,
@@ -481,8 +675,14 @@ export const TeacherRemarkAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -494,12 +694,22 @@ export const fetchExamByCodeAction = createAsyncThunk(
   'fetch/ClassExam',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/exambycode`,payload
       );
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -511,6 +721,10 @@ export const FetchSingleReportAction = createAsyncThunk(
   'get/singlereport',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/singlereport`,
         payload,
@@ -525,8 +739,14 @@ export const FetchSingleReportAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -539,6 +759,10 @@ export const GetgradegroupAction = createAsyncThunk(
   'get/gradegroupid',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/gradegroupbyid`,
         payload,
@@ -550,8 +774,14 @@ export const GetgradegroupAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -563,6 +793,10 @@ export const UpdateExamCartegoryAction = createAsyncThunk(
   'update/examCartegory',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/updateexamcartegory`,
         payload,
@@ -577,8 +811,14 @@ export const UpdateExamCartegoryAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }

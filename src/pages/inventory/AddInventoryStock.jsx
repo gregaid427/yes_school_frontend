@@ -40,6 +40,7 @@ import InventNewCartegory from '../../components/InventNewCartegory';
 import InventItemSelect from '../../components/inventItemSelect';
 import InventSupplierSelect from '../../components/InventSupplierSelect';
 import DeleteModal from '../../components/DeleteModal';
+import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
 
 const AddInventoryStock = () => {
   const [visible, setVisible] = useState(false);
@@ -208,6 +209,8 @@ const AddInventoryStock = () => {
   function onPaginationChange(action, state) {}
 
   const [search, setSearch] = useState('');
+  const [val, setVal] = useState(0);
+
 
   data = {
     nodes: data.nodes.filter((item) =>
@@ -247,7 +250,7 @@ const AddInventoryStock = () => {
     });
   };
   const handledeletebtn = (value) => {
-    dispatch(deleteSingleInventoryStockAction(value));
+    dispatch(deleteSingleInventoryStockAction({id:del}));
   };
 
   const subdata = {

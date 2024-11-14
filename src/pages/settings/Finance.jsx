@@ -811,7 +811,7 @@ const Finance = () => {
                 <div className="w-full overflow-x-auto">
                   <div className="w-full  flex justify-between  ">
                     <h3 className="font-medium text-black py-3 dark:text-white">
-                      Finace Activity log
+                      Finace Activity Records
                     </h3>
                   </div>
                 </div>
@@ -821,7 +821,7 @@ const Finance = () => {
                   'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
                 }
               >
-                <div className="w-full">
+                {/* <div className="w-full">
                   <label className="  text-sm font-medium text-ash dark:text-white">
                     Assign Fee Options :
                   </label>
@@ -899,12 +899,12 @@ const Finance = () => {
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
         </div>
-        <div className="w-2/12">
+        {/* <div className="w-2/12">
           <div className="grid grid-cols-1 gap-2 md:grid-cols-1  ">
             <CardDataStats title="Total Fees Collected" total={student}>
               <svg
@@ -976,7 +976,7 @@ const Finance = () => {
               </svg>
             </CardDataStats>
           </div>
-        </div>
+        </div> */}
       </div>
     </DefaultLayout>
   );

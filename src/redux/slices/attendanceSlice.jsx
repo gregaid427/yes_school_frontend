@@ -3,6 +3,11 @@ import axios from 'axios';
 import { fetchAllSectionAction } from './classSlice';
 import toast from 'react-hot-toast';
 
+import ErrorToast from '../../components/Toasts/Error';
+import SuccessToast from '../../components/Toasts/Success';
+import WarnToast from '../../components/Toasts/Warning';
+import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+
 axios.defaults.headers.common = {
   Authorization: `Bearer ${localStorage.getItem('token')}`,
   'Content-Type': 'application/json',
@@ -12,12 +17,16 @@ export const CreateAttendanceAction = createAsyncThunk(
   'create/createAttendance',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/createattendance`,
         payload,
       );
-      if (data?.success == 1) {
-        toast.success('Attendance Marked Successfully');
+    if (data?.success == 1) {   toast.dismiss(toastId);
+        toast.success('Marked Successfully');
       }
 
       if (data?.success == 0) {
@@ -26,8 +35,14 @@ export const CreateAttendanceAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -40,6 +55,10 @@ export const GetTodayRecordAction = createAsyncThunk(
   'fetch/gettodayrecord',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/gettodayrecord`,
         payload,
@@ -55,8 +74,14 @@ export const GetTodayRecordAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -69,6 +94,10 @@ export const GetSesionRecordsAction = createAsyncThunk(
   'fetch/recordsbysession',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/sessionrecords`,
         payload,
@@ -84,8 +113,14 @@ export const GetSesionRecordsAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -98,6 +133,10 @@ export const FetchAttendanceDetailAction = createAsyncThunk(
   'fetch/RecordsByDate',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/getdetail`,
         payload,
@@ -113,8 +152,14 @@ export const FetchAttendanceDetailAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -127,12 +172,16 @@ export const UpdateStatusAction = createAsyncThunk(
   'fetch/updatestatus',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/updatestatus`,
         payload,
       );
 
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Record Updated Successfully');
 
         // toast.error(data.message);
@@ -142,8 +191,14 @@ export const UpdateStatusAction = createAsyncThunk(
 
         console.log(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -156,6 +211,10 @@ export const GetRecordByDateAction = createAsyncThunk(
   'fetch/Detail',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/daterecords`,
         payload,
@@ -171,8 +230,14 @@ export const GetRecordByDateAction = createAsyncThunk(
 
         // toast.error(data.message);
       }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }

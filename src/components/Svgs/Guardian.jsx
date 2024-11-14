@@ -2,8 +2,8 @@ import React from 'react'
 
 const GuardianSVG = (props) => {
   return (
-    <button  className='rounded-full  bg-[#99e03c3a] text-xs mx-0 my-1 font-  py-1 px-3' onClick={props.clickFunction}>
- Add Guardian
+    <button  className='rounded-full  bg-[#99e03c3a] text-xs mx-0 my-1 font-bold  py-1 px-3' onClick={props.clickFunction}>
+ <p className='text-black dark:text-white'>Add Guardian</p> 
         {/* <svg
                           className="fill-current"
                           width="18"

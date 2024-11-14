@@ -376,7 +376,7 @@ const AddExpense = () => {
                           >
                             <Cell className="  ">{item.name}</Cell>
 
-                            <Cell className="  ">{item.expensehead}</Cell>
+                            <Cell className="  ">{item.expensehead == 'undefined' ? '-' : item.expensehead}</Cell>
                             <Cell className="  ">{item.date}</Cell>
                             <Cell className="  ">{item.amount}</Cell>
 
@@ -484,7 +484,7 @@ const AddExpense = () => {
                           >
                             <Cell className="  ">{item.name}</Cell>
 
-                            <Cell className="  ">{item.expensehead}</Cell>
+                            <Cell className="  ">{item.expensehead == 'undefined' ? '-' : item.expensehead}</Cell>
                             <Cell className="  ">{item.date}</Cell>
                             <Cell className="  ">{item.amount}</Cell>
 

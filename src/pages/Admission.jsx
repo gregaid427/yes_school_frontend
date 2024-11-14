@@ -350,7 +350,7 @@ const Admission = () => {
                 </form>
                 <div className="flex mt-10  gap-4.5">
                   <button
-                    className="flex w-4/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                    className="flex w-4/12 justify-center rounded bg-primary py-1 px-6 font-medium text-gray hover:bg-opacity-90"
                     type=""
                     onClick={(e) => handleNextButton()}
                   >
@@ -533,7 +533,7 @@ const Admission = () => {
                 </div>
 
                 <div className=" w-3/6">
-                  <div className="p-7">
+                  <div className="p-7 pb-1">
                     <form ref={formRef3}>
                       <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
                         <div className="w-full sm:w-2/2">
@@ -573,7 +573,7 @@ const Admission = () => {
                         </div>
                       </div>
 
-                      <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
+                      <div className=" flex flex-col gap-3 sm:flex-row">
                         <div className="w-full sm:w-2/4">
                           <label
                             className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -690,16 +690,16 @@ const Admission = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex mt-10 w-7/12 justify-end gap-4.5">
+              <div className="flex p-7 pt-0  w-6/12 justify-end gap-4.5">
                 <button
-                  className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                  className="flex w-full justify-center rounded border border-stroke py-1 px-3 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                   type=""
                   onClick={(e) => handleBackButton()}
                 >
                   Back
                 </button>
                 <button
-                  className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                  className="flex w-full justify-center rounded bg-primary py-1 px-3 font-medium text-gray hover:bg-opacity-90"
                   type=""
                   onClick={(e) => handleSubmit()}
                 >

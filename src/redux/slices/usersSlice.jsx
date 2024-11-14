@@ -3,6 +3,11 @@ import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import toast from 'react-hot-toast';
 
+import ErrorToast from '../../components/Toasts/Error';
+import SuccessToast from '../../components/Toasts/Success';
+import WarnToast from '../../components/Toasts/Warning';
+import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+
 axios.defaults.headers.common = {
   Authorization: `Bearer ${localStorage.getItem('token')}`,
   'Content-Type': 'application/json',
@@ -12,13 +17,23 @@ export const CreateUserAction = createAsyncThunk(
   'new/user',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -31,13 +46,23 @@ export const CreateGuardianAction = createAsyncThunk(
   'new/guardian',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/guardian`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -50,6 +75,10 @@ export const loginUserAction = createAsyncThunk(
   'login/User',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/login`,
         payload,
@@ -64,8 +93,14 @@ export const loginUserAction = createAsyncThunk(
       //            // toast.error("Incorrect Email or Password", { className: "toast-message1" });
       // }
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       console.log(error);
       console.log(error?.response);
 
@@ -81,13 +116,23 @@ export const fetchAllstaffAction = createAsyncThunk(
   'fetch/allStaff',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/users/staff`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -99,13 +144,23 @@ export const passwordsendmail = createAsyncThunk(
   'password/reset',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `https://api-optimum.seedogh.com/api/users/mailPasswordreset`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -118,13 +173,23 @@ export const passwordResetAction = createAsyncThunk(
   'password/Confirm',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `https://api-optimum.seedogh.com/api/users/resetPassword`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -137,13 +202,23 @@ export const verifyuser = createAsyncThunk(
   'verfy/user',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `https://api-optimum.seedogh.com/api/users/verify`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -156,11 +231,15 @@ export const CreatesStaffAction = createAsyncThunk(
   'create/userstaff',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/newstaff`,
         payload,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('New Staff Created Successfully');
       }
 
@@ -170,8 +249,14 @@ export const CreatesStaffAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -184,11 +269,15 @@ export const UpdateStaffAction = createAsyncThunk(
   'create/updatestaff',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/updatestaff`,
         payload,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Updated Successfully');
       }
 
@@ -198,8 +287,14 @@ export const UpdateStaffAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -212,10 +307,14 @@ export const deleteStaffAction = createAsyncThunk(
   'delete/userstaff',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/deletestaff/${payload}`,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Staff Deleted Successfully');
       }
 
@@ -225,8 +324,14 @@ export const deleteStaffAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -238,10 +343,14 @@ export const inactiveStaffAction = createAsyncThunk(
   'inactive/userstaff',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/inactivestaff/${payload}`,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Staff Marked Inactive Successfully');
       }
 
@@ -251,8 +360,14 @@ export const inactiveStaffAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -264,10 +379,14 @@ export const activeStaffAction = createAsyncThunk(
   'active/userstaff',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/activestaff/${payload}`,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Staff Marked Active Successfully');
       }
 
@@ -277,8 +396,14 @@ export const activeStaffAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -290,6 +415,10 @@ export const fetchschoolinfoAction = createAsyncThunk(
   'fetch/schoool',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/users/school/`,
       );
@@ -300,8 +429,11 @@ export const fetchschoolinfoAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
+  
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -313,8 +445,13 @@ export const fetchuserbyidAction = createAsyncThunk(
   'fetch/userbyid',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
+
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/users/userid/`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/users/userid/`,
+        payload,
       );
 
       if (data == null) {
@@ -323,8 +460,11 @@ export const fetchuserbyidAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
+      
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -336,11 +476,15 @@ export const updateschoolinfoAction = createAsyncThunk(
   'update/schoool',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/school/update`,
         payload,
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Information Updated Successfully');
       }
 
@@ -350,8 +494,14 @@ export const updateschoolinfoAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -363,13 +513,27 @@ export const fetchUserdataAction = createAsyncThunk(
   'fetch/userdata',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/userdata`,
         payload,
       );
 
+    if (data?.success == 1) {   toast.dismiss(toastId);
+        setTimeout(() => toast.dismiss(), 2000);
+      }
+
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -381,6 +545,10 @@ export const SchoollogoAction = createAsyncThunk(
   'create/logo',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/logoschool`,
         payload,
@@ -390,15 +558,21 @@ export const SchoollogoAction = createAsyncThunk(
           },
         },
       );
-      if (data?.success == 1) {
+    if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Logo Uploaded Successfully');
       }
 
       if (data == null) {
         toast.error('Error Uploading Logo');
       }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -408,10 +582,9 @@ export const SchoollogoAction = createAsyncThunk(
 );
 
 const initialState = {
-  UserData:[],
-  fetchuserbyid:{},
-  loginUser:{}
-
+  UserData: [],
+  fetchuserbyid: {},
+  loginUser: {},
 };
 
 const UsersSlices = createSlice({
@@ -426,30 +599,24 @@ const UsersSlices = createSlice({
     resetcreateGuardian(state) {
       state.CreateUser = null;
     },
-    setUser(state,data) {
+    setUser(state, data) {
       state.UserData = data;
-      console.log('called')
-      console.log(state.UserData )
-
+      console.log('called');
+      console.log(state.UserData);
     },
-    setUsername(state,data) {
+    setUsername(state, data) {
       state.username = data;
-     
     },
-    setUserMail(state,data) {
+    setUserMail(state, data) {
       state.userMail = data;
-     
     },
-    setRoleCode(state,data) {
+    setRoleCode(state, data) {
       state.roleCode = data;
-     
     },
-    
-    resetAllUserData(state){
-      state.UserData=[],
-      state.fetchuserbyid={},
-      state.loginUser={}
-    }
+
+    resetAllUserData(state) {
+      (state.UserData = []), (state.fetchuserbyid = {}), (state.loginUser = {});
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(CreateUserAction.pending, (state, action) => {
@@ -465,7 +632,7 @@ const UsersSlices = createSlice({
       state.error = action.payload;
       state.CreateUser = undefined;
     });
-    
+
     builder.addCase(UpdateStaffAction.pending, (state, action) => {
       state.UpdateStaffloading = true;
       state.UpdateStaff = false;
@@ -480,7 +647,6 @@ const UsersSlices = createSlice({
       state.UpdateStafferror = action.payload;
       state.UpdateStaff = undefined;
     });
-
 
     builder.addCase(fetchuserbyidAction.pending, (state, action) => {
       state.fetchuserbyidloading = true;
@@ -497,12 +663,10 @@ const UsersSlices = createSlice({
       state.fetchuserbyid = undefined;
     });
 
-
     builder.addCase(CreateGuardianAction.pending, (state, action) => {
       state.loading = true;
       state.createguard = false;
     });
-
 
     builder.addCase(CreateGuardianAction.fulfilled, (state, action) => {
       state.CreateUser = action?.payload;
@@ -696,6 +860,14 @@ const UsersSlices = createSlice({
     });
   },
 });
-export const { reset, resetcreateGuardian,setUser,resetAllUserData ,setUserMail,setRoleCode, setUsername} = UsersSlices.actions;
+export const {
+  reset,
+  resetcreateGuardian,
+  setUser,
+  resetAllUserData,
+  setUserMail,
+  setRoleCode,
+  setUsername,
+} = UsersSlices.actions;
 
 export default UsersSlices.reducer;

@@ -46,7 +46,7 @@ const ScholarshipItemEdit = (props) => {
   );
   const [selectedArr, setselectedArr] = useState([]);
   const [feecartegory, setfeecart] = useState(props.info?.applicable);
-  const [percent, setPercent] = useState(props.info?.percentage);
+  const [percent, setPercent] = useState(props.info?.percent);
   const [type, settype] = useState(props.info?.type);
 
   const formRef1 = useRef();
@@ -76,7 +76,7 @@ const ScholarshipItemEdit = (props) => {
     if (feecartegory == 'FEE PAYABLE' && type == 'Percentage') {
       return toast.error('Error - Please Set Percentage');
     }
-    if (percent == null && type == 'Percentage' && isChecked1 == true) {
+    if ((percent < 1 || percent < '')  && type == 'Percentage' && isChecked1 == true) {
       return toast.error('Error - Please Set Percentsge ');
     }
     if (amount < 1 && type == 'Fixed Value' && isChecked1 == false) {
@@ -89,7 +89,7 @@ const ScholarshipItemEdit = (props) => {
     }
 
   };
-  console.log(props.info);
+  console.log(feecartegory);
   return (
     <div className="w-full">
       <div

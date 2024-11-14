@@ -2,8 +2,8 @@ import React from 'react';
 
 const InactiveSVG = (props) => {
   return (
-    <button  className='rounded-full bg-[#0b3306] text-xs mx-0 my-1 font-  py-1 px-3' onClick={props.clickFunction}>
-      <p>Inactive</p>
+    <button  className='rounded-full bg-[#0b3306] text-xs mx-0 my-1 font-bold  py-1 px-3' onClick={props.clickFunction}>
+       <p className='text-black dark:text-white'>Inactive</p>
       {/* <svg
         className="fill-current"
         width="18"

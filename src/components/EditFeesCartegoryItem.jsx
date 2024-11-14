@@ -28,9 +28,9 @@ const EditFeesCartegoryItem = (props) => {
     }
   }, [UpdateFeeCart]);
 
-  const [cartegoryName, setcartegoryName] = useState('');
+  const [cartegoryName, setcartegoryName] = useState(props.data?.name);
 
-  const [description, setDesription] = useState('');
+  const [description, setDesription] = useState(props.data?.description);
 
   const formRef1 = useRef();
 

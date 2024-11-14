@@ -2,6 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { fetchAllSectionAction } from './classSlice';
 
+import ErrorToast from '../../components/Toasts/Error';
+import SuccessToast from '../../components/Toasts/Success';
+import WarnToast from '../../components/Toasts/Warning';
+import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+import toast from 'react-hot-toast';
+
 axios.defaults.headers.common = {
   Authorization: `Bearer ${localStorage.getItem('token')}`,
   'Content-Type': 'application/json',
@@ -11,10 +17,21 @@ export const fetchAllsessionAction = createAsyncThunk(
   'fetch/Allsession',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/session/`);
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
 
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/session/`,
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -26,10 +43,22 @@ export const fetchActivesessionAction = createAsyncThunk(
   'fetch/Activesession',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/session/active`);
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
 
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/session/active`,
+      );
+
+      //     if (data) {
+      //   toast.dismiss(toastId);
+
+      // }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -42,12 +71,21 @@ export const deletesessionByIdAction = createAsyncThunk(
   'delete/sessionbysession',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/session/single/${payload}`,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -60,13 +98,22 @@ export const updatesessionAction = createAsyncThunk(
   'session/Updates',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/session/`,
         payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -78,12 +125,22 @@ export const updatesessionStatusAction = createAsyncThunk(
   'session/Updatestatus',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/session/status`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/session/status`,
+        payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -95,13 +152,22 @@ export const createsessionAction = createAsyncThunk(
   'password/reset',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/session/`,
         payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -114,12 +180,21 @@ export const truncateTableAction = createAsyncThunk(
   'delete/allrecords',
   async ({ rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/student/truncate`,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -147,42 +222,36 @@ const SessionSlices = createSlice({
       state.updatesessionloading = true;
       state.updatesession = false;
       state.fetchsession = false;
-
     });
     builder.addCase(updatesessionAction.fulfilled, (state, action) => {
       state.updatesession = action?.payload;
       state.updatesessionloading = false;
       state.error = undefined;
       state.fetchsession = action?.payload;
-
     });
     builder.addCase(updatesessionAction.rejected, (state, action) => {
       state.error = action.payload;
       state.updatesession = undefined;
       state.updatesessionloading = undefined;
       state.fetchsession = undefined;
-
     });
 
     builder.addCase(updatesessionStatusAction.pending, (state, action) => {
       state.updatesessionloading = true;
       state.updatesession = false;
       state.fetchsession = false;
-
     });
     builder.addCase(updatesessionStatusAction.fulfilled, (state, action) => {
       state.updatesession = action?.payload;
       state.updatesessionloading = false;
       state.error = undefined;
       state.fetchsession = action?.payload;
-
     });
     builder.addCase(updatesessionStatusAction.rejected, (state, action) => {
       state.error = action.payload;
       state.updatesession = undefined;
       state.updatesessionloading = undefined;
       state.fetchsession = undefined;
-
     });
 
     builder.addCase(deletesessionByIdAction.pending, (state, action) => {
@@ -190,21 +259,18 @@ const SessionSlices = createSlice({
       state.deletesessionById = false;
       state.fetchsession = false;
       state.createsession = false;
-      
     });
     builder.addCase(deletesessionByIdAction.fulfilled, (state, action) => {
       state.deletesessionById = action?.payload;
       state.deletesessionByIdloading = false;
       state.error = undefined;
       state.fetchsession = action?.payload;
-
     });
     builder.addCase(deletesessionByIdAction.rejected, (state, action) => {
       state.error = action.payload;
       state.deletesessionById = undefined;
       state.deletesessionByIdloading = undefined;
       state.fetchsession = undefined;
-
     });
 
     builder.addCase(fetchAllsessionAction.pending, (state, action) => {
@@ -222,11 +288,6 @@ const SessionSlices = createSlice({
       state.sessionloading = undefined;
     });
 
-    
-
-
-
-
     builder.addCase(fetchActivesessionAction.pending, (state, action) => {
       state.activeloading = true;
       state.fetchsessionactive = false;
@@ -241,17 +302,6 @@ const SessionSlices = createSlice({
       state.activeerror = action.payload;
       state.fetchsessionactive = undefined;
     });
-
-
-
-
-
-
-
-
-
-
-
 
     builder.addCase(createsessionAction.pending, (state, action) => {
       state.loading = true;

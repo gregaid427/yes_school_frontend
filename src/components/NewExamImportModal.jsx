@@ -301,7 +301,7 @@ const NewExamImportModal = (props) => {
                         >
                           Select Subject
                         </label>{' '}
-                        <button
+                        {/* <button
                           onClick={(e) => {
                             e.preventDefault();
                             props.newsubject(true);
@@ -313,7 +313,7 @@ const NewExamImportModal = (props) => {
                           >
                             + New Subject
                           </label>
-                        </button>
+                        </button> */}
                       </div>
                       {/* <div
                         className={

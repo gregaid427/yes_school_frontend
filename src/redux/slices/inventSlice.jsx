@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+import ErrorToast from '../../components/Toasts/Error';
+import SuccessToast from '../../components/Toasts/Success';
+import WarnToast from '../../components/Toasts/Warning';
+import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+import toast from 'react-hot-toast';
+
 axios.defaults.headers.common = {
   Authorization: `Bearer ${localStorage.getItem('token')}`,
   'Content-Type': 'application/json',
@@ -10,13 +16,22 @@ export const CreatesInventoryAction = createAsyncThunk(
   'new/NewInventory',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,
         payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -29,13 +44,22 @@ export const CreatesInventoryStockAction = createAsyncThunk(
   'new/NewInventorystock',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/addstock`,
         payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -48,13 +72,22 @@ export const CreatesInventoryCartegoryAction = createAsyncThunk(
   'new/NewInventorycart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/cart`,
         payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -67,10 +100,21 @@ export const fetchAllInventoryAction = createAsyncThunk(
   'fetch/AllInventory',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/inventory/`);
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
 
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -82,12 +126,21 @@ export const fetchInventoryStockAction = createAsyncThunk(
   'fetch/Inventorystock',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/getstock`,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -100,13 +153,22 @@ export const fetchSingleInventoryAction = createAsyncThunk(
   'fetch/singleInventory',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/single/`,
         payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -118,13 +180,22 @@ export const fetchInventCartegoryAction = createAsyncThunk(
   'fetch/Inventorycart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/cart`,
         payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -137,13 +208,22 @@ export const updateInventoryAction = createAsyncThunk(
   'update/inventory',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,
         payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -156,18 +236,27 @@ export const updateInventoryItemAction = createAsyncThunk(
   'update/inventoryitem',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/item`,
         payload,
       );
       if (data?.success == 1) {
-        toast.success('Cartegory Updated Successfully');
+        toast.success('Item Updated Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Updating Cartegory ');
       }
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -180,13 +269,22 @@ export const updateCartegoryAction = createAsyncThunk(
   'cartegory/Update',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/editcartegory`,
         payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -199,12 +297,21 @@ export const deleteAllInventoryAction = createAsyncThunk(
   'Inventory/deleteAllInventory',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -217,12 +324,21 @@ export const deleteSingleInventoryAction = createAsyncThunk(
   'Inventory/deleteASingleInventory',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/Inventory/${payload}`,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -231,17 +347,25 @@ export const deleteSingleInventoryAction = createAsyncThunk(
   },
 );
 
-
 export const deleteSingleCartAction = createAsyncThunk(
   'delete/deleteASingleCart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/Inventory/cartegory/${payload}`,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -254,12 +378,22 @@ export const deleteSingleInventoryStockAction = createAsyncThunk(
   'Inventory/deleteASingleInventorystock',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/Inventory/stock/${payload}`,
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/stock/delete`,
+        payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -338,29 +472,24 @@ const InventorySlices = createSlice({
       state.CreateInventorystockloading = true;
       state.CreateInventorystock = false;
       state.fetchInventoryStock = false;
-
-      
     });
     builder.addCase(CreatesInventoryStockAction.fulfilled, (state, action) => {
       state.CreateInventorystock = action?.payload;
       state.CreateInventorystockloading = false;
       state.error = undefined;
       state.fetchInventoryStock = action?.payload;
-
     });
     builder.addCase(CreatesInventoryStockAction.rejected, (state, action) => {
       state.CreateInventorystockloading = false;
       state.error = action.payload;
       state.CreateInventorystock = undefined;
       state.fetchInventoryStock = undefined;
-
     });
 
     builder.addCase(updateCartegoryAction.pending, (state, action) => {
       state.updateCartegoryloading = true;
       state.updateCartegory = false;
       state.CreateInventorycart = false;
-
     });
     builder.addCase(updateCartegoryAction.fulfilled, (state, action) => {
       state.updateCartegory = action?.payload;
@@ -373,7 +502,6 @@ const InventorySlices = createSlice({
       state.updateCartegory = undefined;
       state.updateCartegorynloading = undefined;
       state.CreateInventorycart = undefined;
-
     });
 
     builder.addCase(updateInventoryItemAction.pending, (state, action) => {
@@ -440,64 +568,67 @@ const InventorySlices = createSlice({
       state.deleteSingleInventoryloading = true;
       state.deleteSingleInventory = false;
       state.fetchAllInventory = false;
-
-      
     });
 
     builder.addCase(deleteSingleInventoryAction.fulfilled, (state, action) => {
       state.deleteSingleInventory = action?.payload;
       state.deleteSingleInventoryloading = false;
       state.error = undefined;
-     state.fetchAllInventory = action?.payload;
+      state.fetchAllInventory = action?.payload;
     });
     builder.addCase(deleteSingleInventoryAction.rejected, (state, action) => {
       state.error = action.payload;
       state.deleteSingleInventory = undefined;
       state.deleteSingleInventoryloading = undefined;
       state.fetchAllInventory = undefined;
-
     });
-
 
     builder.addCase(deleteSingleCartAction.pending, (state, action) => {
       state.deleteSingleCartloading = true;
       state.deleteSingleInventory = false;
-      state.cartegory = false; 
+      state.cartegory = false;
     });
 
     builder.addCase(deleteSingleCartAction.fulfilled, (state, action) => {
       state.deleteSingleInventory = action?.payload;
       state.deleteSingleCartloading = false;
       state.error = undefined;
-     state.cartegory = action?.payload;
+      state.cartegory = action?.payload;
     });
     builder.addCase(deleteSingleCartAction.rejected, (state, action) => {
       state.error = action.payload;
       state.deleteSingleInventory = undefined;
       state.deleteSingleCartloading = undefined;
       state.cartegory = undefined;
-
     });
 
-    builder.addCase(deleteSingleInventoryStockAction.pending, (state, action) => {
-      state.deleteSingleInventorystockloading = true;
-      state.deleteSingleInventorystock = false;
-      state.fetchInventoryStock = false;
-    });
+    builder.addCase(
+      deleteSingleInventoryStockAction.pending,
+      (state, action) => {
+        state.deleteSingleInventorystockloading = true;
+        state.deleteSingleInventorystock = false;
+        state.fetchInventoryStock = false;
+      },
+    );
 
-    builder.addCase(deleteSingleInventoryStockAction.fulfilled, (state, action) => {
-      state.deleteSingleInventorystock = action?.payload;
-      state.deleteSingleInventorystockloading = false;
-      state.error = undefined;
-    //  state.fetchAllInventory = action?.payload;
-    });
-    builder.addCase(deleteSingleInventoryStockAction.rejected, (state, action) => {
-      state.error = action.payload;
-      state.deleteSingleInventorystock = undefined;
-      state.deleteSingleInventorystockloading = undefined;
-      state.fetchInventoryStock = undefined;
-    });
-
+    builder.addCase(
+      deleteSingleInventoryStockAction.fulfilled,
+      (state, action) => {
+        state.deleteSingleInventorystock = action?.payload;
+        state.deleteSingleInventorystockloading = false;
+        state.error = undefined;
+        state.fetchInventoryStock = action?.payload;
+      },
+    );
+    builder.addCase(
+      deleteSingleInventoryStockAction.rejected,
+      (state, action) => {
+        state.error = action.payload;
+        state.deleteSingleInventorystock = undefined;
+        state.deleteSingleInventorystockloading = undefined;
+        state.fetchInventoryStock = undefined;
+      },
+    );
 
     builder.addCase(fetchSingleInventoryAction.pending, (state, action) => {
       state.singleInventoryloading = true;

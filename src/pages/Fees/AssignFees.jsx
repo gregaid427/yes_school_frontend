@@ -125,20 +125,22 @@ const AssignFees = () => {
       let data = AssignfeeGroup?.data;
       setdata(data);
       setVisible(false);
+      dispatch(fetchAllfeeAssignRecordAction());
+
     }
   }, [AssignfeeGroup]);
 
   fetchAllClass;
 
-  useEffect(() => {
-    setTimeout(() => setLoader(false), 1000);
+  // useEffect(() => {
+  //   setTimeout(() => setLoader(false), 1000);
 
-    if (AssignfeeGroup?.success == 1) {
-      let data = AssignfeeGroup?.data;
-      setdata(data);
-      setVisible(false);
-    }
-  }, [AssignfeeGroup]);
+  //   if (AssignfeeGroup?.success == 1) {
+  //     let data = AssignfeeGroup?.data;
+  //     setdata(data);
+  //     setVisible(false);
+  //   }
+  // }, [AssignfeeGroup]);
 
   let data = { nodes };
 
@@ -246,90 +248,8 @@ const AssignFees = () => {
     // }
     // datas = data;
   }, [cartegory]);
-  const classdata = {
-    title: classTitle.toUpperCase(),
-    createdBy: 'Asante',
-    instructor: classInstructor,
-  };
-  const handlecreateClass = () => {
-    if (classData1.length == 0) {
-      return toast.error('File Error- Choose File Again');
-    } else {
-      dispatch(CreatesBulkClassAction(classData1));
-    }
-  };
 
-  const handleDownloadPdf = async () => {
-    const doc = new jsPDF();
-
-    autoTable(doc, { html: '#my-table' });
-
-    doc.save(`All-Classes-List`);
-  };
-
-  const csvConfig = mkConfig({
-    useKeysAsHeaders: true,
-    filename: `Admission Template`,
-  });
-  let template = {
-    firstName: '',
-    otherName: '',
-    lastName: '',
-    religion: '',
-    gender: '',
-    dateofbirth: '',
-    accountbalance: '',
-  };
-  const handleDownloadCSV = async () => {
-    const csv = generateCsv(csvConfig)([template]);
-    download(csvConfig)(csv);
-  };
-
-  const [classData, setClassData] = useState([]);
   const [classData1, setClassData1] = useState([]);
-  const [check, setCheck] = useState(true);
-
-  function handleFileUpload(e) {
-    console.log('called');
-    setCheck(false);
-    const reader = new FileReader();
-    reader.readAsBinaryString(e.target.files[0]);
-    reader.onload = (e) => {
-      const data = e.target.result;
-      const workbook = XLSX.read(data, { type: 'binary' });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const parsedData = XLSX.utils.sheet_to_json(sheet);
-      setClassData(parsedData);
-
-      const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789';
-
-      function generateString(length) {
-        let result = '';
-        const charactersLength = characters.length;
-        for (let i = 0; i < length; i++) {
-          result += characters.charAt(
-            Math.floor(Math.random() * charactersLength),
-          );
-        }
-
-        return result;
-      }
-
-      let newArr1 = parsedData.map((v) => ({
-        ...v,
-        password: generateString(5),
-        email: v.firstName + generateString(3).toLocaleLowerCase(),
-        class: classname,
-        section: sectionname,
-      }));
-      setClassData1(newArr1);
-    };
-  }
-  useEffect(() => {
-    console.log(classData1);
-  }, [classData, check]);
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
 
@@ -340,10 +260,7 @@ const AssignFees = () => {
     setPosition(position);
     setVisible(true);
   };
-  const show1 = (position) => {
-    setPosition(position);
-    setVisible1(true);
-  };
+
 
   return loader ? (
     <Loader />

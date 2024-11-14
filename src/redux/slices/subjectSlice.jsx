@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import ErrorToast from '../../components/Toasts/Error';
+import SuccessToast from '../../components/Toasts/Success';
+import WarnToast from '../../components/Toasts/Warning';
+import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+import toast from "react-hot-toast";
 
 
 axios.defaults.headers.common = {'Authorization': `Bearer ${localStorage.getItem('token')}` ,   'Content-Type': 'application/json'  }
@@ -9,13 +13,23 @@ export const CreatesSubjectAction = createAsyncThunk(
   "new/NewSubject",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/subject/`,payload
         
       );
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -27,14 +41,25 @@ export const CreatesSubjectAction = createAsyncThunk(
 export const fetchSubjectAction = createAsyncThunk(
   "fetch/allsubject",
   async (payload, { rejectWithValue, getState, dispatch }) => {
-    try {
+     try {
+      
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/subject/`
         
       );
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -45,14 +70,25 @@ export const fetchSubjectAction = createAsyncThunk(
 export const UpdateSubjectAction = createAsyncThunk(
   "subject/update",
   async (payload, { rejectWithValue, getState, dispatch }) => {
-    try {
+     try {
+      
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/subject/`,payload
         
       );
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -64,14 +100,25 @@ export const UpdateSubjectAction = createAsyncThunk(
 export const DeleteSingleSubjectAction = createAsyncThunk(
   "delete/subject",
   async (payload, { rejectWithValue, getState, dispatch }) => {
-    try {
+     try {
+      
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/subject/${payload}`,
         
       );
 
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error)
+          ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }

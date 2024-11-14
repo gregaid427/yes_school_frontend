@@ -1,139 +1,216 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+import toast from 'react-hot-toast';
 
-
-
-axios.defaults.headers.common = {'Authorization': `Bearer ${localStorage.getItem('token')}` ,   'Content-Type': 'application/json'  }
+axios.defaults.headers.common = {
+  Authorization: `Bearer ${localStorage.getItem('token')}`,
+  'Content-Type': 'application/json',
+};
 
 export const studentStatAction = createAsyncThunk(
-  "fetch/stat1",
+  'fetch/stat1',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/statistics/1`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/1`,
+        payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const classStatAction = createAsyncThunk(
-  "fetch/stat2",
+  'fetch/stat2',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-    
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/statistics/3`,payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/3`,
+        payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const teacherStatAction = createAsyncThunk(
-  "fetch/stat3",
+  'fetch/stat3',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/statistics/2`,payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/2`,
+        payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const subjectStatAction = createAsyncThunk(
-  "fetch/stat4",
+  'fetch/stat4',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/statistics/4`,payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/4`,
+        payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
-
 export const parentStatAction = createAsyncThunk(
-  "fetch/stat6",
+  'fetch/stat6',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/statistics/6`,payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/6`,
+        payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const chartStatAction = createAsyncThunk(
-  "fetch/stat7",
+  'fetch/stat7',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/statistics/5`,payload
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/5`,
+        payload,
       );
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
       return rejectWithValue(error.response.data);
     }
-  }
+  },
+);
+export const chart1StatAction = createAsyncThunk(
+  'fetch/stat8',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/7`,
+        payload,
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
 );
 
 const StatisticsSlices = createSlice({
-  name: "Statistics",
+  name: 'Statistics',
   initialState: {},
-  reducers: {
-  
-   
-  },
-  extraReducers: builder => {
-    
-    
+  reducers: {},
+  extraReducers: (builder) => {
     builder.addCase(studentStatAction.pending, (state, action) => {
       state.studentStatloading = true;
       state.studentStat = false;
-
     });
     builder.addCase(studentStatAction.fulfilled, (state, action) => {
       state.studentStat = action?.payload;
@@ -146,12 +223,9 @@ const StatisticsSlices = createSlice({
       state.studentStat = undefined;
     });
 
-
-        
     builder.addCase(classStatAction.pending, (state, action) => {
       state.classStatloading = true;
       state.classStat = false;
-
     });
     builder.addCase(classStatAction.fulfilled, (state, action) => {
       state.classStat = action?.payload;
@@ -164,11 +238,9 @@ const StatisticsSlices = createSlice({
       state.classStat = undefined;
     });
 
-         
     builder.addCase(teacherStatAction.pending, (state, action) => {
       state.teacherStatloading = true;
       state.teacherStat = false;
-
     });
     builder.addCase(teacherStatAction.fulfilled, (state, action) => {
       state.teacherStat = action?.payload;
@@ -180,12 +252,10 @@ const StatisticsSlices = createSlice({
       state.error = action.payload;
       state.teacherStat = undefined;
     });
-    
-    
+
     builder.addCase(subjectStatAction.pending, (state, action) => {
       state.subjectStatloading = true;
       state.subjectStat = false;
-
     });
     builder.addCase(subjectStatAction.fulfilled, (state, action) => {
       state.subjectStat = action?.payload;
@@ -197,11 +267,10 @@ const StatisticsSlices = createSlice({
       state.error = action.payload;
       state.subjectStat = undefined;
     });
-    
+
     builder.addCase(parentStatAction.pending, (state, action) => {
       state.parentStatloading = true;
       state.parentStat = false;
-
     });
     builder.addCase(parentStatAction.fulfilled, (state, action) => {
       state.parentStat = action?.payload;
@@ -214,12 +283,23 @@ const StatisticsSlices = createSlice({
       state.parentStat = undefined;
     });
 
-
-
+    builder.addCase(chart1StatAction.pending, (state, action) => {
+      state.parentStatloading = true;
+      state.chart1Stat = false;
+    });
+    builder.addCase(chart1StatAction.fulfilled, (state, action) => {
+      state.chart1Stat = action?.payload;
+      state.parentStatloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(chart1StatAction.rejected, (state, action) => {
+      state.parentStatloading = false;
+      state.error = action.payload;
+      state.chart1Stat = undefined;
+    });
     builder.addCase(chartStatAction.pending, (state, action) => {
       state.parentStatloading = true;
-      state.chartStat = false;
-
+      state.chart1Stat = false;
     });
     builder.addCase(chartStatAction.fulfilled, (state, action) => {
       state.chartStat = action?.payload;
@@ -234,8 +314,4 @@ const StatisticsSlices = createSlice({
   },
 });
 
-
-
 export default StatisticsSlices.reducer;
-
-

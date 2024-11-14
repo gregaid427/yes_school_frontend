@@ -68,20 +68,20 @@ const EditInventoryitem = () => {
     //  navigate("/student/info")
   }, []);
 
-  useEffect(() => {
-    if (updateInventoryItem?.success == 1) {
-      toast.success('Inventory Item Updated Successfully');
-      dispatch(fetchAllInventoryAction());
+  // useEffect(() => {
+  //   if (updateInventoryItem?.success == 1) {
+  //     toast.success('Inventory Item Updated Successfully');
+  //     dispatch(fetchAllInventoryAction());
 
-      dispatch(resetUpdateInventoryItem());
-      /// navigate('/inventory/additem');
-    }
-    if (updateInventoryItem?.success == 0) {
-      toast.error('Error Updating Inventory Data');
-      dispatch(resetUpdateInventoryItem());
-    }
-    //  navigate("/student/info")
-  }, [updateInventoryItem]);
+  //     dispatch(resetUpdateInventoryItem());
+  //     /// navigate('/inventory/additem');
+  //   }
+  //   if (updateInventoryItem?.success == 0) {
+  //     toast.error('Error Updating Inventory Data');
+  //     dispatch(resetUpdateInventoryItem());
+  //   }
+  //   //  navigate("/student/info")
+  // }, [updateInventoryItem]);
 
   const subdata = {
     id: info.id,
@@ -121,7 +121,7 @@ const EditInventoryitem = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Edit Inventory Item Information
+                  Edit Inventory Item 
                 </h3>
               </div>
               <div className="p-7">

@@ -2,8 +2,8 @@ import React from 'react';
 
 const DeleteSVG = (props) => {
   return (
-    <button  className='rounded-full bg-[#e03c3c63] text-xs mx-0 my-1 font-  py-1 px-3' onClick={props.clickFunction}>
-      <p>Delete</p>
+    <button  className='rounded-full bg-[#e03c3c] text-white text-xs mx-0 my-1 font-bold  py-1 px-3' onClick={props.clickFunction}>
+      <p className=''>Delete</p>
       {/* <svg
         className="fill-current"
         width="18"

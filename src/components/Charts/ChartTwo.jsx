@@ -41,7 +41,7 @@ const options = {
     },
   },
   dataLabels: {
-    enabled: false,
+    enabled: true,
   },
 
   xaxis: {
@@ -82,7 +82,7 @@ const ChartTwo = (props) => {
 
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
+    <div className="col-span-12 rounded-sm border border-stroke bg-white px-7.5 py-2 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
       <div className="mb-4 justify-between gap-4 sm:flex">
         <div className='flex align-middle gap-1 my-auto'>
           <h4 className="text-xl font-semibold text-black dark:text-white">

@@ -26,7 +26,7 @@ const ManageHistoryModal = (props) => {
       dispatch(fetchAllClassAction());
     }
     if (CreateInventorycart?.success == 1) {
-      toast.success('New Item Cartegory Added Successfully');
+      toast.success('Item Added Successfully');
       dispatch(fetchInventCartegoryAction());
       resetFormStates();
       props.close(false);
@@ -175,7 +175,7 @@ const ManageHistoryModal = (props) => {
 
                 <div className="border-b border-t my-3 border-stroke py-1 px-7 dark:border-strokedark">
                   <p>
-                    <span className="flex justify-around text-md text-center mx-auto">
+                    <span className="flex justify-around text-black dark:text-white text-md text-center mx-auto">
                       Manage Paid Fee
                     </span>
                   </p>
@@ -273,7 +273,7 @@ const ManageHistoryModal = (props) => {
                 <div className={mode == true ? '' :'hidden'}>
                    <div className="border-b flex flex-col my-3 py-3 border-t border-stroke dark:border-strokedark">
                   <p>
-                    <span className="flex justify-around text-md py-1 text-center mx-auto">
+                    <span className="flex text-black dark:text-white justify-around text-md py-1 text-center mx-auto">
                       Reverse Paid Fee
                     </span>
                   </p>
@@ -296,7 +296,7 @@ const ManageHistoryModal = (props) => {
                         handleReverse();
                       }}
                     >
-                      Reverse
+                      Proceed
                     </button>{' '}
                     </div>
                   </div>

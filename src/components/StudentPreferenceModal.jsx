@@ -7,25 +7,26 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import PreferenceRadio from './PreferenceRadio';
-import {  PreferencesAction ,resetpreference} from '../redux/slices/feeSlice';
+import { PreferencesAction, resetpreference } from '../redux/slices/feeSlice';
 
 const StudentPreferenceModal = (props) => {
   const dispatch = useDispatch();
   const inventory = useSelector((state) => state?.inventory);
 
   const fee = useSelector((state) => state?.fees);
-  const { cartegory,Preferences } = fee;
-console.log(props)
+  const { cartegory, Preferences } = fee;
+  console.log(props);
   const { CreateInventorycart } = inventory;
   useEffect(() => {
     if (Preferences?.success == 0) {
-     // toast.error('Error - Adding Item Cartegory ');
+      // toast.error('Error - Adding Item Cartegory ');
       //    dispatch(resetcreatecart())
       // dispatch(fetchAllClassAction())
     }
+
     if (Preferences?.success == 1) {
       //toast.success('New Item Cartegory Added Successfully');
-     // dispatch(fetchInventCartegoryAction());
+      // dispatch(fetchInventCartegoryAction());
       dispatch(resetpreference());
       props.close(false);
     }
@@ -45,9 +46,8 @@ console.log(props)
   const [amount, setAmount] = useState(0);
   const [repeat, setRepeat] = useState([]);
 
-
-let arr = props?.val?.preference.split(',')
-console.log(arr)
+  let arr = props?.val?.preference.split(',');
+  console.log(arr);
 
   const formRef1 = useRef();
 
@@ -83,7 +83,7 @@ console.log(arr)
   };
   const handleSubmit = (e) => {
     console.log(repeat);
-      dispatch(PreferencesAction(data));
+    dispatch(PreferencesAction(data));
   };
 
   return (
@@ -144,31 +144,27 @@ console.log(arr)
                     className="mb-2 block text-sm font-medium text-black dark:text-white"
                     htmlFor=""
                   >
-                   Select Fee Cartegory Preferences
+                    Select Fee Cartegory Preferences
                   </label>{' '}
                   <div>
                     {props?.cart.map((item, index) => (
                       <div key={index}>
                         <div className=" flex  gap-6 sm:w-full">
-                       <div className=''>
-                        <PreferenceRadio 
-                          
-                          setRepeated={setRepeat}
-                          repeat={repeat}
-                          stdId={item?.name}
-                          myarr={arr}
-
-                          
-                          />
-                                                  </div>
+                          <div className="">
+                            <PreferenceRadio
+                              setRepeated={setRepeat}
+                              repeat={repeat}
+                              stdId={item?.name}
+                              myarr={arr}
+                            />
+                          </div>
 
                           <label
                             className="block pt-1  text-sm font-medium text-black dark:text-white"
                             htmlFor="checkboxLabelOne"
                           >
-                            {"- " +item?.name}
+                            {'- ' + item?.name}
                           </label>
-                        
                         </div>
 
                         {/* <StudentPreferenceSelect

@@ -477,7 +477,7 @@ const ScholarshipList = () => {
                               <TableBtn
                                 clickFunction={() => handleRevoke(item.id)}
                                 text={'Revoke Scholarship'}
-                                color={'bg-[#e03c3c63]'}
+                                color={'bg-primary'}
                               />
                             </div>
                           </Cell>

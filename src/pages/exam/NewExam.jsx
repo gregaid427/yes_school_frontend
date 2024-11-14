@@ -138,7 +138,7 @@ const NewExam = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  32% 25%  43%;
+      --data-table-library_grid-template-columns:  30% 25%  45%;
     `,
       //       Row: `
       //   &:nth-of-type(odd) {
@@ -400,7 +400,7 @@ const NewExam = () => {
                               )}
                             </Cell> */}
 
-                              <div className="gap-2 flex">
+                              <div className="gap-1 flex">
                                 <TableBtn
                                   clickFunction={() => {
                                     setVisible(true);
@@ -435,7 +435,7 @@ const NewExam = () => {
                                     setVal1(item);
                                     handlegetclasslist(item);
                                   }}
-                                  text={'Download Class List'}
+                                  text={'Download Template'}
                                   color={'bg-primary'}
                                 />
                                 {/* <TableBtn

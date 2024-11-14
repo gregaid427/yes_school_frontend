@@ -220,11 +220,11 @@ if(props?.cartinfo){
                   </div>
                 </div>
                 <div className={!scholarr ? 'hidden' : ''}>
-                  <div className="border-b border-t my-3 border-stroke py-1 px-7 dark:border-strokedark">
+                  <div className="border-b border-t my-3 border-stroke py-1 dark:border-strokedark">
                     <p>
-                      <span className="flex justify-around text-md text-center mx-auto">
+                      <span className="flex text-md ">
                         {' '}
-                        Scholarship Summary
+                        Scholarship Summary :
                       </span>
                     </p>
                   </div>

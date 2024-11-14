@@ -10,6 +10,7 @@ import { PayFeeAction } from '../redux/slices/feeSlice';
 import { fetchAllClassAction } from '../redux/slices/classSlice';
 import { fetchActivesessionAction } from '../redux/slices/sessionSlice';
 import { fetchschoolinfoAction } from '../redux/slices/usersSlice';
+import FeeRadio from './FeeRadio';
 
 const CollectFeesModal = (props) => {
   const clad = useSelector((state) => state?.classes);
@@ -26,7 +27,7 @@ const CollectFeesModal = (props) => {
       dispatch(fetchAllClassAction());
     }
     if (CreateInventorycart?.success == 1) {
-      toast.success('New Item Cartegory Added Successfully');
+      toast.success('Item Added Successfully');
       dispatch(fetchInventCartegoryAction());
       resetFormStates();
       props.close(false);
@@ -170,16 +171,34 @@ const CollectFeesModal = (props) => {
                   />
                 </div>
 
-                <div className="w-full flex mb-4 gap-1 sm:w-2/2">
+                <div className="w-full flex mb-4 sm:w-2/2">
                   <label
                     className="my-auto w-2/5 block text-sm font-medium text-black dark:text-white"
                     htmlFor=""
                   >
-                    Amount
+                   Account Balance
                   </label>
-                  <div className="flex">
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    type="text"
+                    name=""
+                    id=""
+                    placeholder=""
+                    defaultValue={Math.abs(props.val?.accountbalance)}
+                    disabled
+                  />
+                </div>
+
+                
+                <div className="flex">
+                  <label
+                    className="my-auto w-2/5 block text-sm font-medium text-black dark:text-white"
+                    htmlFor=""
+                  >
+                    Amount Being Paid
+                  </label>
                     <input
-                      className="w-2/6 rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="number"
                       name=""
                       id=""
@@ -187,24 +206,23 @@ const CollectFeesModal = (props) => {
                       defaultValue=""
                       onChange={(e) => setAmount(e.target.value)}
                     />
-                    <label
-                      className="my-auto w-2/6 text-center block text-sm font-medium text-black dark:text-white"
-                      htmlFor=""
-                    >
-                      Accnt Balance
-                    </label>
-                    <input
-                      className="w-2/6 rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="number"
-                      name=""
-                      id=""
-                      placeholder=""
-                      defaultValue={Math.abs(props.val?.accountbalance)}
-                      //defaultValue={Math.abs(props.val?.accountbalance)}
-                      disabled
-                    />
+                    
+                
+            
+                
+                
                   </div>
+
+                  <div className="w-full flex my-4 sm:w-2/2">
+                  <label
+                    className="my-auto w-2/5 block text-sm font-medium text-black dark:text-white"
+                    htmlFor=""
+                  >
+                   Mode Of Payment
+                  </label>
+                  <FeeRadio setmode={setmode} />
                 </div>
+
                 {/*                 
                 <div className="w-full mb-3 mt-4 sm:w-2/2">
                           <label

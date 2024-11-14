@@ -140,7 +140,7 @@ console.log(data)
     }
   `,
       BaseCell: `
-         padding: 5px 0;
+         padding: 0px 0;
         font-size: 15px;
         color:white;
       //   border-bottom: 1px solid #313D4A !important;
@@ -397,7 +397,7 @@ console.log(tabledata1)
               <div className=" flex w-7/12 gap-1">
                 <div className="sm:w-3/5 ">
                   <button
-                    className="flex  justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
+                    className="flex  justify-center rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                     type=""
                     onClick={() => {
                       handleDownloadCSV();
@@ -469,13 +469,11 @@ console.log(tabledata1)
                             </Cell>
 
                             <Cell>
-                              <div className="gap-2 flex">
                                 <TableBtn
                                   clickFunction={() => handleViewbtn(item)}
                                   text={'Select'}
                                   color={'bg-primary'}
                                 />
-                              </div>
                             </Cell>
                           </Row>
                         ))}
@@ -892,7 +890,7 @@ console.log(tabledata1)
                   <button
                     className={
                       true
-                        ? 'flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90'
+                        ? 'flex w-6/12 justify-center rounded bg-primary py-1 px-6 font-medium text-gray hover:bg-opacity-90'
                         : 'hidden'
                     }
                     type=""
@@ -905,7 +903,7 @@ console.log(tabledata1)
                     Save
                   </button>
                   <button
-                    className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    className="flex w-6/12 justify-center rounded border border-stroke py-1 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                     type="reset"
                   >
                     Reset

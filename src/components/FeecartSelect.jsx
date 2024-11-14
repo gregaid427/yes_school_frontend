@@ -29,6 +29,7 @@ const FeeCartSelect = (props) => {
 
   useEffect(() => {
     props.setsectionprop(clazz);
+    console.log(clazz)
   }, [clazz]);
 
   return (

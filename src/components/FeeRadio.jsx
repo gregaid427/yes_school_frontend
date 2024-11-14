@@ -21,7 +21,7 @@ function FeeRadio(props) {
   };
 
   return (
-    <div className="flex row gap-5 ">
+    <div className="flex row gap-2 w-full ">
       <div style={styles.radioButton}>
         <input
           type="radio"

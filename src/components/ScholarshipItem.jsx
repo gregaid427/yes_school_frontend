@@ -59,7 +59,7 @@ const ScholarshipItem = (props) => {
     amount: isChecked1 == false ? amount : 0,
     type: type,
     percent: isChecked1 == true ? percent : null,
-    applicable: feecartegory,
+    applicable: isChecked1 == true ? feecartegory : 'TOTAL FEES', 
   };
 
   const handleSubmit = (e) => {

@@ -2,6 +2,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+import ErrorToast from '../../components/Toasts/Error';
+import SuccessToast from '../../components/Toasts/Success';
+import WarnToast from '../../components/Toasts/Warning';
+import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+
 axios.defaults.headers.common = {
   Authorization: `Bearer ${localStorage.getItem('token')}`,
   'Content-Type': 'application/json',
@@ -11,13 +16,26 @@ export const CreatesClassAction = createAsyncThunk(
   'new/NewClass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/`,
         payload,
       );
-
+      if (data) {
+        toast.dismiss(toastId);
+   
+      }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -29,11 +47,16 @@ export const CreatesBulkClassAction = createAsyncThunk(
   'new/NewBulkClass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/student/bulkAdmission`,
         payload,
       );
       if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Created Successfully');
       }
 
@@ -43,8 +66,14 @@ export const CreatesBulkClassAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -57,12 +86,22 @@ export const fetchBulkStudentAction = createAsyncThunk(
   'fetch/allstudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/student/`,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -74,12 +113,18 @@ export const fetchAllClassAction = createAsyncThunk(
   'fetch/AllClass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/class/all`,
       );
 
+    
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -91,12 +136,23 @@ export const fetchAllClassNoAction = createAsyncThunk(
   'fetch/AllClassNo',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/class/allno`,
       );
-
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
+      }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -108,13 +164,23 @@ export const fetchAllClassExamAction = createAsyncThunk(
   'fetch/AllClassExam',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/allclassexam`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -127,12 +193,19 @@ export const fetchAllSectionAction = createAsyncThunk(
   'fetch/AllSection',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
+
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/class/groupsection`,
       );
 
+    
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -145,22 +218,35 @@ export const deleteSectionByClass = createAsyncThunk(
   'delete/sectionbyclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/single/sectiondelete`,
         payload,
       );
       if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Record Deleted Successfully');
       }
 
       if (data == null) {
+        toast.dismiss(toastId);
         toast.error('Error Deleting Record');
       }
       if (data?.success == 0) {
+        toast.dismiss(toastId);
         toast.error(data.message);
+      }
+       if (data) {
+        toast.dismiss(toastId);
+   
       }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -173,13 +259,23 @@ export const FetchClassWithSectionAction = createAsyncThunk(
   'fetch/singleclassSection',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/getclasswithsection`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -191,13 +287,23 @@ export const fetchSingleClassAction = createAsyncThunk(
   'fetch/singleclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/single/`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -209,13 +315,23 @@ export const fetchSectionbyclassAction = createAsyncThunk(
   'fetch/sectionclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/sectionclass/`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -227,24 +343,34 @@ export const updateClassAction = createAsyncThunk(
   'class/Update',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/class/`,
         payload,
       );
       if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Record Updated Successfully');
       }
 
       if (data?.success == 0) {
+        toast.dismiss(toastId);
         toast.error('Error Updating Data');
 
         // toast.error(data.message);
       }
 
-
-
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -256,13 +382,23 @@ export const updateSectionAction = createAsyncThunk(
   'section/Update',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/class/section`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -274,13 +410,23 @@ export const createSectionAction = createAsyncThunk(
   'create/sectiongroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/section`,
         payload,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -293,21 +439,34 @@ export const deleteAllClassAction = createAsyncThunk(
   'class/deleteAllClass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/class/`,
       );
       if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Record Deleted Successfully');
       }
 
       if (data == null) {
+        toast.dismiss(toastId);
         toast.error('Error Deleting Record');
       }
       if (data?.success == 0) {
+        toast.dismiss(toastId);
         toast.error(data.message);
+      }
+       if (data) {
+        toast.dismiss(toastId);
+   
       }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -320,21 +479,34 @@ export const deleteSingleClassAction = createAsyncThunk(
   'class/deleteSingleClass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/class/single/${payload}`,
       );
       if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Record Deleted Successfully');
       }
 
       if (data == null) {
+        toast.dismiss(toastId);
         toast.error('Error Deleting Record');
       }
       if (data?.success == 0) {
+        toast.dismiss(toastId);
         toast.error(data.message);
+      }
+       if (data) {
+        toast.dismiss(toastId);
+   
       }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -347,12 +519,22 @@ export const deleteSectiongroupAction = createAsyncThunk(
   'delete/deleteSinglegroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/class/sectiongroup/${payload}`,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -365,12 +547,22 @@ export const truncateTableAction = createAsyncThunk(
   'delete/allrecords',
   async ({ rejectWithValue, getState, dispatch }) => {
     try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/student/truncate`,
       );
 
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
       return data;
     } catch (error) {
+      console.log(error);
+      ErrorToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -406,7 +598,6 @@ const ClassSlices = createSlice({
     },
   },
   extraReducers: (builder) => {
-
     builder.addCase(FetchClassWithSectionAction.pending, (state, action) => {
       state.ClassWithSectionloading = true;
       state.ClassWithSection = false;
@@ -422,8 +613,6 @@ const ClassSlices = createSlice({
       state.ClassWithSectionerror = action.payload;
       state.ClassWithSection = undefined;
     });
-
-
 
     builder.addCase(CreatesClassAction.pending, (state, action) => {
       state.CreateClassesloading = true;
@@ -693,7 +882,7 @@ export const {
   resetdeleteclass,
   resetcreatesection,
   resetfetchAllClassExam,
-  resetgetclass
+  resetgetclass,
 } = ClassSlices.actions;
 
 export default ClassSlices.reducer;
