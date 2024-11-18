@@ -31,7 +31,8 @@ export const CreatesInventoryAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -59,7 +60,8 @@ export const CreatesInventoryStockAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -87,7 +89,8 @@ export const CreatesInventoryCartegoryAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -168,7 +171,8 @@ export const fetchSingleInventoryAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -223,7 +227,8 @@ export const updateInventoryAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -256,7 +261,8 @@ export const updateInventoryItemAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -284,7 +290,8 @@ export const updateCartegoryAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -311,7 +318,8 @@ export const deleteAllInventoryAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -338,7 +346,8 @@ export const deleteSingleInventoryAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -365,7 +374,8 @@ export const deleteSingleCartAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -393,7 +403,8 @@ export const deleteSingleInventoryStockAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }

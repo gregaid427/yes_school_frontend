@@ -141,11 +141,13 @@ const AddExpenseHead = () => {
   const handledeletebtn = () => {
     dispatch(deleteSingleExpenseHeadAction(del));
   };
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
 
   const subdata = {
     type: type,
     subjectName: subjectName,
-    createdBy: 'Asante',
+    createdBy: username?.payload,
   };
 
   const handleDownloadPdf = async () => {
@@ -231,7 +233,7 @@ const AddExpenseHead = () => {
                   <div className="sm:w-2/5 ">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
+             // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadPdf();
                       }}
@@ -243,7 +245,7 @@ const AddExpenseHead = () => {
                   <div className="w-full sm:w-2/5">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
+             // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadCSV();
                       }}
@@ -296,7 +298,7 @@ const AddExpenseHead = () => {
                       </Header>
 
                       <Body>
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row
                             key={item.id}
                             item={item}
@@ -397,7 +399,7 @@ const AddExpenseHead = () => {
                       </Header>
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row
                             key={item.id}
                             item={item}

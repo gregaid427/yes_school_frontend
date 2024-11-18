@@ -55,7 +55,8 @@ const EditInventoryCartegory = (props) => {
     }
     //  navigate("/student/info")
   }, [updateCartegory]);
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   const handleSubmit = (e) => {
     e.preventDefault();
     if (cartegoryName == '')
@@ -64,7 +65,7 @@ const EditInventoryCartegory = (props) => {
       id: props.info.id,
       cartegoryName: cartegoryName,
       notes: notes,
-      //  createdby: 'asante'
+        createdby: username?.payload
     };
     dispatch(updateCartegoryAction(data));
   };

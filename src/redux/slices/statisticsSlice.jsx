@@ -12,22 +12,23 @@ export const studentStatAction = createAsyncThunk(
   'fetch/stat1',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',
-      });
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
+
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/1`,
         payload,
       );
 
-      if (data) {
-        toast.dismiss(toastId);
-      }
+      // if (data) {
+      //   toast.dismiss(toastId);
+      // }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorAltToast('⚠️ Error', error);
+      //ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -40,22 +41,23 @@ export const classStatAction = createAsyncThunk(
   'fetch/stat2',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',
-      });
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
+
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/3`,
         payload,
       );
 
-      if (data) {
-        toast.dismiss(toastId);
-      }
+      // if (data) {
+      //   toast.dismiss(toastId);
+      // }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorAltToast('⚠️ Error', error);
+      //ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -68,22 +70,23 @@ export const teacherStatAction = createAsyncThunk(
   'fetch/stat3',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',
-      });
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
+
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/2`,
         payload,
       );
 
-      if (data) {
-        toast.dismiss(toastId);
-      }
+      // if (data) {
+      //   toast.dismiss(toastId);
+      // }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorAltToast('⚠️ Error', error);
+      //ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -96,22 +99,23 @@ export const subjectStatAction = createAsyncThunk(
   'fetch/stat4',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',
-      });
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
+
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/4`,
         payload,
       );
 
-      if (data) {
-        toast.dismiss(toastId);
-      }
+      // if (data) {
+      //   toast.dismiss(toastId);
+      // }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorAltToast('⚠️ Error', error);
+      //ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -124,22 +128,23 @@ export const parentStatAction = createAsyncThunk(
   'fetch/stat6',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',
-      });
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
+
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/6`,
         payload,
       );
 
-      if (data) {
-        toast.dismiss(toastId);
-      }
+      // if (data) {
+      //   toast.dismiss(toastId);
+      // }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorAltToast('⚠️ Error', error);
+      //ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -152,22 +157,22 @@ export const chartStatAction = createAsyncThunk(
   'fetch/stat7',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',
-      });
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/5`,
         payload,
       );
 
-      if (data) {
-        toast.dismiss(toastId);
-      }
+      // if (data) {
+      //   toast.dismiss(toastId);
+      // }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorAltToast('⚠️ Error', error);
+   //   //ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -179,22 +184,22 @@ export const chart1StatAction = createAsyncThunk(
   'fetch/stat8',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',
-      });
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/7`,
         payload,
       );
 
-      if (data) {
-        toast.dismiss(toastId);
-      }
+      // if (data) {
+      //   toast.dismiss(toastId);
+      // }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorAltToast('⚠️ Error', error);
+      //ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }

@@ -620,6 +620,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         }`}
                       >
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                        <li>
+                            <NavLink
+                              to="/fees/Collectfees"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Collect Fees
+                            </NavLink>
+                          </li>
                           <li>
                             <NavLink
                               to="/fees/addfeesgroup"
@@ -631,17 +642,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Fees Cartegory
                             </NavLink>
                           </li>
-                          <li>
-                            <NavLink
-                              to="/fees/Collectfees"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Collect Fees
-                            </NavLink>
-                          </li>
+                       
                           <li>
                             <NavLink
                               to="/fees/Assignfees"

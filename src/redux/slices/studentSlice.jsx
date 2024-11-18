@@ -39,7 +39,8 @@ export const CreatestudentAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -84,7 +85,8 @@ export const CreatestudentImageAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -176,7 +178,8 @@ export const MasrkstudentWaiting = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -247,7 +250,8 @@ export const fetchStudentsClassAccountAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -340,7 +344,8 @@ export const fetchStudentsCustomAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -386,7 +391,8 @@ export const fetchCustomStudentsClassAccountAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -421,7 +427,8 @@ export const fetchStudentsClassPromoteAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -467,7 +474,8 @@ export const fetchCustomStudentsClassPromoteAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -498,7 +506,8 @@ export const UpdatestudentAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -532,7 +541,8 @@ export const StudentPicture = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -568,7 +578,8 @@ export const deleteSingleStudentAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -603,7 +614,8 @@ export const PromoteAllAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -638,7 +650,8 @@ export const PromoteSelectedAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -666,7 +679,8 @@ export const truncateTableAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }

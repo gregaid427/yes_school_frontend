@@ -113,12 +113,13 @@ if(props?.cartinfo){
   }, [chosendata]);
 
   console.log(chosendata);
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   let data = {
     id: props.val?.student_id,
     class: props.val?.class,
     section: props.val?.section,
-    createdby: 'asante',
+    createdby: username?.payload,
     amount: amount,
     percentage: props.val?.accountbalance,
     scholarship: scholarr,

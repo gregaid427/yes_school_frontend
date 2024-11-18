@@ -275,7 +275,7 @@ const SearchExpense = () => {
                   </div>
                   <label
                     className="pt-4 block text-sm font-medium text-ash dark:text-white"
-                    style={{ color: '#A9B5B3' }}
+           // style={{ color: '#A9B5B3' }}
                     onClick={(e) => {
                       handleDownloadPdf();
                     }}
@@ -297,7 +297,7 @@ const SearchExpense = () => {
                   </div>
                   <label
                     className="pt-4 block text-sm font-medium text-ash dark:text-white"
-                    style={{ color: '#A9B5B3' }}
+           // style={{ color: '#A9B5B3' }}
                     onClick={(e) => {
                       handleDownloadCSV();
                     }}
@@ -382,7 +382,7 @@ const SearchExpense = () => {
                     </Header>
 
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList.map((item) => (
+                      {tableList?.map((item) => (
                         <Row
                           key={item.id}
                           item={item}
@@ -495,7 +495,7 @@ const SearchExpense = () => {
                     </Header>
 
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList.map((item) => (
+                      {tableList?.map((item) => (
                         <Row
                           key={item.student_id}
                           item={item}

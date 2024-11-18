@@ -31,7 +31,7 @@ const SelectGroupTwo = (props) => {
             isOptionSelected ? 'text-black dark:text-white' : ''
           }`}
         >
-          {values.map((val, index) => (
+          {values?.map((val, index) => (
             <option
               key={index}
               value={values[index]}

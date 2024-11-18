@@ -23,9 +23,10 @@ const DeleteAllAssignedFeeModal = (props) => {
   const fee = useSelector((state) => state?.fees);
   const { cartegory } = fee;
   let navigate = useNavigate();
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   const data = {
-    createdby: 'Asante',
+    createdby: username?.payload,
   };
 
   const handleSubmit = () => {

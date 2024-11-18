@@ -197,10 +197,11 @@ const Section = () => {
   const handledeletebtn = () => {
     dispatch(deleteSectiongroupAction(del));
   };
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   const classdata = {
     sectionName: sectionTitle.toUpperCase(),
-    createdBy: 'Asante',
+    createdBy: username?.payload,
   };
   const handlecreateSection = (e) => {
     if (sectionTitle == '') {
@@ -381,7 +382,7 @@ const Section = () => {
                   <div className="sm:w-2/5 ">
                     {/* <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
+             // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadPdf();
                       }}
@@ -393,7 +394,7 @@ const Section = () => {
                   <div className="w-full sm:w-2/5">
                     {/* <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
+             // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadCSV();
                       }}
@@ -452,7 +453,7 @@ const Section = () => {
 
   
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row key={item.id}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
@@ -541,7 +542,7 @@ const Section = () => {
 
   
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row
                             key={item.id}
                             item={item}

@@ -3,7 +3,6 @@ import CardDataStats from '../../components/CardDataStats';
 
 import ChartTwo from '../../components/Charts/ChartTwo';
 
-import TableOne from '../../components/Tables/TableOne';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { useDispatch, useSelector } from 'react-redux';
 import {

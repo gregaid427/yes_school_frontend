@@ -48,11 +48,14 @@ const AssignFeeModal = (props) => {
     });
     return pp;
   }
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
+
   const handleSubmit = () => {
     data4['class'] = isChecked1 == false ? [clazz] : selectedArr;
     data4['session'] = sessionoption;
     data4['total'] = data3;
-    data4['createdby'] = 'Asante';
+    data4['createdby'] = username?.payload;
     delete data4.test;
     data4['fee'] = pop(data2);
     console.log('data4');
@@ -208,7 +211,7 @@ const AssignFeeModal = (props) => {
                             Select Classes Applicable
                           </label>{' '}
                           <div>
-                            {fetchAllClass?.data.map((item, index) => (
+                            {fetchAllClass?.data?.map((item, index) => (
                               <AssignFeeClassSelect
                                 info={fetchAllClass?.data?.[index]}
                                 selectedarr={selectedArr}
@@ -433,7 +436,7 @@ const AssignFeeModal = (props) => {
                               Amount To Charge
                             </label>
                           </div>
-                          {cartegory?.data.map((item, index) => (
+                          {cartegory?.data?.map((item, index) => (
                             <div className="flex   " key={item.id}>
                               <div className="w-4/6 flex  ">
                                 {' '}

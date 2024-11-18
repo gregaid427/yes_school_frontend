@@ -74,6 +74,7 @@ const FeesReceiptModal = (props) => {
     return Math.floor(Math.random()*(max+1))
 
   }
+const { username, userMail} = user;
   let receiptid = receiptidGen()
   console.log(receiptid)
   let date = new Date();
@@ -82,7 +83,7 @@ const FeesReceiptModal = (props) => {
     id: props.val?.student_id,
     class: props.val?.class,
     section: props.val?.section,
-    collectedby: 'asante',
+    collectedby: username?.payload,
     amountpaid: amount,
     mode: mode,
     balbeforepayment: props.val?.accountbalance,

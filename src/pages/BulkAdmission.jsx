@@ -142,7 +142,7 @@ console.log(data)
       BaseCell: `
          padding: 0px 0;
         font-size: 15px;
-        color:white;
+      //  color:white;
       //   border-bottom: 1px solid #313D4A !important;
       //   //  background-color: #24303F;
 
@@ -202,10 +202,11 @@ console.log(data)
     dispatch(deleteSingleClassAction(value));
     // dispatch(fetchAllClassAction());
   };
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   const classdata = {
     title: classTitle.toUpperCase(),
-    createdBy: 'Asante',
+    createdBy: username?.payload,
     instructor: classInstructor,
   };
 
@@ -346,7 +347,7 @@ console.log(tabledata1)
         return result;
       }
 
-      let newArr1 = parsedData.map((v) => ({
+      let newArr1 = parsedData?.map((v) => ({
         ...v,
         STUDENT_PASSWORD: generateString(5).toLocaleLowerCase(),
         EMAIL: v.FIRST_NAME + generateString(3).toLocaleLowerCase(),
@@ -357,7 +358,7 @@ console.log(tabledata1)
         GUARD1_USERNAME: v.GUARDIAN_1_FIRST_NAME == undefined ? "" : v.GUARDIAN_1_FIRST_NAME + generateString(3).toLocaleLowerCase()  ,
         GUARD2_USERNAME: v.GUARDIAN_2_FIRST_NAME == undefined ? "" : 
           v.GUARDIAN_2_FIRST_NAME + generateString(3).toLocaleLowerCase(),
-        CREATED_BY: 'ASANTE',
+        CREATED_BY: username?.payload,
       }));
       console.log(newArr1)
       setClassData1(newArr1);
@@ -397,7 +398,7 @@ console.log(tabledata1)
               <div className=" flex w-7/12 gap-1">
                 <div className="sm:w-3/5 ">
                   <button
-                    className="flex  justify-center rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                    className="flex  justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
                     type=""
                     onClick={() => {
                       handleDownloadCSV();
@@ -432,10 +433,10 @@ console.log(tabledata1)
             </div>
           </div>
           <div
-            className={
-              'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
-            }
-          >
+          className={
+            'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
+          }
+        >
             <div className="flex gap-3  flex-col">
               <div className="px-2">
                 <Table
@@ -447,7 +448,7 @@ console.log(tabledata1)
                   {(tableList) => (
                     <>
                       <Header>
-                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
+                      <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
                           <HeaderCell>Class</HeaderCell>
                           <HeaderCell>Section</HeaderCell>
 
@@ -457,7 +458,7 @@ console.log(tabledata1)
 
   
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row key={item.id}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
@@ -543,7 +544,7 @@ console.log(tabledata1)
 
   
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row
                             key={item.id}
                             item={item}
@@ -688,7 +689,7 @@ console.log(tabledata1)
 
   
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row key={item.STUDENT_PASSWORD}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
@@ -796,7 +797,7 @@ console.log(tabledata1)
 
   
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row
                             key={item.id}
                             item={item}
@@ -831,9 +832,9 @@ console.log(tabledata1)
             </div>
             <div className="p-7">
               <form ref={formRef1}>
-                <div className="w-full mb-4 sm:w-2/2">
+                <div className="w-full mb-2 sm:w-2/2">
                   <label
-                    className="mb-3 block text-sm font-small text-black dark:text-white"
+                    className="mb-1 block text-sm font-small text-black dark:text-white"
                     htmlFor=""
                   >
                     Class
@@ -849,7 +850,7 @@ console.log(tabledata1)
                   />
                 </div>
 
-                <div className="w-full mb-4 sm:w-2/2">
+                <div className="w-full mb-2 sm:w-2/2">
                   <label
                     className="mb-3 block text-sm font-small text-black dark:text-white"
                     htmlFor=""
@@ -869,7 +870,7 @@ console.log(tabledata1)
 
                 <div className="w-full sm:w-2/2">
                   <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
+                    className="mb-2 block text-sm font-medium text-black dark:text-white"
                     htmlFor="phoneNumber"
                   >
                     Select Excel File{' '}

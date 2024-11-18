@@ -161,6 +161,9 @@ const ExamGradeEditModal = (props) => {
   console.log( 
  classScore + examScore + otherScore,
   )
+
+  const user = useSelector((state) => state?.user);
+const { username, userMail} = user;
   useEffect(() => {
     console.log(props)
     obj['notes'] = props?.info?.[0]?.notes
@@ -250,7 +253,7 @@ const ExamGradeEditModal = (props) => {
         otherScore: otherScore,
         notes: desc,
         grades: newArray,
-        createdby: 'Asante',
+        createdby: username?.payload,
       };
 
       console.log(data);

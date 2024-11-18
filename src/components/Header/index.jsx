@@ -24,10 +24,10 @@ const Header = (props) => {
   
 
 
-  // useEffect(() => {
-  //   dispatch(fetchschoolinfoAction());
-  //   dispatch(fetchActivesessionAction());
-  // }, []);
+  useEffect(() => {
+    dispatch(fetchschoolinfoAction());
+    dispatch(fetchActivesessionAction());
+  }, []);
 
   useEffect(() => {
     if (fetchsessionactive?.success == 1) {

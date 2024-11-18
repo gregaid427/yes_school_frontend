@@ -181,6 +181,7 @@ const EditExamResult = (props) => {
   function getRandomNumber(max, min) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+const { username, userMail} = user;
   let random = getRandomNumber(10000, 1000);
   let examinationid = value.subjects?.slice(0, 3) + random;
   let resultdata = {
@@ -197,7 +198,7 @@ const EditExamResult = (props) => {
     classes: value?.class,
     classcode: value?.classcode,
     section: value?.section == null ? '-' : value?.section,
-    createdby: 'Asante',
+    createdby: username?.payload,
     classsize: nodes?.length,
   };
   function handleSubmitResult() {
@@ -391,7 +392,7 @@ const EditExamResult = (props) => {
                           </Header>
 
                           <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                            {tableList.map((item, index) => (
+                            {tableList?.map((item, index) => (
                               <Row
                                 key={item.student_id}
                                 item={item}
@@ -529,7 +530,7 @@ const EditExamResult = (props) => {
                         </Header>
 
                         <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                          {tableList.map((item) => (
+                          {tableList?.map((item) => (
                             <Row
                               key={item.student_id}
                               item={item}

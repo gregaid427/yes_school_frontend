@@ -66,11 +66,12 @@ const ManageHistoryModal = (props) => {
   }
   let receiptid = receiptidGen();
   console.log(receiptid);
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   let data = {
     id: props.val?.student_id,
     class: props.val?.class,
-    collectedby: 'asante',
+    collectedby: username?.payload,
     amount: props.val?.amountpaid,
     reverseamount: props.val?.balbeforepayment
   
@@ -78,7 +79,7 @@ const ManageHistoryModal = (props) => {
   let data1 = {
     id: props.val?.student_id,
     class: props.val?.class,
-    collectedby: 'asante',
+    collectedby: username?.payload,
     amount: amount
   
   };

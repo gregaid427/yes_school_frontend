@@ -191,13 +191,15 @@ setItem(value)
   //     setsections(arrr);
   //   }
   // }, [sectionloading]);
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
   }, []);
   const classdata = {
     title: classTitle.toUpperCase(),
-    createdBy: 'Asante',
+    createdBy: username?.payload,
     instructor: classInstructor,
   };
   const handlecreateClass = () => {
@@ -400,7 +402,7 @@ setItem(value)
 
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList.map((item) => (
+                      {tableList?.map((item) => (
                         <Row key={item.id}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
@@ -498,7 +500,7 @@ setItem(value)
 
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList.map((item) => (
+                      {tableList?.map((item) => (
                         <Row
                           key={item.id}
                           item={item}

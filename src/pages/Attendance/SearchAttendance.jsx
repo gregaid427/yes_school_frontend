@@ -479,7 +479,7 @@ const SearchAttendance = () => {
                     </Header>
 
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList.map((item) => (
+                      {tableList?.map((item) => (
                         <Row
                           key={item.id}
                           item={item}

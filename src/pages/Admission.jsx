@@ -110,7 +110,8 @@ const Admission = () => {
     // if(!picture) return console.log('no image')
 
     if (firstName == '') return toast.error('Please Fill Out Required Fields');
-
+    const user = useSelector((state) => state?.user);
+    const { username, userMail} = user;
     let data = {
       firstName: firstName,
       lastName: lastName,
@@ -140,7 +141,7 @@ const Admission = () => {
       picture: picture,
       feeArrears: feeArrears,
       feeCredit: feeCredit,
-      createdBy: 'Asante',
+      createdBy: username?.payload,
     };
 
     dispatch(CreatestudentAction(data));

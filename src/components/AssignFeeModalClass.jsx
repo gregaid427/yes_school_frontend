@@ -52,7 +52,7 @@ const AssignFeeModalClass = (props) => {
                               Amount To Charge
                             </label>
                           </div>
-                          {props?.data.map((item, index) => (
+                          {props?.data?.map((item, index) => (
                             <div className="flex   " key={item.id}>
                               <div className="w-4/6 flex  ">
                                 {' '}

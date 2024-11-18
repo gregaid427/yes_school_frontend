@@ -183,7 +183,9 @@ const StaffEdit = () => {
   };
 
   let codes = `${student ? 1 : 0},${Academics ? 2 : 0},${inventory ? 3 : 0},${expenses ? 4 : 0},${fees ? 5 : 0},${settings ? 6 : 0}`;
-  
+  const user = useSelector((state) => state?.user);
+const { username, userMail} = user;
+
   const classdata = {
     fname: fname,
     lname: lname,
@@ -197,7 +199,7 @@ const StaffEdit = () => {
     address: address,
     info: info,
     userId: value?.userId,
-    createdby: 'Asante',
+    createdby: username?.payload,
   };
   const handlecreateStaff = () => {
     if (fname == '') {

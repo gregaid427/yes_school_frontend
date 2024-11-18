@@ -74,11 +74,15 @@ const StudentPreferenceModal = (props) => {
 
   //   }
   // }, []);
+
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
+
   let myarr = [];
   let data = {
     id: props.val?.student_id,
     class: props.val?.class,
-    createdby: 'asante',
+    createdby: username?.payload,
     pref: repeat,
   };
   const handleSubmit = (e) => {
@@ -147,7 +151,7 @@ const StudentPreferenceModal = (props) => {
                     Select Fee Cartegory Preferences
                   </label>{' '}
                   <div>
-                    {props?.cart.map((item, index) => (
+                    {props?.cart?.map((item, index) => (
                       <div key={index}>
                         <div className=" flex  gap-6 sm:w-full">
                           <div className="">

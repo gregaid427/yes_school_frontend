@@ -33,7 +33,8 @@ export const CreateUserAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -62,7 +63,8 @@ export const CreateGuardianAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -100,9 +102,10 @@ export const loginUserAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
-      console.log(error);
-      console.log(error?.response);
+     //       ErrorToast('Error', error);
+
+      // console.log(error);
+      // console.log(error?.response);
 
       if (!error?.response) {
         throw error;
@@ -160,7 +163,8 @@ export const passwordsendmail = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -189,7 +193,8 @@ export const passwordResetAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -218,7 +223,8 @@ export const verifyuser = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -256,7 +262,8 @@ export const CreatesStaffAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -294,7 +301,8 @@ export const UpdateStaffAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -331,7 +339,8 @@ export const deleteStaffAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -367,7 +376,8 @@ export const inactiveStaffAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -403,7 +413,8 @@ export const activeStaffAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -501,7 +512,8 @@ export const updateschoolinfoAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -533,7 +545,8 @@ export const fetchUserdataAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -572,7 +585,8 @@ export const SchoollogoAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }

@@ -81,7 +81,8 @@ const ExamGradeModal = (props) => {
   const [name, setName] = useState('');
   const [classScore, setclassScore] = useState(0);
   const [examScore, setExamScore] = useState(0);
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   let finalArray = [];
   console.log(typeof classScore + typeof examScore);
   const handleSubmit = () => {
@@ -141,7 +142,7 @@ const ExamGradeModal = (props) => {
 
         notes: desc,
         grades: finalArray,
-        createdby: 'Asante',
+        createdby:username?.payload,
       };
 
       console.log(data);
@@ -1227,7 +1228,7 @@ const ExamGradeModal = (props) => {
                               Amount To Charge
                             </label>
                           </div>
-                          {cartegory?.data.map((item, index) => (
+                          {cartegory?.data?.map((item, index) => (
                             <div className="flex   " key={item.id}>
                               <div className="w-4/6 flex  ">
                                 {' '}

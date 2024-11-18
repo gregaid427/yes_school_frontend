@@ -16,6 +16,7 @@ export const CreatesClassAction = createAsyncThunk(
   'new/NewClass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -26,16 +27,15 @@ export const CreatesClassAction = createAsyncThunk(
       );
       if (data) {
         toast.dismiss(toastId);
-   
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -47,6 +47,7 @@ export const CreatesBulkClassAction = createAsyncThunk(
   'new/NewBulkClass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -66,14 +67,14 @@ export const CreatesBulkClassAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -86,6 +87,7 @@ export const fetchBulkStudentAction = createAsyncThunk(
   'fetch/allstudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -94,9 +96,8 @@ export const fetchBulkStudentAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/`,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
@@ -120,7 +121,6 @@ export const fetchAllClassAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/class/all`,
       );
 
-    
       return data;
     } catch (error) {
       console.log(error);
@@ -136,6 +136,7 @@ export const fetchAllClassNoAction = createAsyncThunk(
   'fetch/AllClassNo',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -145,9 +146,8 @@ export const fetchAllClassNoAction = createAsyncThunk(
       if (data?.success == 1) {
         toast.dismiss(toastId);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
@@ -164,6 +164,7 @@ export const fetchAllClassExamAction = createAsyncThunk(
   'fetch/AllClassExam',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -173,14 +174,14 @@ export const fetchAllClassExamAction = createAsyncThunk(
         payload,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -201,7 +202,6 @@ export const fetchAllSectionAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/class/groupsection`,
       );
 
-    
       return data;
     } catch (error) {
       console.log(error);
@@ -218,6 +218,7 @@ export const deleteSectionByClass = createAsyncThunk(
   'delete/sectionbyclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -239,14 +240,14 @@ export const deleteSectionByClass = createAsyncThunk(
         toast.dismiss(toastId);
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -259,6 +260,7 @@ export const FetchClassWithSectionAction = createAsyncThunk(
   'fetch/singleclassSection',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -268,14 +270,14 @@ export const FetchClassWithSectionAction = createAsyncThunk(
         payload,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -287,6 +289,7 @@ export const fetchSingleClassAction = createAsyncThunk(
   'fetch/singleclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -296,14 +299,14 @@ export const fetchSingleClassAction = createAsyncThunk(
         payload,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -315,6 +318,7 @@ export const fetchSectionbyclassAction = createAsyncThunk(
   'fetch/sectionclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -324,14 +328,14 @@ export const fetchSectionbyclassAction = createAsyncThunk(
         payload,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -343,6 +347,7 @@ export const updateClassAction = createAsyncThunk(
   'class/Update',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -363,14 +368,14 @@ export const updateClassAction = createAsyncThunk(
         // toast.error(data.message);
       }
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -382,6 +387,7 @@ export const updateSectionAction = createAsyncThunk(
   'section/Update',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -391,14 +397,14 @@ export const updateSectionAction = createAsyncThunk(
         payload,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -410,6 +416,7 @@ export const createSectionAction = createAsyncThunk(
   'create/sectiongroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -419,14 +426,14 @@ export const createSectionAction = createAsyncThunk(
         payload,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -439,6 +446,7 @@ export const deleteAllClassAction = createAsyncThunk(
   'class/deleteAllClass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -459,14 +467,14 @@ export const deleteAllClassAction = createAsyncThunk(
         toast.dismiss(toastId);
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -479,6 +487,7 @@ export const deleteSingleClassAction = createAsyncThunk(
   'class/deleteSingleClass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -499,14 +508,14 @@ export const deleteSingleClassAction = createAsyncThunk(
         toast.dismiss(toastId);
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -519,6 +528,7 @@ export const deleteSectiongroupAction = createAsyncThunk(
   'delete/deleteSinglegroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -527,14 +537,14 @@ export const deleteSectiongroupAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/class/sectiongroup/${payload}`,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -547,6 +557,7 @@ export const truncateTableAction = createAsyncThunk(
   'delete/allrecords',
   async ({ rejectWithValue, getState, dispatch }) => {
     try {
+      toast.dismiss();
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',
       });
@@ -555,14 +566,14 @@ export const truncateTableAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/truncate`,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }

@@ -229,6 +229,9 @@ const MarkAttendance = () => {
   }
   let random = getRandomNumber(10000, 1000);
 
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
+
   const handlePromoteselected = () => {
     const data = {
       datetaken: date,
@@ -241,7 +244,7 @@ const MarkAttendance = () => {
       session: sessionzz,
       section: sectionzz,
       //    name : name,
-      createdby: 'Asante',
+      createdby: username?.payload,
     };
     console.log(data);
     dispatch(CreateAttendanceAction(data));
@@ -524,7 +527,7 @@ const MarkAttendance = () => {
                     </Header>
 
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList.map((item) => (
+                      {tableList?.map((item) => (
                         <Row
                           key={item.student_id}
                           item={item}

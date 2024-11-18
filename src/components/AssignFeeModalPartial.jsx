@@ -48,11 +48,13 @@ const AssignFeeModalPartial = (props) => {
     });
     return pp;
   }
+  const user = useSelector((state) => state?.user);
+const { username, userMail} = user;
   const handleSubmit = () => {
     data4['class'] = [props.data];
     data4['session'] = sessionoption;
     data4['total'] = data3;
-    data4['createdby'] = 'Asante';
+    data4['createdby'] = username?.payload;
     delete data4.test;
     data4['fee'] = pop(data2);
     console.log('data4');
@@ -115,7 +117,7 @@ const AssignFeeModalPartial = (props) => {
                               Amount To Charge
                             </label>
                           </div>
-                          {cartegory?.data.map((item, index) => (
+                          {cartegory?.data?.map((item, index) => (
                             <div className="flex   " key={item.id}>
                               <div className="w-4/6 flex  ">
                                 {' '}

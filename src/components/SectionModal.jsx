@@ -49,11 +49,12 @@ const SectionModal = (props) => {
     // }
   }, [createClassSection]);
 
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
 
   const classdata = {
     sectionName: sectionTitle.toUpperCase(),
-    createdBy: 'Asante',
+    createdBy: username?.payload,
   };
   const handlecreateSection = (e) => {
     if (sectionTitle == '') {

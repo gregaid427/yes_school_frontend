@@ -102,7 +102,7 @@ const AssignFeeModalClasses = (props) => {
                             Select Classes 
                           </label>{' '}
                           <div>
-                            {fetchAllClass?.data.map((item, index) => (
+                            {fetchAllClass?.data?.map((item, index) => (
                               <AssignFeeClassSelect
                                 info={fetchAllClass?.data?.[index]}
                                 selectedarr={selectedArr}
@@ -325,7 +325,7 @@ const AssignFeeModalClasses = (props) => {
                               Amount To Charge
                             </label>
                           </div>
-                          {cartegory?.data.map((item, index) => (
+                          {cartegory?.data?.map((item, index) => (
                             <div className="flex   " key={item.id}>
                               <div className="w-4/6 flex  ">
                                 {' '}

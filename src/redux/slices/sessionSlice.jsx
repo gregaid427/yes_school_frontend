@@ -17,17 +17,17 @@ export const fetchAllsessionAction = createAsyncThunk(
   'fetch/Allsession',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',
-      });
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/session/`,
       );
 
-      if (data) {
-        toast.dismiss(toastId);
-      }
+      // if (data) {
+      //   toast.dismiss(toastId);
+      // }
       return data;
     } catch (error) {
       console.log(error);
@@ -58,7 +58,7 @@ export const fetchActivesessionAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorAltToast('⚠️ Error', error);
+     // ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -85,7 +85,8 @@ export const deletesessionByIdAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -113,7 +114,7 @@ export const updatesessionAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+      ErrorToast('Error', error);
       if (!error?.response) {
         throw error;
       }
@@ -140,7 +141,8 @@ export const updatesessionStatusAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -167,7 +169,8 @@ export const createsessionAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -194,7 +197,8 @@ export const truncateTableAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }

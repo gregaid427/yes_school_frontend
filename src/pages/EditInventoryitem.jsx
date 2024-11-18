@@ -82,14 +82,16 @@ const EditInventoryitem = () => {
   //   }
   //   //  navigate("/student/info")
   // }, [updateInventoryItem]);
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
+  
   const subdata = {
     id: info.id,
     itemName: item,
     cartegory: cart,
     quantity: quantity,
     supplier: supName,
-    CreatedBy: 'Asante',
+    CreatedBy: username?.payload,
     supplierContact1: supContact1,
     supplierContact2: supContact2,
     SupplierInfo: supInfo,

@@ -284,7 +284,7 @@ const AddExpense = () => {
                   <div className="sm:w-2/5 ">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
+             // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadPdf();
                       }}
@@ -307,7 +307,7 @@ const AddExpense = () => {
                   <div className="w-full sm:w-2/5">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
+             // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadCSV();
                       }}
@@ -368,7 +368,7 @@ const AddExpense = () => {
                       </Header>
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row
                             key={item.id}
                             item={item}
@@ -476,7 +476,7 @@ const AddExpense = () => {
                       </Header>
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row
                             key={item.id}
                             item={item}

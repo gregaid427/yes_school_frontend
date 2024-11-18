@@ -52,10 +52,12 @@ const ScholarshipItem = (props) => {
     // formRef.current.reset();
     formRef1.current.reset();
   }
-
+  
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   let data = {
     title: cartegoryName,
-    createdby: 'asante',
+    createdby: username?.payload,
     amount: isChecked1 == false ? amount : 0,
     type: type,
     percent: isChecked1 == true ? percent : null,

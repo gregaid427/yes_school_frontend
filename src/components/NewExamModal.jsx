@@ -58,6 +58,11 @@ const NewExamModal = (props) => {
     chosen[0]?.classworkpercent +
     '-' +
     chosen[0]?.otherscorepercent;
+
+
+    const user = useSelector((state) => state?.user);
+const { username, userMail} = user;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -66,7 +71,7 @@ const NewExamModal = (props) => {
       class: clazz,
       subjects: finalArray,
       session: sessionz,
-      createdby: 'Asante',
+      createdby: username?.payload,
       note: ' ',
       examtable: 'exam' + sessionz.split(' ').join(''),
       chosengrade: grady,

@@ -19,7 +19,6 @@ import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
-import Tables from './pages/Tables';
 
 import Class from './pages/Class';
 import Fees from './pages/Fees/Fees';
@@ -113,10 +112,13 @@ import Missing from './pages/Authentication/Missing';
 import Unauthorized from './pages/Authentication/Unauthorized';
 import useAuth from './useAuth';
 import StaffEdit from './pages/SetStaffEdit';
-import AddInventory from './pages/Inventory/AddInventory';
-import AddInventoryCartegory from './pages/Inventory/AddInventoryCartegory';
-import AddInventoryStock from './pages/Inventory/AddInventoryStock';
+// import AddInventory from './pages/Inventory/AddInventory';
+// import AddInventoryCartegory from './pages/Inventory/AddInventoryCartegory';
+// import AddInventoryStock from './pages/Inventory/AddInventoryStock';
 import SingleStudentGuardian from './pages/SingleStudentGuardian';
+import AddInventoryCartegory from './pages/inventory/AddInventoryCartegory';
+import AddInventoryStock from './pages/inventory/AddInventoryStock';
+import AddInventory from './pages/inventory/AddInventory';
 
 function App() {
   const navigate = useNavigate();
@@ -132,8 +134,7 @@ function App() {
   useEffect(() => {
     dispatch(fetchAllClassAction());
     dispatch(fetchAllSectionAction());
-    dispatch(fetchActivesessionAction());
-    dispatch(fetchschoolinfoAction());
+ 
   }, []);
 
   const {  auth,setAuth } = useAuth();

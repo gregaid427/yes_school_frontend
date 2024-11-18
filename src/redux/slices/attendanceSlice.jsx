@@ -17,6 +17,8 @@ export const CreateAttendanceAction = createAsyncThunk(
   'create/createAttendance',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -42,7 +44,8 @@ export const CreateAttendanceAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-      ErrorToast('⚠️ Error', error);
+            ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -55,6 +58,8 @@ export const GetTodayRecordAction = createAsyncThunk(
   'fetch/gettodayrecord',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -81,7 +86,8 @@ export const GetTodayRecordAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -94,6 +100,8 @@ export const GetSesionRecordsAction = createAsyncThunk(
   'fetch/recordsbysession',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -120,7 +128,8 @@ export const GetSesionRecordsAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -133,6 +142,8 @@ export const FetchAttendanceDetailAction = createAsyncThunk(
   'fetch/RecordsByDate',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -159,7 +170,8 @@ export const FetchAttendanceDetailAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -172,6 +184,8 @@ export const UpdateStatusAction = createAsyncThunk(
   'fetch/updatestatus',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -198,7 +212,8 @@ export const UpdateStatusAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -211,6 +226,8 @@ export const GetRecordByDateAction = createAsyncThunk(
   'fetch/Detail',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -237,7 +254,8 @@ export const GetRecordByDateAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }

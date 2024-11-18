@@ -81,7 +81,8 @@ const SingleSubjectEdit = () => {
   }, [updateSubject]);
  
 
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   const handleSubmit = (e) => {
     e.preventDefault()
     if (classtitle == '') return toast.error('Please Fill Out Required Fields');
@@ -89,7 +90,7 @@ const SingleSubjectEdit = () => {
       id: info.id,
       subjectname: classtitle,
       type: isChecked1 == true ? 'Theory' : 'Practical',
-      createdby: 'asante'
+      createdby: username?.payload
 
     
 

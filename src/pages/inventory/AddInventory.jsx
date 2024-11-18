@@ -210,13 +210,14 @@ const AddInventory = () => {
   const handledeletebtn = () => {
     dispatch(deleteSingleInventoryAction(del));
   };
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   const subdata = {
     itemName: item,
     cartegory: cart,
     quantity: quantity,
     supplier: supName,
-    CreatedBy: 'Asante',
+    CreatedBy: username?.payload,
     supplierContact1: supContact1,
     supplierContact2: supContact2,
     SupplierInfo: supInfo,
@@ -236,7 +237,7 @@ const AddInventory = () => {
   //     id: info.id,
   //     subjectname: classtitle,
   //     type: isChecked1 == true ? 'Theory' : 'Practical',
-  //     createdby: 'asante'
+  
 
   //   };
   //   dispatch(UpdateSubjectAction(data));
@@ -502,7 +503,7 @@ const AddInventory = () => {
                   <div className="sm:w-2/5 ">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
+             // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadPdf();
                       }}
@@ -514,7 +515,7 @@ const AddInventory = () => {
                   <div className="w-full sm:w-2/5">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-                      style={{ color: '#A9B5B3' }}
+             // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadCSV();
                       }}
@@ -574,7 +575,7 @@ const AddInventory = () => {
                       </Header>
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row
                             key={item.id}
                             item={item}
@@ -671,7 +672,7 @@ const AddInventory = () => {
                       </Header>
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        {tableList.map((item) => (
+                        {tableList?.map((item) => (
                           <Row
                             key={item.id}
                             item={item}

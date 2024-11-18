@@ -13,6 +13,9 @@ export const CreatesSubjectAction = createAsyncThunk(
   "new/NewSubject",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -29,7 +32,8 @@ export const CreatesSubjectAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -43,6 +47,8 @@ export const fetchSubjectAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -72,6 +78,8 @@ export const UpdateSubjectAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -88,7 +96,8 @@ export const UpdateSubjectAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -102,6 +111,8 @@ export const DeleteSingleSubjectAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -118,7 +129,8 @@ export const DeleteSingleSubjectAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }

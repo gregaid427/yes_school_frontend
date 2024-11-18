@@ -95,6 +95,8 @@ const SingleClassEdit = () => {
     }
     //  navigate("/student/info")
   }, [sectiondata]);
+  const user = useSelector((state) => state?.user);
+const { username, userMail} = user;
   const handleSubmit = (e) => {
     e.preventDefault();
     if (classtitle == '') return toast.error('Please Fill Out Required Fields');
@@ -103,7 +105,7 @@ const SingleClassEdit = () => {
       classId: classIdd,
       title: classtitle,
       instructor: instructor,
-      updatedBy: 'Asante',
+      updatedBy: username?.payload,
     };
     console.log(data);
     dispatch(updateClassAction(data));

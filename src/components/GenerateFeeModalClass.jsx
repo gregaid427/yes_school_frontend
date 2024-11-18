@@ -102,7 +102,7 @@ const GenerateFeeModalClass = (props) => {
                             Select Classes 
                           </label>{' '}
                           <div>
-                            {fetchAllClass?.data.map((item, index) => (
+                            {fetchAllClass?.data?.map((item, index) => (
                               <AssignFeeClassSelect
                                 info={fetchAllClass?.data?.[index]}
                                 selectedarr={selectedArr}

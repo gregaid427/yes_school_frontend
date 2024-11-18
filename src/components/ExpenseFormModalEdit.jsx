@@ -27,10 +27,12 @@ const ExpenseFormModalEdit = (props) => {
       return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
     }
     let customfile = hashgenerator()+filename ;
-  
+    const user = useSelector((state) => state?.user);
+    const { username, userMail} = user;
+    
     const classdata = JSON.stringify({
       expensename: expensename,
-      createdby: 'Asante',
+      createdby: username?.payload,
       amount: amount,
       invoice: invoice,
       description: desc,

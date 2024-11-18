@@ -236,7 +236,8 @@ const Finance = () => {
       dispatch(resetdeleteassignedfee());
     }
   }, [Generatefee, deleteAllAssigned]);
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
@@ -253,7 +254,7 @@ const Finance = () => {
   }, [cartegory]);
   const classdata = {
     title: classTitle.toUpperCase(),
-    createdBy: 'Asante',
+    createdBy: username?.payload,
     instructor: classInstructor,
   };
   const handlecreateClass = () => {

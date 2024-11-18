@@ -16,6 +16,8 @@ export const CreatesfeeAction = createAsyncThunk(
   'new/Newfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -32,7 +34,8 @@ export const CreatesfeeAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -45,6 +48,8 @@ export const PayFeeAction = createAsyncThunk(
   'new/payfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -66,7 +71,8 @@ export const PayFeeAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -78,6 +84,8 @@ export const CustomBalUpdate = createAsyncThunk(
   'new/balanceUpdate',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -99,7 +107,8 @@ export const CustomBalUpdate = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -111,6 +120,8 @@ export const ReverseFee = createAsyncThunk(
   'new/reverse',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -132,7 +143,8 @@ export const ReverseFee = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -145,6 +157,8 @@ export const FetchPaymentsAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -179,6 +193,8 @@ export const GenerateFeeAction = createAsyncThunk(
   'new/generatefee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -199,7 +215,8 @@ export const GenerateFeeAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -211,6 +228,8 @@ export const ResetAllAccountBalanceAction = createAsyncThunk(
   'new/resetAccount',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -232,7 +251,8 @@ export const ResetAllAccountBalanceAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -244,6 +264,8 @@ export const ResetAllAccountBalanceByClassAction = createAsyncThunk(
   'new/resetAccountbyclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -268,7 +290,8 @@ export const ResetAllAccountBalanceByClassAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -281,6 +304,8 @@ export const GenerateFeeClassAction = createAsyncThunk(
   'new/generatefeeclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -302,7 +327,8 @@ export const GenerateFeeClassAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -315,6 +341,8 @@ export const GenerateFeeStudentAction = createAsyncThunk(
   'new/generatefeestudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -336,7 +364,8 @@ export const GenerateFeeStudentAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -349,6 +378,8 @@ export const PreferencesAction = createAsyncThunk(
   'Post/Preferences',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -370,7 +401,8 @@ export const PreferencesAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -383,6 +415,8 @@ export const CreatesfeeCartegoryAction = createAsyncThunk(
   'new/Newfeecart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -405,7 +439,8 @@ export const CreatesfeeCartegoryAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -418,6 +453,8 @@ export const CreatesScholarshipAction = createAsyncThunk(
   'new/Scholarship',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -439,7 +476,8 @@ export const CreatesScholarshipAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -452,6 +490,8 @@ export const UpdateScholarshipAction = createAsyncThunk(
   'update/Scholarship',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -473,7 +513,8 @@ export const UpdateScholarshipAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -487,6 +528,8 @@ export const fetchAllfeeAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -515,6 +558,8 @@ export const fetchfeeStockAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -543,6 +588,8 @@ export const EnrollScholarshipAction = createAsyncThunk(
   'fetch/enrollscholarship',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -564,7 +611,8 @@ export const EnrollScholarshipAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -577,6 +625,8 @@ export const GetEnrolledStudentAction = createAsyncThunk(
   'fetch/enrolledstudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -606,7 +656,8 @@ export const GetEnrolledStudentAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -618,6 +669,8 @@ export const RevokeScholarshipAction = createAsyncThunk(
   'fetch/revokescholarship',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -640,7 +693,8 @@ export const RevokeScholarshipAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -653,6 +707,8 @@ export const fetchSinglefeeAction = createAsyncThunk(
   'fetch/singlefee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -669,7 +725,8 @@ export const fetchSinglefeeAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -682,6 +739,8 @@ export const fetchfeeCartegoryAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -712,6 +771,8 @@ export const fetchAllfeeAssignRecordAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -741,6 +802,8 @@ export const fetchfeeAssignRecordAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -770,6 +833,8 @@ export const fetchfeeAssignGroupRecordAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -800,6 +865,8 @@ export const fetchfeeAssignbycartAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -829,6 +896,8 @@ export const fetchfeeAssignbycustomAction = createAsyncThunk(
   'fetch/feeassignbycustom',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -845,7 +914,8 @@ export const fetchfeeAssignbycustomAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -859,6 +929,8 @@ export const fetchScholarshipAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -889,6 +961,8 @@ export const updatefeeAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -905,7 +979,8 @@ export const updatefeeAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -919,6 +994,8 @@ export const UpdateFeeCartAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -942,7 +1019,8 @@ export const UpdateFeeCartAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -955,6 +1033,8 @@ export const updatefeeItemAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -971,7 +1051,8 @@ export const updatefeeItemAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -984,6 +1065,8 @@ export const updateCartegoryAction = createAsyncThunk(
   'cartegory/Update',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -1000,7 +1083,8 @@ export const updateCartegoryAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -1014,6 +1098,8 @@ export const deleteScholarshipAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -1034,7 +1120,8 @@ export const deleteScholarshipAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -1048,6 +1135,8 @@ export const DeleteAllAssignedFeeAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -1072,7 +1161,8 @@ export const DeleteAllAssignedFeeAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -1085,6 +1175,8 @@ export const deleteAllfeeAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -1100,7 +1192,8 @@ export const deleteAllfeeAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -1113,6 +1206,8 @@ export const deleteSinglefeeAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -1128,7 +1223,8 @@ export const deleteSinglefeeAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -1141,6 +1237,8 @@ export const deleteSingleFeeCartAction = createAsyncThunk(
   'delete/deletefeeCart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -1157,7 +1255,8 @@ export const deleteSingleFeeCartAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -1170,6 +1269,8 @@ export const AssignFeesAction = createAsyncThunk(
   'create/assignfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -1195,7 +1296,8 @@ export const AssignFeesAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }
@@ -1209,6 +1311,8 @@ export const deleteSinglefeeStockAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
      try {
       
+       toast.dismiss();
+
       const toastId = toast.loading('Loading...', {
         position: 'bottom-right',     
       });
@@ -1224,7 +1328,8 @@ export const deleteSinglefeeStockAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error)
-          ErrorToast('⚠️ Error', error);
+                ErrorToast('Error', error);
+
       if (!error?.response) {
         throw error;
       }

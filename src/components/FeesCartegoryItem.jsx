@@ -47,10 +47,11 @@ const FeesCartegoryItem = (props) => {
     // formRef.current.reset();
     formRef1.current.reset();
   }
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   let data = {
     name: cartegoryName,
-    createdby: 'asante',
+    createdby: username?.payload,
     description: description,
   };
   const handleSubmit = (e) => {

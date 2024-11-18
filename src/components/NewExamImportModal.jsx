@@ -156,7 +156,7 @@ const NewExamImportModal = (props) => {
         // GUARD1_USERNAME: v.GUARDIAN_1_FIRST_NAME == undefined ? "" : v.GUARDIAN_1_FIRST_NAME + generateString(3).toLocaleLowerCase()  ,
         // GUARD2_USERNAME: v.GUARDIAN_2_FIRST_NAME == undefined ? "" :
         //   v.GUARDIAN_2_FIRST_NAME + generateString(3).toLocaleLowerCase(),
-        // CREATED_BY: 'ASANTE',
+
      // }));
     //  console.log(newArr1);
       //setClassData1(newArr1);

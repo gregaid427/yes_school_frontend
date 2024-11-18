@@ -183,7 +183,7 @@ const Student = () => {
      `,
 
       Table: `
-  --data-table-library_grid-template-columns:  12% 35% 18% 10% 25%;
+  --data-table-library_grid-template-columns:  12% 35% 23% 10% 20%;
 `,
     },
   ]);
@@ -314,8 +314,8 @@ const Student = () => {
                     </div>
                   </div>
                   <label
-                    className="pt-4 block text-sm font-medium text-ash dark:text-white"
-                    style={{ color: '#A9B5B3' }}
+                    className="pt-4 block text-sm font-medium  dark:text-white"
+                    // style={{ color: '#A9B5B3' }}
                     onClick={(e) => {
                       handleDownloadPdf();
                     }}
@@ -336,7 +336,7 @@ const Student = () => {
                   </div>
                   <label
                     className="pt-4 block text-sm font-medium text-ash dark:text-white"
-                    style={{ color: '#A9B5B3' }}
+           // style={{ color: '#A9B5B3' }}
                     onClick={(e) => {
                       handleDownloadCSV();
                     }}
@@ -429,7 +429,7 @@ const Student = () => {
                     </Header>
 
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList.map((item) => (
+                      {tableList?.map((item) => (
                         <Row
                           key={item.student_id}
                           item={item}
@@ -454,9 +454,9 @@ const Student = () => {
 
                           <Cell>
                             <div className="gap-2 flex">
-                              <ViewSVG
+                              {/* <ViewSVG
                                 clickFunction={() => handleviewbtn(item)}
-                              />
+                              /> */}
                               <EditSVG
                                 clickFunction={() => handleEditbtn(item)}
                               />
@@ -539,7 +539,7 @@ const Student = () => {
                     </Header>
 
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList.map((item) => (
+                      {tableList?.map((item) => (
                         <Row
                           key={item.student_id}
                           item={item}

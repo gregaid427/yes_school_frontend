@@ -55,11 +55,13 @@ const ExpenseHeadCom = (props) => {
         // formRef.current.reset();
         formRef1.current.reset();
       }
-
+      const user = useSelector((state) => state?.user);
+      const { username, userMail} = user;
+      
 let data = {
     
     'expensehead' : cartegoryName,
-    'createdby' : 'asante',
+    'createdby' : username?.payload,
     'notes' : note
 }
 const handleSubmit=(e)=>{

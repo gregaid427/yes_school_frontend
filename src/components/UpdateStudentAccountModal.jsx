@@ -36,10 +36,12 @@ const UpdateStudentAccountModal = (props) => {
       dispatch(fetchSingleStudent(id));
     }
   };
+  const user = useSelector((state) => state?.user);
+const { username, userMail} = user;
   let data1 = {
     id: id,
     class: classs,
-    collectedby: 'asante',
+    collectedby: username?.payload,
     amount: amount
   
   };

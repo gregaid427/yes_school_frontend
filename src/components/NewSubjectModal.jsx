@@ -47,10 +47,13 @@ const NewSubject = (props) => {
     }
   }, [CreateSubject]);
 
+  const user = useSelector((state) => state?.user);
+const { username, userMail} = user;
+
   const subdata = {
     type: type,
     subjectName: subjectName,
-    createdBy: 'Asante',
+    createdBy: username?.payload,
   };
   const handlecreateSection = (e) => {
     if (subjectName == '') {

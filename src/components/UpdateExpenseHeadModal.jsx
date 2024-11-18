@@ -47,7 +47,8 @@ const ExpenseHeadModal = (props) => {
     }
     //  navigate("/student/info")
   }, [updateExpenseItem]);
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
   const handleSubmit = (e) => {
     e.preventDefault();
     if (cartegoryName == '')
@@ -56,7 +57,7 @@ const ExpenseHeadModal = (props) => {
       id: props.info.id,
       expensehead: cartegoryName,
       notes: notes,
-        createdby: 'asante'
+        createdby: username?.payload
     };
     dispatch(updateExpenseItemAction(data));
   };
