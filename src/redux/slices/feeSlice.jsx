@@ -1306,6 +1306,48 @@ export const AssignFeesAction = createAsyncThunk(
   },
 );
 
+export const GetFeeRecordAction = createAsyncThunk(
+  'get/getrecord',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/getstudentrecord`,
+        payload,
+      );
+ 
+      if (data == []) {
+        toast.error('No Records Found');
+      }
+      if (data == null) {
+        toast.error('Error Getting Record');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const deleteSinglefeeStockAction = createAsyncThunk(
   'fee/deleteASinglefeestock',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -1465,7 +1507,25 @@ const FeeSlices = createSlice({
       state.Enroll = undefined;
       //   state.fetchAllfee = undefined;
     });
-
+    
+    builder.addCase(GetFeeRecordAction.pending, (state, action) => {
+      state.GetFeeRecordloading = true;
+      state.GetFeeRecord = false;
+      // state.fetchAllfee = false;
+    });
+    builder.addCase(GetFeeRecordAction.fulfilled, (state, action) => {
+      state.GetFeeRecord = action?.payload;
+      state.GetFeeRecordloading = false;
+      state.GetFeeRecorderror = undefined;
+      //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(GetFeeRecordAction.rejected, (state, action) => {
+      state.GetFeeRecordloading = false;
+      state.GetFeeRecorderror = action.payload;
+      state.GetFeeRecord = undefined;
+      //   state.fetchAllfee = undefined;
+    });
+    
     builder.addCase(RevokeScholarshipAction.pending, (state, action) => {
       state.Revokeloading = true;
       state.Revoke = false;

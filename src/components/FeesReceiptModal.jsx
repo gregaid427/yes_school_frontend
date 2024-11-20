@@ -196,8 +196,8 @@ const { username, userMail} = user;
                     <div className="w-full flex py-3 justify-between">
                       <div className="w-4/12 text-sm">
                         <p>
-                          {props.val?.student_id} / {props.val?.class} (
-                          {props.val?.section})
+                          {props.val?.student_id} / {props.val?.class} 
+                          {/* {props.val?.section} */}
                         </p>
 
                         <p>

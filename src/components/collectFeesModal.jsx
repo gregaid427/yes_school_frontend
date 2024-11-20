@@ -69,6 +69,7 @@ const CollectFeesModal = (props) => {
   const user = useSelector((state) => state?.user);
   const { username, userMail } = user;
   let data = {
+    name: props.stdname,
     id: props.val?.student_id,
     class: props.val?.class,
     section: props.val?.section,

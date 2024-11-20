@@ -32,15 +32,22 @@ import {
 } from '../../redux/slices/studentSlice';
 import Loader from '../../common/Loader';
 
-
 import SectionSelect1 from '../../components/SectionsSelect1';
 import ClassSelect from '../../components/ClassSelect';
-import { fetchschoolinfoAction, fetchUserdataAction } from '../../redux/slices/usersSlice';
+import {
+  fetchschoolinfoAction,
+  fetchUserdataAction,
+} from '../../redux/slices/usersSlice';
 import TableBtn from '../../components/Svgs/TableBtn';
 import CollectFeesModal from '../../components/collectFeesModal';
 import FeesReceiptModal from '../../components/FeesReceiptModal';
-import { fetchfeeCartegoryAction, resetpayfee } from '../../redux/slices/feeSlice';
+import {
+  fetchfeeCartegoryAction,
+  GetFeeRecordAction,
+  resetpayfee,
+} from '../../redux/slices/feeSlice';
 import { fetchActivesessionAction } from '../../redux/slices/sessionSlice';
+import PaymentRecordsModal from '../../components/PaymentRecordsMordal';
 
 const SearchRecords = () => {
   ///////////////////////////////////
@@ -75,10 +82,9 @@ const SearchRecords = () => {
   const [cartz, setcartegory] = useState();
   const [info, setinfo] = useState();
   const [receipt, setReceipt] = useState('');
+  const [record, setRecord] = useState([]);
 
-  
 
-  
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
@@ -97,7 +103,7 @@ const SearchRecords = () => {
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
-  const { payfee,cartegory } = fee;
+  const { payfee, cartegory,GetFeeRecord } = fee;
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -105,10 +111,9 @@ const SearchRecords = () => {
     if (fetchcustom?.success == 1) {
       let data = fetchcustom?.data;
       let info = fetchcustom?.info;
-      setinfo(info)
+      setinfo(info);
       setdata(data);
     }
-
 
     // if (fetchAllClass?.success == 1) {
     //   let i = 0;
@@ -128,7 +133,7 @@ const SearchRecords = () => {
     if (fetchStudentcustombal?.success == 1) {
       let data = fetchStudentcustombal?.data;
       let info = fetchStudentcustombal?.info;
-      setinfo(info)
+      setinfo(info);
       setdata(data);
     }
   }, [fetchStudentcustombal]);
@@ -141,9 +146,9 @@ const SearchRecords = () => {
     if (cartegory?.success == 1) {
       let data = cartegory?.data;
       setcartegory(data);
-      console.log(cartegory?.data)
+      console.log(cartegory?.data);
     }
-  }, [payfee,cartegory]);
+  }, [payfee, cartegory]);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -151,16 +156,14 @@ const SearchRecords = () => {
     if (payfee?.success == 1) {
       setVisible(false);
       setVisible1(true);
-      setReceipt(payfee?.response)
+      setReceipt(payfee?.response);
       dispatch(resetpayfee());
     }
   }, [payfee]);
 
   useEffect(() => {
     setdata([]);
-    
   }, []);
-
 
   useEffect(() => {
     dispatch(fetchfeeCartegoryAction());
@@ -207,21 +210,22 @@ const SearchRecords = () => {
       //   //  background-color: #24303F;
 
        `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
   useEffect(() => {
     dispatch(fetchschoolinfoAction());
     dispatch(fetchActivesessionAction());
-  }, []);  const user = useSelector((state) => state?.user);
+  }, []);
+  const user = useSelector((state) => state?.user);
   const { allschool } = user;
 
   const pagination = usePagination(data, {
@@ -239,8 +243,19 @@ const SearchRecords = () => {
   const navigate = useNavigate();
 
   const handleviewbtn = (value) => {
-    show('top-right');
+    // show('top-right');
+   
   };
+useEffect(() => {
+
+    if (GetFeeRecord?.success == 1 && GetFeeRecord?.data !=[]) {
+     setRecord(GetFeeRecord?.data)
+     show('top-right');
+
+    
+    }
+  }, [GetFeeRecord]);
+
   const handleEditbtn = (value) => {
     dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
     navigate('/student/editinfo', { state: { action: 2, value: value } });
@@ -317,13 +332,13 @@ const SearchRecords = () => {
         visible={visible}
         className=""
         position={'top'}
-        style={{ width: '40%', color: 'white' }}
+        style={{ width: '65%', color: 'white' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
         }}
       >
-        <CollectFeesModal close={setVisible} val={propp} infotype={sectionzz} />
+        <PaymentRecordsModal close={setVisible} rec={record} val={propp} infotype={sectionzz} />
       </Dialog>
       <Dialog
         resizable={false}
@@ -338,7 +353,13 @@ const SearchRecords = () => {
           setVisible1(false);
         }}
       >
-        <FeesReceiptModal close={setVisible1} val={propp} response={receipt} cart={info} school={allschool} />
+        <FeesReceiptModal
+          close={setVisible1}
+          val={propp}
+          response={receipt}
+          cart={info}
+          school={allschool}
+        />
       </Dialog>
       <div className=" flex-col">
         <div
@@ -452,7 +473,6 @@ const SearchRecords = () => {
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
                         <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                    
 
                         <HeaderCell>Acct Balance</HeaderCell>
 
@@ -460,13 +480,13 @@ const SearchRecords = () => {
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
-                        <Row key={item.student_id}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          >
+                        <Row
+                          key={item.student_id}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -477,7 +497,7 @@ const SearchRecords = () => {
                               ' ' +
                               item.lastName}
                           </Cell>
-                        
+
                           <Cell className="flex   justify-between  ">
                             <span className="">
                               {Math.abs(item.accountbalance)}
@@ -504,9 +524,10 @@ const SearchRecords = () => {
                           <Cell>
                             <div className="gap-2 flex">
                               <TableBtn
-                                text={'Collect Fees'}
+                                text={'Get Records'}
                                 clickFunction={() => {
-                                  handleviewbtn(item);
+                                  dispatch(GetFeeRecordAction({id:item.student_id}))
+                                
                                 }}
                                 color={'bg-primary'}
                               />
@@ -581,8 +602,7 @@ const SearchRecords = () => {
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
                         <Row
                           key={item.student_id}

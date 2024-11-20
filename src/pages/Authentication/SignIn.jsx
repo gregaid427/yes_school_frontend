@@ -256,13 +256,13 @@ const SignIn = () => {
             <div className="w-full h-screen flex flex-col align-middle my-auto py-auto justify-center ">
               <img className="xl:hidden " src={Logo} alt="Logo" />
               <span className="mb-1.5 block font-medium">Welcome</span>
-              <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+              <h2 className="mb-9 text-2xl font-bold text-black  sm:text-title-xl2">
                 Sign In
               </h2>
 
               <form action="" onSubmit={(e) => handleSubmit(e)}>
                 <div className="mb-4">
-                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                  <label className="mb-2.5 block font-medium text-black ">
                     Username/Email
                   </label>
                   <div className="relative">
@@ -295,7 +295,7 @@ const SignIn = () => {
                 </div>
 
                 <div className="mb-6">
-                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                  <label className="mb-2.5 block font-medium text-black ">
                     Password
                   </label>
                   <div className="relative">

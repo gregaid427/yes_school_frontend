@@ -75,9 +75,10 @@ const CollectFees = () => {
   const [cartz, setcartegory] = useState();
   const [info, setinfo] = useState();
   const [receipt, setReceipt] = useState('');
+  const [name, SetName] = useState('');
 
   
-
+  
   
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
@@ -323,7 +324,7 @@ const CollectFees = () => {
           setVisible(false);
         }}
       >
-        <CollectFeesModal close={setVisible} val={propp} infotype={sectionzz} />
+        <CollectFeesModal close={setVisible} stdname={name} val={propp} infotype={sectionzz} />
       </Dialog>
       <Dialog
         resizable={false}
@@ -514,6 +515,11 @@ const CollectFees = () => {
                                 clickFunction={() => {
                                   setProp(item);
                                   handleviewbtn(item);
+                                  SetName(item.firstName +
+                                    ' ' +
+                                    item.otherName +
+                                    ' ' +
+                                    item.lastName)
                                 }}
                                 color={'bg-primary'}
                               />
