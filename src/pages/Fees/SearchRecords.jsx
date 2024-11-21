@@ -527,7 +527,7 @@ useEffect(() => {
                                 text={'Get Records'}
                                 clickFunction={() => {
                                   dispatch(GetFeeRecordAction({id:item.student_id}))
-                                
+                                  setProp(item)
                                 }}
                                 color={'bg-primary'}
                               />

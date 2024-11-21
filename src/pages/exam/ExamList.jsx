@@ -118,7 +118,7 @@ const ExamList = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:   28% 40% 20% 10%;
+      --data-table-library_grid-template-columns:   25% 38% 20% 17%;
     `,
     //       Row: `
 //   &:nth-of-type(odd) {
@@ -173,7 +173,7 @@ const ExamList = () => {
     dispatch(fetchAllsessionAction());
     // dispatch(fetchAllClass());
   }, []);
-  console.log(val);
+  console.log(data);
 
   return loader ? (
     <Loader />
@@ -404,21 +404,21 @@ const ExamList = () => {
                                 text={'View Result'}
                                 color={'bg-primary'}
                               />
-                              {/* <TableBtn
+                              <TableBtn
                                   clickFunction={() => {
                                     setvisible6(true);
                                 
                                     setVal1(item);
 
-                                    navigate('/exam/addresult', {
+                                    navigate("/exam/editresultalt", {
                                       state: { action: 1, value: item},
                                     });
 
 
                                   }}
-                                  text={'Update Result'}
+                                  text={'Update'}
                                   color={'bg-primary'}
-                                /> */}
+                                />
                               {/* <ViewSVG
                                 clickFunction={() => item.amount == null ?"" : handleViewbtn(item.title)}
                               /> */}

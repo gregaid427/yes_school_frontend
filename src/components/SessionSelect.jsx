@@ -32,12 +32,22 @@ const SessionSelect = (props) => {
       
 
       setClasss(arr);
-      setclazz(fetchsessionactive?.data[0].sessionname);
 
 
     }
 
   }, [fetchsession ]);
+
+
+  useEffect(() => {
+
+    if (fetchsessionactive?.success == 1) {   
+      setclazz(fetchsessionactive?.data[0].sessionname);
+    }
+
+  }, [fetchsessionactive ]);
+
+
 
   useEffect(() => {
     props.setsectionprop(clazz)

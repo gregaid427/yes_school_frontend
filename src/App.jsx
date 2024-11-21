@@ -119,6 +119,7 @@ import SingleStudentGuardian from './pages/SingleStudentGuardian';
 import AddInventoryCartegory from './pages/inventory/AddInventoryCartegory';
 import AddInventoryStock from './pages/inventory/AddInventoryStock';
 import AddInventory from './pages/inventory/AddInventory';
+import EditExamResultAlt from './pages/exam/EditExamResultAlt';
 
 function App() {
   const navigate = useNavigate();
@@ -332,7 +333,7 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
-              path="/fees/studentpreference"
+              path="/fees/preference"
               element={
                 <>
                   <PageTitle title="Fees" />
@@ -788,6 +789,17 @@ function App() {
                 <>
                   <PageTitle title="Exam" />
                   <EditExamResult />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['2']} code={code} />}>
+            <Route
+              path="/exam/editresultalt"
+              element={
+                <>
+                  <PageTitle title="Exam" />
+                  <EditExamResultAlt />
                 </>
               }
             />{' '}

@@ -60,7 +60,7 @@ const NewExam = () => {
   const [display, setDisplay] = useState(false);
   const [displaytable, setDisplaytable] = useState(false);
 
-  const [tabledata, settabledata] = useState([]);
+  const [btnstate, setbtnstate] = useState(false);
 
   const [id, setclassId] = useState('');
   const [filename, setFileName] = useState('');
@@ -87,7 +87,9 @@ const NewExam = () => {
   const { fetchAllClassNo } = clad;
   const [visible, setVisible] = useState(false);
   const [visible7, setVisible7] = useState(false);
+  const [printstate, setprintstate] = useState(false);
 
+  
   useEffect(() => {
     // dispatch(fetchAllClass());
     dispatch(fetchAllClassNoAction());
@@ -100,7 +102,7 @@ const NewExam = () => {
 
       let data = fetchcustom?.data;
       setClassInfo(data);
-      if (data?.length) setVisible7(true);
+      if (data?.length > 0 && btnstate == true) setVisible7(true);
       dispatch(resetFetchCustom());
       console.log(fetchcustom);
     }
@@ -182,11 +184,11 @@ const NewExam = () => {
   }
 
   useEffect(() => {
-    if (fetchcustomstudent?.success == 1 && fetchcustomstudent?.data != []) {
+    if (fetchcustomstudent?.success == 1 && fetchcustomstudent?.data != [] && printstate == true) {
       let data = fetchcustomstudent?.data;
       const csvConfig = mkConfig({
         useKeysAsHeaders: true,
-        filename: `${val1?.title} : ${val1.section} `,
+        filename: `${val1?.title}`,
       });
       const csv = generateCsv(csvConfig)(data);
       download(csvConfig)(csv);
@@ -415,7 +417,7 @@ const NewExam = () => {
                                     // setVisible7(true);
                                     setVal(item);
                                     handleGetClassData(item);
-
+                                    setbtnstate(true)
                                     // console.log(item)
                                   }}
                                   text={'Import Result'}

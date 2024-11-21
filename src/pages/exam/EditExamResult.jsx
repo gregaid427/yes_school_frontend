@@ -25,6 +25,7 @@ import {
   fetchExamByCodeAction,
   FetchSingleGradeGroupAction,
   resetcreateGetGradeGroup,
+  resetfetchExambyCode,
   resetsubmitresult,
   setExamResult,
   SubmitUpdatedResultAction,
@@ -101,6 +102,8 @@ const EditExamResult = (props) => {
         setFinalResult(data);
         setdata(data);
         dispatch(setExamResult(data));
+        dispatch(resetfetchExambyCode())
+
         // dispatch(resetfetchAllClassExam());
       } else {
         // navigate(-1);

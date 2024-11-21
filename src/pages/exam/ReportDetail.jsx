@@ -101,12 +101,12 @@ const ExamReportDetail = () => {
         return toast.error('No Results Available');
       }
      // setVisible4(true);
-     dispatch(resetclassreport());
      if(classdata)
       navigate("/exam/classreport", {
         state: { action: 1, val: info, examinfo : examinfo, result: data, },
       });
       setClassdata(data);
+      dispatch(resetclassreport());
 
 
     }

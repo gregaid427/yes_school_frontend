@@ -87,6 +87,7 @@ const ClassReportModal = (props) => {
     }
   }, [fetchsessionactive]);
 
+  console.log(result)
   return (
     <DefaultLayout>
       <div className="w-full">
@@ -273,10 +274,10 @@ const ClassReportModal = (props) => {
                                 {value?.map((item, index) => (
                                   <tr className=" ">
                                     <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1  w-1/12">
-                                      {result[index][index]?.examid}
+                                    {item.examid} 
                                     </td>
                                     <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-5/12">
-                                      {result[index][index]?.subject}
+                                    {item.subject}
                                     </td>
                                     <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-2/12">
                                       {item.totalscore} {' %'}

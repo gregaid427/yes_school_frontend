@@ -713,7 +713,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                           <li>
                             <NavLink
-                              to="/fees/studentpreference"
+                              to="/fees/preference"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')

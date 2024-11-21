@@ -128,9 +128,13 @@ const PaymentRecordsModal = (props) => {
                       id=""
                       placeholder=""
                       defaultValue={
-                        props.rec[0]?.stdname 
+                        props.val?.firstName +
+                          ' ' +
+                          props.val?.otherName +
+                          ' ' +
+                          props.val?.lastName}
                       
-                      }
+                      
                       disabled
                     />
                   </div>
@@ -147,7 +151,7 @@ const PaymentRecordsModal = (props) => {
                       name=""
                       id=""
                       placeholder=""
-                      defaultValue={props.rec[0]?.student_id}
+                      defaultValue={ props.val?.student_id}
                       disabled
                     />
                   </div>
@@ -230,6 +234,12 @@ const PaymentRecordsModal = (props) => {
                     </label>
                   </div>
                 ))}
+                 <label
+                    className="my-auto text-center block text-sm font-medium text-black dark:text-white"
+                    htmlFor=""
+                  >
+                     {props.rec?.length == 0 ? 'No Records':''}
+                  </label>
 
                 <div className="flex justify-around mt-8.5 gap-4.5">
                   <button

@@ -936,7 +936,11 @@ const ExamSlices = createSlice({
       state.ExamGradeResult = data;
 
     },
-    
+    resetfetchExambyCode(state,data) {
+      state.fetchExamByCode = null;
+
+    },
+
   },
   extraReducers: (builder) => {
     builder.addCase(CreatesGradeGroupAction.pending, (state, action) => {
@@ -1319,7 +1323,8 @@ export const {
   ResetTeacherRemark,
   resetExamCart,
   resetcreateGetGradeGroup,
-  ExamResultGrade
+  ExamResultGrade,
+  resetfetchExambyCode
 } = ExamSlices.actions;
 
 export default ExamSlices.reducer;

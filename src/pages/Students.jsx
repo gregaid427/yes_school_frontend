@@ -211,11 +211,11 @@ const Student = () => {
 
   const handleviewbtn = (value) => {
     navigate('/student/editinfo', { state: { action: 1, value: value } });
-    dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
+    dispatch(fetchUserdataAction({ role: 'student', id: value.student_id, userid:value.userId }));
   };
   const handleEditbtn = (value) => {
-    dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
-    navigate('/student/editinfo', { state: { action: 2, value: value } });
+    dispatch(fetchUserdataAction({ role: 'student', id: value.student_id, userid:value.userId }));
+        navigate('/student/editinfo', { state: { action: 2, value: value } });
   };
   const handledeletbtn = () => {
     let data = {

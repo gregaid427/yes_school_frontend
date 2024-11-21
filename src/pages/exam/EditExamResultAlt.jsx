@@ -1,32 +1,12 @@
 import { useEffect, useState } from 'react';
-
-import userThree from '../../images/user/log.jpg';
 import DefaultLayout from '../../layout/DefaultLayout';
-import {
-  createsessionAction,
-  deletesessionByIdAction,
-  fetchActivesessionAction,
-  fetchAllsessionAction,
-  resetcreatesession,
-  resetUpdatesession,
-  updatesessionStatusAction,
-} from '../../redux/slices/sessionSlice';
+
 import { useDispatch, useSelector } from 'react-redux';
-import SessionSelect from '../../components/SessionSelect';
 import { Dialog } from 'primereact/dialog';
-import SetSessionAlert from '../../components/SetSessionAlert';
-import {
-  fetchschoolinfoAction,
-  SchoollogoAction,
-  updateschoolinfoAction,
-} from '../../redux/slices/usersSlice';
+
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Downloadicon from '../../components/Svgs/downloadicon';
-import {
-  fetchCustomStudentsClassAction,
-  fetchStudentsCustomAction,
-} from '../../redux/slices/studentSlice';
+
 import { usePagination } from '@table-library/react-table-library/pagination';
 import { download, generateCsv, mkConfig } from 'export-to-csv';
 import { useTheme } from '@table-library/react-table-library/theme';
@@ -42,19 +22,20 @@ import {
 } from '@table-library/react-table-library/table';
 
 import {
+  fetchExamByCodeAction,
   FetchSingleGradeGroupAction,
+  resetcreateGetGradeGroup,
+  resetfetchExambyCode,
   resetsubmitresult,
   setExamResult,
-  SubmitResultAction,
+  SubmitUpdatedResultAction,
 } from '../../redux/slices/examSlice';
-import {
-  fetchAllClassExamAction,
-  resetfetchAllClassExam,
-} from '../../redux/slices/classSlice';
 import ExamResultAlert from '../../components/ExamResultAlert';
 import ExamResultModal from '../../components/ExamResultModal';
+import { fetchAllClassExamAction, resetfetchAllClassExam } from '../../redux/slices/classSlice';
+import { fetchStudentsCustomAction } from '../../redux/slices/studentSlice';
 
-const AddExamResult = (props) => {
+const EditExamResultAlt = (props) => {
   const location = useLocation();
   let student = useSelector((state) => state?.student);
   const [pagesval, setpagesval] = useState(30);
@@ -64,45 +45,41 @@ const AddExamResult = (props) => {
   const [gradingchoice, setGrading] = useState([]);
 
   const [FinalResult, setFinalResult] = useState([]);
-  const [singleGrade, setSingleGrade] = useState();
-  const [response, setResponse] = useState();
-
-  const { fetchcustomstudent } = student;
-
+  const [singleGrade, setSingleGrade] = useState([]);
+  const [detail, setDetail] = useState();
   const exam = useSelector((state) => state?.exam);
-  const { FetchExamResult, SingleGradegroup, ExamResultArray, submitResult } =
+  const { SingleGradegroup, ExamResultArray, submitResult, fetchExamByCode } =
     exam;
-    const [classData, setClassData] = useState([]);
-    const [classData1, setClassData1] = useState([]);
-    const [check, setCheck] = useState(true);
+  const { fetchcustomstudent } = student;
+  const clad = useSelector((state) => state?.classes);
 
- 
-
+  const { fetchAllClassExam } = clad;
   useEffect(() => {
     if (location?.state == null) {
-      return navigate(-1);
+      //return navigate(-1);
     } else {
       const { value } = location?.state;
       console.log(value);
 
       setVal(value);
+      setDetail(value?.code);
 
       console.log(value);
-      console.log(value?.gradingtype);
 
       dispatch(FetchSingleGradeGroupAction({ title: value?.chosengrade }));
-
       dispatch(
-        fetchStudentsCustomAction({
-          class: value?.class,
-          section: value?.section,
+        fetchExamByCodeAction({
+          id: value?.code,
         }),
       );
+      // dispatch(
+      //   fetchStudentsCustomAction({
+      //     class: value?.class,
+      //     section: value?.section,
+      //   }),
+      // );
     }
   }, []);
-  console.log(ExamResultArray);
-  console.log('Exam result Array is');
-
   useEffect(() => {
     if (value?.class) {
       console.log(value);
@@ -117,10 +94,14 @@ const AddExamResult = (props) => {
       );
     }
   }, [value]);
+ 
+  
 
-  const clad = useSelector((state) => state?.classes);
 
-  const { fetchAllClassExam } = clad;
+
+
+
+
 
   useEffect(() => {
     if (fetchAllClassExam?.success == 1) {
@@ -128,20 +109,58 @@ const AddExamResult = (props) => {
       console.log(data);
       if (data.length != 0) {
         setResponse(data);
-        setVisible1(true);
+      //  setVisible1(true);
         //setdata([])
 
         dispatch(resetfetchAllClassExam());
       }
     }
   }, [fetchAllClassExam]);
+  useEffect(() => {
+    if (location?.state == null) {
+      return navigate(-1);
+    } else {
+      const { value } = location?.state;
+      console.log(value);
+
+      setVal(value);
+
+      console.log(value);
+      console.log(value?.gradingtype);
+
+      dispatch(FetchSingleGradeGroupAction({ title: value?.chosengrade }));
+
+
+    }
+  }, []);
+
+
+ 
+
+
+
+  useEffect(() => {
+    if (fetchExamByCode?.success == 1) {
+      let data = fetchExamByCode?.data;
+      if (data.length != 0) {
+        setFinalResult(data);
+        setdata(data);
+        dispatch(setExamResult(data));
+        // dispatch(resetfetchAllClassExam());
+        dispatch(resetfetchExambyCode())
+      } else {
+        // navigate(-1);
+      }
+    }
+  }, [fetchExamByCode]);
 
   const navigate = useNavigate();
-  console.log(nodes);
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
+  
+  const [response, setResponse] = useState([]);
 
-  const [position, setPosition] = useState('center');
+  const [Arrays, setArray] = useState([]);
 
   const user = useSelector((state) => state?.user);
 
@@ -149,10 +168,6 @@ const AddExamResult = (props) => {
   const dispatch = useDispatch();
 
   const [value1, setVal1] = useState('Loading...');
-
-  useEffect(() => {
-    setdata([]);
-  }, []);
 
   let data = { nodes };
   const theme = useTheme([
@@ -202,19 +217,6 @@ const AddExamResult = (props) => {
 
   const [Modaldata, setModaldata] = useState();
 
-  const [search, setSearch] = useState('');
-  const [searchval, setSearchval] = useState('First Name');
-
-  data = {
-    nodes: data.nodes.filter((item) =>
-      searchval === 'First Name'
-        ? item.firstName.toLowerCase().includes(search.toLowerCase())
-        : searchval == 'Last Name'
-          ? item.lastName.toLowerCase().includes(search.toLowerCase())
-          : item.student_id.toLowerCase().includes(search.toLowerCase()),
-    ),
-  };
-
   const csvConfig = mkConfig({
     useKeysAsHeaders: true,
     filename: `${value?.class} : ${value?.section == null ? '' : value?.section} `,
@@ -228,55 +230,84 @@ const AddExamResult = (props) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 const { username, userMail} = user;
-
   let random = getRandomNumber(10000, 1000);
   let examinationid = value.subjects?.slice(0, 3) + random;
   let resultdata = {
-    subject: value?.subjects,
+    subject: value?.subject,
     session: value?.session,
-    examid: examinationid,
-    result: ExamResultArray.payload,
+    examid: detail,
+    result: Arrays,
     examtable: value?.examtable,
     examgroup: value?.examgroup,
-    exampercent: value?.examgrade,
-    classpercent: value?.classgrade,
-    otherpercent: value?.othergrade,
+    exampercent: singleGrade[0]?.exampercent,
+    classpercent: singleGrade[0]?.classworkpercent,
+    otherpercent: singleGrade[0]?.otherscorepercent,
     gradeArray: singleGrade,
     classes: value?.class,
-    classcode: value?.classcode,
+    classcode: value?.code,
     section: value?.section == null ? '-' : value?.section,
     createdby: username?.payload,
-    classsize: nodes.length,
-    chosengrade:value?.chosengrade
+    classsize: nodes?.length,
   };
   function handleSubmitResult() {
     //when no student
-    if (FinalResult?.length == 0) return toast.error('No Result To Updoad');
-    console.log(resultdata);
+    console.log(Arrays);
 
-    dispatch(SubmitResultAction(resultdata));
+    resultdata.result = Arrays;
+    console.log(resultdata.result);
+
+    if (value?.result?.length == 0) return toast.error('No Result To Updoad');
+
+    dispatch(SubmitUpdatedResultAction(resultdata));
   }
+  // useEffect(() => {
+  //   if (fetchcustomstudent?.success == 1) {
+  //     let data = fetchcustomstudent?.data;
+  //     setdata(data);
+  //     setFinalResult(data);
+  //   }
+  // }, [fetchcustomstudent]);
   useEffect(() => {
-    if (fetchcustomstudent?.success == 1) {
-      let data = fetchcustomstudent?.data;
-      setdata(data);
-      setFinalResult(data);
+    if (value?.class) {
+      console.log(value);
+      dispatch(
+        fetchAllClassExamAction({
+          classes: value?.class,
+          examgroup: value?.examgroup,
+          session: value?.session,
+          subject: value?.subject,
+          section: value?.section == null ? '-' : value?.section,
+        }),
+      );
     }
-  }, [fetchcustomstudent]);
+  }, [value]);
+
+
 
   useEffect(() => {
     if (submitResult?.success == 1) {
       let data = submitResult?.data;
       setModaldata(data);
       setVisible(true);
+      dispatch(setExamResult(data));
+
       dispatch(resetsubmitresult());
-      dispatch(setExamResult([]));
+      // dispatch(setExamResult([]));
     }
   }, [submitResult]);
 
   useEffect(() => {
+    console.log('cccccccccccccc');
+    console.log(ExamResultArray.payload);
+
+    setArray(ExamResultArray.payload);
+  }, [FinalResult]);
+
+  useEffect(() => {
     if (SingleGradegroup?.success == 1) {
+      console.log('i have grading')
       let data = SingleGradegroup?.data;
+      console.log(data)
       setSingleGrade(data);
     }
   }, [SingleGradegroup]);
@@ -295,19 +326,19 @@ const { username, userMail} = user;
       >
         <ExamResultModal value={Modaldata} close={setVisible} />
       </Dialog>
-      <Dialog
+      {/* <Dialog
         visible={visible1}
         position={'top'}
         style={{ height: 'auto', width: '50%' }}
         onHide={() => {
-          if (!visible1) return;
+          if (!visible) return;
           setVisible1(false);
         }}
         draggable={false}
         resizable={false}
       >
-        <ExamResultAlert info={value} response={response} close={setVisible1} />
-      </Dialog>
+        <ExamResultAlert info={value} close={setVisible1} />
+      </Dialog> */}
 
       <div className="flex gap-2 row">
         <div className="w-full flex-col">
@@ -328,7 +359,7 @@ const { username, userMail} = user;
                   <h3 className="text-sm  text-black dark:text-white">
                     Subject:{' '}
                     <span className="font-medium ml-1">
-                      {`${value?.subjects}`}{' '}
+                      {`${value?.subject}`}{' '}
                     </span>
                   </h3>
                   <h3 className="text-sm  text-black dark:text-white">
@@ -352,42 +383,17 @@ const { username, userMail} = user;
                   <h3 className="text-sm  text-black dark:text-white">
                     Mark Distribution:{' '}
                     <span className="font-medium ml-1">
-                      Exam({value?.examgrade}%) : Class({value?.classgrade}
-                      %) : Other({value?.othergrade}%)
+                      Exam({singleGrade[0]?.exampercent}%) : Class({singleGrade[0]?.classworkpercent}
+                      %) : Other({singleGrade[0]?.otherscorepercent}%)
                     </span>
                   </h3>
                 </div>
               </div>
-              <div className={nodes.length == 0 ? 'hidden' : ''}>
+              <div className={nodes?.length == 0 ? 'hidden' : ''}>
                 <div className="px-7 flex gap-4 justify-between  mb-4">
-                  <div className="w-3/5">
-                    {/* Excel Options
-                    <div className="flex mb-2 gap-4.5">
-                      <button
-                        className="flex w- gap-1 justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={() => {
-                          handleDownloadCSV();
-                        }}
-                      >
-                        <Downloadicon />
-                        Class List (Excel)
-                      </button>
-                      <button
-                        className="flex w- justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleFileUpload(e);
-                        }}
-                      >
-                        Upload Result (Excel)
-                      </button>
-                    </div> */}
-                  </div>
+                  <div></div>
 
                   <div className=" ">
-                    {/* Upload Result */}
                     <div className="flex   gap-4.5">
                       <button
                         className="flex w- gap-1 justify-center rounded bg-primary py-2 px-5 font-medium text-gray hover:bg-opacity-90"
@@ -397,7 +403,7 @@ const { username, userMail} = user;
                           handleSubmitResult();
                         }}
                       >
-                        Submit Result
+                        Update Result
                       </button>
                       {/* <button
                     className="flex w-3/12 justify-center rounded bg-primary py-2 px-2 font-medium text-gray hover:bg-opacity-90"
@@ -413,7 +419,7 @@ const { username, userMail} = user;
                   </div>
                 </div>
               </div>
-              <div className={nodes.length != 0 ? 'hidden' : ''}></div>
+              <div className={nodes?.length != 0 ? 'hidden' : ''}></div>
               <div
                 className={
                   'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
@@ -462,17 +468,21 @@ const { username, userMail} = user;
                                   <span>{item.student_id}</span>
                                 </Cell>
                                 <Cell className="capitalize">
-                                  {item.firstName +
-                                    ' ' +
-                                    item.otherName +
-                                    ' ' +
-                                    item.lastName}
+                                  {item?.firstName == undefined
+                                    ? ''
+                                    : item?.firstName}{' '}
+                                  {item?.otherName == undefined
+                                    ? ''
+                                    : item?.otherName}{' '}
+                                  {item?.lastName == undefined
+                                    ? ''
+                                    : item?.lastName}
                                 </Cell>
                                 <Cell className="  ">
-                                  <span>{item.class}</span>
+                                  <span>{item?.class}</span>
                                 </Cell>
                                 <Cell className="  ">
-                                  <span>{item.section}</span>
+                                  <span>{item?.section}</span>
                                 </Cell>
 
                                 <Cell>
@@ -481,11 +491,12 @@ const { username, userMail} = user;
                                       className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       //  key={1}
                                       type="number"
+                                      defaultValue={item?.examscore}
                                       onChange={(e) => {
                                         var newData = FinalResult.map((el) => {
                                           if (el.student_id == item.student_id)
                                             return Object.assign({}, el, {
-                                              examScore: e.target.value,
+                                              examscore: e.target.value,
                                             });
                                           return el;
                                         });
@@ -498,11 +509,12 @@ const { username, userMail} = user;
                                       className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       //key={1}
                                       type="number"
+                                      defaultValue={item?.classworkscore}
                                       onChange={(e) => {
                                         var newData = FinalResult.map((el) => {
                                           if (el.student_id == item.student_id)
                                             return Object.assign({}, el, {
-                                              classWorkScore: e.target.value,
+                                              classworkscore: e.target.value,
                                             });
                                           return el;
                                         });
@@ -514,11 +526,12 @@ const { username, userMail} = user;
                                       className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       // key={1}
                                       type="number"
+                                      defaultValue={item?.othersScore}
                                       onChange={(e) => {
                                         var newData = FinalResult.map((el) => {
                                           if (el.student_id == item.student_id)
                                             return Object.assign({}, el, {
-                                              othersScore: e.target.value,
+                                              othersscore: e.target.value,
                                             });
                                           return el;
                                         });
@@ -535,7 +548,7 @@ const { username, userMail} = user;
                       )}
                     </Table>
                   </div>
-                  <div className={nodes.length == 0 ? '' : 'hidden'}>
+                  <div className={nodes?.length == 0 ? '' : 'hidden'}>
                     <div className="flex justify-around">
                       <h3 className="text-md text-center  text-black dark:text-white">
                         No Class Data
@@ -544,7 +557,7 @@ const { username, userMail} = user;
                   </div>
                   <span>
                     Page:{' '}
-                    {pagination.state.getPages(data.nodes).map((_, index) => (
+                    {/* {pagination?.state.getPages(data?.nodes).map((_, index) => (
                       <button
                         key={index}
                         type="button"
@@ -561,7 +574,7 @@ const { username, userMail} = user;
                       >
                         {index + 1}
                       </button>
-                    ))}
+                    ))} */}
                   </span>
                 </div>
                 <div className="hidden">
@@ -621,4 +634,4 @@ const { username, userMail} = user;
   );
 };
 
-export default AddExamResult;
+export default EditExamResultAlt;
