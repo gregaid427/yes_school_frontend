@@ -100,15 +100,13 @@ const ExamReportDetail = () => {
       if (data.length == 0) {
         return toast.error('No Results Available');
       }
-     // setVisible4(true);
-     if(classdata)
-      navigate("/exam/classreport", {
-        state: { action: 1, val: info, examinfo : examinfo, result: data, },
-      });
+      // setVisible4(true);
+      if (classdata)
+        navigate('/exam/classreport', {
+          state: { action: 1, val: info, examinfo: examinfo, result: data },
+        });
       setClassdata(data);
       dispatch(resetclassreport());
-
-
     }
   }, [ClassReport]);
 
@@ -122,17 +120,16 @@ const ExamReportDetail = () => {
       }
       setsingledata(data);
 
-    //  setVisible(true);
-    let examinfo = {
-      session: sectionzz,
-      examgroup: clazz,
-      result: data,
-    };
-      navigate("/exam/singlereport", {
-        state: { action: 1, val: val, examinfo : examinfo},
+      //  setVisible(true);
+      let examinfo = {
+        session: sectionzz,
+        examgroup: clazz,
+        result: data,
+      };
+      navigate('/exam/singlereport', {
+        state: { action: 1, val: val, examinfo: examinfo },
       });
       dispatch(resetsinglereport());
-
     }
   }, [SingleReport]);
 
@@ -170,15 +167,15 @@ const ExamReportDetail = () => {
       Table: `
       --data-table-library_grid-template-columns:   20% 55% 25% ;
     `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -232,19 +229,17 @@ const ExamReportDetail = () => {
     examgroup: clazz,
   };
   function handleGetData() {
-    setBtn(true)
+    setBtn(true);
     dispatch(FetchExamCustomAction(mydata));
   }
 
   useEffect(() => {
-    console.log(FetchExamCustom?.data?.length)
-    if (FetchExamCustom?.data?.length >0 && btn) {
+    console.log(FetchExamCustom?.data?.length);
+    if (FetchExamCustom?.data?.length > 0 && btn) {
       let data = FetchExamCustom?.data;
       setDisplay(true);
-    }
-    else{
+    } else {
       setDisplay(false);
-
     }
   }, [FetchExamCustom]);
 
@@ -278,7 +273,7 @@ const ExamReportDetail = () => {
     } else {
       const { value } = location?.state;
       console.log(value);
-      console.log(value)
+      console.log(value);
       setInfo(value);
       let data = {
         class: value?.title,
@@ -458,7 +453,6 @@ const ExamReportDetail = () => {
               Generate Class Report
             </button>
           </div>
-          
         </div>
         <div
           className={
@@ -467,83 +461,80 @@ const ExamReportDetail = () => {
         >
           <div className="flex gap-3  flex-col">
             <div className="px-2">
-            <div className={display == true ? '' : 'hidden'}>
-              <Table
-                data={data}
-                pagination={pagination}
-                layout={{ custom: true }}
-                theme={theme}
-              >
-                      
+              <div className={display == true ? '' : 'hidden'}>
+                <Table
+                  data={data}
+                  pagination={pagination}
+                  layout={{ custom: true }}
+                  theme={theme}
+                >
+                  {(tableList) => (
+                    <>
+                      <Header>
+                        <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
+                          <HeaderCell className="">ID</HeaderCell>
+                          <HeaderCell>Name</HeaderCell>
 
-                {(tableList) => (
-                  <>
-                    <Header>
-                      <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <HeaderCell className="">ID</HeaderCell>
-                        <HeaderCell>Name</HeaderCell>
+                          <HeaderCell>Actions</HeaderCell>
+                        </HeaderRow>
+                      </Header>
 
-                        <HeaderCell>Actions</HeaderCell>
-                      </HeaderRow>
-                    </Header>
-
-                    <Body  >
-                      {tableList?.map((item) => (
-                        <Row key={item?.student_id}
+                      <Body>
+                        {tableList?.map((item) => (
+                          <Row
+                            key={item?.student_id}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                           >
-                          <Cell className="  ">
-                            <span>{item?.student_id}</span>
-                          </Cell>
-                          <Cell className="capitalize">
-                            {item?.firstName +
-                              ' ' +
-                              item?.otherName +
-                              ' ' +
-                              item?.lastName}
-                          </Cell>
+                            <Cell className="  ">
+                              <span>{item?.student_id}</span>
+                            </Cell>
+                            <Cell className="capitalize">
+                              {item?.firstName +
+                                ' ' +
+                                item?.otherName +
+                                ' ' +
+                                item?.lastName}
+                            </Cell>
 
-                          <Cell>
-                            <div className="gap-2 flex">
-                              <TableBtn
-                                clickFunction={() => {
-                                  if (clazz == 'None')
-                                    return toast.error('Select Exam Group');
-                                  else if (sectionzz == undefined)
-                                    return toast.error('Select Session');
-                                  setVal2(item);
+                            <Cell>
+                              <div className="gap-2 flex">
+                                <TableBtn
+                                  clickFunction={() => {
+                                    if (clazz == 'None')
+                                      return toast.error('Select Exam Group');
+                                    else if (sectionzz == undefined)
+                                      return toast.error('Select Session');
+                                    setVal2(item);
 
-                                  setVisible5(true);
-                                }}
-                                text={'Update Remarks'}
-                                color={'bg-primary'}
-                              />
+                                    setVisible5(true);
+                                  }}
+                                  text={'Update Remarks'}
+                                  color={'bg-primary'}
+                                />
 
-                              <TableBtn
-                                clickFunction={() => {
-                                  if (clazz == 'None')
-                                    return toast.error('Select Exam Group');
-                                  else if (sectionzz == undefined)
-                                    return toast.error('Select Session');
-                                  setVal(item);
+                                <TableBtn
+                                  clickFunction={() => {
+                                    if (clazz == 'None')
+                                      return toast.error('Select Exam Group');
+                                    else if (sectionzz == undefined)
+                                      return toast.error('Select Session');
+                                    setVal(item);
 
-                                  handleGetstudentreport(item);
-                                }}
-                                text={'View / Print'}
-                                color={'bg-primary'}
-                              />
-                            </div>
-                          </Cell>
-                        </Row>
-                      ))}
-                    </Body>
-                  </>
-                )}
-
-              </Table>
+                                    handleGetstudentreport(item);
+                                  }}
+                                  text={'View / Print'}
+                                  color={'bg-primary'}
+                                />
+                              </div>
+                            </Cell>
+                          </Row>
+                        ))}
+                      </Body>
+                    </>
+                  )}
+                </Table>
               </div>
-
             </div>
             <div
               className=" align-middle"
@@ -605,9 +596,7 @@ const ExamReportDetail = () => {
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
                         <Row
                           key={item.examsid}

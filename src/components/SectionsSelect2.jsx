@@ -8,7 +8,7 @@ const SectionSelect2 = (props) => {
 
   const clad = useSelector((state) => state?.classes);
 
-  const {  sectionloading, fetchSection } =
+  const {  sectionloading, fetchSection ,customSection} =
     clad;
 
     useEffect(() => {
@@ -17,18 +17,13 @@ const SectionSelect2 = (props) => {
 
 
   useEffect(() => {
-    if (fetchSection?.success == 1) {
-      let arrr = ['NONE'];
-      let i = 0;
-      while (i < clad?.fetchSection?.data.length) {
-        arrr.push(clad?.fetchSection?.data[i]?.sectionName);
-        i++;
-      }
+  
 
-      setsections(arrr);
-      setsectionzz(arrr[0]);
-    }
-  }, [sectionloading]);
+      setsections(customSection);
+      setsectionzz(customSection[0]);
+      console.log(customSection)
+    // }
+  }, [customSection]);
 
   return (
     <>

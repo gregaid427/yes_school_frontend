@@ -9,27 +9,35 @@ const SectionSelect3 = (props) => {
 
   const clad = useSelector((state) => state?.classes);
 
-  const {  sectionloading, fetchSection } =
+  const {  sectionloading, fetchSection ,customSection1} =
     clad;
 
     useEffect(() => {
         props.setsectionprop(sectionzz)
     }, [sectionzz]);
 
+    useEffect(() => {
+  
 
-  useEffect(() => {
-    if (fetchSection?.success == 1) {
-      let arrr = ['None','All Sections'];
-      let i = 0;
-      while (i < clad?.fetchSection?.data.length) {
-        arrr.push(clad?.fetchSection?.data[i]?.sectionName);
-        i++;
-      }
+      
+      setsections(customSection1);
+      setsectionzz(customSection1[0]);
+      console.log(customSection1)
+    // }
+  }, [customSection1]);
+  // useEffect(() => {
+  //   if (fetchSection?.success == 1) {
+  //     let arrr = ['None','All Sections'];
+  //     let i = 0;
+  //     while (i < clad?.fetchSection?.data.length) {
+  //       arrr.push(clad?.fetchSection?.data[i]?.sectionName);
+  //       i++;
+  //     }
 
-      setsections(arrr);
-      setsectionzz(arrr[0]);
-    }
-  }, [sectionloading]);
+  //     setsections(arrr);
+  //     setsectionzz(arrr[0]);
+  //   }
+  // }, [sectionloading]);
 
   return (
     <>

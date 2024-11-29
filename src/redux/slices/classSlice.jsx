@@ -584,7 +584,7 @@ export const truncateTableAction = createAsyncThunk(
 
 const ClassSlices = createSlice({
   name: 'Class',
-  initialState: {},
+  initialState: {customSection :['NONE'],customSection1 :[],customSection2 :[]},
   reducers: {
     resetcreateClass(state) {
       state.CreateClasses = null;
@@ -606,6 +606,17 @@ const ClassSlices = createSlice({
     },
     resetfetchAllClassExam(state) {
       state.fetchAllClassExam = null;
+    },
+    customSectionAction(state,data) {
+      state.customSection =['NONE',...data.payload] ;
+      state.customSection1 =['NONE','All Sections',...data.payload] ;
+      state.customSection2 =['All Sections',...data.payload] ;
+
+      
+      console.log(state.customSection)
+      console.log(data)
+
+
     },
   },
   extraReducers: (builder) => {
@@ -893,7 +904,7 @@ export const {
   resetdeleteclass,
   resetcreatesection,
   resetfetchAllClassExam,
-  resetgetclass,
+  resetgetclass,customSectionAction
 } = ClassSlices.actions;
 
 export default ClassSlices.reducer;
