@@ -5,34 +5,42 @@ import {
   CreatesfeeCartegoryAction,
   fetchfeeCartegoryAction,
   resetcreatefee,
-  resetUpdateFeeCart,
-  UpdateFeeCartAction,
 } from '../redux/slices/feeSlice';
-import { UpdateStdCartAction } from '../redux/slices/studentSlice';
+import { CreatestdCartegoryAction, fetchstdCartegoryAction, resetcreatestdcart } from '../redux/slices/studentSlice';
 
-const EditFeesCartegoryItem = (props) => {
-  console.log(props)
+const StudentCartegoryItem  = (props) => {
   const dispatch = useDispatch();
-  const fees = useSelector((state) => state?.fees);
+  const student = useSelector((state) => state?.student);
 
-  const { Createfeecart, UpdateFeeCart } = fees;
+  const { createstdcart } = student;
   useEffect(() => {
-    if (UpdateFeeCart?.success == 0) {
+    if (createstdcart?.success == 0) {
       //    dispatch(resetcreatecart())
       // dispatch(fetchAllClassAction())
-      console.log(UpdateFeeCart)
     }
-    if (UpdateFeeCart?.success == 1) {
-      dispatch(resetUpdateFeeCart());
+    if (createstdcart?.success == 1) {
+      dispatch(fetchstdCartegoryAction());
+      resetFormStates();
+      setcartegoryName('');
+      dispatch(resetcreatestdcart());
       props.close(false);
-
-      // }
     }
-  }, [UpdateFeeCart]);
 
-  const [cartegoryName, setcartegoryName] = useState(props.data?.title);
+    // if (fetchAllClass?.success == 1) {
+    //   let i = 0;
+    //   let arr = [];
+    //   while (i < clad?.fetchAllClass?.data.length) {
+    //     arr.push(clad?.fetchAllClass?.data[i].title);
+    //     i++;
+    //   }
 
-  const [description, setDesription] = useState(props.data?.description);
+    //   setClasss(arr);
+    // }
+  }, [createstdcart]);
+
+  const [cartegoryName, setcartegoryName] = useState();
+
+  const [description, setDesription] = useState();
 
   const formRef1 = useRef();
 
@@ -41,12 +49,9 @@ const EditFeesCartegoryItem = (props) => {
     formRef1.current.reset();
   }
   const user = useSelector((state) => state?.user);
-const { username, userMail} = user;
-
+  const { username, userMail} = user;
   let data = {
-    name: cartegoryName?.toUpperCase(),
-    id: props.data?.id,
-
+    name: cartegoryName,
     createdby: username?.payload,
     description: description,
   };
@@ -54,7 +59,7 @@ const { username, userMail} = user;
     if (cartegoryName == '') {
       toast.error('Error - Name Cannot Be Empty');
     } else {
-      dispatch(UpdateStdCartAction(data));
+      dispatch(CreatestdCartegoryAction(data));
     }
   };
 
@@ -67,7 +72,7 @@ const { username, userMail} = user;
       >
         <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
           <h3 className="font-medium text-black dark:text-white">
-            Update Fee Cartegory
+            Add Student Cartegory
           </h3>
         </div>
         <div className="p-5">
@@ -77,7 +82,7 @@ const { username, userMail} = user;
                 className="mb-1 block text-sm font-medium text-black dark:text-white"
                 htmlFor=""
               >
-                Name
+                Title
               </label>
               <input
                 className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -85,8 +90,8 @@ const { username, userMail} = user;
                 name=""
                 id=""
                 placeholder=""
-                defaultValue={props.data?.title}
-                onChange={(e) => setcartegoryName(e.target.value)}
+                defaultValue=""
+                onChange={(e) => setcartegoryName(e.target.value.toUpperCase())}
               />
             </div>
 
@@ -104,7 +109,7 @@ const { username, userMail} = user;
                   id="bio"
                   rows={2}
                   placeholder=""
-                  defaultValue={props.data?.description}
+                  defaultValue=""
                   onChange={(e) => setDesription(e.target.value)}
                 ></textarea>
               </div>
@@ -139,4 +144,4 @@ const { username, userMail} = user;
   );
 };
 
-export default EditFeesCartegoryItem;
+export default StudentCartegoryItem ;

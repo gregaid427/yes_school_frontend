@@ -6,10 +6,12 @@ import { AssignFeesAction } from '../redux/slices/feeSlice';
 import toast from 'react-hot-toast';
 import ClassSelect2 from './ClassSelect2';
 import AssignFeeClassSelect from './AssignFeeClassSelect';
+import StudentCartegorySelect from './StudentCartegorySelect';
 
 const AssignFeeModal = (props) => {
   const dispatch = useDispatch();
   const [display, setDisplay] = useState(0);
+  const [scartegory, setCartegory] = useState('GENERAL');
 
   const [clazz, setclazz] = useState();
   const [isChecked1, setIsChecked1] = useState(false);
@@ -55,6 +57,7 @@ const AssignFeeModal = (props) => {
     data4['class'] = isChecked1 == false ? [clazz] : selectedArr;
     data4['session'] = sessionoption;
     data4['total'] = data3;
+    data4['scartegory'] = scartegory;
     data4['createdby'] = username?.payload;
     delete data4.test;
     data4['fee'] = pop(data2);
@@ -189,10 +192,25 @@ const AssignFeeModal = (props) => {
                           </div>
                         </div>
                       </div>
+
+
+                      <div className="w-full mb-3">
+                        <label
+                          className="mb-1 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="phoneNumber"
+                        >
+                          Student Cartegory{' '}
+                        </label>
+                        <div className="relative z-20 bg-white dark:bg-form-input">
+                          <StudentCartegorySelect setsectionprop={setCartegory} />
+                        </div>
+                      </div>
+
+
                       <form className={!isChecked1 ? '' : 'hidden'}>
                         <div className="w-full mb-3 sm:w-2/2">
                           <label
-                            className="mb-2 block text-sm font-medium text-black dark:text-white"
+                            className="mb-1 block text-sm font-medium text-black dark:text-white"
                             htmlFor=""
                           >
                             Class

@@ -2,17 +2,22 @@ import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
 import DefaultLayout from '../layout/DefaultLayout';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CreatestudentAction } from '../redux/slices/studentSlice';
+import { CreatestudentAction, fetchstdCartegoryAction } from '../redux/slices/studentSlice';
 import { toast } from 'react-hot-toast';
 
 import { reset } from '../redux/slices/studentSlice';
 import ClassSelect from '../components/ClassSelect';
 import SectionSelect2 from '../components/SectionsSelect2';
 import { useNavigate } from 'react-router-dom';
+import StudentCartegorySelect from '../components/StudentCartegorySelect';
 
 // import { useHistory } from 'react-router-dom';
 
 const Admission = () => {
+  useEffect(() => {
+    dispatch(fetchstdCartegoryAction());
+  }, []);
+
   const webcamRef = React.useRef(null);
   const [imgSrc, setImgSrc] = React.useState(null);
 
@@ -92,6 +97,7 @@ const Admission = () => {
   const [gAddress2, setgAddress2] = useState('');
   const [gsex2, setgsex2] = useState('Male');
   const [gsex1, setgsex1] = useState('Male');
+  const [cartegory, setCartegory] = useState('GENERAL');
   const [gRelation1, setRelation1] = useState('');
   const [gRelation2, setRelation2] = useState('');
 
@@ -138,6 +144,7 @@ const Admission = () => {
       gRelation2: gRelation2,
       gsex1: gsex1,
       gsex2: gsex2,
+      cartegory: cartegory,
       picture: picture,
       feeArrears: feeArrears,
       feeCredit: feeCredit,
@@ -348,8 +355,19 @@ const Admission = () => {
                       </div>
                     </div>
                   </div>
+                  <div className="w-full">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="phoneNumber"
+                        >
+                          Student Cartegory{' '}
+                        </label>
+                        <div className="relative z-20 bg-white dark:bg-form-input">
+                          <StudentCartegorySelect setsectionprop={setCartegory} />
+                        </div>
+                      </div>
                 </form>
-                <div className="flex mt-10  gap-4.5">
+                <div className="flex mt-5  gap-4.5">
                   <button
                     className="flex w-4/12 justify-center rounded bg-primary py-1 px-6 font-medium text-gray hover:bg-opacity-90"
                     type=""

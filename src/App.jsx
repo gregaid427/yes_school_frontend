@@ -120,6 +120,7 @@ import AddInventoryCartegory from './pages/inventory/AddInventoryCartegory';
 import AddInventoryStock from './pages/inventory/AddInventoryStock';
 import AddInventory from './pages/inventory/AddInventory';
 import EditExamResultAlt from './pages/exam/EditExamResultAlt';
+import StudentsCartegory from './pages/student/StudentCartegory';
 
 function App() {
   const navigate = useNavigate();
@@ -490,6 +491,17 @@ function App() {
                 <>
                   <PageTitle title="Student" />
                   <BulkAdmission />
+                </>
+              }
+            />{' '}
+          </Route>{' '}
+          <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
+            <Route
+              path="/student/cartegory"
+              element={
+                <>
+                  <PageTitle title="Student" />
+                  <StudentsCartegory />
                 </>
               }
             />{' '}

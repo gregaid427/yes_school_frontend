@@ -59,9 +59,10 @@ const { username, userMail} = user;
     data4['fee'] = pop(data2);
     console.log('data4');
     console.log(data4.fee);
+    data4['scartegory'] = props.cartegory;
 
     if (data4.fee[0] == undefined) {
-      return toast.error('Error -Fee Cartegory Cannot Be Empty');
+      return toast.error('Error - Fee Cartegory Cannot Be Empty');
     } else {
       console.log(data4);
       dispatch(AssignFeesAction(data4));

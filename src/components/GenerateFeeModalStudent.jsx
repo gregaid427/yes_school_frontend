@@ -14,6 +14,8 @@ const GenerateFeeModalStudent = (props) => {
   const [selectedArr, setselectedArr] = useState([]);
 
   const [desc, setDesc] = useState('');
+  const [cart, setCartegory] = useState('');
+
   const [Fname, setfName] = useState('');
   const [Lname, setLName] = useState('');
   const [Mname, setMName] = useState('');
@@ -39,10 +41,11 @@ const GenerateFeeModalStudent = (props) => {
 
   const data ={
     id : id,
-    class : classs
+    class : classs,
+    cartegory : cart
   }
   const handleGenerate = () => {
-  
+  console.log(data)
       dispatch(GenerateFeeStudentAction(data));
     
   };
@@ -73,6 +76,8 @@ const GenerateFeeModalStudent = (props) => {
       setClass(singleStudent?.data[0]?.class);
       setSection(singleStudent?.data[0]?.section);
       setId(singleStudent?.data[0]?.student_id);
+      setCartegory(singleStudent?.data[0]?.cartegory);
+
     }
   }, [singleStudent]);
 
@@ -101,7 +106,7 @@ const GenerateFeeModalStudent = (props) => {
     }
   }, [Generatefee]);
   let fullname = Fname + ' ' + Mname + ' ' + Lname;
-  console.log(fullname);
+  console.log(singleStudent?.data);
   console.log(desc);
   return (
     <div className="w-full">

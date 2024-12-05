@@ -45,6 +45,7 @@ import {
 import AssignFeeModal from '../../components/AssignFeeModal';
 import AssignFeeModalClass from '../../components/AssignFeeModalClass';
 import AssignFeeModalPartial from '../../components/AssignFeeModalPartial';
+import { fetchstdCartegoryAction } from '../../redux/slices/studentSlice';
 
 
 const AssignFees = () => {
@@ -54,7 +55,9 @@ const AssignFees = () => {
     formRef1.current.reset();
     console.log('reset');
   }
-
+  useEffect(() => {
+    dispatch(fetchstdCartegoryAction());
+  }, []);
   const fee = useSelector((state) => state?.fees);
   const { cartegory, Assignfee, AssignfeeGroup,AllAssignfee } = fee;
 
@@ -63,7 +66,7 @@ const AssignFees = () => {
 
   const [loader, setLoader] = useState(true);
 
-  const [classname, setclasname] = useState('');
+  const [cart, setcart] = useState('');
   const [sectionname, setsectionname] = useState('');
 
   const [display, setDisplay] = useState(false);
@@ -123,6 +126,7 @@ const AssignFees = () => {
 
     if (AssignfeeGroup?.success == 1) {
       let data = AssignfeeGroup?.data;
+      console.log(data)
       setdata(data);
       setVisible(false);
       dispatch(fetchAllfeeAssignRecordAction());
@@ -165,7 +169,7 @@ const AssignFees = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  30% 16%  14% 22% 18%;
+      --data-table-library_grid-template-columns:  31% 26%  10% 15% 18%;
     `,
     //       Row: `
 //   &:nth-of-type(odd) {
@@ -192,20 +196,20 @@ const AssignFees = () => {
 
   const [search, setSearch] = useState('');
 
-  data = {
-    nodes: data.nodes.filter((item) =>
-      item.title.toLowerCase().includes(search.toLowerCase()),
-    ),
-  };
+  // data = {
+  //   nodes: data.nodes.filter((item) =>
+  //     item.title.toLowerCase().includes(search.toLowerCase()),
+  //   ),
+  // };
 
   function onPaginationChange(action, state) {}
 
-  const handleViewbtn = (value) => {
+  const handleViewbtn = (value,cart) => {
     setVisible1(true);
     console.log(AllAssignfee);
     let myArr = [];
     myArr = AllAssignfee?.data.filter((item) =>
-      item.class.toLowerCase().includes(value.toLowerCase()),
+      (item.scartegory.toLowerCase().includes(cart.toLowerCase()) && item.class.toLowerCase().includes(value.toLowerCase())),
     );
     setpropdata(myArr);
   };
@@ -297,7 +301,7 @@ const AssignFees = () => {
           setVisible2(false);
         }}
       >
-        <AssignFeeModalPartial close={setVisible2} data={classs} />
+        <AssignFeeModalPartial close={setVisible2} data={classs} cartegory={cart}  />
       </Dialog>
       
       <div className=" flex-col">
@@ -375,11 +379,11 @@ const AssignFees = () => {
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
                         <HeaderCell>Class</HeaderCell>
+                        <HeaderCell>Student Cartegory</HeaderCell>
 
-                        <HeaderCell>Class Fee Payable</HeaderCell>
+                        <HeaderCell>Amount</HeaderCell>
 
                         <HeaderCell>Date Assigned</HeaderCell>
-                        <HeaderCell>Assigned By</HeaderCell>
                         <HeaderCell>Action</HeaderCell>
                       </HeaderRow>
                     </Header>
@@ -387,21 +391,17 @@ const AssignFees = () => {
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
-                        <Row key={item.title}
+                        <Row key={item.class}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                           
                           >
-                          <Cell className="  ">{item.title}</Cell>
+                          <Cell className="  ">{item.class}</Cell>
+                          <Cell className="  ">{item.createdby? item.scartegory : '-'}</Cell>
 
-                          <Cell className="  ">{item.total == null ?   <TableBtn
-                                  clickFunction={() => {}}
-                                  text={' Unassigned '}
-                                  color={'bg-primary'}
-                                /> : item.total}</Cell>
+                          <Cell className="  ">{item.total == null ? '⚠️ Unassigned':item.total  }</Cell>
 
                           <Cell className="  ">{item.createdat ? item.createdat : '-'}</Cell>
-                          <Cell className="  ">{item.createdby? item.createdby : '-'}</Cell>
 
                           <Cell>
                             
@@ -409,15 +409,17 @@ const AssignFees = () => {
 
                                 
                             <ViewSVG
-                                clickFunction={() => item.amount == null ?"" : handleViewbtn(item.title)}
+                                clickFunction={() => item.amount == null ?"" : handleViewbtn(item.class,item.scartegory)}
                               />
                             {item.total == null ?   <TableBtn
-                                  clickFunction={() => { setClass(item?.title)
+                                  clickFunction={() => { setClass(item?.class) 
+                                    setcart(item?.scartegory) 
                                     setVisible2(true)}} 
                                   text={` Assign `}
                                   color={'bg-primary'}
                                 /> :    <TableBtn
-                                clickFunction={() => { setClass(item?.title)
+                                clickFunction={() => { setClass(item?.class)
+                                  setcart(item?.scartegory) 
                                   setVisible2(true)}}
                                 text={'Re-Assign '}
                                 color={'bg-primary'}
@@ -506,7 +508,7 @@ const AssignFees = () => {
                           className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                         >
                           <Cell className="  ">
-                            <span>{item.title}</span>
+                            <span>{item.name}</span>
                           </Cell>
 
                           {/* <Cell className="  ">

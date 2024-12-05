@@ -317,6 +317,12 @@ export const GenerateFeeClassAction = createAsyncThunk(
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Fee Generated Successfully');
       }
+      if (data?.success == 2 ) {   toast.dismiss(toastId);
+        toast.error('No Student In Selected Class');
+      }
+      if (data?.success == 3 ) {   toast.dismiss(toastId);
+        toast.error('No Fees Assigned For Chosen Class(es)');
+      }
       if (data?.success == 0) {
         toast.error('Error Generating Fee');
       }
@@ -353,6 +359,9 @@ export const GenerateFeeStudentAction = createAsyncThunk(
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Fee Generated Successfully');
+      }
+          if (data?.success == 3 ) {   toast.dismiss(toastId);
+        toast.error('No Fees Assigned For Student Class');
       }
       if (data?.success == 0) {
         toast.error('Error Generating Fee');
@@ -2088,3 +2097,4 @@ export const {
 } = FeeSlices.actions;
 
 export default FeeSlices.reducer;
+

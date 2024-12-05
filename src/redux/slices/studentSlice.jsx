@@ -660,6 +660,147 @@ export const PromoteSelectedAction = createAsyncThunk(
   },
 );
 
+export const CreatestdCartegoryAction = createAsyncThunk(
+  'new/Newstdcart',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/createstudentcart`,
+        payload,
+      );
+    if (data?.success == 1) {   toast.dismiss(toastId);
+        toast.success('Student Cartegory Added Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Adding  Cartegory');
+      }
+
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+
+export const fetchstdCartegoryAction = createAsyncThunk(
+  'fetch/stdcart',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+     try {
+      
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/getcart`,
+        payload,
+      );
+
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+      ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const deleteSingleStdCartAction = createAsyncThunk(
+  'delete/deletestdCart',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/delStudentCart`,
+        payload,
+      );
+
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const UpdateStdCartAction = createAsyncThunk(
+  'new/updateCart',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/updatestudentcart`,
+        payload,
+      );
+    if (data?.success == 1) {   toast.dismiss(toastId);
+        toast.success(' Cartegory Update Successfully');
+      }
+      if (data?.success == 0) {
+        toast.error('Error Updating  Cartegory');
+      }
+
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+
 export const truncateTableAction = createAsyncThunk(
   'delete/allrecords',
   async ({ rejectWithValue, getState, dispatch }) => {
@@ -718,6 +859,15 @@ const StudentSlices = createSlice({
     resetFetchCustomStudent(state) {
       state.fetchcustomstudent = null;
     },
+    resetcreatestdcart(state) {
+      state.createstdcart = null;
+    },
+    resetUpdateStdCart(state) {
+      state.UpdateStdCart = null;
+    },
+    resetstdCartDel(state) {
+      state.deleteSingleStdCart = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(CreatestudentAction.pending, (state, action) => {
@@ -741,6 +891,28 @@ const StudentSlices = createSlice({
     //   state.error = null;
     //   state.CreateStudent = null;
     // });
+   
+    builder.addCase(UpdateStdCartAction.pending, (state, action) => {
+      state.UpdateStdCartloading = true;
+      state.UpdateStdCart = false;
+      state.fetchstdCartegory = false;
+
+      
+    });
+    builder.addCase(UpdateStdCartAction.fulfilled, (state, action) => {
+      state.UpdateStdCart = action?.payload;
+      state.UpdateStdCartloading = false;
+      state.UpdateStdCarterror = undefined;
+      state.fetchstdCartegory = action?.payload;
+    });
+    builder.addCase(UpdateStdCartAction.rejected, (state, action) => {
+      state.UpdateStdCarterror = action.payload;
+      state.UpdateStdCart = undefined;
+      state.UpdateStdCartloading = undefined;
+      state.fetchstdCartegory = undefined;
+
+    });
+
 
     builder.addCase(fetchBulkStudent.pending, (state, action) => {
       state.loading = true;
@@ -756,6 +928,23 @@ const StudentSlices = createSlice({
       state.fetchStudent = undefined;
       state.loading = undefined;
     });
+    
+
+    builder.addCase(CreatestdCartegoryAction.pending, (state, action) => {
+      state.createstdcartloading = true;
+      state.createstdcart = false;
+    });
+    builder.addCase(CreatestdCartegoryAction.fulfilled, (state, action) => {
+      state.createstdcart = action?.payload;
+      state.createstdcartloading = false;
+      state.createstdcarterror = undefined;
+    });
+    builder.addCase(CreatestdCartegoryAction.rejected, (state, action) => {
+      state.createstdcarterror = action.payload;
+      state.createstdcart = undefined;
+      state.createstdcartloading = undefined;
+    });
+
 
     builder.addCase(CreatestudentImageAction.pending, (state, action) => {
       state.studentImageloading = true;
@@ -772,6 +961,23 @@ const StudentSlices = createSlice({
       state.studentImageloading = undefined;
     });
 
+    
+    
+    builder.addCase(fetchstdCartegoryAction.pending, (state, action) => {
+      state.fetchstdCartegoryloading = true;
+      state.fetchstdCartegory = false;
+    });
+    builder.addCase(fetchstdCartegoryAction.fulfilled, (state, action) => {
+      state.fetchstdCartegory = action?.payload;
+      state.fetchstdCartegoryloading = false;
+      state.fetchstdCartegoryerror = undefined;
+    });
+    builder.addCase(fetchstdCartegoryAction.rejected, (state, action) => {
+      state.fetchstdCartegoryerror = action.payload;
+      state.fetchstdCartegory = undefined;
+      state.fetchstdCartegoryloading = undefined;
+    });
+
     builder.addCase(PromoteSelectedAction.pending, (state, action) => {
       state.studentPromoteloading = true;
       state.studentPromote = false;
@@ -786,6 +992,26 @@ const StudentSlices = createSlice({
       state.studentPromote = undefined;
       state.studentPromoteloading = undefined;
     });
+    
+    builder.addCase(deleteSingleStdCartAction.pending, (state, action) => {
+      state.deleteSingleStdCartloading = true;
+      state.deleteSingleStdCart = false;
+      state.fetchstdCartegory = false;
+    });
+    builder.addCase(deleteSingleStdCartAction.fulfilled, (state, action) => {
+      state.deleteSingleStdCart = action?.payload;
+      state.deleteSingleStdCartloading = false;
+      state.deleteSingleStdCarterror = undefined;
+      state.fetchstdCartegory = action?.payload;
+
+    });
+    builder.addCase(deleteSingleStdCartAction.rejected, (state, action) => {
+      state.deleteSingleStdCarterror = action.payload;
+      state.deleteSingleStdCart = undefined;
+      state.deleteSingleStdCartloading = undefined;
+      state.fetchstdCartegory = undefined;
+    });
+
 
     builder.addCase(PromoteAllAction.pending, (state, action) => {
       state.studentPromoteloading = true;
@@ -1024,6 +1250,9 @@ export const {
   resetPromote,
   resetSinglestudent,
   resetFetchCustom,
+  resetcreatestdcart,
+  resetstdCartDel,
+  resetUpdateStdCart,
   resetFetchCustomStudent,
 } = StudentSlices.actions;
 export default StudentSlices.reducer;

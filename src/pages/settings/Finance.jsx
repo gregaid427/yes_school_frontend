@@ -188,7 +188,7 @@ const Finance = () => {
 
   data = {
     nodes: data.nodes.filter((item) =>
-      item.title.toLowerCase().includes(search.toLowerCase()),
+      item.class.toLowerCase().includes(search.toLowerCase()),
     ),
   };
 
@@ -197,7 +197,7 @@ const Finance = () => {
   const handleViewbtn = (value) => {
     show('top-right');
 
-    setclasname(value.title);
+    setclasname(value.name);
     setsectionname(value.title);
     setclassId(value.id);
   };
