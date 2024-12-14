@@ -106,7 +106,7 @@ const PaymentRecordsModal = (props) => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">
             <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Collect Fees bbb
+                Student Finance Records
               </h3>
             </div>
             <div className="p-7">
@@ -243,7 +243,7 @@ const PaymentRecordsModal = (props) => {
 
                 <div className="flex justify-around mt-8.5 gap-4.5">
                   <button
-                    className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    className="flex w-6/12 justify-center rounded border bg-primary border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                     type=""
                     onClick={(e) => {
                       e.preventDefault();

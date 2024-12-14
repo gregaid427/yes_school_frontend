@@ -41,11 +41,13 @@ import { fetchUserdataAction } from '../redux/slices/usersSlice';
 import ExamResultModal from '../components/ExamResultModal';
 import AttendanceModal from '../components/AttendanceModal';
 import DeleteModal from '../components/DeleteModal';
+import TableBtn from '../components/Svgs/TableBtn';
+import GenerateFeeModalStudent from '../components/GenerateFeeModalStudent';
 
-const Student = () => {
+const SearchStudentsModal = (props) => {
   ///////////////////////////////////
 
-  const [visible, setVisible] = useState(false);
+  const [visible9, setVisible9] = useState(false);
   const [position, setPosition] = useState('top');
 
   //////////////////////////////////////
@@ -60,7 +62,7 @@ const Student = () => {
 
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
-  const [classs, setClasss] = useState();
+  const [info, setinfo] = useState('');
   const [CSVTemplate, setCSVTemplate] = useState([]);
   const [clazz, setclazz] = useState();
   const [sectionzz, setsectionzz] = useState();
@@ -126,13 +128,11 @@ const Student = () => {
     }
   }, [fetchStudentcustom]);
 
-
-
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
     if (deleteSingleStudent?.success == 1) {
-    setVisible(false)
+      setVisible(false);
     }
   }, [deleteSingleStudent]);
 
@@ -183,7 +183,7 @@ const Student = () => {
      `,
 
       Table: `
-  --data-table-library_grid-template-columns:  12% 35% 23% 10% 20%;
+  --data-table-library_grid-template-columns:  17% 40% 23% 10% 10%;
 `,
     },
   ]);
@@ -211,11 +211,23 @@ const Student = () => {
 
   const handleviewbtn = (value) => {
     navigate('/student/editinfo', { state: { action: 1, value: value } });
-    dispatch(fetchUserdataAction({ role: 'student', id: value.student_id, userid:value.userId }));
+    dispatch(
+      fetchUserdataAction({
+        role: 'student',
+        id: value.student_id,
+        userid: value.userId,
+      }),
+    );
   };
   const handleEditbtn = (value) => {
-    dispatch(fetchUserdataAction({ role: 'student', id: value.student_id, userid:value.userId }));
-        navigate('/student/editinfo', { state: { action: 2, value: value } });
+    dispatch(
+      fetchUserdataAction({
+        role: 'student',
+        id: value.student_id,
+        userid: value.userId,
+      }),
+    );
+    navigate('/student/editinfo', { state: { action: 2, value: value } });
   };
   const handledeletbtn = () => {
     let data = {
@@ -274,27 +286,24 @@ const Student = () => {
     }
   }
 
-  return loader ? (
-    <Loader />
-  ) : (
-    <DefaultLayout>
+  return (
+    <>
       <Dialog
-        visible={visible}
+        visible={visible9}
         position={'top'}
-        style={{ height: 'auto', width: '40%' }}
+        style={{ height: 'auto', width: '35%' }}
         onHide={() => {
-          if (!visible) return;
-          setVisible(false);
+          if (!visible9) return;
+          setVisible9(false);
         }}
-        draggable={false}
-        resizable={false}
       >
-        <DeleteModal delete={handledeletbtn} close={setVisible} />
+        <GenerateFeeModalStudent close={setVisible9} info={info} />
       </Dialog>
-      <div className=" flex-col">
+
+      <div className=" flex-col rounded-sm border max-w-full shadow-default border-stroke bg-white  dark:border-strokedark dark:dark:bg-form-input pb-5 ">
         <div
           className={
-            'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+            'rounded-sm border max-w-full  px-5 pt-6 shadow-default border-stroke bg-white  dark:border-strokedark dark:dark:bg-form-input pb-5 '
           }
         >
           <div className="max-w-full overflow-x-auto">
@@ -313,15 +322,6 @@ const Student = () => {
                       <ClassSelect setsectionprop={setclazz} clazz={clazz} />
                     </div>
                   </div>
-                  <label
-                    className="pt-4 block text-sm font-medium  dark:text-white"
-                    // style={{ color: '#A9B5B3' }}
-                    onClick={(e) => {
-                      handleDownloadPdf();
-                    }}
-                  >
-                    Download Page (PDF)
-                  </label>
                 </div>
 
                 <div className="w-full sm:w-2/5">
@@ -334,15 +334,6 @@ const Student = () => {
                   <div className="relative z-20 bg-white dark:bg-form-input">
                     <SectionSelect1 setsectionprop={setsectionzz} />
                   </div>
-                  <label
-                    className="pt-4 block text-sm font-medium text-ash dark:text-white"
-           // style={{ color: '#A9B5B3' }}
-                    onClick={(e) => {
-                      handleDownloadCSV();
-                    }}
-                  >
-                    Download Page (Excel)
-                  </label>
                 </div>
                 <div className="w-full sm:w-2/5">
                   <label
@@ -354,7 +345,7 @@ const Student = () => {
                   <div className="relative sm:w-1/5 z-20 bg-white dark:bg-form-input">
                     <button
                       onClick={() => handleGetClassData()}
-                      className="btn h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
+                      className="btn h-10    flex justify-center rounded  bg-primary py-2 px-3 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
                       Search
@@ -404,10 +395,12 @@ const Student = () => {
         </div>
         <div
           className={
-            'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
+            'rounded-sm  w-full  bg-white px-2  shadow-default   dark:border-strokedark dark:dark:bg-form-input'
           }
         >
-          <div className="flex gap-3  flex-col">
+          <div
+            className={nodes.length == 0 ? 'hidden' : 'flex gap-3  flex-col'}
+          >
             <div>
               <Table
                 data={data}
@@ -417,162 +410,133 @@ const Student = () => {
               >
                 {(tableList) => (
                   <>
-                    <Header>
-                      <HeaderRow className="dark:bg-meta-4 border-stroke bg-white dark:text-white flex ">
-                        <HeaderCell className="">ID</HeaderCell>
-                        <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Section</HeaderCell>
-                        <HeaderCell>Cartegory</HeaderCell>
-
-                        <HeaderCell>Actions</HeaderCell>
-                      </HeaderRow>
-                    </Header>
-
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList?.map((item) => (
-                        <Row
-                          key={item.student_id}
-                          item={item}
-                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                        >
-                          <Cell className="  ">
-                            <span>{item.student_id}</span>
-                          </Cell>
-                          <Cell className="capitalize">
-                            {item.firstName +
-                              ' ' +
-                              item.otherName +
-                              ' ' +
-                              item.lastName}
-                          </Cell>
-                          <Cell className="  ">
-                            <span>{item.section}</span>
-                          </Cell>
-                          <Cell className="  ">
-                            <span>{item.cartegory}</span>
-                          </Cell>
+                      <Row className="dark:border-strokedark Uppercase dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                        <Cell className="  ">
+                          <span>ID</span>
+                        </Cell>
+                        <Cell className="capitalize">Name</Cell>
+                        <Cell className="  ">Section</Cell>
+                        <Cell className="  ">Sex</Cell>
 
-                          <Cell>
-                            <div className="gap-2 flex">
-                              {/* <ViewSVG
+                        <Cell>
+                          <div className="gap-2 flex">Action</div>
+                        </Cell>
+                      </Row>
+                      
+                      {tableList?.map((item) => (
+                        <>
+                          <Row
+                            key={item.student_id}
+                            item={item}
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                          >
+                            <Cell className="  ">
+                              <span>{item.student_id}</span>
+                            </Cell>
+                            <Cell className="capitalize">
+                              {item.firstName +
+                                ' ' +
+                                item.otherName +
+                                ' ' +
+                                item.lastName}
+                            </Cell>
+                            <Cell className="  ">
+                              <span>{item.section}</span>
+                            </Cell>
+                            <Cell className="  ">
+                              <span>{item.gender}</span>
+                            </Cell>
+
+                            <Cell>
+                              <div className="gap-2 flex">
+                                {/* <ViewSVG
                                 clickFunction={() => handleviewbtn(item)}
                               /> */}
-                              <EditSVG
-                                clickFunction={() => handleEditbtn(item)}
-                              />
 
-                              <DeleteSVG
-                                clickFunction={() => {
-                                  setid(item);
-                                  setVisible(true);
-                                }}
-                              />
-                            </div>
-                          </Cell>
-                        </Row>
+                                <TableBtn
+                                  clickFunction={() => {
+                                    setinfo(item);
+                                    setVisible9(true);
+                                  }}
+                                  text={' Select '}
+                                  color={'bg-primary'}
+                                />
+                              </div>
+                            </Cell>
+                          </Row>
+                        </>
                       ))}
                     </Body>
                   </>
                 )}
               </Table>
             </div>
-            <div
-              className=" align-middle"
-              style={{ display: 'flex', justifyContent: 'space-between' }}
-            >
-              <div className="flex">
-                <span className="mt-2">
-                  Total Pages: {pagination.state.getTotalPages(data.nodes)}
-                </span>
-                <div className="flex  align-middle  flex-row mr-3">
-                  <span className="flex mt-2 ml-8 align-middle">
-                    Records Per Page:{' '}
+            <div className={nodes == [] ? 'hidden' : ''}>
+              <div
+                className={nodes == [] ? 'hidden' : 'flex'}
+                style={{ display: '', justifyContent: 'space-between' }}
+              >
+                <div className="flex">
+                  <span className="mt-2">
+                    Total Pages: {pagination.state.getTotalPages(data.nodes)}
                   </span>
-                  <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
-                    <SelectGroupTwo
-                      values={[30, 50, 100, 200, 500, 'All']}
-                      setSelectedOption={(val) => setpagesval(val)}
-                      selectedOption={pagesval}
-                    />
+                  <div className="flex  align-middle  flex-row mr-3">
+                    <span className="flex mt-2 ml-8 align-middle">
+                      Records Per Page:{' '}
+                    </span>
+                    <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
+                      <SelectGroupTwo
+                        values={[30, 50, 100, 200, 500, 'All']}
+                        setSelectedOption={(val) => setpagesval(val)}
+                        selectedOption={pagesval}
+                      />
+                    </div>
                   </div>
                 </div>
+
+                <span>
+                  Page:{' '}
+                  {pagination.state.getPages(data.nodes).map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      className="rounded"
+                      style={{
+                        color: pagination.state.page === index ? 'white' : '',
+                        width: '20px',
+                        margin: '0px 5px',
+                        padding: '2px',
+                        backgroundColor:
+                          pagination.state.page === index ? '#3C50E0' : '',
+                      }}
+                      onClick={() => pagination.fns.onSetPage(index)}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </span>
               </div>
-
-              <span>
-                Page:{' '}
-                {pagination.state.getPages(data.nodes).map((_, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    className="rounded"
-                    style={{
-                      color: pagination.state.page === index ? 'white' : '',
-                      width: '20px',
-                      margin: '0px 5px',
-                      padding: '2px',
-                      backgroundColor:
-                        pagination.state.page === index ? '#3C50E0' : '',
-                    }}
-                    onClick={() => pagination.fns.onSetPage(index)}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-              </span>
-            </div>
-            <div className="hidden">
-              <Table
-                id="my-table"
-                data={data}
-                pagination={pagination1}
-                theme={theme}
-              >
-                {(tableList) => (
-                  <>
-                    <Header>
-                      <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <HeaderCell className="">ID</HeaderCell>
-                        <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Section</HeaderCell>
-                        <HeaderCell>Gender</HeaderCell>
-                      </HeaderRow>
-                    </Header>
-
-                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList?.map((item) => (
-                        <Row
-                          key={item.student_id}
-                          item={item}
-                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                        >
-                          <Cell className="  ">
-                            <span>{item.student_id}</span>
-                          </Cell>
-                          <Cell className="capitalize">
-                            {item.firstName +
-                              ' ' +
-                              item.otherName +
-                              ' ' +
-                              item.lastName}
-                          </Cell>
-                          <Cell className="  ">
-                            <span>{item.section}</span>
-                          </Cell>
-                          <Cell className="  ">
-                            <span>{item.gender}</span>
-                          </Cell>
-                        </Row>
-                      ))}
-                    </Body>
-                  </>
-                )}
-              </Table>
             </div>
           </div>
-        </div>{' '}
+          <div className=" bg-white  dark:border-strokedark dark:dark:bg-form-input">
+            <button
+              className="flex w-6/12 mx-auto justify-center bg-primary rounded py-2 px-6 font-medium text-black  dark:text-white"
+              type=""
+              onClick={(e) => {
+                e.preventDefault();
+                props.close(false);
+              }}
+            >
+              close
+            </button>
+          </div>{' '}
+        </div>
       </div>
-    </DefaultLayout>
+    </>
+
+    //  </DefaultLayout>
   );
 };
 
-export default Student;
+export default SearchStudentsModal;

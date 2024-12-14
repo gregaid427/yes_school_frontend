@@ -14,7 +14,7 @@ import FeeRadio from './FeeRadio';
 
 const CollectFeesModal = (props) => {
   const clad = useSelector((state) => state?.classes);
-  console.log(props);
+//  console.log(props);
   const { fetchAllClassloading, fetchAllClass } = clad;
   const dispatch = useDispatch();
   const inventory = useSelector((state) => state?.inventory);
@@ -81,6 +81,7 @@ const CollectFeesModal = (props) => {
     balanceafterpayment: balanceresult,
     receiptid: receiptid,
     infotype: props.infotype,
+    session : props.session
   };
   const handleSubmit = (e) => {
     if (amount < 1) {

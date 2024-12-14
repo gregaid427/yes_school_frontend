@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { startTransition, useEffect, useRef, useState } from 'react';
 import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { Link, useNavigate } from 'react-router-dom';
@@ -38,6 +38,8 @@ import { Dialog } from 'primereact/dialog';
 import AssignFeeModal from '../../components/AssignFeeModal';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import {
+  fetchAllAssignRecordAction,
+  fetchAllfeeAssignRecordAction,
   fetchfeeAssignGroupRecordAction,
   fetchfeeAssignRecordAction,
   fetchfeeCartegoryAction,
@@ -58,6 +60,10 @@ import DeleteAllAssignedFeeModal from '../../components/DeleteAllAssignedFeeModa
 import UpdateAllStudentAccountModal from '../../components/UpdateAllStudentAccountModal';
 import UpdateClassAccountModal from '../../components/UpdateClassAccountModal';
 import UpdateStudentAccountModal from '../../components/UpdateStudentAccountModal';
+import SearchStudentsModal from '../SearchStudentsModal';
+import { reset } from '../../redux/slices/usersSlice';
+import GenerateAssignedModalStudent from '../../components/GenerateAssignedModalStudent';
+import TotalFeesCollectedModal from '../TotalFeesCollectedModal';
 
 const Finance = () => {
   const formRef1 = useRef();
@@ -75,6 +81,7 @@ const Finance = () => {
     Generatefee,
     deleteAllAssigned,
     custom,
+    fetchAllAssignRecord,
   } = fee;
 
   const [pagesval, setpagesval] = useState(30);
@@ -107,6 +114,10 @@ const Finance = () => {
   const [visible6, setVisible6] = useState(false);
   const [visible7, setVisible7] = useState(false);
   const [visible8, setVisible8] = useState(false);
+  const [visible9, setVisible9] = useState(false);
+  const [visible10, setVisible10] = useState(false);
+  const [visible13, setVisible13] = useState(false);
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -162,15 +173,15 @@ const Finance = () => {
       Table: `
       --data-table-library_grid-template-columns:  25% 20% 10%  10% 10% 17% 8%;
     `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -237,7 +248,7 @@ const Finance = () => {
     }
   }, [Generatefee, deleteAllAssigned]);
   const user = useSelector((state) => state?.user);
-  const { username, userMail} = user;
+  const { username, userMail } = user;
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
@@ -277,6 +288,8 @@ const Finance = () => {
     useKeysAsHeaders: true,
     filename: `Admission Template`,
   });
+
+
   let template = {
     firstName: '',
     otherName: '',
@@ -396,6 +409,12 @@ const Finance = () => {
   }, [studentStat]);
 
   useEffect(() => {
+    if (fetchAllAssignRecord?.success == 1 ) {
+      setVisible10(true);
+    }
+  }, [fetchAllAssignRecord]);
+
+  useEffect(() => {
     if (classStat?.success == 1) {
       setClasses(classStat?.data[0].noclass);
     }
@@ -439,16 +458,39 @@ const Finance = () => {
       >
         <GenerateFeeModalClass close={setVisible2} val={propdata} />
       </Dialog>
+
+      <Dialog
+        visible={visible10}
+        position={'top'}
+        style={{ height: 'auto', width: '63%' }}
+        onHide={() => {
+          if (!visible10) return;
+          setVisible10(false);
+        }}
+      >
+        <GenerateAssignedModalStudent close={setVisible10} />
+      </Dialog>
       <Dialog
         visible={visible3}
         position={'top'}
-        style={{ height: 'auto', width: '35%' }}
+        style={{ height: 'auto', width: '60%' }}
         onHide={() => {
           if (!visible3) return;
           setVisible3(false);
         }}
       >
-        <GenerateFeeModalStudent close={setVisible3} />
+        <SearchStudentsModal close={setVisible3} openModal={setVisible9} />
+      </Dialog>
+      <Dialog
+        visible={visible9}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible9) return;
+          setVisible9(false);
+        }}
+      >
+        <GenerateFeeModalStudent close={setVisible9} />
       </Dialog>
       <Dialog
         visible={visible4}
@@ -505,6 +547,18 @@ const Finance = () => {
         }}
       >
         <UpdateClassAccountModal close={setVisible8} />
+      </Dialog>
+
+      <Dialog
+        visible={visible13}
+        position={'top'}
+        style={{ height: 'auto', width: '30%' }}
+        onHide={() => {
+          if (!visible13) return;
+          setVisible13(false);
+        }}
+      >
+        <TotalFeesCollectedModal close={setVisible13}  />
       </Dialog>
 
       <div className="flex w-full gap-2">
@@ -822,9 +876,9 @@ const Finance = () => {
                   'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
                 }
               >
-                {/* <div className="w-full">
+                <div className="w-full">
                   <label className="  text-sm font-medium text-ash dark:text-white">
-                    Assign Fee Options :
+                    Generate Reports Options:
                   </label>
                   <div className=" flex flex-col gap-2">
                     <div className="flex justify-between ">
@@ -838,14 +892,13 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                        Update Student Account Balance
+                        Fee Payments & Payment Reversals
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          show('top-right');
-                          dispatch(fetchfeeAssignGroupRecordAction());
+                          navigate('/fees/manage');
                         }}
                       >
                         Select
@@ -862,14 +915,14 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>
-                        Delete All Assigned Fees
+                        Fee Class Assignments
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          show('top-right');
-                          dispatch(fetchfeeAssignGroupRecordAction());
+                          //setVisible10(true)
+                          dispatch(fetchAllAssignRecordAction());
                         }}
                       >
                         Select
@@ -886,21 +939,19 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                        View All Assigned Fee Details
+                        Total Fees Collected
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          show('top-right');
-                          dispatch(fetchfeeAssignGroupRecordAction());
-                        }}
+setVisible13(true)                        }}
                       >
                         Select
                       </button>
                     </div>
                   </div>
-                </div> */}
+                </div>
               </div>
             </div>
           </div>
@@ -984,3 +1035,16 @@ const Finance = () => {
 };
 
 export default Finance;
+
+// fee reversals
+// fee assignment
+// fee account reset
+// fee generate records
+
+// gen startTransition
+// fee payment records per sessionStorage, day, custom date
+   
+
+// session,
+// today
+// custom days

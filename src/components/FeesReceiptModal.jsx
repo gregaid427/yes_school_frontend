@@ -13,7 +13,7 @@ import userThree from '../images/user/user-03.png';
 
 const FeesReceiptModal = (props) => {
   const ref = useRef({ openPrintDialog: () => Promise });
-
+console.log(props)
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
   const dispatch = useDispatch();
   const inventory = useSelector((state) => state?.inventory);
@@ -161,7 +161,7 @@ const { username, userMail} = user;
                   <div className="flex border-b justify-between pb-2 border-stroke  dark:border-strokedark">
                   <img
                       src={pictureurl == null ? userThree : pictureurl}
-                      className=" float-end mb-2 h-25 mr-2"
+                      className="float-end mb-2 h-25 mr-2"
                     />
                     <div className="border-l pl-2 border-stroke  dark:border-strokedark w-full ">
                       <p>

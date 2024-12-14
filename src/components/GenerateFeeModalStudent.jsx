@@ -6,21 +6,22 @@ import { useNavigate } from 'react-router-dom';
 import { fetchSingleStudent,resetSinglestudent } from '../redux/slices/studentSlice';
 
 const GenerateFeeModalStudent = (props) => {
+  console.log(props)
   const dispatch = useDispatch();
   const [display, setDisplay] = useState(0);
 
   const [clazz, setclazz] = useState([]);
-  const [id, setId] = useState('');
+  const [id, setId] = useState(props.info.student_id);
   const [selectedArr, setselectedArr] = useState([]);
 
   const [desc, setDesc] = useState('');
-  const [cart, setCartegory] = useState('');
+  const [cart, setCartegory] = useState(props.info.cartegory);
 
-  const [Fname, setfName] = useState('');
-  const [Lname, setLName] = useState('');
-  const [Mname, setMName] = useState('');
-  const [classs, setClass] = useState('');
-  const [secton, setSection] = useState('');
+  const [Fname, setfName] = useState(props.info.firstName);
+  const [Lname, setLName] = useState(props.info.lastName);
+  const [Mname, setMName] = useState(props.info.otherName);
+  const [classs, setClass] = useState(props.info.class);
+  const [secton, setSection] = useState(props.info.section);
 
   const clad = useSelector((state) => state?.classes);
 
@@ -40,7 +41,7 @@ const GenerateFeeModalStudent = (props) => {
   };
 
   const data ={
-    id : id,
+    id : props.info.student_id,
     class : classs,
     cartegory : cart
   }
@@ -119,7 +120,7 @@ const GenerateFeeModalStudent = (props) => {
                   Generate Fee
                 </h3>
               </div>
-              <div className={desc.length == 0 ? '' : 'hidden'}>
+              {/* <div className={desc.length == 0 ? '' : 'hidden'}>
                 <h4 className="text-sm  text-black text-center dark:text-white">
                   {' '}
                 </h4>
@@ -157,14 +158,14 @@ const GenerateFeeModalStudent = (props) => {
                     className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                     onClick={(e) => {
                       e.preventDefault();
-                      props.close(false);
+                      props.info.close(false);
                     }}
                   >
                     Decline
                   </button>
                 </div>
-              </div>
-              <div className={desc[0] ? '' : 'hidden'}>
+              </div> */}
+              <div >
                 <form>
                   <div className="w-full flex mb-4 sm:w-2/2">
                     <label
@@ -194,7 +195,7 @@ const GenerateFeeModalStudent = (props) => {
                       {fullname}
                     </label>
                   </div>
-
+{/* 
                   <div className="w-full flex mb-4 sm:w-2/2">
                     <label
                       className="my-auto w-3/5 block text-sm font-medium text-black dark:text-white"
@@ -208,7 +209,7 @@ const GenerateFeeModalStudent = (props) => {
                     >
                       {classs + ' ' + `${secton ? '/' : ''}` + ' ' + secton}{' '}
                     </label>
-                  </div>
+                  </div> */}
 
                   <div className="flex justify-end mt-8.5 gap-4.5">
                     <button

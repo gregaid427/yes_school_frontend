@@ -184,7 +184,8 @@ const NewExam = () => {
   }
 
   useEffect(() => {
-    if (fetchcustomstudent?.success == 1 && fetchcustomstudent?.data != [] && printstate == true) {
+    console.log('fetch custom empty')
+    if (fetchcustomstudent?.success == 1 && fetchcustomstudent?.data.length !=0 ) {
       let data = fetchcustomstudent?.data;
       const csvConfig = mkConfig({
         useKeysAsHeaders: true,

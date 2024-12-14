@@ -68,7 +68,7 @@ const CollectFees = () => {
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
   const [classs, setClasss] = useState();
-  const [sections, setsections] = useState([]);
+  const [session, setsession] = useState();
   const [clazz, setclazz] = useState();
   const [sectionzz, setsectionzz] = useState('All Sections');
   const [propp, setProp] = useState();
@@ -84,7 +84,16 @@ const CollectFees = () => {
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
   const fee = useSelector((state) => state?.fees);
+  const session1 = useSelector((state) => state?.session);
 
+  const { fetchsessionactive, fetchsession } = session1;
+  useEffect(() => {
+    if (fetchsessionactive?.success == 1) {
+      let data = fetchsessionactive?.data[0];
+      setsession(data?.sessionname);
+   //   console.log('sessionz');
+    }
+  }, [fetchsessionactive]);
   const {
     loading,
     error,
@@ -109,7 +118,7 @@ const CollectFees = () => {
       setinfo(info)
       setdata(data);
     }
-
+console.log(info)
 
     // if (fetchAllClass?.success == 1) {
     //   let i = 0;
@@ -324,7 +333,7 @@ const CollectFees = () => {
           setVisible(false);
         }}
       >
-        <CollectFeesModal close={setVisible} stdname={name} val={propp} infotype={sectionzz} />
+        <CollectFeesModal close={setVisible} stdname={name} val={propp} infotype={sectionzz} session={session}/>
       </Dialog>
       <Dialog
         resizable={false}
@@ -347,6 +356,8 @@ const CollectFees = () => {
             'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
           }
         >
+
+
           <div className="max-w-full overflow-x-auto">
             <div className="w-full  flex justify-between ">
               <div className=" flex w-7/12 gap-3">

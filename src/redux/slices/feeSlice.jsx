@@ -806,6 +806,39 @@ export const fetchAllfeeAssignRecordAction = createAsyncThunk(
     }
   },
 );
+
+
+export const fetchAllAssignRecordAction = createAsyncThunk(
+  'fetch/getAllassignrecord',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+     try {
+      
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/getAssignRecordAction`,
+        payload,
+      );
+
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+      ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const fetchfeeAssignRecordAction = createAsyncThunk(
   'fetch/feeassignrecord',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -837,6 +870,7 @@ export const fetchfeeAssignRecordAction = createAsyncThunk(
     }
   },
 );
+
 export const fetchfeeAssignGroupRecordAction = createAsyncThunk(
   'fetch/feeassignrecordgroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -868,6 +902,8 @@ export const fetchfeeAssignGroupRecordAction = createAsyncThunk(
     }
   },
 );
+
+
 
 export const fetchfeeAssignbycartAction = createAsyncThunk(
   'fetch/feeassignbyclass',
@@ -1274,6 +1310,38 @@ export const deleteSingleFeeCartAction = createAsyncThunk(
   },
 );
 
+export const FetchTotalFeesAction = createAsyncThunk(
+  'get/totalfee',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/totalfee`,
+        payload,
+      );
+
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const AssignFeesAction = createAsyncThunk(
   'create/assignfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -1426,6 +1494,9 @@ const FeeSlices = createSlice({
     resetRevoke(state) {
       state.Revoke = null;
     },
+    resetfetchAllAssignRecord(state) {
+      state.fetchAllAssignRecord = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(CreatesfeeAction.pending, (state, action) => {
@@ -1444,6 +1515,43 @@ const FeeSlices = createSlice({
       state.error = action.payload;
       state.Createfee = undefined;
       state.fetchAllfee = undefined;
+    });
+
+    
+    
+    builder.addCase(FetchTotalFeesAction.pending, (state, action) => {
+      state.FetchTotalFeeloading = true;
+      state.FetchTotalFee = false;
+    });
+    builder.addCase(FetchTotalFeesAction.fulfilled, (state, action) => {
+      state.FetchTotalFeeloading = false;
+      state.FetchTotalFee = action?.payload;
+      state.FetchTotalFeeerror = undefined;
+
+    });
+    builder.addCase(FetchTotalFeesAction.rejected, (state, action) => {
+      state.FetchTotalFeeloading = true;
+      state.FetchTotalFee = undefined;
+      state.FetchTotalFeeerror = action.payload;
+
+    });
+
+
+    builder.addCase(fetchAllAssignRecordAction.pending, (state, action) => {
+      state.fetchAllAssignRecordloading = true;
+      state.fetchAllAssignRecord = false;
+    });
+    builder.addCase(fetchAllAssignRecordAction.fulfilled, (state, action) => {
+      state.fetchAllAssignRecordloading = false;
+      state.fetchAllAssignRecord = action?.payload;
+      state.fetchAllAssignRecorderror = undefined;
+
+    });
+    builder.addCase(fetchAllAssignRecordAction.rejected, (state, action) => {
+      state.fetchAllAssignRecordloading = true;
+      state.fetchAllAssignRecord = undefined;
+      state.fetchAllAssignRecorderror = action.payload;
+
     });
 
     builder.addCase(UpdateFeeCartAction.pending, (state, action) => {
@@ -2094,6 +2202,7 @@ export const {
   resetGeneratefee,
   resetdeleteassignedfee,
   resetRevoke,
+  resetfetchAllAssignRecord
 } = FeeSlices.actions;
 
 export default FeeSlices.reducer;
