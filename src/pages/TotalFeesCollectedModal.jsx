@@ -199,7 +199,7 @@ fetchsessionactive
             className="mb-2 block my-4 text-sm font-medium text-black dark:text-white"
             htmlFor="fullName"
           >
-            Total Fees : {total[0].total} GHS
+            Total Fees : {total[0].total == null ? '0': total[0].total} GHS
           </label>
         </div>
         <div

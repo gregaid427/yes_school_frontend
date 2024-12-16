@@ -230,11 +230,14 @@ const AssignFeeModal = (props) => {
                           </label>{' '}
                           <div>
                             {fetchAllClass?.data?.map((item, index) => (
+                              < >
                               <AssignFeeClassSelect
+                              key={index} 
                                 info={fetchAllClass?.data?.[index]}
                                 selectedarr={selectedArr}
                                 selected={setselectedArr}
                               />
+                              </>
                             ))}
                           </div>
                         </div>

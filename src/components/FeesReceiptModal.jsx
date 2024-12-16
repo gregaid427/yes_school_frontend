@@ -221,6 +221,7 @@ const { username, userMail} = user;
                     </div>
                   </div>{' '}
                 </div>
+                
                 <div className="flex border border-stroke  dark:border-strokedark p-4">
                   <div className="flex border-b  w-8/12 border-stroke  dark:border-strokedark">
                     <table className="w-full  ">
@@ -241,7 +242,7 @@ const { username, userMail} = user;
                       <thead className="w-full  ">
 
                         {props.cart?.map((item, index) => (
-                          <tr className="w-full  ">
+                          <tr className="w-full  " key={index} >
                             {' '}
                             <th className="text-sm float-start  font-light w-4/12">
                               {index + 1}

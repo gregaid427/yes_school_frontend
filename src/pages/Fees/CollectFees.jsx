@@ -76,9 +76,11 @@ const CollectFees = () => {
   const [info, setinfo] = useState();
   const [receipt, setReceipt] = useState('');
   const [name, SetName] = useState('');
+  const [singleCart, setSingleCart] = useState([]);
 
   
   
+  console.log(propp)
   
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
@@ -108,6 +110,7 @@ const CollectFees = () => {
 
   const { fetchAllClassloading, fetchAllClass } = classes;
   const { payfee,cartegory } = fee;
+  console.log(fetchcustom)
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -117,8 +120,9 @@ const CollectFees = () => {
       let info = fetchcustom?.info;
       setinfo(info)
       setdata(data);
+      console.log(info)
+
     }
-console.log(info)
 
     // if (fetchAllClass?.success == 1) {
     //   let i = 0;
@@ -248,8 +252,12 @@ console.log(info)
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
-  const handleviewbtn = (value) => {
+  const handleviewbtn = (value,info) => {
     show('top-right');
+    setSingleCart(
+      info?.filter((item) => item?.scartegory.includes(value)),
+    );
+
   };
   const handleEditbtn = (value) => {
     dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
@@ -348,7 +356,7 @@ console.log(info)
           setVisible1(false);
         }}
       >
-        <FeesReceiptModal close={setVisible1} val={propp} response={receipt} cart={info} school={allschool} />
+        <FeesReceiptModal close={setVisible1} val={propp} response={receipt} cart={singleCart} school={allschool} />
       </Dialog>
       <div className=" flex-col">
         <div
@@ -524,8 +532,9 @@ console.log(info)
                               <TableBtn
                                 text={'Collect Fees'}
                                 clickFunction={() => {
+                                  console.log(item)
                                   setProp(item);
-                                  handleviewbtn(item);
+                                  handleviewbtn(item?.cartegory,info);
                                   SetName(item.firstName +
                                     ' ' +
                                     item.otherName +

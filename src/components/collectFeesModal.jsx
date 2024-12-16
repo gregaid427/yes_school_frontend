@@ -22,7 +22,7 @@ const CollectFeesModal = (props) => {
   const { CreateInventorycart } = inventory;
   useEffect(() => {
     if (CreateInventorycart?.success == 0) {
-      toast.error('Error - Adding Item Cartegory ');
+      toast.error('Error - Adding Item Cartegory');
       //    dispatch(resetcreatecart())
       dispatch(fetchAllClassAction());
     }
@@ -81,7 +81,8 @@ const CollectFeesModal = (props) => {
     balanceafterpayment: balanceresult,
     receiptid: receiptid,
     infotype: props.infotype,
-    session : props.session
+    session : props.session,
+    cartegory : props.cartegory
   };
   const handleSubmit = (e) => {
     if (amount < 1) {
