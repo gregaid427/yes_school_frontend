@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ClassSelect3 from './ClassSelect3';
 import SessionSelect1 from './SessionSelect1';
-import { AssignFeesAction } from '../redux/slices/feeSlice';
+import { AssignFeesAction, updateFeeCartItemAction } from '../redux/slices/feeSlice';
 import toast from 'react-hot-toast';
 import ClassSelect2 from './ClassSelect2';
 import AssignFeeClassSelect from './AssignFeeClassSelect';
@@ -11,12 +11,19 @@ const AssignFeeModalClass = (props) => {
   const dispatch = useDispatch();
   const [display, setDisplay] = useState(0);
 
-  const [clazz, setclazz] = useState();
+  const [amount, setamount] = useState(props.data.amount);
   const [isChecked1, setIsChecked1] = useState();
   const [selectedArr, setselectedArr] = useState([]);
 
+function handleSubmit(){
+  let data = {
+    id : props.data.id,
+    amount : amount
+  }
+  dispatch(updateFeeCartItemAction(data))
 
-
+}
+console.log(props)
 
 
   return (
@@ -27,7 +34,7 @@ const AssignFeeModalClass = (props) => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">
               <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                 <h3 className="font-medium  text-black dark:text-white">
-                  Assigned Fees Cartegory For {props.data?.class}
+                  Assigned Fees Item For {props.data?.class}
                 </h3>
               </div>
               <div className="p-8">
@@ -43,7 +50,7 @@ const AssignFeeModalClass = (props) => {
                               className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
                               htmlFor=""
                             >
-                              Fee Cartegories
+                              Fee Item
                             </label>
                             <label
                               className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
@@ -52,15 +59,14 @@ const AssignFeeModalClass = (props) => {
                               Amount To Charge
                             </label>
                           </div>
-                          {props?.data?.map((item, index) => (
-                            <div className="flex   " key={item.id}>
+                            <div className="flex   ">
                               <div className="w-4/6 flex  ">
                                 {' '}
                                 <label
                                   className=" my-auto  block text-sm font-medium text-black dark:text-white"
                                   htmlFor=""
                                 >
-                                  {item.feename}
+                                  {props.data?.feename}
                                 </label>
                               </div>{' '}
                               <div className="  w-2/6">
@@ -70,20 +76,28 @@ const AssignFeeModalClass = (props) => {
                                   name=""
                                   id=""
                                   placeholder=""
-                                  defaultValue={item?.amount}
-                                  disabled
+                                  defaultValue={props.data?.amount}
+                                  onChange={(e)=>setamount(e.target.value)}
                                  
                                 />
                               </div>
                             </div>
-                          ))}
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex justify-end gap-4.5">
-                 
+                  <div className="flex gap-4.5">
+                    <button
+                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSubmit();
+                      }}
+                    >
+                      Save
+                    </button>
                     <button
                       className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="reset"

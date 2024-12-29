@@ -1309,6 +1309,99 @@ export const deleteSingleFeeCartAction = createAsyncThunk(
     }
   },
 );
+export const updateFeeCartItemAction = createAsyncThunk(
+  'delete/updateFeeCartItem',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/updatecartitem`,
+        payload,
+      );
+
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const deleteFeeCartItemAction = createAsyncThunk(
+  'delete/deleteFeeCartItem',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/cartitemdel`,
+        payload,
+      );
+
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const deleteGoupFeeCartAction = createAsyncThunk(
+  'delete/deletegroupfeeCart',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/groupcartdel`,
+        payload,
+      );
+
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
 export const FetchTotalFeesAction = createAsyncThunk(
   'get/totalfee',
@@ -1425,6 +1518,51 @@ export const GetFeeRecordAction = createAsyncThunk(
   },
 );
 
+
+export const GetSingleBillAction = createAsyncThunk(
+  'get/getsinglebill',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/getsinglebill`,
+        payload,
+      );
+ 
+      if (data.success == 1 && data.data.length == 0) {
+        toast.error('No Bill Available');
+      }
+      if (data == null) {
+        toast.error('No Bill Available');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+
+
 export const deleteSinglefeeStockAction = createAsyncThunk(
   'fee/deleteASinglefeestock',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -1518,6 +1656,74 @@ const FeeSlices = createSlice({
     });
 
     
+
+
+    builder.addCase(GetSingleBillAction.pending, (state, action) => {
+      state.GetSingleBillloading = true;
+      state.GetSingleBill = false;
+    });
+    builder.addCase(GetSingleBillAction.fulfilled, (state, action) => {
+      state.GetSingleBill = action?.payload;
+      state.GetSingleBillloading = false;
+      state.GetSingleBillerror = undefined;
+    });
+    builder.addCase(GetSingleBillAction.rejected, (state, action) => {
+      state.GetSingleBillloading = false;
+      state.GetSingleBillerror = action.payload;
+      state.GetSingleBill = undefined;
+    });
+
+
+    builder.addCase(updateFeeCartItemAction.pending, (state, action) => {
+      state.updateFeeCartItemloading = true;
+      state.updateFeeCartItem = false;
+    });
+    builder.addCase(updateFeeCartItemAction.fulfilled, (state, action) => {
+      state.updateFeeCartItemloading = false;
+      state.updateFeeCartItem = action?.payload;
+      state.updateFeeCartItemerror = undefined;
+
+    });
+    builder.addCase(updateFeeCartItemAction.rejected, (state, action) => {
+      state.updateFeeCartItemloading = true;
+      state.updateFeeCartItem = undefined;
+      state.updateFeeCartItemerror = action.payload;
+
+    });
+
+    builder.addCase(deleteFeeCartItemAction.pending, (state, action) => {
+      state.deleteFeeCartItemtloading = true;
+      state.deleteFeeCartItem = false;
+    });
+    builder.addCase(deleteFeeCartItemAction.fulfilled, (state, action) => {
+      state.FetchTotalFeeloading = false;
+      state.deleteFeeCartItem = action?.payload;
+      state.deleteFeeCartIteerror = undefined;
+
+    });
+    builder.addCase(deleteFeeCartItemAction.rejected, (state, action) => {
+      state.deleteFeeCartItemtloading = true;
+      state.deleteFeeCartItem = undefined;
+      state.deleteFeeCartIteerror = action.payload;
+
+    });
+
+    builder.addCase(deleteGoupFeeCartAction.pending, (state, action) => {
+      state.deleteGoupFeeCartloading = true;
+      state.deleteGoupFeeCart = false;
+    });
+    builder.addCase(deleteGoupFeeCartAction.fulfilled, (state, action) => {
+      state.FetchTotalFeeloading = false;
+      state.deleteGoupFeeCart = action?.payload;
+      state.deleteGoupFeeCarterror = undefined;
+
+    });
+    builder.addCase(deleteGoupFeeCartAction.rejected, (state, action) => {
+      state.deleteGoupFeeCartloading = true;
+      state.deleteGoupFeeCart = undefined;
+      state.deleteGoupFeeCarterror = action.payload;
+
+    });
     
     builder.addCase(FetchTotalFeesAction.pending, (state, action) => {
       state.FetchTotalFeeloading = true;

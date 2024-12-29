@@ -231,7 +231,7 @@ const FeesGroup = () => {
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
-                  Fees Cartegory List
+                  Fees Item List
                 </h3>
               </div>
             </div>
@@ -310,7 +310,7 @@ const FeesGroup = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
-                          <HeaderCell>Fee Cartegory</HeaderCell>
+                          <HeaderCell>Fee Item</HeaderCell>
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>

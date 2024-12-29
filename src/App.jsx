@@ -121,6 +121,7 @@ import AddInventoryStock from './pages/inventory/AddInventoryStock';
 import AddInventory from './pages/inventory/AddInventory';
 import EditExamResultAlt from './pages/exam/EditExamResultAlt';
 import StudentsCartegory from './pages/student/StudentCartegory';
+import BulkBill from './pages/settings/BulkBill';
 
 function App() {
   const navigate = useNavigate();
@@ -495,6 +496,8 @@ function App() {
               }
             />{' '}
           </Route>{' '}
+          
+      
           <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
             <Route
               path="/student/cartegory"
@@ -712,6 +715,17 @@ function App() {
                 <>
                   <PageTitle title="Fees" />
                   <Fees />
+                </>
+              }
+            />{' '}
+          </Route>{' '}
+          <Route element={<RequireAuth allowedRoles={['4']} code={code} />}>
+            <Route
+              path='/fees/Bulkbill'
+              element={
+                <>
+                  <PageTitle title="Finance" />
+                  <BulkBill />
                 </>
               }
             />{' '}

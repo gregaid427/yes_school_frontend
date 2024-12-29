@@ -650,7 +650,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Fees Cartegory
+                              Fees Items
                             </NavLink>
                           </li>
                        

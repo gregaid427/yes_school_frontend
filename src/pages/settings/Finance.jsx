@@ -82,6 +82,7 @@ const Finance = () => {
     deleteAllAssigned,
     custom,
     fetchAllAssignRecord,
+    GetSingleBill
   } = fee;
 
   const [pagesval, setpagesval] = useState(30);
@@ -117,7 +118,6 @@ const Finance = () => {
   const [visible9, setVisible9] = useState(false);
   const [visible10, setVisible10] = useState(false);
   const [visible13, setVisible13] = useState(false);
-
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -247,7 +247,10 @@ const Finance = () => {
       dispatch(resetdeleteassignedfee());
     }
   }, [Generatefee, deleteAllAssigned]);
+  
   const user = useSelector((state) => state?.user);
+  const { allschool } = user;
+
   const { username, userMail } = user;
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -288,7 +291,6 @@ const Finance = () => {
     useKeysAsHeaders: true,
     filename: `Admission Template`,
   });
-
 
   let template = {
     firstName: '',
@@ -409,7 +411,7 @@ const Finance = () => {
   }, [studentStat]);
 
   useEffect(() => {
-    if (fetchAllAssignRecord?.success == 1 ) {
+    if (fetchAllAssignRecord?.success == 1) {
       setVisible10(true);
     }
   }, [fetchAllAssignRecord]);
@@ -558,7 +560,7 @@ const Finance = () => {
           setVisible13(false);
         }}
       >
-        <TotalFeesCollectedModal close={setVisible13}  />
+        <TotalFeesCollectedModal close={setVisible13} />
       </Dialog>
 
       <div className="flex w-full gap-2">
@@ -945,7 +947,107 @@ const Finance = () => {
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-setVisible13(true)                        }}
+                          setVisible13(true);
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full flex-col">
+              <div
+                className={
+                  'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
+                }
+              >
+                <div className="w-full overflow-x-auto">
+                  <div className="w-full  flex justify-between  ">
+                    <h3 className="font-medium text-black py-3 dark:text-white">
+                      Finance Reports
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+                }
+              >
+                <div className="w-full">
+                  <label className="  text-sm font-medium text-ash dark:text-white">
+                    Generate Reports Options:
+                  </label>
+                  <div className=" flex flex-col gap-2">
+                    <div className="flex justify-between ">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Generate Bill{' '}
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate('/fees/Bulkbill');
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>
+                        Fee Class Assignments
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          //setVisible10(true)
+                          dispatch(fetchAllAssignRecordAction());
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Total Fees Collected
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          setVisible13(true);
+                        }}
                       >
                         Select
                       </button>
@@ -1043,7 +1145,6 @@ export default Finance;
 
 // gen startTransition
 // fee payment records per sessionStorage, day, custom date
-   
 
 // session,
 // today

@@ -1,0 +1,154 @@
+<div className="px-2">
+    <Table
+      data={data}
+      pagination={pagination}
+      layout={{ custom: true }}
+      theme={theme}
+    >
+      {(tableList) => (
+        <>
+          <Header>
+            <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
+              <HeaderCell>Class</HeaderCell>
+              <HeaderCell>Student Cartegory</HeaderCell>
+    
+              <HeaderCell>Amount</HeaderCell>
+    
+              <HeaderCell>Date Assigned</HeaderCell>
+              <HeaderCell>Action</HeaderCell>
+            </HeaderRow>
+          </Header>
+    
+    
+            <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+            {tableList?.map((item) => (
+              <Row key={item.id}
+                  item={item}
+                  className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                
+                >
+                <Cell className="  ">{item.class}</Cell>
+                <Cell className="  ">{item.createdby? item.scartegory : '-'}</Cell>
+    
+                <Cell className="  ">{item.total == null ? '⚠️ Unassigned':item.total  }</Cell>
+    
+                <Cell className="  ">{item.createdat ? item.createdat : '-'}</Cell>
+    
+                <Cell>
+                  
+                  <div className="gap-1 flex">
+    
+                      
+                  <ViewSVG
+                      clickFunction={() => item.amount == null ?"" : handleViewbtn(item.class,item.scartegory)}
+                    />
+                  {item.total == null ?   <TableBtn
+                        clickFunction={() => { setClass(item?.class) 
+                          setcart(item?.scartegory) 
+                          setVisible2(true)}} 
+                        text={` Assign `}
+                        color={'bg-primary'}
+                      /> :    <TableBtn
+                      clickFunction={() => { setClass(item?.class)
+                        setcart(item?.scartegory) 
+                        setVisible2(true)}}
+                      text={'Re-Assign '}
+                      color={'bg-primary'}
+                    />}
+                 
+                  
+    
+                    {/* <DeleteSVG
+                      clickFunction={() => handleViewbtn(item)}
+                    /> */}
+                  </div>
+                </Cell>
+              </Row>
+            ))}
+          </Body>
+        </>
+      )}
+    </Table>
+    </div>
+    <div
+    className=" align-middle"
+    style={{ display: 'flex', justifyContent: 'space-between' }}
+    >
+    <div className="flex">
+      <span className="mt-2">
+        Total Pages: {pagination.state.getTotalPages(data.nodes)}
+      </span>
+      <div className="flex  align-middle  flex-row mr-3">
+        <span className="flex mt-2 ml-8 align-middle">
+          Records Per Page:{' '}
+        </span>
+        <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
+          <SelectGroupTwo
+            values={[30, 50, 100, 200, 500, 'All']}
+            setSelectedOption={(val) => setpagesval(val)}
+            selectedOption={pagesval}
+          />
+        </div>
+      </div>
+    </div>
+    
+    <span>
+      Page:{' '}
+      {pagination.state.getPages(data.nodes).map((_, index) => (
+        <button
+          key={index}
+          type="button"
+          className="rounded"
+          style={{
+            color: pagination.state.page === index ? 'white' : '',
+            width: '20px',
+            margin: '0px 5px',
+            padding: '2px',
+            backgroundColor:
+              pagination.state.page === index ? '#3C50E0' : '',
+          }}
+          onClick={() => pagination.fns.onSetPage(index)}
+        >
+          {index + 1}
+        </button>
+      ))}
+    </span>
+    </div>
+    <div className="hidden">
+    <Table
+      id="my-table"
+      data={data}
+      pagination={pagination}
+      theme={theme}
+    >
+      {(tableList) => (
+        <>
+          <Header>
+            <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
+              <HeaderCell>Class</HeaderCell>
+              {/* <HeaderCell>Instructor</HeaderCell> */}
+            </HeaderRow>
+          </Header>
+    
+    
+            <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+            {tableList?.map((item) => (
+              <Row
+                key={item.id}
+                item={item}
+                className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
+              >
+                <Cell className="  ">
+                  <span>{item.name}</span>
+                </Cell>
+    
+                {/* <Cell className="  ">
+                    <span>{item.instructor}</span>
+                  </Cell> */}
+              </Row>
+            ))}
+          </Body>
+        </>
+      )}
+    </Table>
+    </div>

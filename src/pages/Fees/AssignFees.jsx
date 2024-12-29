@@ -37,6 +37,9 @@ import ExpenseFormModal from '../../components/ExpenseFormModal';
 import { Dialog } from 'primereact/dialog';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import {
+  deleteFeeCartItemAction,
+  deleteGoupFeeCartAction,
+  deleteSingleFeeCartAction,
   fetchAllfeeAssignRecordAction,
   fetchfeeAssignGroupRecordAction,
   fetchfeeAssignRecordAction,
@@ -46,7 +49,9 @@ import AssignFeeModal from '../../components/AssignFeeModal';
 import AssignFeeModalClass from '../../components/AssignFeeModalClass';
 import AssignFeeModalPartial from '../../components/AssignFeeModalPartial';
 import { fetchstdCartegoryAction } from '../../redux/slices/studentSlice';
-
+import DeleteIcon from '../../components/Svgs/deleteIcon';
+import EditIcon from '../../components/Svgs/editIcon';
+import DeleteModal from '../../components/DeleteModal';
 
 const AssignFees = () => {
   const formRef1 = useRef();
@@ -59,7 +64,13 @@ const AssignFees = () => {
     dispatch(fetchstdCartegoryAction());
   }, []);
   const fee = useSelector((state) => state?.fees);
-  const { cartegory, Assignfee, AssignfeeGroup,AllAssignfee } = fee;
+  const {
+    cartegory,
+    Assignfee,
+    AssignfeeGroup,
+    AllAssignfee,
+    updateFeeCartItem,
+  } = fee;
 
   const [pagesval, setpagesval] = useState(30);
   const [classs, setClass] = useState();
@@ -77,9 +88,10 @@ const AssignFees = () => {
   const [file, setFile] = useState('');
 
   const [classTitle, setClassTitle] = useState('');
-  const [classInstructor, setClassInstructor] = useState('');
+  const [info, setInfo] = useState();
 
   const [propdata, setpropdata] = useState();
+  const [del, setDel] = useState();
 
   const [nodes, setdata] = useState([]);
   const [datacart, setdatacart] = useState([]);
@@ -98,10 +110,10 @@ const AssignFees = () => {
   } = clad;
 
   useEffect(() => {
-    dispatch(fetchAllsessionAction());
+    //  dispatch(fetchAllsessionAction());
     dispatch(fetchAllClassAction());
     dispatch(fetchAllfeeAssignRecordAction());
-    dispatch(fetchfeeAssignGroupRecordAction());
+    // dispatch(fetchfeeAssignGroupRecordAction());
   }, []);
 
   useEffect(() => {
@@ -122,15 +134,14 @@ const AssignFees = () => {
   }, [fetchAllClassloading, CreateClassesloading]);
 
   useEffect(() => {
-    setTimeout(() => setLoader(false), 1000);
+    // setTimeout(() => setLoader(false), 1000);
 
     if (AssignfeeGroup?.success == 1) {
       let data = AssignfeeGroup?.data;
-      console.log(data)
+      console.log(data);
       setdata(data);
       setVisible(false);
       dispatch(fetchAllfeeAssignRecordAction());
-
     }
   }, [AssignfeeGroup]);
 
@@ -171,15 +182,15 @@ const AssignFees = () => {
       Table: `
       --data-table-library_grid-template-columns:  31% 26%  10% 15% 18%;
     `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -196,6 +207,32 @@ const AssignFees = () => {
 
   const [search, setSearch] = useState('');
 
+  useEffect(() => {
+    //  setTimeout(() => setLoader(false), 1000);
+
+    if (fetchAllClass?.success == 1) {
+      let data = fetchAllClass?.data;
+      setdata(data);
+      //  setVisible1(false)
+    }
+  }, [fetchAllClass]);
+
+  useEffect(() => {
+    // setTimeout(() => setLoader(false), 1000);
+
+    if (AllAssignfee?.success == 1) {
+      let data = AllAssignfee?.data;
+      setInfo(data);
+      //  setVisible1(false)
+      setLoader(false);
+    }
+  }, [AllAssignfee]);
+
+  useEffect(() => {
+    dispatch(fetchAllClassAction());
+    // dispatch(fetchAllClassNoAction());
+  }, []);
+
   // data = {
   //   nodes: data.nodes.filter((item) =>
   //     item.title.toLowerCase().includes(search.toLowerCase()),
@@ -204,12 +241,14 @@ const AssignFees = () => {
 
   function onPaginationChange(action, state) {}
 
-  const handleViewbtn = (value,cart) => {
+  const handleViewbtn = (value, cart) => {
     setVisible1(true);
     console.log(AllAssignfee);
     let myArr = [];
-    myArr = AllAssignfee?.data.filter((item) =>
-      (item.scartegory.toLowerCase().includes(cart.toLowerCase()) && item.class.toLowerCase().includes(value.toLowerCase())),
+    myArr = AllAssignfee?.data.filter(
+      (item) =>
+        item.scartegory.toLowerCase().includes(cart.toLowerCase()) &&
+        item.class.toLowerCase().includes(value.toLowerCase()),
     );
     setpropdata(myArr);
   };
@@ -231,15 +270,14 @@ const AssignFees = () => {
 
   useEffect(() => {
     if (Assignfee?.success == 1) {
-     setVisible(false)
-     setVisible1(false)
-     setVisible2(false)
-
+      setVisible(false);
+      setVisible1(false);
+      setVisible2(false);
     }
   }, [Assignfee]);
 
   useEffect(() => {
-    setTimeout(() => setLoader(false), 1000);
+    //   setTimeout(() => setLoader(false), 1000);
 
     if (cartegory?.success == 1) {
       let data = cartegory?.data;
@@ -253,10 +291,26 @@ const AssignFees = () => {
     // datas = data;
   }, [cartegory]);
 
+  useEffect(() => {
+    if (updateFeeCartItem?.success == 1) {
+      setVisible10(false);
+    }
+  }, [updateFeeCartItem]);
+
+  useEffect(() => {
+    for (let x = 0; x >= fetchAllClass?.data?.length; x + 1) {
+      if (fetchAllClass?.data[x] == 1) {
+      }
+    }
+  }, []);
+
   const [classData1, setClassData1] = useState([]);
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
-
+  const [visible5, setVisible5] = useState(false);
+  const [visible8, setVisible8] = useState(false);
+  const [visible9, setVisible9] = useState(false);
+  const [visible10, setVisible10] = useState(false);
 
   const [position, setPosition] = useState('center');
 
@@ -264,7 +318,33 @@ const AssignFees = () => {
     setPosition(position);
     setVisible(true);
   };
+  console.log(info);
+  deleteSingleFeeCartAction;
+  const handledeletebtn1 = () => {
+    const data = {
+      cart: cart,
+      class: del,
+    };
+    dispatch(deleteSingleFeeCartAction(data));
+  };
+  const handledeletebtn = () => {
+    const data = {
+      id: del.id,
+      name: del.feeid,
+      class: del,
+    };
+    //  dispatch(deleteSingleFeeCartAction(data));
+    dispatch(deleteGoupFeeCartAction(data));
+  };
+  const handledeletebtn2 = () => {
+    const data = {
+      id: del,
+    };
+    //  dispatch(deleteSingleFeeCartAction(data));
+    dispatch(deleteFeeCartItemAction(data));
+  };
 
+  console.log(del);
 
   return loader ? (
     <Loader />
@@ -293,6 +373,32 @@ const AssignFees = () => {
         <AssignFeeModalClass close={setVisible1} data={propdata} />
       </Dialog>
       <Dialog
+        visible={visible10}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible10) return;
+          setVisible10(false);
+        }}
+      >
+        <AssignFeeModalClass close={setVisible10} data={del} />
+      </Dialog>
+      {/* <Dialog
+        resizable={false}
+        draggable={false}
+        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
+        visible={visible1}
+        className=""
+        position={'bottom'}
+        style={{ width: '65%', color: 'white' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+      >
+        <FeesReceiptModal close={setVisible1} val={propp} response={receipt} cart={singleCart} school={allschool} />
+      </Dialog> */}
+      <Dialog
         visible={visible2}
         position={'top'}
         style={{ height: 'auto', width: '35%' }}
@@ -301,9 +407,55 @@ const AssignFees = () => {
           setVisible2(false);
         }}
       >
-        <AssignFeeModalPartial close={setVisible2} data={classs} cartegory={cart}  />
+        <AssignFeeModalPartial
+          close={setVisible2}
+          data={classs}
+          cartegory={cart}
+        />
       </Dialog>
-      
+
+      <Dialog
+        visible={visible5}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible5) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletebtn} close={setVisible5} />
+      </Dialog>
+
+      <Dialog
+        visible={visible9}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible9) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletebtn2} close={setVisible9} />
+      </Dialog>
+
+      <Dialog
+        visible={visible8}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible8) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletebtn1} close={setVisible8} />
+      </Dialog>
+
       <div className=" flex-col">
         <div
           className={
@@ -336,29 +488,8 @@ const AssignFees = () => {
                   Assign Fee For Class
                 </button>
               </div>
-             
             </div>
-            <div className={' w-3/12 flex flex-col '}>
-              <div className="flex justify-between align-middle ">
-                <label
-                  className=" w-2/2  block text-sm font-medium text-black dark:text-white"
-                  htmlFor=" "
-                >
-                  Search Class{' '}
-                </label>
-              </div>
-
-              <input
-                className="w-full rounded border border-stroke bg-gray py-2 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                key={1}
-                type="search"
-                placeholder={'type here'}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
-              />
-              {/* <button onClick={() => toPDF()}>Download PDF</button> */}
-            </div>
+         
           </div>
         </div>
         <div
@@ -366,162 +497,177 @@ const AssignFees = () => {
             'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
           }
         >
-          <div className="flex gap-3  flex-col">
-            <div className="px-2">
-              <Table
-                data={data}
-                pagination={pagination}
-                layout={{ custom: true }}
-                theme={theme}
-              >
-                {(tableList) => (
-                  <>
-                    <Header>
-                      <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
-                        <HeaderCell>Class</HeaderCell>
-                        <HeaderCell>Student Cartegory</HeaderCell>
-
-                        <HeaderCell>Amount</HeaderCell>
-
-                        <HeaderCell>Date Assigned</HeaderCell>
-                        <HeaderCell>Action</HeaderCell>
-                      </HeaderRow>
-                    </Header>
-
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList?.map((item) => (
-                        <Row key={item.id}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          
-                          >
-                          <Cell className="  ">{item.class}</Cell>
-                          <Cell className="  ">{item.createdby? item.scartegory : '-'}</Cell>
-
-                          <Cell className="  ">{item.total == null ? '⚠️ Unassigned':item.total  }</Cell>
-
-                          <Cell className="  ">{item.createdat ? item.createdat : '-'}</Cell>
-
-                          <Cell>
-                            
-                            <div className="gap-1 flex">
-
-                                
-                            <ViewSVG
-                                clickFunction={() => item.amount == null ?"" : handleViewbtn(item.class,item.scartegory)}
-                              />
-                            {item.total == null ?   <TableBtn
-                                  clickFunction={() => { setClass(item?.class) 
-                                    setcart(item?.scartegory) 
-                                    setVisible2(true)}} 
-                                  text={` Assign `}
-                                  color={'bg-primary'}
-                                /> :    <TableBtn
-                                clickFunction={() => { setClass(item?.class)
-                                  setcart(item?.scartegory) 
-                                  setVisible2(true)}}
-                                text={'Re-Assign '}
-                                color={'bg-primary'}
-                              />}
-                           
-                            
-
-                              {/* <DeleteSVG
-                                clickFunction={() => handleViewbtn(item)}
-                              /> */}
-                            </div>
-                          </Cell>
-                        </Row>
-                      ))}
-                    </Body>
-                  </>
-                )}
-              </Table>
-            </div>
-            <div
-              className=" align-middle"
-              style={{ display: 'flex', justifyContent: 'space-between' }}
-            >
-              <div className="flex">
-                <span className="mt-2">
-                  Total Pages: {pagination.state.getTotalPages(data.nodes)}
-                </span>
-                <div className="flex  align-middle  flex-row mr-3">
-                  <span className="flex mt-2 ml-8 align-middle">
-                    Records Per Page:{' '}
-                  </span>
-                  <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
-                    <SelectGroupTwo
-                      values={[30, 50, 100, 200, 500, 'All']}
-                      setSelectedOption={(val) => setpagesval(val)}
-                      selectedOption={pagesval}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <span>
-                Page:{' '}
-                {pagination.state.getPages(data.nodes).map((_, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    className="rounded"
-                    style={{
-                      color: pagination.state.page === index ? 'white' : '',
-                      width: '20px',
-                      margin: '0px 5px',
-                      padding: '2px',
-                      backgroundColor:
-                        pagination.state.page === index ? '#3C50E0' : '',
-                    }}
-                    onClick={() => pagination.fns.onSetPage(index)}
+          {info?.map((item, index) => (
+            <>
+              <div className="flex gap-3 px-6  my-6 flex-col">
+                <div className="w-full border-b border-t border-stroke dark:border-stone-500 py-1 dark:bg-boxdark  flex-col">
+                  <div
+                    className={
+                      'rounded-sm  max-w-full   px-5 shadow-default   '
+                    }
                   >
-                    {index + 1}
-                  </button>
-                ))}
-              </span>
-            </div>
-            <div className="hidden">
-              <Table
-                id="my-table"
-                data={data}
-                pagination={pagination}
-                theme={theme}
-              >
-                {(tableList) => (
-                  <>
-                    <Header>
-                      <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <HeaderCell>Class</HeaderCell>
-                        {/* <HeaderCell>Instructor</HeaderCell> */}
-                      </HeaderRow>
-                    </Header>
-
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList?.map((item) => (
-                        <Row
-                          key={item.id}
-                          item={item}
-                          className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
+                    <div className="w-full overflow-x-auto flex justify-between">
+                      <div className="  flex justify-between  ">
+                        <h3 className="font-bold text-sm text-black py-1 dark:text-white">
+                          {item[0][0]?.class}
+                        </h3>
+                      </div>
+                      <div className="flex gap-2">
+                        {' '}
+                        <button
+                          className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-sm  text-gray hover:bg-opacity-90"
+                          type=""
+                          onClick={() => {
+                            setClass(item[0][0]?.class);
+                            //setcart(item?.scartegory)
+                            setVisible2(true);
+                          }}
                         >
-                          <Cell className="  ">
-                            <span>{item.name}</span>
-                          </Cell>
+                          Add Class Cartegory
+                        </button>
+                        <button
+                          className="flex  float-end rounded bg-danger py-1 px-2 font-medium text-sm  text-gray hover:bg-opacity-90"
+                          type=""
+                          onClick={() => {
+                            setDel(item[0][0]?.class);
+                            setVisible5(true);
+                            //  dispatch(fetchfeeAssignGroupRecordAction());
+                          }}
+                        >
+                          Delete All
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className={
+                      'rounded-sm px-1 py-2 '
+                    }
+                  >
+                    <div className="w-full">
+                      <div className={'w-full flex flex-col gap-1'}>
+                        {false ? (
+                          <label className=" flex  text-sm font-bold text-ash dark:text-white">
+                            ⚠️ No Fee Cartegory Available
+                          </label>
+                        ) : (
+                          <div className="grid  grid-cols-3 gap-1">
+                            {' '}
+                            {item?.map((subitem, index) => (
+                              <>
+                               
+                               
+                                <div
+                                  className={
+                                    'flex flex-col w-full gap-1  border  border-stroke dark:border-stone-700 rounded p-2 '
+                                  }
+                                >
+                                  <div className="flex justify-between">
+                                    <label className=" flex   text-sm font-bold text-ash dark:text-white">
+                                      <div
+                                        className={`mr-1 flex h-4 w-4 items-center justify-center rounded border ${
+                                          true &&
+                                          'border-primary bg-gray dark:bg-transparent'
+                                        }`}
+                                      >
+                                        <span
+                                          className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                                        ></span>
+                                      </div>{' '}
+                                      {subitem[0]?.scartegory}
+                                    </label>
+                                  </div>
+                                  <div className="flex flex-col">
+                                    {subitem[index]?.feename == undefined ? (
+                                      <p>⚠️ No Fee Items Assigned </p>
+                                    ) : (
+                                      subitem?.map((item, index) => (
+                                        <div className="flex" key={index}>
+                                          <div className="flex w-full  justify-between mr-2">
+                                            <label className=" flex gap-1  text-sm font-small text-ash dark:text-white">
+                                              - {item?.feename}
+                                            </label>
+                                            <label className=" flex gap-1  text-sm font-small text-ash dark:text-white">
+                                              {item?.amount}
+                                            </label>
+                                          </div>
 
-                          {/* <Cell className="  ">
-                              <span>{item.instructor}</span>
-                            </Cell> */}
-                        </Row>
-                      ))}
-                    </Body>
-                  </>
-                )}
-              </Table>
-            </div>
-          </div>
+                                          <div className="">
+                                            <div className="flex">
+                                              <EditIcon
+                                                clickFunction={() => {
+                                                  setDel(item);
+                                                  setVisible10(true);
+                                                }}
+                                              />
+                                              <DeleteIcon
+                                                clickFunction={() => {
+                                                  setDel(item?.id);
+                                                  setVisible9(true);
+                                                }}
+                                              />
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ))
+                                    )}
+
+                                    <div
+                                      className={
+                                        subitem[index]?.feename == undefined
+                                          ? 'hidden'
+                                          : 'flex'
+                                      }
+                                    >
+                                      <div className="flex  w-full justify-between">
+                                        <label className=" flex gap-1 float-end  text-sm font-bold text-ash dark:text-white">
+                                          Total : {subitem[index]?.total}
+                                        </label>
+                                        <label className=" flex gap-1  text-md font-bold text-ash dark:text-white">
+                                          {/* {item.total} */}
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={
+                                        subitem[index]?.feename == undefined
+                                          ? 'hidden'
+                                          : 'flex float-end justify-items-end justify-end align-text-bottom '
+                                      }
+                                    >
+                                      {/* <TableBtn
+                                      clickFunction={() => {
+                                        // setinfo(item);
+                                        // setVisible9(true);
+                                      }}
+                                      text={'Add Item'}
+                                      color={'bg-[#475768d8]'}
+                                    /> */}
+                                      <TableBtn
+                                        clickFunction={() => {
+                                          setDel(subitem[index]?.class);
+                                          setcart(subitem[index]?.scartegory);
+                                          setVisible8(true);
+                                        }}
+                                        text={'Delete Cartegory'}
+                                        color={'bg-[#475768d8]'}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                            
+                            
+                              </>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>{' '}
+              </div>
+            </>
+          ))}
         </div>{' '}
       </div>
     </DefaultLayout>

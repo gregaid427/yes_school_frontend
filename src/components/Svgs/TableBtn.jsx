@@ -2,8 +2,8 @@ import React from 'react'
 
 const TableBtn = (props) => {
   return (
-    <button  className={`rounded-full  ${props.color} text-xs mx-0 my-1 font-bold  py-1 px-3`} onClick={props.clickFunction}>
-<p className='text-white'>{props.text}</p>
+    <button  className={`rounded-full  ${props.color} text-xs mx-0 my-1 font-bold   py-1 px-3`} onClick={props.clickFunction}>
+<p className='text-white '>{props.text}</p>
         {/* <svg
                           className="fill-current"
                           width="18"

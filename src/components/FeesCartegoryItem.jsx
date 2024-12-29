@@ -71,7 +71,7 @@ const FeesCartegoryItem = (props) => {
       >
         <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
           <h3 className="font-medium text-black dark:text-white">
-            Add Fee Cartegory
+            Add Fee Item
           </h3>
         </div>
         <div className="p-5">

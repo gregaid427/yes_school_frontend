@@ -6,6 +6,7 @@ import { AssignFeesAction } from '../redux/slices/feeSlice';
 import toast from 'react-hot-toast';
 import ClassSelect2 from './ClassSelect2';
 import AssignFeeClassSelect from './AssignFeeClassSelect';
+import StudentCartegorySelect from './StudentCartegorySelect';
 
 const AssignFeeModalPartial = (props) => {
   const dispatch = useDispatch();
@@ -22,6 +23,8 @@ const AssignFeeModalPartial = (props) => {
   const [sessionoption, setSessionoption] = useState('');
   const fee = useSelector((state) => state?.fees);
   const { cartegory } = fee;
+  const [scartegory, setCartegory] = useState('GENERAL');
+
 
   const [data1, setdata1] = useState(0);
   const [data2, setdata2] = useState({ test: 0 });
@@ -59,7 +62,7 @@ const { username, userMail} = user;
     data4['fee'] = pop(data2);
     console.log('data4');
     console.log(data4.fee);
-    data4['scartegory'] = props.cartegory;
+    data4['scartegory'] = scartegory;
 
     if (data4.fee[0] == undefined) {
       return toast.error('Error - Fee Cartegory Cannot Be Empty');
@@ -97,7 +100,17 @@ const { username, userMail} = user;
               </div>
               <div className="p-8">
               
-             
+              <div className="w-full mb-3">
+                        <label
+                          className="mb-1 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="phoneNumber"
+                        >
+                          Student Cartegory{' '}
+                        </label>
+                        <div className="relative z-20 bg-white dark:bg-form-input">
+                          <StudentCartegorySelect setsectionprop={setCartegory} />
+                        </div>
+                      </div>
 
                 <form className={display == 2 ? '' : 'hidden'}>
                   <div className="flex gap-4">
