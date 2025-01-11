@@ -7,14 +7,16 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import FeeRadio from './FeeRadio';
-import { PayFeeAction, resetgetsinglebill } from '../redux/slices/feeSlice';
+import { PayFeeAction, resetgetbulkbill } from '../redux/slices/feeSlice';
 import { Print } from 'print-react';
 import userThree from '../images/user/user-03.png';
 
-const SingleBillModal = (props) => {
+const BulkBillModal = (props) => {
   const ref = useRef({ openPrintDialog: () => Promise });
   console.log(props.cart?.data);
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
+  const [cart, setCart] = useState(props.cart);
+
   const dispatch = useDispatch();
   const inventory = useSelector((state) => state?.inventory);
 
@@ -99,7 +101,7 @@ const SingleBillModal = (props) => {
       dispatch(PayFeeAction(data));
     }
   };
-  console.log(props);
+  console.log(props.cart);
   return (
     <div className="w-full">
       <div className="grid  gap-8">
@@ -128,7 +130,7 @@ const SingleBillModal = (props) => {
                   onClick={(e) => {
                     e.preventDefault();
                     props.close(false);
-                    dispatch(resetgetsinglebill());
+                    dispatch(resetgetbulkbill());
 
                   }}
                 >
@@ -160,6 +162,9 @@ const SingleBillModal = (props) => {
                   setPrintDialogOpen(false);
                 }}
               >
+                {cart?.map((item) => (
+                <div className=''>
+
                 <div className="w-full">
                   <div className="flex border-b justify-between pb-2 border-stroke  dark:border-strokedark">
                     <img
@@ -200,26 +205,26 @@ const SingleBillModal = (props) => {
                         <p className="text-xl font-bold   ">Session Fee Bill</p>
                         <p className="text-xl text-center  ">
                           {' '}
-                          : {props.sessionoption}         
-                                         </p>
+                          : {props.sessionoption}
+                        </p>
                       </div>
                       <div className="w-4/12 text-sm">
                         <div className="flex">
                           <p className="mr-2">
-                            {props.val?.firstName +
+                            {item[0]?.firstName +
                               ' ' +
-                              props.val?.otherName +
+                              item[0]?.otherName +
                               ' ' +
-                              props.val?.lastName}
+                              item[0]?.lastName}
                           </p>
                           <p></p>
                           <p>
-                            ({props.val?.student_id}
+                            ({item[0].student_id}
                             {/* {props.val?.section} */})
                           </p>
                         </div>
                         <p>
-                          {props.val?.class}
+                          {item[0]?.class}
                           {/* {props.val?.section} */}
                         </p>
                       </div>
@@ -250,7 +255,7 @@ const SingleBillModal = (props) => {
                       </thead>
                       {}
                       <thead className="w-full  ">
-                        {props.cart?.data.map((item, index) => (
+                        {item?.map((item, index) => (
                           <tr className="w-full  " key={index}>
                             {' '}
                             <th className="text-sm float-start  font-light w-4/12">
@@ -260,7 +265,7 @@ const SingleBillModal = (props) => {
                               {item?.feename}{' '}
                             </th>
                             <th className="text-sm font-light w-4/12">
-                              {props.val?.preference?.includes(item?.feename)
+                              {item?.preference?.includes(item?.feename)
                                 ? 0
                                 : item?.amount}
                             </th>
@@ -270,7 +275,7 @@ const SingleBillModal = (props) => {
                       <div className="w-full flex"> </div>
                       <thead
                         className={
-                          props?.val?.scholarship < 1 ? 'hidden' : 'w-full'
+                          item[0]?.scholarship < 1 ? 'hidden' : 'w-full'
                         }
                       >
                         <tr className="w-full  border-stroke  dark:border-strokedark ">
@@ -280,7 +285,7 @@ const SingleBillModal = (props) => {
                             Scholarship
                           </th>
                           <th className="text-sm font-light w-4/12">
-                            ( {props?.val?.scholarship} )
+                            ( {item[0]?.scholarship} )
                           </th>
                         </tr>
                       </thead>
@@ -296,7 +301,7 @@ const SingleBillModal = (props) => {
                             Previous Session Arrears
                           </th>
                           <th className="text-sm font-light w-4/12">
-                            {props?.val?.arrears}
+                            {item[0]?.arrears}
                           </th>
                         </tr>
                       </thead>
@@ -308,7 +313,7 @@ const SingleBillModal = (props) => {
                             Fee Payable For Session
                           </th>
                           <th className="text-sm font-bold  w-4/12">
-                            {payable}
+                            {Number(item[0]?.feepayable) - Number(item[0]?.scholarship) + Number(item[0]?.arrears)}
                           </th>
                         </tr>
                       </thead>
@@ -343,21 +348,26 @@ const SingleBillModal = (props) => {
                     .........................
                   </p>
                   <p className="text-center w-4/12 ">
-                    {props?.response?.collectedby}
+                    {item?.response?.collectedby}
                   </p>
                 </div>
                 <div className="flex text-sm flex-row w-full">
-                  <p className="text-center w-4/12 ">{props?.response?.mode}</p>
+                  <p className="text-center w-4/12 ">{item?.response?.mode}</p>
                   <p className="text-center w-4/12 "> Signature </p>
                   <p className="text-center w-4/12 ">Received By</p>
                 </div>
+                </div>
+                ))
+}            
+
               </Print>
-            </div>
           </div>
         </div>
       </div>
     </div>
+    </div>
+
   );
 };
 
-export default SingleBillModal;
+export default BulkBillModal;

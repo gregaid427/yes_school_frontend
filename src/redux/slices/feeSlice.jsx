@@ -16,10 +16,10 @@ export const CreatesfeeAction = createAsyncThunk(
   'new/Newfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -27,14 +27,13 @@ export const CreatesfeeAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -48,30 +47,30 @@ export const PayFeeAction = createAsyncThunk(
   'new/payfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/payfee`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Payment Added Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Paying Fee');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -84,30 +83,30 @@ export const CustomBalUpdate = createAsyncThunk(
   'new/balanceUpdate',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/updatebal`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Balance Updated  Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Updating Balance');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -120,30 +119,30 @@ export const ReverseFee = createAsyncThunk(
   'new/reverse',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/reversefee`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Paymet Reversed Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Reversing Balance');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -155,12 +154,11 @@ export const ReverseFee = createAsyncThunk(
 export const FetchPaymentsAction = createAsyncThunk(
   'new/fetchpayment',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.get(
@@ -173,13 +171,12 @@ export const FetchPaymentsAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error('Error Fetching Records');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
@@ -193,29 +190,29 @@ export const GenerateFeeAction = createAsyncThunk(
   'new/generatefee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefee`,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Fee Generated Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Generating Fee');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -228,30 +225,30 @@ export const ResetAllAccountBalanceAction = createAsyncThunk(
   'new/resetAccount',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/resetallaccount`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('All Accounts Updated Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Updating All Account');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -264,10 +261,10 @@ export const ResetAllAccountBalanceByClassAction = createAsyncThunk(
   'new/resetAccountbyclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -277,20 +274,20 @@ export const ResetAllAccountBalanceByClassAction = createAsyncThunk(
       if (data?.success == 2) {
         toast.success('Class Has No Students');
       }
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Accounts Updated Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Updating All Account');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -304,36 +301,38 @@ export const GenerateFeeClassAction = createAsyncThunk(
   'new/generatefeeclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefeebyclass`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Fee Generated Successfully');
       }
-      if (data?.success == 2 ) {   toast.dismiss(toastId);
+      if (data?.success == 2) {
+        toast.dismiss(toastId);
         toast.error('No Student In Selected Class');
       }
-      if (data?.success == 3 ) {   toast.dismiss(toastId);
+      if (data?.success == 3) {
+        toast.dismiss(toastId);
         toast.error('No Fees Assigned For Chosen Class(es)');
       }
       if (data?.success == 0) {
         toast.error('Error Generating Fee');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -347,33 +346,34 @@ export const GenerateFeeStudentAction = createAsyncThunk(
   'new/generatefeestudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefeebystudent`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Fee Generated Successfully');
       }
-          if (data?.success == 3 ) {   toast.dismiss(toastId);
+      if (data?.success == 3) {
+        toast.dismiss(toastId);
         toast.error('No Fees Assigned For Student Class');
       }
       if (data?.success == 0) {
         toast.error('Error Generating Fee');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -387,30 +387,30 @@ export const PreferencesAction = createAsyncThunk(
   'Post/Preferences',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/preferences`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Preferences Set Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Setting Preferences');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -424,31 +424,31 @@ export const CreatesfeeCartegoryAction = createAsyncThunk(
   'new/Newfeecart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/cart`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Fee Cartegory Added Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Adding Fee Cartegory');
       }
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -462,30 +462,30 @@ export const CreatesScholarshipAction = createAsyncThunk(
   'new/Scholarship',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/scholarship`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Scholarship Added Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Adding Scholarship');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -499,30 +499,30 @@ export const UpdateScholarshipAction = createAsyncThunk(
   'update/Scholarship',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/updatescholarship`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Updated Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Updating Scholarship');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -535,25 +535,23 @@ export const UpdateScholarshipAction = createAsyncThunk(
 export const fetchAllfeeAction = createAsyncThunk(
   'fetch/Allfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/`,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
@@ -565,25 +563,23 @@ export const fetchAllfeeAction = createAsyncThunk(
 export const fetchfeeStockAction = createAsyncThunk(
   'fetch/feestock',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getstock`,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
@@ -597,30 +593,30 @@ export const EnrollScholarshipAction = createAsyncThunk(
   'fetch/enrollscholarship',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/enrollscholarship`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Student Enrolled Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Enrolling Scholarship');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -634,10 +630,10 @@ export const GetEnrolledStudentAction = createAsyncThunk(
   'fetch/enrolledstudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -647,25 +643,20 @@ export const GetEnrolledStudentAction = createAsyncThunk(
       // if (data?.success == '1' && data?.data[0] == null) {
       //   toast.success('Empty Class List');
       // }
-      if (
-      
-        data?.data[0] == null 
-       
-      ) {
+      if (data?.data[0] == null) {
         toast.success('Empty Class List');
       }
 
       if (data == null) {
         toast.error('Error loading Enrolled Student');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -678,31 +669,31 @@ export const RevokeScholarshipAction = createAsyncThunk(
   'fetch/revokescholarship',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/revokescholarship`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Scholarship Revoked Successfully');
       }
 
       if (data.success == 0) {
         toast.error('Error Revoking Scholarship');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -716,10 +707,10 @@ export const fetchSinglefeeAction = createAsyncThunk(
   'fetch/singlefee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -727,14 +718,13 @@ export const fetchSinglefeeAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -746,12 +736,11 @@ export const fetchSinglefeeAction = createAsyncThunk(
 export const fetchfeeCartegoryAction = createAsyncThunk(
   'fetch/feecart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.get(
@@ -759,13 +748,12 @@ export const fetchfeeCartegoryAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
@@ -778,12 +766,11 @@ export const fetchfeeCartegoryAction = createAsyncThunk(
 export const fetchAllfeeAssignRecordAction = createAsyncThunk(
   'fetch/feeAllassignrecord',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.get(
@@ -791,13 +778,12 @@ export const fetchAllfeeAssignRecordAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
@@ -807,16 +793,14 @@ export const fetchAllfeeAssignRecordAction = createAsyncThunk(
   },
 );
 
-
 export const fetchAllAssignRecordAction = createAsyncThunk(
   'fetch/getAllassignrecord',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.get(
@@ -824,13 +808,12 @@ export const fetchAllAssignRecordAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
@@ -842,12 +825,11 @@ export const fetchAllAssignRecordAction = createAsyncThunk(
 export const fetchfeeAssignRecordAction = createAsyncThunk(
   'fetch/feeassignrecord',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.get(
@@ -855,13 +837,12 @@ export const fetchfeeAssignRecordAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
@@ -874,12 +855,11 @@ export const fetchfeeAssignRecordAction = createAsyncThunk(
 export const fetchfeeAssignGroupRecordAction = createAsyncThunk(
   'fetch/feeassignrecordgroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.get(
@@ -887,13 +867,12 @@ export const fetchfeeAssignGroupRecordAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
@@ -903,17 +882,14 @@ export const fetchfeeAssignGroupRecordAction = createAsyncThunk(
   },
 );
 
-
-
 export const fetchfeeAssignbycartAction = createAsyncThunk(
   'fetch/feeassignbyclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.get(
@@ -921,13 +897,12 @@ export const fetchfeeAssignbycartAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
@@ -941,10 +916,10 @@ export const fetchfeeAssignbycustomAction = createAsyncThunk(
   'fetch/feeassignbycustom',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -952,14 +927,13 @@ export const fetchfeeAssignbycustomAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -972,12 +946,11 @@ export const fetchfeeAssignbycustomAction = createAsyncThunk(
 export const fetchScholarshipAction = createAsyncThunk(
   'fetch/scholarship',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.get(
@@ -985,13 +958,12 @@ export const fetchScholarshipAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
@@ -1004,12 +976,11 @@ export const fetchScholarshipAction = createAsyncThunk(
 export const updatefeeAction = createAsyncThunk(
   'update/fee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.patch(
@@ -1017,14 +988,13 @@ export const updatefeeAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1037,19 +1007,19 @@ export const updatefeeAction = createAsyncThunk(
 export const UpdateFeeCartAction = createAsyncThunk(
   'update/updatefeecart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/feecart`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Cartegory Updated Successfully');
       }
 
@@ -1057,14 +1027,13 @@ export const UpdateFeeCartAction = createAsyncThunk(
         toast.error('Error Updating Cartegory');
       }
       console.log(data);
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1076,12 +1045,11 @@ export const UpdateFeeCartAction = createAsyncThunk(
 export const updatefeeItemAction = createAsyncThunk(
   'update/feeitem',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.patch(
@@ -1089,14 +1057,13 @@ export const updatefeeItemAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1110,10 +1077,10 @@ export const updateCartegoryAction = createAsyncThunk(
   'cartegory/Update',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -1121,14 +1088,13 @@ export const updateCartegoryAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1141,31 +1107,30 @@ export const updateCartegoryAction = createAsyncThunk(
 export const deleteScholarshipAction = createAsyncThunk(
   'fee/deleteScholar',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/scholarship/${payload}`,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Deleted Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Deleting Scholarship');
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1178,18 +1143,18 @@ export const deleteScholarshipAction = createAsyncThunk(
 export const DeleteAllAssignedFeeAction = createAsyncThunk(
   'fee/DeleteAllAssignedFee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/deleteallasigned`,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Records Deleted Successfully');
       }
 
@@ -1199,14 +1164,13 @@ export const DeleteAllAssignedFeeAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1218,26 +1182,24 @@ export const DeleteAllAssignedFeeAction = createAsyncThunk(
 export const deleteAllfeeAction = createAsyncThunk(
   'fee/deleteAllfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/`,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1249,26 +1211,24 @@ export const deleteAllfeeAction = createAsyncThunk(
 export const deleteSinglefeeAction = createAsyncThunk(
   'fee/deleteASinglefee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/${payload}`,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1282,10 +1242,10 @@ export const deleteSingleFeeCartAction = createAsyncThunk(
   'delete/deletefeeCart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -1293,14 +1253,13 @@ export const deleteSingleFeeCartAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1313,10 +1272,10 @@ export const updateFeeCartItemAction = createAsyncThunk(
   'delete/updateFeeCartItem',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -1324,14 +1283,13 @@ export const updateFeeCartItemAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1344,10 +1302,10 @@ export const deleteFeeCartItemAction = createAsyncThunk(
   'delete/deleteFeeCartItem',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -1355,14 +1313,13 @@ export const deleteFeeCartItemAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1375,10 +1332,10 @@ export const deleteGoupFeeCartAction = createAsyncThunk(
   'delete/deletegroupfeeCart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -1386,14 +1343,13 @@ export const deleteGoupFeeCartAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1407,10 +1363,10 @@ export const FetchTotalFeesAction = createAsyncThunk(
   'get/totalfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -1418,14 +1374,13 @@ export const FetchTotalFeesAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1439,17 +1394,18 @@ export const AssignFeesAction = createAsyncThunk(
   'create/assignfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/assignfee`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Assigned Successfully');
       }
 
@@ -1459,14 +1415,13 @@ export const AssignFeesAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1480,18 +1435,17 @@ export const GetFeeRecordAction = createAsyncThunk(
   'get/getrecord',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
-
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getstudentrecord`,
         payload,
       );
- 
+
       if (data == []) {
         toast.error('No Records Found');
       }
@@ -1501,14 +1455,13 @@ export const GetFeeRecordAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1518,23 +1471,21 @@ export const GetFeeRecordAction = createAsyncThunk(
   },
 );
 
-
 export const GetSingleBillAction = createAsyncThunk(
   'get/getsinglebill',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
-
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getsinglebill`,
         payload,
       );
- 
+
       if (data.success == 1 && data.data.length == 0) {
         toast.error('No Bill Available');
       }
@@ -1544,14 +1495,13 @@ export const GetSingleBillAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1561,31 +1511,67 @@ export const GetSingleBillAction = createAsyncThunk(
   },
 );
 
+export const GetBulkBillAction = createAsyncThunk(
+  'get/getbulkbill',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
 
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/getbulkbill`,
+        payload,
+      );
+
+      if (data.success == 1 && data.data.length == 0) {
+        toast.error('No Bill Available');
+      }
+      if (data == null) {
+        toast.error('No Bill Available');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
 export const deleteSinglefeeStockAction = createAsyncThunk(
   'fee/deleteASinglefeestock',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/stock/${payload}`,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -1635,6 +1621,12 @@ const FeeSlices = createSlice({
     resetfetchAllAssignRecord(state) {
       state.fetchAllAssignRecord = null;
     },
+    resetgetsinglebill(state) {
+      state.GetSingleBill = null;
+    },
+    resetgetbulkbill(state) {
+      state.GetBulkBill = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(CreatesfeeAction.pending, (state, action) => {
@@ -1655,9 +1647,6 @@ const FeeSlices = createSlice({
       state.fetchAllfee = undefined;
     });
 
-    
-
-
     builder.addCase(GetSingleBillAction.pending, (state, action) => {
       state.GetSingleBillloading = true;
       state.GetSingleBill = false;
@@ -1673,7 +1662,6 @@ const FeeSlices = createSlice({
       state.GetSingleBill = undefined;
     });
 
-
     builder.addCase(updateFeeCartItemAction.pending, (state, action) => {
       state.updateFeeCartItemloading = true;
       state.updateFeeCartItem = false;
@@ -1682,13 +1670,26 @@ const FeeSlices = createSlice({
       state.updateFeeCartItemloading = false;
       state.updateFeeCartItem = action?.payload;
       state.updateFeeCartItemerror = undefined;
-
     });
     builder.addCase(updateFeeCartItemAction.rejected, (state, action) => {
       state.updateFeeCartItemloading = true;
       state.updateFeeCartItem = undefined;
       state.updateFeeCartItemerror = action.payload;
+    });
 
+    builder.addCase(GetBulkBillAction.pending, (state, action) => {
+      state.GetBulkBillloading = true;
+      state.GetBulkBill = false;
+    });
+    builder.addCase(GetBulkBillAction.fulfilled, (state, action) => {
+      state.GetBulkBillloading = false;
+      state.GetBulkBill = action?.payload;
+      state.GetBulkBillerror = undefined;
+    });
+    builder.addCase(GetBulkBillAction.rejected, (state, action) => {
+      state.GetBulkBillloading = true;
+      state.GetBulkBill = undefined;
+      state.GetBulkBillerror = action.payload;
     });
 
     builder.addCase(deleteFeeCartItemAction.pending, (state, action) => {
@@ -1699,13 +1700,11 @@ const FeeSlices = createSlice({
       state.FetchTotalFeeloading = false;
       state.deleteFeeCartItem = action?.payload;
       state.deleteFeeCartIteerror = undefined;
-
     });
     builder.addCase(deleteFeeCartItemAction.rejected, (state, action) => {
       state.deleteFeeCartItemtloading = true;
       state.deleteFeeCartItem = undefined;
       state.deleteFeeCartIteerror = action.payload;
-
     });
 
     builder.addCase(deleteGoupFeeCartAction.pending, (state, action) => {
@@ -1716,15 +1715,13 @@ const FeeSlices = createSlice({
       state.FetchTotalFeeloading = false;
       state.deleteGoupFeeCart = action?.payload;
       state.deleteGoupFeeCarterror = undefined;
-
     });
     builder.addCase(deleteGoupFeeCartAction.rejected, (state, action) => {
       state.deleteGoupFeeCartloading = true;
       state.deleteGoupFeeCart = undefined;
       state.deleteGoupFeeCarterror = action.payload;
-
     });
-    
+
     builder.addCase(FetchTotalFeesAction.pending, (state, action) => {
       state.FetchTotalFeeloading = true;
       state.FetchTotalFee = false;
@@ -1733,15 +1730,12 @@ const FeeSlices = createSlice({
       state.FetchTotalFeeloading = false;
       state.FetchTotalFee = action?.payload;
       state.FetchTotalFeeerror = undefined;
-
     });
     builder.addCase(FetchTotalFeesAction.rejected, (state, action) => {
       state.FetchTotalFeeloading = true;
       state.FetchTotalFee = undefined;
       state.FetchTotalFeeerror = action.payload;
-
     });
-
 
     builder.addCase(fetchAllAssignRecordAction.pending, (state, action) => {
       state.fetchAllAssignRecordloading = true;
@@ -1751,13 +1745,11 @@ const FeeSlices = createSlice({
       state.fetchAllAssignRecordloading = false;
       state.fetchAllAssignRecord = action?.payload;
       state.fetchAllAssignRecorderror = undefined;
-
     });
     builder.addCase(fetchAllAssignRecordAction.rejected, (state, action) => {
       state.fetchAllAssignRecordloading = true;
       state.fetchAllAssignRecord = undefined;
       state.fetchAllAssignRecorderror = action.payload;
-
     });
 
     builder.addCase(UpdateFeeCartAction.pending, (state, action) => {
@@ -1798,7 +1790,6 @@ const FeeSlices = createSlice({
       state.AssignFeesloading = true;
       state.Assignfee = false;
       state.AssignfeeGroup = false;
-      
     });
     builder.addCase(AssignFeesAction.fulfilled, (state, action) => {
       state.Assignfee = action?.payload;
@@ -1830,7 +1821,7 @@ const FeeSlices = createSlice({
       state.Enroll = undefined;
       //   state.fetchAllfee = undefined;
     });
-    
+
     builder.addCase(GetFeeRecordAction.pending, (state, action) => {
       state.GetFeeRecordloading = true;
       state.GetFeeRecord = false;
@@ -1848,7 +1839,7 @@ const FeeSlices = createSlice({
       state.GetFeeRecord = undefined;
       //   state.fetchAllfee = undefined;
     });
-    
+
     builder.addCase(RevokeScholarshipAction.pending, (state, action) => {
       state.Revokeloading = true;
       state.Revoke = false;
@@ -1869,13 +1860,13 @@ const FeeSlices = createSlice({
     builder.addCase(GetEnrolledStudentAction.pending, (state, action) => {
       state.Enrolllistloading = true;
       state.Enrolllist = false;
-       state.fetchcustom = false;
+      state.fetchcustom = false;
     });
     builder.addCase(GetEnrolledStudentAction.fulfilled, (state, action) => {
       state.Enrolllist = action?.payload;
       state.Enrolllistloading = false;
       state.Enrolllisterror = undefined;
-      
+
       state.fetchcustom = action?.payload;
       //  state.fetchAllfee = action?.payload;
     });
@@ -2408,8 +2399,9 @@ export const {
   resetGeneratefee,
   resetdeleteassignedfee,
   resetRevoke,
-  resetfetchAllAssignRecord
+  resetfetchAllAssignRecord,
+  resetgetbulkbill,
+  resetgetsinglebill,
 } = FeeSlices.actions;
 
 export default FeeSlices.reducer;
-

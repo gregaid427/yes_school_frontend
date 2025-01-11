@@ -58,7 +58,7 @@ const { username, userMail} = user;
   const data ={
     id : id,
     class : classs,
-    cartegory : cart
+  //  cartegory : cart
 
   }
   const handleGenerate = () => {

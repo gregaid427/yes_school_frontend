@@ -46,7 +46,7 @@ const BulkAdmission = () => {
     console.log('reset');
   }
 
-  const [pagesval, setpagesval] = useState(30);
+  const [pagesval, setpagesval] = useState(10000);
   const [classs, setClasss] = useState([]);
 
   const [loader, setLoader] = useState(true);
@@ -165,7 +165,7 @@ console.log(data)
   const pagination = usePagination(data, {
     state: {
       page: 0,
-      size: 30,
+      size: 10000,
     },
     onChange: onPaginationChange,
   });
@@ -740,7 +740,7 @@ console.log(tabledata1)
                 className=" align-middle"
                 style={{ display: 'flex', justifyContent: 'space-between' }}
               >
-                <div className="flex">
+                {/* <div className="flex">
                   <span className="mt-2">
                     Total Pages: {pagination.state.getTotalPages(data.nodes)}
                   </span>
@@ -756,7 +756,7 @@ console.log(tabledata1)
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <span>
                   Page:{' '}

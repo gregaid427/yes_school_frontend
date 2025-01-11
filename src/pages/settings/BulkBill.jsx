@@ -41,11 +41,19 @@ import EditSVG from '../../components/Svgs/edit';
 import DeleteSVG from '../../components/Svgs/delete';
 import TableBtn from '../../components/Svgs/TableBtn';
 import SessionSelect from '../../components/SessionSelect';
-import { GetSingleBillAction } from '../../redux/slices/feeSlice';
+import {
+  GetBulkBillAction,
+  GetSingleBillAction,
+  resetgetbulkbill,
+  resetgetsinglebill,
+} from '../../redux/slices/feeSlice';
 import SingleBillModal from '../../components/SingleBillModal';
+import toast from 'react-hot-toast';
+import BulkBillModal from '../../components/BulkBillModal';
+import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 
 const BulkBill = () => {
-  ///////////////////////////////////
+  //BulkBillDownload/////////////////////////////////
 
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState('top');
@@ -53,11 +61,9 @@ const BulkBill = () => {
   const [visible4, setVisible4] = useState(false);
 
   //////////////////////////////////////
-  
+
   const fee = useSelector((state) => state?.fees);
-  const {   
-    GetSingleBill
-  } = fee;
+  const { GetSingleBill, GetBulkBill, BulKBill } = fee;
   const [loader, setLoader] = useState(true);
 
   const [searchval, setSearchval] = useState('First Name');
@@ -73,11 +79,23 @@ const BulkBill = () => {
   const [classs, setClasss] = useState();
   const [CSVTemplate, setCSVTemplate] = useState([]);
   const [clazz, setclazz] = useState();
-  const [sectionzz, setsectionzz] = useState();
+  const [sectionzz, setsectionzz] = useState('All Sections');
   const [id, setid] = useState();
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
+
+  
+  const session = useSelector((state) => state?.session);
+
+ 
+  const { fetchsession,fetchsessionactive} =
+    session;
+  
+  useEffect(() => {
+    dispatch(fetchAllsessionAction());
+  
+  }, []);
 
   const {
     loading,
@@ -92,9 +110,8 @@ const BulkBill = () => {
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
-
+console.log(fetchsessionactive)
   const user = useSelector((state) => state?.user);
-
 
   const { allschool } = user;
 
@@ -163,11 +180,28 @@ const BulkBill = () => {
   }, [fetchStudent]);
 
   useEffect(() => {
-    if (GetSingleBill?.success == 1 && GetSingleBill?.data.length != 0) {
-    setVisible1(true)
+    if (GetBulkBill?.success == 1) {
+      // navigate('/fees/bulkbilldownload');
+      setVisible4(true);
     }
-  
+      if (GetBulkBill?.success == 0) {
+
+      toast.error('Error Generating Class Bill');
+    }
+  }, [GetBulkBill]);
+ // console.log(GetBulkBill.data);
+  useEffect(() => {
+    if (GetSingleBill?.success == 1 && GetSingleBill?.data.length != 0) {
+      setVisible1(true);
+
+    }
   }, [GetSingleBill]);
+
+  // useEffect(() => {
+  //   if (BulKBill?.success == 1 && BulKBill?.data.length != 0) {
+  //     setVisible4(true);
+  //   }
+  // }, [BulKBill]);
 
   let data = { nodes };
 
@@ -229,9 +263,10 @@ const BulkBill = () => {
         id: value.student_id,
         cart: value.cartegory,
         class: value.class,
+        session: sessionoption,
       }),
     );
-    setinfo(value)
+    setinfo(value);
     // navigate('/student/editinfo', { state: { action: 2, value: value } });
   };
   const handledeletbtn = () => {
@@ -291,6 +326,12 @@ const BulkBill = () => {
     }
   }
 
+  useEffect(() => {
+
+    if (fetchsessionactive?.success == 1) {
+      setSessionoption(fetchsessionactive?.data[0].sessionname)
+    }
+  }, [fetchsessionactive]);
   const [sessionoption, setSessionoption] = useState('');
 
   return loader ? (
@@ -310,19 +351,7 @@ const BulkBill = () => {
       >
         <DeleteModal delete={handledeletbtn} close={setVisible} />
       </Dialog>
-      <Dialog
-        visible={visible4}
-        position={'top'}
-        style={{ height: 'auto', width: '40%' }}
-        onHide={() => {
-          if (!visible4) return;
-          setVisible4(false);
-        }}
-        draggable={false}
-        resizable={false}
-      >
-        <DeleteModal delete={handledeletbtn} close={setVisible4} />
-      </Dialog>
+
       <Dialog
         resizable={false}
         draggable={false}
@@ -336,7 +365,35 @@ const BulkBill = () => {
           setVisible1(false);
         }}
       >
-        <SingleBillModal close={setVisible1} cart={GetSingleBill} val={info} school={allschool} />
+        <SingleBillModal
+          close={setVisible1}
+          cart={GetSingleBill}
+          val={info}
+          school={allschool}
+          sessionoption={sessionoption}
+
+        />
+      </Dialog>
+      <Dialog
+        resizable={false}
+        draggable={false}
+        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
+        visible={visible4}
+        className=""
+        position={'bottom'}
+        style={{ width: '65%', color: 'white' }}
+        onHide={() => {
+          if (!visible4) return;
+          setVisible4(false);
+        }}
+      >
+        <BulkBillModal
+          close={setVisible4}
+          cart={GetBulkBill?.data}
+          val={info}
+          school={allschool}
+          sessionoption={sessionoption}
+        />
       </Dialog>
       <div className=" flex-col">
         <div
@@ -371,7 +428,7 @@ const BulkBill = () => {
                   </label> */}
                 </div>
 
-                <div className=" w-3/12">
+                {/* <div className=" w-3/12">
                   <label
                     className="mb-2 block text-sm font-medium text-black dark:text-white"
                     htmlFor="phoneNumber"
@@ -390,7 +447,7 @@ const BulkBill = () => {
                   >
                     Download Page (Excel)
                   </label> */}
-                </div>
+                {/* </div>  */}
 
                 <div className="w-3/12">
                   <label
@@ -451,6 +508,24 @@ const BulkBill = () => {
                 {/* <button onClick={() => toPDF()}>Download PDF</button> */}
               </div>
             </div>
+            <div className={nodes.length == 0 ? 'hidden' : 'flex'}>
+              <div className="relative w-2/12  z-20 bg-white dark:bg-form-input">
+                <button
+                  onClick={() => {
+                    dispatch(
+                      GetBulkBillAction({
+                        class: clazz,
+                        session: sessionoption,
+                      }),
+                    );
+                  }}
+                  className="btn h-10 w-full    flex justify-center rounded  bg-primary py-2  font-medium text-gray hover:shadow-1"
+                  type="submit"
+                >
+                  Get Class Bill
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -507,7 +582,7 @@ const BulkBill = () => {
                             <div className="gap-2 flex">
                               <TableBtn
                                 clickFunction={() => handleEditbtn(item)}
-                                text={'Download Bill'}
+                                text={'Get Bill'}
                                 color={'bg-primary'}
                               />
                             </div>
