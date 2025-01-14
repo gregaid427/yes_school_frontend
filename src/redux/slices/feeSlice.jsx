@@ -186,6 +186,41 @@ export const FetchPaymentsAction = createAsyncThunk(
   },
 );
 
+export const FetchPaymentscholarshipsAction = createAsyncThunk(
+  'new/fetchpaymentScholarship',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/paymentscholarshiprecords`,
+        payload,
+      );
+      // if (data?.success == 1 && data?.data == []) {
+      //   toast.success('No Records');
+      // }
+      // if (data?.success == 0) {
+      //   toast.error('Error Fetching Records');
+      // }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const GenerateFeeAction = createAsyncThunk(
   'new/generatefee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -321,7 +356,8 @@ export const GenerateFeeClassAction = createAsyncThunk(
       }
       if (data?.success == 3) {
         toast.dismiss(toastId);
-        toast.error('No Fees Assigned For Chosen Class(es)');
+       
+        toast.error('No Fees Assigned For Cartegories : '  + data.val.toString());
       }
       if (data?.success == 0) {
         toast.error('Error Generating Fee');
@@ -1769,6 +1805,21 @@ const FeeSlices = createSlice({
       state.UpdateFeeCarterror = action.payload;
       state.UpdateFeeCart = undefined;
       state.cartegory = undefined;
+    });
+    
+    builder.addCase(FetchPaymentscholarshipsAction.pending, (state, action) => {
+      state.FetchPaymentAltloading = true;
+      state.FetchPaymentAlt = false;
+    });
+    builder.addCase(FetchPaymentscholarshipsAction.fulfilled, (state, action) => {
+      state.FetchPaymentAlt = action?.payload;
+      state.FetchPaymentAltloading = false;
+      state.FetchPaymentAlterror = undefined;
+    });
+    builder.addCase(FetchPaymentscholarshipsAction.rejected, (state, action) => {
+      state.FetchPaymentAltloading = false;
+      state.FetchPaymentAlterror = action.payload;
+      state.FetchPaymentAlt = undefined;
     });
 
     builder.addCase(FetchPaymentsAction.pending, (state, action) => {

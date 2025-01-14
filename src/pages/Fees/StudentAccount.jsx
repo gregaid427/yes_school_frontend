@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import { useTheme } from '@table-library/react-table-library/theme';
+import { getTheme } from '@table-library/react-table-library/baseline';
 import { usePagination } from '@table-library/react-table-library/pagination';
 
 import { mkConfig, generateCsv, download } from 'export-to-csv';
@@ -29,20 +31,20 @@ import {
   fetchStudentsClassAction,
 } from '../../redux/slices/studentSlice';
 import Loader from '../../common/Loader';
-import ClassSelect from '../../components/ClassSelect';
-import {
-  fetchschoolinfoAction,
-  fetchUserdataAction,
-} from '../../redux/slices/usersSlice';
-import TableBtn from '../../components/Svgs/TableBtn';
-import {
-  fetchfeeCartegoryAction,
-  resetpayfee,
-} from '../../redux/slices/feeSlice';
-import { fetchActivesessionAction } from '../../redux/slices/sessionSlice';
-import StudentPreferenceModal from '../../components/StudentPreferenceModal';
 
-const PreferenceList = () => {
+
+import SectionSelect1 from '../../components/SectionsSelect1';
+import ClassSelect from '../../components/ClassSelect';
+import { fetchschoolinfoAction, fetchUserdataAction } from '../../redux/slices/usersSlice';
+import TableBtn from '../../components/Svgs/TableBtn';
+import CollectFeesModal from '../../components/collectFeesModal';
+import FeesReceiptModal from '../../components/FeesReceiptModal';
+import { fetchfeeCartegoryAction, FetchPaymentscholarshipsAction, resetpayfee } from '../../redux/slices/feeSlice';
+import { fetchActivesessionAction } from '../../redux/slices/sessionSlice';
+import StudentaccountModal from '../../components/studentaccountModal';
+
+const StudentAccount = () => {
+  ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
@@ -54,6 +56,7 @@ const PreferenceList = () => {
     setVisible(true);
   };
 
+  //////////////////////////////////////
 
   const [loader, setLoader] = useState(true);
 
@@ -66,20 +69,34 @@ const PreferenceList = () => {
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
   const [classs, setClasss] = useState();
-  const [sections, setsections] = useState([]);
+  const [session, setsession] = useState();
   const [clazz, setclazz] = useState();
   const [sectionzz, setsectionzz] = useState('All Sections');
   const [propp, setProp] = useState();
   const [cartz, setcartegory] = useState();
   const [info, setinfo] = useState();
   const [receipt, setReceipt] = useState('');
+  const [name, SetName] = useState('');
+  const [singleCart, setSingleCart] = useState([]);
 
-
+  
+  
+  console.log(propp)
+  
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
   const fee = useSelector((state) => state?.fees);
+  const session1 = useSelector((state) => state?.session);
 
+  const { fetchsessionactive, fetchsession } = session1;
+  useEffect(() => {
+    if (fetchsessionactive?.success == 1) {
+      let data = fetchsessionactive?.data[0];
+      setsession(data?.sessionname);
+   //   console.log('sessionz');
+    }
+  }, [fetchsessionactive]);
   const {
     loading,
     error,
@@ -93,7 +110,8 @@ const PreferenceList = () => {
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
-  const { payfee, cartegory,fetchcustomPref } = fee;
+  const { payfee,cartegory } = fee;
+  console.log(fetchcustom)
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -101,15 +119,10 @@ const PreferenceList = () => {
     if (fetchcustom?.success == 1) {
       let data = fetchcustom?.data;
       let info = fetchcustom?.info;
-      setinfo(info);
+      setinfo(info)
       setdata(data);
-    }
-    if (fetchcustomPref?.success == 1) {
-      console.log('fffffffffffffffffffffffffff')
-      let data = fetchcustomPref?.data;
-      let info = fetchcustomPref?.info;
-      setinfo(info);
-      setdata(data);
+      console.log(info)
+
     }
 
     // if (fetchAllClass?.success == 1) {
@@ -124,29 +137,13 @@ const PreferenceList = () => {
     // }
   }, [fetchAllClassloading, fetchcustomloading]);
 
-
-
-  useEffect(() => {
-
-    if (fetchcustomPref?.success == 1) {
-      let data = fetchcustomPref?.data;
-      let info = fetchcustomPref?.info;
-      setinfo(info);
-      setdata(data);
-    }
-
- 
-  }, [fetchcustomPref]);
-
-
-
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
     if (fetchStudentcustombal?.success == 1) {
       let data = fetchStudentcustombal?.data;
       let info = fetchStudentcustombal?.info;
-      setinfo(info);
+      setinfo(info)
       setdata(data);
     }
   }, [fetchStudentcustombal]);
@@ -159,33 +156,26 @@ const PreferenceList = () => {
     if (cartegory?.success == 1) {
       let data = cartegory?.data;
       setcartegory(data);
-      console.log(cartegory?.data);
+      console.log(cartegory?.data)
     }
-  }, [payfee, cartegory]);
-  function getpref(pref) {
-    console.log(pref);
+  }, [payfee,cartegory]);
 
-    let myArr = pref.split(',');
-
-    let bb = myArr.slice(0, -1).toString();
-    console.log(bb);
-
-    return bb;
-  }
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
     if (payfee?.success == 1) {
       setVisible(false);
       setVisible1(true);
-      setReceipt(payfee?.response);
+      setReceipt(payfee?.response)
       dispatch(resetpayfee());
     }
   }, [payfee]);
 
   useEffect(() => {
     setdata([]);
+    
   }, []);
+
 
   useEffect(() => {
     dispatch(fetchfeeCartegoryAction());
@@ -223,7 +213,7 @@ const PreferenceList = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  30% 60% 10%;
+  --data-table-library_grid-template-columns:  15% 30% 15% 10% 14%  15%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -246,8 +236,7 @@ const PreferenceList = () => {
   useEffect(() => {
     dispatch(fetchschoolinfoAction());
     dispatch(fetchActivesessionAction());
-  }, []);
-  const user = useSelector((state) => state?.user);
+  }, []);  const user = useSelector((state) => state?.user);
   const { allschool } = user;
 
   const pagination = usePagination(data, {
@@ -264,8 +253,12 @@ const PreferenceList = () => {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
-  const handleviewbtn = (value) => {
+  const handleviewbtn = (value,info) => {
     show('top-right');
+    setSingleCart(
+      info?.filter((item) => item?.scartegory.includes(value)),
+    );
+
   };
   const handleEditbtn = (value) => {
     dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
@@ -336,20 +329,35 @@ const PreferenceList = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-  <Dialog
+      <Dialog
         resizable={false}
         draggable={false}
         // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
         visible={visible}
         className=""
         position={'top'}
-        style={{ width: '50%', color: 'white' }}
+        style={{ width: '40%', color: 'white' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
         }}
       >
-        <StudentPreferenceModal close={setVisible} val={propp} cart={cartz} />
+        <StudentaccountModal close={setVisible} stdname={name} val={propp} infotype={sectionzz} session={session}/>
+      </Dialog>
+      <Dialog
+        resizable={false}
+        draggable={false}
+        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
+        visible={visible1}
+        className=""
+        position={'bottom'}
+        style={{ width: '65%', color: 'white' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+      >
+        <FeesReceiptModal close={setVisible1} val={propp} response={receipt} cart={singleCart} school={allschool} />
       </Dialog>
       <div className=" flex-col">
         <div
@@ -357,6 +365,8 @@ const PreferenceList = () => {
             'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
           }
         >
+
+
           <div className="max-w-full overflow-x-auto">
             <div className="w-full  flex justify-between ">
               <div className=" flex w-7/12 gap-3">
@@ -375,7 +385,17 @@ const PreferenceList = () => {
                   </div>
                 </div>
 
-           
+                <div className="w-full sm:w-2/5">
+                  <label
+                    className="mb-2 block text-sm font-medium text-black dark:text-white"
+                    htmlFor="phoneNumber"
+                  >
+                    Section{' '}
+                  </label>
+                  <div className="relative z-20 bg-white dark:bg-form-input">
+                    <SectionSelect1 setsectionprop={setsectionzz} />
+                  </div>
+                </div>
                 <div className="w-full sm:w-2/5">
                   <label
                     className="mb-2 block text-sm font-medium  dark:text-black"
@@ -451,24 +471,27 @@ const PreferenceList = () => {
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <Header>
-                          <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                            <HeaderCell>Name</HeaderCell>
-                            <HeaderCell>Exempted Fee Cartegories</HeaderCell>
-                            <HeaderCell>Actions</HeaderCell>
-                          </HeaderRow>
-                        </Header>
+                        <HeaderCell className="">ID</HeaderCell>
+                        <HeaderCell>Name</HeaderCell>
+                        <HeaderCell>Class</HeaderCell>
+                        <HeaderCell>Section</HeaderCell>
+
+                        <HeaderCell>Acct Balance</HeaderCell>
+
+                        <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
 
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
-                        <Row
-                          key={item.student_id}
-                          item={item}
-                          className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
-                        >
+                        <Row key={item.student_id}
+                            item={item}
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                          >
+                          <Cell className="  ">
+                            <span>{item.student_id}</span>
+                          </Cell>
                           <Cell className="capitalize">
                             {item.firstName +
                               ' ' +
@@ -477,19 +500,48 @@ const PreferenceList = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.preference == 0 ? "-" : getpref(item.preference)}</span>
+                            <span>{item.class}</span>
                           </Cell>
+                          <Cell className="  ">
+                            <span>{item.section}</span>
+                          </Cell>
+                          <Cell className="flex   justify-between  ">
+                            <span className="">
+                              {(item.accountbalance)}
+                            </span>{' '}
+                            {/* <span className="float-right mr-15">
+                              {item?.accountbalance < 0 ? (
+                                <TableBtn
+                                  clickFunction={() => {}}
+                                  text={' Debit '}
+                                  color={'bg-[#6D343E]'}
+                                />
+                              ) : item?.accountbalance == 0 ? (
+                                ''
+                              ) : (
+                                <TableBtn
+                                  clickFunction={() => {}}
+                                  text={'Credit'}
+                                  color={'bg-success'}
+                                />
+                              )}
+                            </span> */}
+                          </Cell>
+
                           <Cell>
                             <div className="gap-2 flex">
                               <TableBtn
+                                text={'Account Info'}
                                 clickFunction={() => {
-                                  show('top-right');
-                                  setProp(item)
-
-                                }
-
-                                }
-                                text={'Manage'}
+                                  dispatch(FetchPaymentscholarshipsAction({id:item.student_id}))
+                                  setProp(item);
+                                  handleviewbtn(item?.cartegory,info);
+                                  SetName(item.firstName +
+                                    ' ' +
+                                    item.otherName +
+                                    ' ' +
+                                    item.lastName)
+                                }}
                                 color={'bg-primary'}
                               />
                             </div>
@@ -556,8 +608,10 @@ const PreferenceList = () => {
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
+                        <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Exempted Fee Cartegories</HeaderCell>
+                        <HeaderCell>Section</HeaderCell>
+                        <HeaderCell>Gender</HeaderCell>
                       </HeaderRow>
                     </Header>
 
@@ -569,6 +623,9 @@ const PreferenceList = () => {
                           item={item}
                           className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                         >
+                          <Cell className="  ">
+                            <span>{item.student_id}</span>
+                          </Cell>
                           <Cell className="capitalize">
                             {item.firstName +
                               ' ' +
@@ -577,16 +634,10 @@ const PreferenceList = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.preference}</span>
+                            <span>{item.section}</span>
                           </Cell>
-                          <Cell>
-                            <div className="gap-2 flex">
-                              <TableBtn
-                                clickFunction={() => handleEditbtn(item)}
-                                text={'Manage'}
-                                color={'bg-primary'}
-                              />
-                            </div>
+                          <Cell className="  ">
+                            <span>{item.gender}</span>
                           </Cell>
                         </Row>
                       ))}
@@ -600,6 +651,7 @@ const PreferenceList = () => {
       </div>
     </DefaultLayout>
   );
+
 };
 
-export default PreferenceList;
+export default StudentAccount;

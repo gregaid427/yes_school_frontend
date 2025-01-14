@@ -62,7 +62,7 @@ const { username, userMail} = user;
     data4['fee'] = pop(data2);
     console.log('data4');
     console.log(data4.fee);
-    data4['scartegory'] = scartegory;
+    data4['scartegory'] = props.type == false ? props.cartegory  :scartegory;
 
     if (data4.fee[0] == undefined) {
       return toast.error('Error - Fee Cartegory Cannot Be Empty');
@@ -86,7 +86,7 @@ const { username, userMail} = user;
       setclazz(arr[0]);
     }
   }, [fetchAllClassloading]);
-
+console.log(props)
   return (
     <div className="w-full">
       <div className="w-full ">
@@ -100,7 +100,19 @@ const { username, userMail} = user;
               </div>
               <div className="p-8">
               
-              <div className="w-full mb-3">
+              <div className={props.type == true ? 'hidden' : "w-full mb-3"}> 
+              <label
+                          className="mb-1 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="phoneNumber"
+                        >
+                          Student Cartegory :{' '}
+                        </label>
+                        <div className="relative z-20 text-black dark:text-white ">
+                          {props.cartegory}
+                        </div>
+                </div>
+
+              <div className={props.type == false ? 'hidden' : "w-full mb-3"}>
                         <label
                           className="mb-1 block text-sm font-medium text-black dark:text-white"
                           htmlFor="phoneNumber"

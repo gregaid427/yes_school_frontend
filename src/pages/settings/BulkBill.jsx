@@ -85,16 +85,12 @@ const BulkBill = () => {
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
 
-  
   const session = useSelector((state) => state?.session);
 
- 
-  const { fetchsession,fetchsessionactive} =
-    session;
-  
+  const { fetchsession, fetchsessionactive } = session;
+
   useEffect(() => {
     dispatch(fetchAllsessionAction());
-  
   }, []);
 
   const {
@@ -110,7 +106,7 @@ const BulkBill = () => {
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
-console.log(fetchsessionactive)
+  console.log(fetchsessionactive);
   const user = useSelector((state) => state?.user);
 
   const { allschool } = user;
@@ -184,16 +180,14 @@ console.log(fetchsessionactive)
       // navigate('/fees/bulkbilldownload');
       setVisible4(true);
     }
-      if (GetBulkBill?.success == 0) {
-
+    if (GetBulkBill?.success == 0) {
       toast.error('Error Generating Class Bill');
     }
   }, [GetBulkBill]);
- // console.log(GetBulkBill.data);
+  // console.log(GetBulkBill.data);
   useEffect(() => {
     if (GetSingleBill?.success == 1 && GetSingleBill?.data.length != 0) {
       setVisible1(true);
-
     }
   }, [GetSingleBill]);
 
@@ -327,9 +321,8 @@ console.log(fetchsessionactive)
   }
 
   useEffect(() => {
-
     if (fetchsessionactive?.success == 1) {
-      setSessionoption(fetchsessionactive?.data[0].sessionname)
+      setSessionoption(fetchsessionactive?.data[0].sessionname);
     }
   }, [fetchsessionactive]);
   const [sessionoption, setSessionoption] = useState('');
@@ -371,7 +364,6 @@ console.log(fetchsessionactive)
           val={info}
           school={allschool}
           sessionoption={sessionoption}
-
         />
       </Dialog>
       <Dialog

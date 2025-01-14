@@ -163,7 +163,9 @@ const BulkBillModal = (props) => {
                 }}
               >
                 {cart?.map((item) => (
-                <div className=''>
+                <div                         style={{ height: 570 }}
+
+                className='py-auto  border-b-2 border-stroke  dark:border-strokedark mb-2 '>
 
                 <div className="w-full">
                   <div className="flex border-b justify-between pb-2 border-stroke  dark:border-strokedark">
@@ -342,21 +344,11 @@ const BulkBillModal = (props) => {
                   </div>
                 </div>
 
-                <div className="flex text-sm mt-10 flex-row w-full">
-                  <p className="text-center w-4/12 ">Payment Mode</p>
-                  <p className="text-center w-4/12 ">
-                    .........................
-                  </p>
-                  <p className="text-center w-4/12 ">
-                    {item?.response?.collectedby}
-                  </p>
+           
+               
                 </div>
-                <div className="flex text-sm flex-row w-full">
-                  <p className="text-center w-4/12 ">{item?.response?.mode}</p>
-                  <p className="text-center w-4/12 "> Signature </p>
-                  <p className="text-center w-4/12 ">Received By</p>
-                </div>
-                </div>
+
+                
                 ))
 }            
 

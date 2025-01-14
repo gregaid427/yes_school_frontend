@@ -123,6 +123,7 @@ import EditExamResultAlt from './pages/exam/EditExamResultAlt';
 import StudentsCartegory from './pages/student/StudentCartegory';
 import BulkBill from './pages/settings/BulkBill';
 import BulkBillDownload from './pages/settings/BulkBillDownload';
+import StudentAccount from './pages/Fees/StudentAccount';
 
 function App() {
   const navigate = useNavigate();
@@ -760,6 +761,18 @@ function App() {
                 <>
                   <PageTitle title="Expense" />
                   <SearchExpense />
+                </>
+              }
+            />{' '}
+          </Route>
+          
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/fees/studaccount"
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <StudentAccount />
                 </>
               }
             />{' '}

@@ -1,9 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AssignFeesAction, CustomBalUpdate, GenerateFeeAction, GenerateFeeStudentAction, resetGeneratefee } from '../redux/slices/feeSlice';
+import {
+  AssignFeesAction,
+  CustomBalUpdate,
+  GenerateFeeAction,
+  GenerateFeeStudentAction,
+  resetGeneratefee,
+} from '../redux/slices/feeSlice';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { fetchSingleStudent,resetSinglestudent } from '../redux/slices/studentSlice';
+import {
+  fetchSingleStudent,
+  resetSinglestudent,
+} from '../redux/slices/studentSlice';
 
 const UpdateStudentAccountModal = (props) => {
   const dispatch = useDispatch();
@@ -24,7 +33,7 @@ const UpdateStudentAccountModal = (props) => {
 
   const { fetchAllClassloading, fetchAllClass } = clad;
   const fee = useSelector((state) => state?.fees);
-  const { cartegory,Generatefee,custom } = fee;
+  const { cartegory, Generatefee, custom } = fee;
   let navigate = useNavigate();
   const student = useSelector((state) => state?.student);
   const { singleStudent } = student;
@@ -36,35 +45,31 @@ const UpdateStudentAccountModal = (props) => {
       dispatch(fetchSingleStudent(id));
     }
   };
+  
   const user = useSelector((state) => state?.user);
-const { username, userMail} = user;
+  const { username, userMail } = user;
   let data1 = {
     id: id,
     class: classs,
     collectedby: username?.payload,
-    amount: amount
-  
+    amount: amount,
   };
   const handleUpdate = (e) => {
-    console.log(data)
+    console.log(data);
     if (amount < 1) {
       return toast.error('Error - Enter Valid Amount');
-    }
-    else {
+    } else {
       dispatch(CustomBalUpdate(data1));
     }
   };
 
-  const data ={
-    id : id,
-    class : classs,
-  //  cartegory : cart
-
-  }
+  const data = {
+    id: id,
+    class: classs,
+    //  cartegory : cart
+  };
   const handleGenerate = () => {
-  
-      dispatch(GenerateFeeStudentAction(data));
-    
+    dispatch(GenerateFeeStudentAction(data));
   };
 
   useEffect(() => {
@@ -72,18 +77,13 @@ const { username, userMail} = user;
 
     if (singleStudent?.success == 0) {
       toast.error('Error Fetching Student Data');
-      dispatch(resetGeneratefee())
-      
-      dispatch(resetSinglestudent())
-
-
+      dispatch(resetGeneratefee());
+      dispatch(resetSinglestudent());
     }
     if (singleStudent?.success == 1 && singleStudent?.data.length == 0) {
       toast.error('Error - No Student Found');
-      dispatch(resetGeneratefee())
-      dispatch(resetSinglestudent())
-
-
+      dispatch(resetGeneratefee());
+      dispatch(resetSinglestudent());
     }
     if (singleStudent?.success == 1 && singleStudent?.data.length != 0) {
       setDesc(singleStudent?.data);
@@ -96,20 +96,16 @@ const { username, userMail} = user;
     }
   }, [singleStudent]);
 
-
   useEffect(() => {
-
     if (custom?.success == 0) {
       toast.error('Error Generating Fee');
-      dispatch(resetGeneratefee())
-      dispatch(resetSinglestudent())
-
-
+      dispatch(resetGeneratefee());
+      dispatch(resetSinglestudent());
     }
-   
-    if (custom?.success == 1 ) {
-      dispatch(resetGeneratefee())
-      dispatch(resetSinglestudent())
+
+    if (custom?.success == 1) {
+      dispatch(resetGeneratefee());
+      dispatch(resetSinglestudent());
 
       setDesc([]);
       setfName('');
@@ -224,57 +220,55 @@ const { username, userMail} = user;
                       {classs + ' ' + `${secton ? '/' : ''}` + ' ' + secton}{' '}
                     </label>
                   </div>
-                   <div className="border-b flex flex-col my-6 py-3 border-t border-stroke dark:border-strokedark">
-                  <p>
-                    <span className="flex justify-around my-4 text-black dark:text-white text-md py-1 text-center mx-auto">
-                      Update Student's Account balance
-                    </span>
-                  </p>
-                  <div className="gap-2 flex ">
-                    <div className="w-full flex mb-1 sm:w-2/2">
-                      <label
-                        className="my-auto w-3/5 block text-sm font-medium text-black dark:text-white"
-                        htmlFor=""
-                      >
-                       Enter Account Balance :
-                      </label>
-                      <input
-                        className="w-2/5 rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="number"
-                        name=""
-                        id=""
-                        placeholder=""
-                        onChange={(e) => {
-                          setAmount(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <div className="w-full flex mb-1 sm:w-2/5">
-                    <button
-                      className="flex w-full justify-center rounded bg-primary py-2 px-3 font-medium text-gray hover:bg-opacity-90"
-                      type=""
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleUpdate();
-                      }}
-                    >
-                      Update
-                    </button>{' '}
+                  <div className="border-b flex flex-col my-6 py-3 border-t border-stroke dark:border-strokedark">
+                    <p>
+                      <span className="flex justify-around my-4 text-black dark:text-white text-md py-1 text-center mx-auto">
+                        Update Student's Account balance
+                      </span>
+                    </p>
+                    <div className="gap-2 flex ">
+                      <div className="w-full flex mb-1 sm:w-2/2">
+                        <label
+                          className="my-auto w-3/5 block text-sm font-medium text-black dark:text-white"
+                          htmlFor=""
+                        >
+                          Enter Account Balance :
+                        </label>
+                        <input
+                          className="w-2/5 rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="number"
+                          name=""
+                          id=""
+                          placeholder=""
+                          onChange={(e) => {
+                            setAmount(e.target.value);
+                          }}
+                        />
+                      </div>
+                      <div className="w-full flex mb-1 sm:w-2/5">
+                        <button
+                          className="flex w-full justify-center rounded bg-primary py-2 px-3 font-medium text-gray hover:bg-opacity-90"
+                          type=""
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleUpdate();
+                          }}
+                        >
+                          Update
+                        </button>{' '}
+                      </div>
                     </div>
                   </div>
-             
-               
-                </div>
 
-                <button
+                  <button
                     className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                     type=""
                     onClick={(e) => {
                       e.preventDefault();
                       props.close(false);
-                      dispatch(resetGeneratefee())
-                      dispatch(resetSinglestudent())
-                
+                      dispatch(resetGeneratefee());
+                      dispatch(resetSinglestudent());
+
                       setDesc([]);
                       setfName('');
                       setMName('');
@@ -297,5 +291,3 @@ const { username, userMail} = user;
 };
 
 export default UpdateStudentAccountModal;
-
-

@@ -78,6 +78,8 @@ const AssignFees = () => {
   const [loader, setLoader] = useState(true);
 
   const [cart, setcart] = useState('');
+  const [type, setType] = useState(true);
+
   const [sectionname, setsectionname] = useState('');
 
   const [display, setDisplay] = useState(false);
@@ -297,12 +299,12 @@ const AssignFees = () => {
     }
   }, [updateFeeCartItem]);
 
-  useEffect(() => {
-    for (let x = 0; x >= fetchAllClass?.data?.length; x + 1) {
-      if (fetchAllClass?.data[x] == 1) {
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   for (let x = 0; x >= fetchAllClass?.data?.length; x + 1) {
+  //     if (fetchAllClass?.data[x] == 1) {
+  //     }
+  //   }
+  // }, []);
 
   const [classData1, setClassData1] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -411,6 +413,7 @@ const AssignFees = () => {
           close={setVisible2}
           data={classs}
           cartegory={cart}
+          type={type}
         />
       </Dialog>
 
@@ -489,7 +492,6 @@ const AssignFees = () => {
                 </button>
               </div>
             </div>
-         
           </div>
         </div>
         <div
@@ -521,9 +523,11 @@ const AssignFees = () => {
                             setClass(item[0][0]?.class);
                             //setcart(item?.scartegory)
                             setVisible2(true);
+                            setType(true)
+
                           }}
                         >
-                          Add Class Cartegory
+                          Assign Fee Cartegory  
                         </button>
                         <button
                           className="flex  float-end rounded bg-danger py-1 px-2 font-medium text-sm  text-gray hover:bg-opacity-90"
@@ -539,11 +543,7 @@ const AssignFees = () => {
                       </div>
                     </div>
                   </div>
-                  <div
-                    className={
-                      'rounded-sm px-1 py-2 '
-                    }
-                  >
+                  <div className={'rounded-sm px-1 py-2 '}>
                     <div className="w-full">
                       <div className={'w-full flex flex-col gap-1'}>
                         {false ? (
@@ -555,8 +555,6 @@ const AssignFees = () => {
                             {' '}
                             {item?.map((subitem, index) => (
                               <>
-                               
-                               
                                 <div
                                   className={
                                     'flex flex-col w-full gap-1  border  border-stroke dark:border-stone-700 rounded p-2 '
@@ -578,8 +576,21 @@ const AssignFees = () => {
                                     </label>
                                   </div>
                                   <div className="flex flex-col">
-                                    {subitem[index]?.feename == undefined ? (
-                                      <p>⚠️ No Fee Items Assigned </p>
+                                    {subitem[0]?.feename == undefined ? ( <div className='flex justify-between'>
+                                      <p>⚠️ No Fee Items Assigned </p> 
+                                       <button
+                                      className="flex  float-end rounded bg-primary py-1 px-1 font-medium text-sm  text-gray hover:bg-opacity-90"
+                                      type=""
+                                      onClick={() => {
+                                        setClass(item[0][0]?.class);
+                                        setcart(subitem[0]?.scartegory)
+                                        setVisible2(true);
+                                        setType(false)
+                                      }}
+                                    >
+                                      Assign 
+                                    </button>
+                                    </div>
                                     ) : (
                                       subitem?.map((item, index) => (
                                         <div className="flex" key={index}>
@@ -614,14 +625,14 @@ const AssignFees = () => {
 
                                     <div
                                       className={
-                                        subitem[index]?.feename == undefined
+                                        subitem[0]?.feename == undefined
                                           ? 'hidden'
                                           : 'flex'
                                       }
                                     >
                                       <div className="flex  w-full justify-between">
                                         <label className=" flex gap-1 float-end  text-sm font-bold text-ash dark:text-white">
-                                          Total : {subitem[index]?.total}
+                                          Total : {subitem[0]?.total}
                                         </label>
                                         <label className=" flex gap-1  text-md font-bold text-ash dark:text-white">
                                           {/* {item.total} */}
@@ -630,7 +641,7 @@ const AssignFees = () => {
                                     </div>
                                     <div
                                       className={
-                                        subitem[index]?.feename == undefined
+                                        subitem[0]?.feename == undefined
                                           ? 'hidden'
                                           : 'flex float-end justify-items-end justify-end align-text-bottom '
                                       }
@@ -655,8 +666,6 @@ const AssignFees = () => {
                                     </div>
                                   </div>
                                 </div>
-                            
-                            
                               </>
                             ))}
                           </div>

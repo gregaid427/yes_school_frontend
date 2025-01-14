@@ -644,6 +644,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                           <li>
                             <NavLink
+                              to="/fees/studaccount"
+                              className={({ isActive }) =>
+                                'group relative flex items-center  gap-2.5 rounded-md px-1 font-small text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Students Account
+                            </NavLink>
+                          </li>
+                          <li>
+                            
+                            <NavLink
                               to="/fees/addfeesgroup"
                               className={({ isActive }) =>
                                 'group relative flex items-center  gap-2.5 rounded-md px-1 font-small text-bodydark2 duration-300 ease-in-out hover:text-white ' +
