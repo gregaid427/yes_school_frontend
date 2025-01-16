@@ -46,6 +46,8 @@ console.log(props)
               e.preventDefault();
            
               props.delete()
+              props.close(false);
+
             }}
           >
             Proceed

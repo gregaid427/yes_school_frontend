@@ -70,6 +70,7 @@ const AssignFees = () => {
     AssignfeeGroup,
     AllAssignfee,
     updateFeeCartItem,
+    deleteSinglefee,deleteGoupFeeCart
   } = fee;
 
   const [pagesval, setpagesval] = useState(30);
@@ -145,7 +146,8 @@ const AssignFees = () => {
       setVisible(false);
       dispatch(fetchAllfeeAssignRecordAction());
     }
-  }, [AssignfeeGroup]);
+    
+  }, [AssignfeeGroup,deleteSinglefee,deleteGoupFeeCart]);
 
   fetchAllClass;
 
@@ -320,8 +322,7 @@ const AssignFees = () => {
     setPosition(position);
     setVisible(true);
   };
-  console.log(info);
-  deleteSingleFeeCartAction;
+
   const handledeletebtn1 = () => {
     const data = {
       cart: cart,
@@ -437,7 +438,7 @@ const AssignFees = () => {
         style={{ height: 'auto', width: '40%' }}
         onHide={() => {
           if (!visible9) return;
-          setVisible1(false);
+          setVisible9(false);
         }}
         draggable={false}
         resizable={false}
@@ -451,7 +452,7 @@ const AssignFees = () => {
         style={{ height: 'auto', width: '40%' }}
         onHide={() => {
           if (!visible8) return;
-          setVisible1(false);
+          setVisible8(false);
         }}
         draggable={false}
         resizable={false}

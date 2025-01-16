@@ -4,7 +4,7 @@ import { AssignFeesAction, GenerateFeeAction } from '../redux/slices/feeSlice';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-const GenerateFeeModak = (props) => {
+const GenerateFeeResponseModal = (props) => {
   const dispatch = useDispatch();
   const [display, setDisplay] = useState(0);
 
@@ -51,7 +51,7 @@ const GenerateFeeModak = (props) => {
       }
     }
   }, []);
-  console.log(clazz);
+  console.log(props);
   return (
     <div className="w-full">
       <div className="w-full ">
@@ -60,14 +60,34 @@ const GenerateFeeModak = (props) => {
             <div className="rounded-sm border py-3 px-7 border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">
               <div className="border-b border-stroke  dark:border-strokedark">
                 <h3 className="font-medium mb-5  text-black dark:text-white">
-                  Generate Fee
+                ⚠️ Error 
                 </h3>
               </div>
-              <div className={!clazz[0] ? '' : 'hidden'}>
-              <h4 className="text-sm  text-black text-center dark:text-white">
+              <div className=''>
+              <h4 className="text-md  text-black  dark:text-white">
                   {' '}
-                  Are You sure You Want To Generate Fee For All Classes ?{' '}
+               Message :  Error Generating Fee {' '}
                 </h4>
+                <h4 className="text-md  text-black  dark:text-white">
+                  {' '}
+               Reason :  Unassigned Fee For Certain Students' Cartegories {' '}
+                </h4>
+                {props.val?.data?.map((item,index) => (
+
+                <div className='my-1' key={index}>
+                <h4 className="text-md   text-black  dark:text-white">
+                  {' '}
+                  ⭕ Class :  {item?.class}  
+                </h4>
+                <h4 className="text-md  text-black  dark:text-white">
+                  {' '}
+                   Unassigned Cartegories :    {item?.cart.toString()}     
+                </h4>
+               
+                </div>
+
+))}
+
                 <div className="p-8 flex gap-2">
                   
                   <button
@@ -75,12 +95,10 @@ const GenerateFeeModak = (props) => {
                     type=""
                     onClick={(e) => {
                       e.preventDefault();
-                      handleSubmit();
-                      props.close(false)
-
+                      navigate('/fees/Assignfees')
                     }}
                   >
-                    Proceed
+                    Assign Fee
                   </button>
                   <button
                     className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
@@ -91,7 +109,7 @@ const GenerateFeeModak = (props) => {
                   </button>
                 </div>
               </div>
-              {/* <div className={clazz[0] ? '' : 'hidden'}>
+              <div className={clazz[0] ? '' : 'hidden'}>
                 <h3 className="font-medium  mb-2 text-black text-center dark:text-white">
                   You Will Be Required To Assign Fee To All Classes Inorder To
                   Generate Fee
@@ -123,7 +141,7 @@ const GenerateFeeModak = (props) => {
                       Cancel
                     </button>
                   </div>
-              </div> */}
+              </div>
 
               
             </div>
@@ -134,4 +152,4 @@ const GenerateFeeModak = (props) => {
   );
 };
 
-export default GenerateFeeModak;
+export default GenerateFeeResponseModal;

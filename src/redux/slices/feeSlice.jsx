@@ -234,10 +234,10 @@ export const GenerateFeeAction = createAsyncThunk(
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefee`,
       );
-      if (data?.success == 1) {
-        toast.dismiss(toastId);
-        toast.success('Fee Generated Successfully');
-      }
+      // if (data?.success == 1) {
+      //   toast.dismiss(toastId);
+      //   toast.success('Fee Generated Successfully');
+      // }
       if (data?.success == 0) {
         toast.error('Error Generating Fee');
       }
@@ -346,19 +346,19 @@ export const GenerateFeeClassAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefeebyclass`,
         payload,
       );
-      if (data?.success == 1) {
-        toast.dismiss(toastId);
-        toast.success('Fee Generated Successfully');
-      }
-      if (data?.success == 2) {
-        toast.dismiss(toastId);
-        toast.error('No Student In Selected Class');
-      }
-      if (data?.success == 3) {
-        toast.dismiss(toastId);
+      // if (data?.success == 1) {
+      //   toast.dismiss(toastId);
+      //   toast.success('Fee Generated Successfully');
+      // }
+      // if (data?.success == 2) {
+      //   toast.dismiss(toastId);
+      //   toast.error('No Student In Selected Class');
+      // }
+      // if (data?.success == 5) {
+      //   toast.dismiss(toastId);
        
-        toast.error('No Fees Assigned For Cartegories : '  + data.val.toString());
-      }
+      //   toast.error('No Fees Assigned For Cartegories : '  );
+      // }
       if (data?.success == 0) {
         toast.error('Error Generating Fee');
       }
@@ -392,14 +392,14 @@ export const GenerateFeeStudentAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefeebystudent`,
         payload,
       );
-      if (data?.success == 1) {
+      if (data?.success == 7) {
         toast.dismiss(toastId);
         toast.success('Fee Generated Successfully');
       }
-      if (data?.success == 3) {
-        toast.dismiss(toastId);
-        toast.error('No Fees Assigned For Student Class');
-      }
+      // if (data?.success == 3) {
+      //   toast.dismiss(toastId);
+      //   toast.error('No Fees Assigned For Student Class');
+      // }
       if (data?.success == 0) {
         toast.error('Error Generating Fee');
       }

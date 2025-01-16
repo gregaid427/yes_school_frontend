@@ -355,9 +355,10 @@ const GenerateFeeModalClass = (props) => {
                       onClick={(e) => {
                         e.preventDefault();
                         handleSubmit();
+                        props.close(false)
                       }}
                     >
-                      Save
+                      Generate Fee
                     </button>
                     <button
                       className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"

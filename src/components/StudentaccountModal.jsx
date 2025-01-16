@@ -17,7 +17,7 @@ const StudentaccountModal = (props) => {
   const fee = useSelector((state) => state?.fees);
   const { FetchPaymentAlt } = fee;
   const [feedata, setfeedata] = useState([]);
-  const [scholarship, setscholarship] = useState({});
+  const [scholarship, setscholarship] = useState({scholarshiptitle:'-',amount:'-',cartegorycovering:'-'});
 
   console.log(props);
   const { fetchAllClassloading, fetchAllClass } = clad;
@@ -62,7 +62,7 @@ const StudentaccountModal = (props) => {
   }
 
   useEffect(() => {
-    if (FetchPaymentAlt?.success == 1) {
+    if (FetchPaymentAlt?.success == 1 && FetchPaymentAlt?.scholarship.length != 0) {
       setscholarship(FetchPaymentAlt?.scholarship[0]);
     //  setfeedata(FetchPaymentAlt?.feedata);
       // dispatch(resetpayfee());
@@ -202,6 +202,27 @@ const StudentaccountModal = (props) => {
                   />
                 </div>
 
+                <div className="w-full flex mb-4 sm:w-2/2">
+                  <label
+                    className="my-auto w-2/5 block text-sm font-medium text-black dark:text-white"
+                    htmlFor=""
+                  >
+                    Cartegory
+                  </label>
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    type="text"
+                    name=""
+                    id=""
+                    placeholder=""
+                    defaultValue={
+                     
+                      props.val?.cartegory
+                    }
+                    disabled
+                  />
+                </div>
+
                 <div className="w-full border-b border-stroke py-3  dark:border-strokedark gap-3 flex mb-4 sm:w-2/2">
                   <div className="flex ">
                     {' '}
@@ -273,7 +294,7 @@ const StudentaccountModal = (props) => {
                   >
                     Scholarship
                   </label>
-                  <div className='w-full my-auto'>
+                  <div className={scholarship.scholarshiptitle == '-'? 'hidden' : 'w-full my-auto' }>
                   <label
                     className="my-auto w-full flex gap-1  text-sm font-medium text-black dark:text-white"
                     htmlFor=""

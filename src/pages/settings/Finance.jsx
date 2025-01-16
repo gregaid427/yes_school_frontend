@@ -64,6 +64,9 @@ import SearchStudentsModal from '../SearchStudentsModal';
 import { reset } from '../../redux/slices/usersSlice';
 import GenerateAssignedModalStudent from '../../components/GenerateAssignedModalStudent';
 import TotalFeesCollectedModal from '../TotalFeesCollectedModal';
+import GenerateFeeResponseModal from '../../components/GenerateFeeResponseModal';
+import GenerateFeeResponseSuccessModal from '../../components/GenerateFeeResponseSuccessModal';
+import { fetchstdCartegoryAction } from '../../redux/slices/studentSlice';
 
 const Finance = () => {
   const formRef1 = useRef();
@@ -118,6 +121,9 @@ const Finance = () => {
   const [visible9, setVisible9] = useState(false);
   const [visible10, setVisible10] = useState(false);
   const [visible13, setVisible13] = useState(false);
+  const [visible14, setVisible14] = useState(false);
+  const [visible15, setVisible15] = useState(false);
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -136,8 +142,11 @@ const Finance = () => {
     dispatch(fetchAllsessionAction());
     dispatch(fetchAllClassAction());
     dispatch(fetchfeeAssignRecordAction());
-  }, []);
+    dispatch(fetchstdCartegoryAction());
 
+    
+  }, []);
+ 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
@@ -309,6 +318,10 @@ const Finance = () => {
   const [classData, setClassData] = useState([]);
   const [classData1, setClassData1] = useState([]);
   const [check, setCheck] = useState(true);
+  const [check1, setCheck1] = useState(null);
+  const [check2, setCheck2] = useState(null);
+
+
 
   function handleFileUpload(e) {
     console.log('called');
@@ -359,14 +372,29 @@ const Finance = () => {
     setVisible(true);
   };
   useEffect(() => {
-    if (Generatefee?.success == 1) {
+    if (Generatefee?.success == 2) {
       let data = Generatefee?.data;
-      setVisible3(false);
-      setVisible2(false);
-      setVisible(false);
+      setCheck1(Generatefee)
+      setVisible14(true);
       dispatch(resetGeneratefee());
     }
   }, [Generatefee]);
+  useEffect(() => {
+    if (Generatefee?.success == 1) {
+      setCheck2(Generatefee)
+
+      let data = Generatefee?.data;
+      setVisible15(true);
+      dispatch(resetGeneratefee());
+    }
+  }, [Generatefee]);
+
+
+  function hidemodal(){
+    setVisible3(false);
+    setVisible2(false);
+    setVisible(false);
+  }
 
   useEffect(() => {
     if (AssignfeeGroup?.success == 1) {
@@ -438,6 +466,28 @@ const Finance = () => {
     <Loader />
   ) : (
     <DefaultLayout>
+       <Dialog
+        visible={visible14}
+        position={'top'}
+        style={{ height: 'auto', width: '60%' }}
+        onHide={() => {
+          if (!visible14) return;
+          setVisible10(false);
+        }}
+      >
+        <GenerateFeeResponseModal close={setVisible14} val={check1} />
+      </Dialog>
+      <Dialog
+        visible={visible15}
+        position={'top'}
+        style={{ height: 'auto', width: '60%' }}
+        onHide={() => {
+          if (!visible15) return;
+          setVisible15(false);
+        }}
+      >
+        <GenerateFeeResponseSuccessModal close={setVisible15} val={check2} />
+      </Dialog>
       <Dialog
         visible={visible}
         position={'top'}
@@ -609,6 +659,7 @@ const Finance = () => {
                         onClick={() => {
                           show('top-right');
                           dispatch(fetchfeeAssignGroupRecordAction());
+                          
                         }}
                       >
                         Select

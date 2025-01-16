@@ -218,6 +218,8 @@ const GenerateFeeModalStudent = (props) => {
                       onClick={(e) => {
                         e.preventDefault();
                         handleGenerate();
+                        props.close(false)
+
                       }}
                     >
                       Generate Fee
