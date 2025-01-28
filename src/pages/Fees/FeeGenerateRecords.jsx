@@ -44,7 +44,7 @@ import { fetchActivesessionAction, fetchAllsessionAction } from '../../redux/sli
 import StudentaccountModal from '../../components/studentaccountModal';
 import SessionSelect from '../../components/SessionSelect';
 
-const StudentAccount = () => {
+const FeeGenerateRecords = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
@@ -82,7 +82,7 @@ const StudentAccount = () => {
 
   
   
-  console.log(nodes)
+  console.log(propp)
   
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
@@ -289,7 +289,7 @@ const StudentAccount = () => {
         visible={visible}
         className=""
         position={'top'}
-        style={{ width: '45%', color: 'white' }}
+        style={{ width: '40%', color: 'white' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
@@ -427,7 +427,7 @@ const StudentAccount = () => {
                         <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
                         {/* <HeaderCell>Class</HeaderCell> */}
-                        <HeaderCell> Current Arrears</HeaderCell>
+                        <HeaderCell>Section</HeaderCell>
                         <HeaderCell>Fee Paid</HeaderCell>
 
 
@@ -456,14 +456,14 @@ const StudentAccount = () => {
                           </Cell>
                          
                           <Cell className="  ">
-                            <span>{item.arrears}</span>
+                            <span>{item.section}</span>
                           </Cell>
                           <Cell className="  ">
                             <span>{item.feepaid == null ? '0.00' : item.feepaid}</span>
                           </Cell>
                           <Cell className="flex   justify-between  ">
                             <span className="">
-                            {(item.accountbalance > 0 ? '🟠'+ ' '+item.accountbalance : ''+ '🟢'+item.accountbalance)}
+                              {(item.accountbalance)}
                             </span>{' '}
                             {/* <span className="float-right mr-15">
                               {item?.accountbalance < 0 ? (
@@ -605,9 +605,9 @@ const StudentAccount = () => {
           </div>
         </div>{' '}
       </div>
-    </DefaultLayout>
+    </DefaultLayout>  
   );
 
 };
 
-export default StudentAccount;
+export default FeeGenerateRecords;

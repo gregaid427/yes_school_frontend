@@ -1,12 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AssignFeesAction, GenerateFeeAction } from '../redux/slices/feeSlice';
+import {
+  AssignFeesAction,
+  CloseSessionAcountAction,
+  GenerateFeeAction,
+} from '../redux/slices/feeSlice';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import SessionSelect from './SessionSelect';
+import SessionSelect1 from './SessionSelect1';
 
 const GenerateFeeModak = (props) => {
   const dispatch = useDispatch();
-  const [display, setDisplay] = useState(0);
+
+  const session = useSelector((state) => state?.session);
+
+  const { fetchsession, fetchsessionactive } = session;
+  const [display, setDisplay] = useState(false);
+  const [sessionoption, setSessionoption] = useState('None');
+  const [sessionoption1, setSessionoption1] = useState('');
 
   const [clazz, setclazz] = useState([]);
   const [isChecked1, setIsChecked1] = useState();
@@ -18,18 +30,29 @@ const GenerateFeeModak = (props) => {
   const { fetchAllClassloading, fetchAllClass } = clad;
   const fee = useSelector((state) => state?.fees);
   const { cartegory } = fee;
-  let navigate = useNavigate()
+  let navigate = useNavigate();
   const user = useSelector((state) => state?.user);
-  const { username, userMail} = user;
+  const { username, userMail } = user;
+
   const data = {
     createdby: username?.payload,
+    oldsession: sessionoption,
+    newsession: sessionoption1,
   };
 
   const handleSubmit = () => {
-    if (false) {
-      return toast.error('Error -Fee Cartegory Cannot Be Empty');
+    if (sessionoption == 'None') {
+      // setDisplay(newsession);
+      return toast.error('Select New Session');
+    }
+    if (sessionoption1 == 'None') {
+      return toast.error('Select Old Session');
+    }
+    if (sessionoption1 == sessionoption) {
+      return toast.error('Both Session Cannot Be same');
     } else {
-      dispatch(GenerateFeeAction(data));
+      setDisplay(false);
+      dispatch(CloseSessionAcountAction(data));
     }
   };
   useEffect(() => {
@@ -43,8 +66,6 @@ const GenerateFeeModak = (props) => {
       while (i < props.val?.length) {
         if (props.val[i]?.amount == null) {
           arr.push(props.val[i]?.title);
-
-          console.log('jjjjjjj');
         }
         i++;
         if (i + 1 == props.val?.length) setclazz(arr);
@@ -64,28 +85,68 @@ const GenerateFeeModak = (props) => {
                 </h3>
               </div>
               <div className={!clazz[0] ? '' : 'hidden'}>
-              <h4 className="text-sm  text-black text-center dark:text-white">
+                {/* <h4 className="text-sm  text-black  dark:text-white">
                   {' '}
-                  Are You sure You Want To Generate Fee For All Classes ?{' '}
+                  Select Previous / Outgoing Session{' '}
                 </h4>
-                <div className="p-8 flex gap-2">
-                  
+
+                <div className="relative  z-20 bg-white dark:bg-form-input">
+                  <SessionSelect setsectionprop={setSessionoption} />
+                </div> */}
+
+                <div className="flex justify-between">
+                  <label
+                    className="mb-1 w-2/2 block py-3 text-sm font-medium text-black dark:text-white"
+                    htmlFor=" "
+                  >
+                    Select New / Upcoming Session{' '}
+                  </label>
+                  <button
+                    className="flex w-auto max-h-min justify-center mt-1 rounded bg-primary py-1 px-2 font-sm text-gray hover:bg-opacity-90"
+                    type=""
+                    onClick={(e) => {
+                      e.preventDefault();
+                      props.openModal(true);
+                    }}
+                  >
+                    Add New Session
+                  </button>
+                </div>
+
+                <div className="relative z-20 bg-white dark:bg-form-input">
+                  <SessionSelect1 setsectionprop={setSessionoption} />
+                </div>
+
+                <div className="flex justify-between">
+                  <label
+                    className="mb-1 w-2/2 block py-3 text-sm font-medium text-black dark:text-white"
+                    htmlFor=" "
+                  >
+                    Select Current / Outgoing Session{' '}
+                  </label>
+                </div>
+
+                <div className="relative z-20 bg-white dark:bg-form-input">
+                  <SessionSelect1 setsectionprop={setSessionoption1} />
+                </div>
+                <div className="py-8 flex gap-2">
                   <button
                     className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                     type=""
                     onClick={(e) => {
                       e.preventDefault();
                       handleSubmit();
-                      props.close(false)
-
+                      props.close(false);
                     }}
                   >
                     Proceed
                   </button>
                   <button
                     className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                    onClick={(e) => {  e.preventDefault();
-                      props.close(false);}}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      props.close(false);
+                    }}
                   >
                     Decline
                   </button>
@@ -124,8 +185,6 @@ const GenerateFeeModak = (props) => {
                     </button>
                   </div>
               </div> */}
-
-              
             </div>
           </div>
         </div>

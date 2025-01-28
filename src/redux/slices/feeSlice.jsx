@@ -1425,7 +1425,98 @@ export const FetchTotalFeesAction = createAsyncThunk(
     }
   },
 );
+export const CloseSessionAcountAction = createAsyncThunk(
+  'post/closeAccount',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
 
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/closeaccount`,
+        payload,
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+
+export const sessionaccountrecordsAction = createAsyncThunk(
+  'get/sessionaccountrecords',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/sessionaccountrecords`,
+        payload,
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const fetchfeespaidbysessionAction = createAsyncThunk(
+  'get/feespaidsession',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/feespaidsession`,
+        payload,
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const AssignFeesAction = createAsyncThunk(
   'create/assignfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -1665,6 +1756,23 @@ const FeeSlices = createSlice({
     },
   },
   extraReducers: (builder) => {
+    
+    builder.addCase(CloseSessionAcountAction.pending, (state, action) => {
+      state.CloseSessionAcountloading = true;
+      state.CloseSessionAcount = false;
+      state.CloseSessionAcount = false;
+    });
+    builder.addCase(CloseSessionAcountAction.fulfilled, (state, action) => {
+      state.CloseSessionAcount = action?.payload;
+      state.CloseSessionAcountloading = false;
+      state.CloseSessionAcounterror = undefined;
+    });
+    builder.addCase(CloseSessionAcountAction.rejected, (state, action) => {
+      state.CloseSessionAcountloading = false;
+      state.CloseSessionAcounterror = action.payload;
+      state.CloseSessionAcount = undefined;
+    });
+
     builder.addCase(CreatesfeeAction.pending, (state, action) => {
       state.Createfeeloading = true;
       state.Createfee = false;
@@ -1681,6 +1789,21 @@ const FeeSlices = createSlice({
       state.error = action.payload;
       state.Createfee = undefined;
       state.fetchAllfee = undefined;
+    });
+    
+    builder.addCase(sessionaccountrecordsAction.pending, (state, action) => {
+      state.sessionaccountrecordsloading = true;
+      state.sessionaccountrecords = false;
+    });
+    builder.addCase(sessionaccountrecordsAction.fulfilled, (state, action) => {
+      state.sessionaccountrecords = action?.payload;
+      state.sessionaccountrecordsloading = false;
+      state.sessionaccountrecordslerror = undefined;
+    });
+    builder.addCase(sessionaccountrecordsAction.rejected, (state, action) => {
+      state.sessionaccountrecordsloading = false;
+      state.sessionaccountrecordserror = action.payload;
+      state.sessionaccountrecords = undefined;
     });
 
     builder.addCase(GetSingleBillAction.pending, (state, action) => {
@@ -1711,6 +1834,22 @@ const FeeSlices = createSlice({
       state.updateFeeCartItemloading = true;
       state.updateFeeCartItem = undefined;
       state.updateFeeCartItemerror = action.payload;
+    });
+
+    
+    builder.addCase(fetchfeespaidbysessionAction.pending, (state, action) => {
+      state.fetchfeespaidloading = true;
+      state.fetchfeespaid = false;
+    });
+    builder.addCase(fetchfeespaidbysessionAction.fulfilled, (state, action) => {
+      state.fetchfeespaidloading = false;
+      state.fetchfeespaid = action?.payload;
+      state.fetchfeespaiderror = undefined;
+    });
+    builder.addCase(fetchfeespaidbysessionAction.rejected, (state, action) => {
+      state.fetchfeespaidloading = true;
+      state.fetchfeespaid = undefined;
+      state.fetchfeespaiderror = action.payload;
     });
 
     builder.addCase(GetBulkBillAction.pending, (state, action) => {

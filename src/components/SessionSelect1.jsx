@@ -26,14 +26,14 @@ const SessionSelect1 = (props) => {
       let i = 0;
       let arr = ['None'];
       while (i < session?.fetchsession?.data.length) {
-        arr.push(session?.fetchsession?.data[i].sessionname);
+        arr.push(session?.fetchsession?.data[i]?.sessionname);
         i++;
       }
 
       
 
       setClasss(arr);
-      setclazz(fetchsessionactive?.data[0].sessionname);
+      setclazz('None');
 
 
     }

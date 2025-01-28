@@ -17,7 +17,11 @@ const StudentaccountModal = (props) => {
   const fee = useSelector((state) => state?.fees);
   const { FetchPaymentAlt } = fee;
   const [feedata, setfeedata] = useState([]);
-  const [scholarship, setscholarship] = useState({scholarshiptitle:'-',amount:'-',cartegorycovering:'-'});
+  const [scholarship, setscholarship] = useState({
+    scholarshiptitle: '-',
+    amount: '-',
+    cartegorycovering: '-',
+  });
 
   console.log(props);
   const { fetchAllClassloading, fetchAllClass } = clad;
@@ -56,15 +60,21 @@ const StudentaccountModal = (props) => {
     let myArr = pref.split(',');
 
     let bb = myArr.slice(0, -1).toString();
-    console.log(bb);
 
-    return bb;
+    if (bb == '') {
+      return '-';
+    } else {
+      return bb;
+    }
   }
 
   useEffect(() => {
-    if (FetchPaymentAlt?.success == 1 && FetchPaymentAlt?.scholarship.length != 0) {
+    if (
+      FetchPaymentAlt?.success == 1 &&
+      FetchPaymentAlt?.scholarship.length != 0
+    ) {
       setscholarship(FetchPaymentAlt?.scholarship[0]);
-    //  setfeedata(FetchPaymentAlt?.feedata);
+      //  setfeedata(FetchPaymentAlt?.feedata);
       // dispatch(resetpayfee());
     }
   }, [FetchPaymentAlt]);
@@ -215,60 +225,69 @@ const StudentaccountModal = (props) => {
                     name=""
                     id=""
                     placeholder=""
-                    defaultValue={
-                     
-                      props.val?.cartegory
-                    }
+                    defaultValue={props.val?.cartegory}
                     disabled
                   />
                 </div>
 
-                <div className="w-full border-b border-stroke py-3  dark:border-strokedark gap-3 flex mb-4 sm:w-2/2">
-                  <div className="flex ">
-                    {' '}
+                <div className="w-full b gap-3 flex  sm:w-2/2">
+                  {' '}
+                  <div className="w-2/5 ">
                     <label
-                      className="my-auto w-full  mr-4  block text-sm font-medium text-black dark:text-white"
+                      className="my-auto    block text-sm font-medium text-black dark:text-white"
                       htmlFor=""
                     >
-                      Account Balance :
+                      Account Balance
                     </label>
+                  </div>
+                  <div className="flex w-full">
                     <label
-                      className="my-auto block text-sm font-medium text-black dark:text-white"
+                      className="my-auto  block text-sm font-medium text-black dark:text-white"
                       htmlFor=""
                     >
                       {Math.abs(props.val?.accountbalance)}
                     </label>
+                    <div className=" ml-2 flex">
+                      <label
+                        className="my-auto mr-1 block text-sm font-medium text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        ( Arrears :
+                      </label>
+                      <label
+                        className="my-auto block text-sm font-medium text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        {Math.abs(props.val?.arrears)} )
+                      </label>{' '}
+                      <label
+                        className="my-auto mr-1 ml-2  block text-sm font-medium text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        ( Total Session Fee :
+                      </label>
+                      <label
+                        className="my-auto block text-sm font-medium text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        {Math.abs(props.val?.feepayable)} )
+                      </label>
+                    </div>
                   </div>
-                  <div className="flex ml-1 ">
-                    {' '}
+                </div>
+
+                <div className="w-full border-b border-stroke py-3  dark:border-strokedark  flex mb-4 sm:w-2/2">
                     <label
-                      className="my-auto mr-4  block text-sm font-medium text-black dark:text-white"
+                      className="my-auto w-2/5 block text-sm font-medium text-black dark:text-white"
+                      htmlFor=""
+                    ></label>
+
+                    <label
+                      className="my-auto w-full block text-sm font-medium text-black dark:text-white"
                       htmlFor=""
                     >
-                      ( Arrears :
+                      Amount Paid For Session : {props?.val?.amountpaid}
                     </label>
-                    <label
-                      className="my-auto block text-sm font-medium text-black dark:text-white"
-                      htmlFor=""
-                    >
-                      {Math.abs(props.val?.arrears)}
-                    </label>
-                  </div>
-                  <div className="flex ml-1 ">
-                    {' '}
-                    <label
-                      className="my-auto mr-4  block text-sm font-medium text-black dark:text-white"
-                      htmlFor=""
-                    >
-                      Session Fee :
-                    </label>
-                    <label
-                      className="my-auto block text-sm font-medium text-black dark:text-white"
-                      htmlFor=""
-                    >
-                      {Math.abs(props.val?.feepayable)} )
-                    </label>
-                  </div>
                 </div>
 
                 <div className="flex">
@@ -294,29 +313,51 @@ const StudentaccountModal = (props) => {
                   >
                     Scholarship
                   </label>
-                  <div className={scholarship.scholarshiptitle == '-'? 'hidden' : 'w-full my-auto' }>
-                  <label
-                    className="my-auto w-full flex gap-1  text-sm font-medium text-black dark:text-white"
-                    htmlFor=""
+                  <div
+                    className={
+                      scholarship.scholarshiptitle != '-'
+                        ? 'hidden'
+                        : 'w-full my-auto'
+                    }
                   >
-                   <p className='font-thin pt-1 w-1/6 text-xs text-black dark:text-white'>Title : </p><p>{' '}</p> { scholarship.scholarshiptitle}
-                  </label>
-
-                  <label
-                    className="my-auto  flex gap-1  text-sm font-medium text-black dark:text-white"
-                    htmlFor=""
-                  >
-                   <p className='font-thin pt-1  w-1/6 text-xs text-black dark:text-white'>Amount : </p><p>{' '}</p> { scholarship.amount}
-                  </label>
-                  <label
-                    className="my-auto  flex gap-1   text-sm font-medium text-black dark:text-white"
-                    htmlFor=""
-                  >
-                   <p className='font-thin pt-1  w-1/6 text-xs text-black dark:text-white'>Fee Cover  </p><p>{' '}</p> { scholarship.cartegorycovering}
-                  </label>
+                    -
                   </div>
-                 
-                  
+                  <div
+                    className={
+                      scholarship.scholarshiptitle == '-'
+                        ? 'hidden'
+                        : 'w-full my-auto'
+                    }
+                  >
+                    <label
+                      className="my-auto w-full flex gap-1  text-sm font-medium text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      <p className="font-thin pt-1 w-1/6 text-xs text-black dark:text-white">
+                        Title :{' '}
+                      </p>
+                      <p> </p> {scholarship.scholarshiptitle}
+                    </label>
+
+                    <label
+                      className="my-auto  flex gap-1  text-sm font-medium text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      <p className="font-thin pt-1  w-1/6 text-xs text-black dark:text-white">
+                        Amount :{' '}
+                      </p>
+                      <p> </p> {scholarship.amount}
+                    </label>
+                    <label
+                      className="my-auto  flex gap-1   text-sm font-medium text-black dark:text-white"
+                      htmlFor=""
+                    >
+                      <p className="font-thin pt-1  w-1/6 text-xs text-black dark:text-white">
+                        Fee Cover{' '}
+                      </p>
+                      <p> </p> {scholarship.cartegorycovering}
+                    </label>
+                  </div>
                 </div>
 
                 {/*                 
@@ -338,7 +379,7 @@ const StudentaccountModal = (props) => {
                           </div>
                         </div> */}
                 <div className="flex justify-end mt-8.5 gap-4.5">
-                  <button
+                  {/* <button
                     className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                     type=""
                     onClick={(e) => {
@@ -347,9 +388,9 @@ const StudentaccountModal = (props) => {
                     }}
                   >
                     Save
-                  </button>
+                  </button> */}
                   <button
-                    className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    className="flex w-full justify-center bg-primary rounded border border-stroke py-1 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                     type=""
                     onClick={(e) => {
                       e.preventDefault();

@@ -68,7 +68,10 @@ const CollectFees = () => {
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
   const [classs, setClasss] = useState();
+  
   const [session, setsession] = useState();
+  const [activeaccount, setactiveaccount] = useState();
+
   const [clazz, setclazz] = useState();
   const [sectionzz, setsectionzz] = useState('All Sections');
   const [propp, setProp] = useState();
@@ -92,7 +95,8 @@ const CollectFees = () => {
   useEffect(() => {
     if (fetchsessionactive?.success == 1) {
       let data = fetchsessionactive?.data[0];
-      setsession(data?.sessionname);
+      setsession(data?.sessionname); 
+      setactiveaccount(data?.activeaccountid);
    //   console.log('sessionz');
     }
   }, [fetchsessionactive]);
@@ -308,6 +312,7 @@ const CollectFees = () => {
       dispatch(fetchCustomStudentsClassAccountAction(data));
     }
   }
+  console.log(nodes)
   const footerContent = (
     <div>
       <button
@@ -341,7 +346,7 @@ const CollectFees = () => {
           setVisible(false);
         }}
       >
-        <CollectFeesModal close={setVisible} stdname={name} val={propp} infotype={sectionzz} session={session}/>
+        <CollectFeesModal close={setVisible} stdname={name} val={propp} activeaccount={activeaccount} infotype={sectionzz} session={session}/>
       </Dialog>
       <Dialog
         resizable={false}
@@ -506,7 +511,7 @@ const CollectFees = () => {
                           </Cell>
                           <Cell className="flex   justify-between  ">
                             <span className="">
-                              {(item.accountbalance)}
+                              {(item.accountbalance > 0 ? '🟠'+ ' '+item.accountbalance : ''+ '🟢'+item.accountbalance)}
                             </span>{' '}
                             {/* <span className="float-right mr-15">
                               {item?.accountbalance < 0 ? (

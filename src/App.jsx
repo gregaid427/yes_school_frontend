@@ -124,6 +124,8 @@ import StudentsCartegory from './pages/student/StudentCartegory';
 import BulkBill from './pages/settings/BulkBill';
 import BulkBillDownload from './pages/settings/BulkBillDownload';
 import StudentAccount from './pages/Fees/StudentAccount';
+import FeeGenerateRecords from './pages/Fees/FeeGenerateRecords';
+import AccountRecords from './pages/Fees/AccountRecords';
 
 function App() {
   const navigate = useNavigate();
@@ -766,6 +768,28 @@ function App() {
             />{' '}
           </Route>
           
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/fees/accountrecords"
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <AccountRecords />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/fees/feegeneraterecords"
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <FeeGenerateRecords />
+                </>
+              }
+            />{' '}
+          </Route>
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/fees/studaccount"

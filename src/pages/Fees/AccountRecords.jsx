@@ -44,7 +44,7 @@ import { fetchActivesessionAction, fetchAllsessionAction } from '../../redux/sli
 import StudentaccountModal from '../../components/studentaccountModal';
 import SessionSelect from '../../components/SessionSelect';
 
-const StudentAccount = () => {
+const AccountRecords = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
@@ -610,4 +610,4 @@ const StudentAccount = () => {
 
 };
 
-export default StudentAccount;
+export default AccountRecords;

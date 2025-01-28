@@ -82,6 +82,8 @@ const CollectFeesModal = (props) => {
     receiptid: receiptid,
     infotype: props.infotype,
     session : props.session,
+    activeaccount : props.activeaccount,
+
     cartegory : props.cartegory
   };
   const handleSubmit = (e) => {

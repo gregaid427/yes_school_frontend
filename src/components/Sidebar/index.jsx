@@ -266,7 +266,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                            Student Cartegory
+                              Student Cartegory
                             </NavLink>
                           </li>
                         </ul>
@@ -631,7 +631,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         }`}
                       >
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                        <li>
+                          <li>
                             <NavLink
                               to="/fees/Collectfees"
                               className={({ isActive }) =>
@@ -654,7 +654,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             </NavLink>
                           </li>
                           <li>
-                            
+                            <NavLink
+                              to="/fees/accountrecords"
+                              className={({ isActive }) =>
+                                'group relative flex items-center  gap-2.5 rounded-md px-1 font-small text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Account Records
+                            </NavLink>
+                          </li>
+                          <li>
                             <NavLink
                               to="/fees/addfeesgroup"
                               className={({ isActive }) =>
@@ -665,7 +675,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Fees Items
                             </NavLink>
                           </li>
-                       
+
                           <li>
                             <NavLink
                               to="/fees/Assignfees"
@@ -711,7 +721,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Scholarship List
                             </NavLink>
                           </li>
-                         
+
                           <li>
                             <NavLink
                               to="/fees/manage"

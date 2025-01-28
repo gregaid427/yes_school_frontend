@@ -38,23 +38,31 @@ import SessionSelect from '../components/SessionSelect';
 import { Dialog } from 'primereact/dialog';
 import SetSessionAlert from '../components/SetSessionAlert';
 import DeleteModal from '../components/DeleteModal';
+import SessionModal from '../components/SessionModal';
+import SessionSelect1 from '../components/SessionSelect1';
 
 const Session = () => {
   const [visible, setVisible] = useState(false);
   const [visible4, setVisible4] = useState(false);
-  const [del, setDel] = useState(false);
+  const [visible5, setVisible5] = useState(false);
 
+  const [del, setDel] = useState({});
+
+  const session = useSelector((state) => state?.session);
+
+  const { fetchsession, createsession,updatesession,fetchsessionactive } = session;
+  const [sessionoption, setSessionoption] = useState('None');
 
   const [position, setPosition] = useState('center');
   const show = (position) => {
     setPosition(position);
-    setVisible(true);
+  //  setVisible(true);
   };
+  
   const [isChecked, setIsChecked] = useState(false);
   const [yes, setYes] = useState(undefined);
   const [pagesval, setpagesval] = useState(30);
   const [classs, setClasss] = useState([]);
-  const [sessionoption, setSessionoption] = useState('');
   const [startmonth, setStartMonth] = useState('January');
 
   const [loader, setLoader] = useState(true);
@@ -70,13 +78,10 @@ const Session = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const session = useSelector((state) => state?.session);
-
-  const { fetchsession, createsession,updatesession } = session;
 
   useEffect(() => {
     dispatch(fetchAllsessionAction());
-    // dispatch(fetchAllClass());
+   // dispatch(fetchActivesessionAction());
   }, []);
 
   // useEffect(() => {
@@ -92,45 +97,6 @@ const Session = () => {
   //   }
   // }, [sectionloading]);
 
-  useEffect(() => {
-    if (createsession?.success == 0) {
-      toast.error('Error - Section Name Already Exists');
-      dispatch(resetcreatesession());
-      // dispatch(fetchAllClassAction())
-    }
-    if (createsession?.success == 1) {
-      toast.success('New Section Added Successfully');
-      show('top-right');
-      dispatch(resetcreatesession());
-      dispatch(fetchActivesessionAction());
-     
-
-      //   dispatch(fetchAllSectionAction())
-    }
-    
-    if (updatesession?.success == 1) {
-     // toast.success('New Section Added Successfully');
-      show('top-right');
-     dispatch(resetUpdatesession());
-     dispatch(fetchActivesessionAction());
-
-
-      //   dispatch(fetchAllSectionAction())
-    }
-
-    // if (fetchAllClass?.success == 1) {
-    //   let i = 0;
-    //   let arr = [];
-    //   while (i < clad?.fetchAllClass?.data.length) {
-    //     arr.push(clad?.fetchAllClass?.data[i].title);
-    //     i++;
-    //   }
-
-    //   setClasss(arr);
-    // }
-  }, [updatesession,createsession]);
-
-  console.log(isChecked);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -210,6 +176,7 @@ const Session = () => {
     });
   };
   const handledeletebtn = () => {
+    console.log
     dispatch(deletesessionByIdAction(del));
   };
   const user = useSelector((state) => state?.user);
@@ -234,8 +201,17 @@ const Session = () => {
       session: sessionoption,
       startmonth: startmonth.toUpperCase(),
     };
+    console.log(sessionoption)
+    if(sessionoption == 'None'){
+      return toast.error('Select a Session');
 
-    dispatch(updatesessionStatusAction(data));
+    }
+    else{
+      dispatch(updatesessionStatusAction(data));
+
+    }
+
+
   };
 
   const handleDownloadPdf = async () => {
@@ -274,6 +250,19 @@ const Session = () => {
         <SetSessionAlert setYes={setYes} yes={yes} close={setVisible} />
       </Dialog>
       <Dialog
+        visible={visible5}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible5) return;
+          setVisible5(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <SessionModal  close={setVisible5} openModal={setVisible5}/>
+      </Dialog>
+      <Dialog
         visible={visible4}
         position={'top'}
         style={{ height: 'auto', width: '40%' }}
@@ -284,156 +273,36 @@ const Session = () => {
         draggable={false}
         resizable={false}
       >
-        <DeleteModal delete={handledeletebtn} close={setVisible4} />
+        <DeleteModal delete={handledeletebtn} close={setVisible4}   />
       </Dialog>
-      <div className={'flex gap-2  w-full'}>
-      <div className="w-4/12  ">
-          <div className="grid mb-2 gap-8">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Add New Academic Session
-                </h3>
-              </div>
-              <div className="p-7">
-                <form action="#">
-                  <div className="w-full mb-4 sm:w-2/2">
-                    <label
-                      className="mb-3 block text-sm font-small text-black dark:text-white"
-                      htmlFor=""
-                    >
-                      Session Name
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder=""
-                      defaultValue=""
-                      onChange={(e) => {
-                        e.preventDefault();
-                        setsectionTitle(e.target.value);
-                      }}
-                    />
-                    <div>
-                      <div className="mt-4 flex gap-3 flex-row">
-                        <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="checkboxLabelOne"
-                        >
-                          {'Current Session'}
-                        </label>
-
-                        <div className="flex justify-start sm:w-2/4">
-                          <label
-                            htmlFor={'type'}
-                            className="flex cursor-pointer select-none "
-                          >
-                            <div className="relative ">
-                              <input
-                                title={'type'}
-                                type="checkbox"
-                                id={'type'}
-                                className="sr-only"
-                                onChange={() => {
-                                  setIsChecked(!isChecked);
-                                }}
-                              />
-                              <div
-                                className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                  isChecked &&
-                                  'border-primary bg-gray dark:bg-transparent'
-                                }`}
-                              >
-                                <span
-                                  className={`h-2.5 w-2.5 rounded-sm ${isChecked && 'bg-primary'}`}
-                                ></span>
-                              </div>
-                            </div>
-                          </label>
-                        </div>
-                      </div>
-                      {/* <div style={{ display: !isChecked ? 'none' : 'block' }}> */}{' '}
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="fullName"
-                      >
-                        Session Start Month
-                      </label>
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                        <SelectGroupTwo
-                          values={[
-                            'January',
-                            'February',
-                            'March',
-                            'April',
-                            'May',
-                            'June',
-                            'July',
-                            'August',
-                            'September',
-                            'October',
-                            'November',
-                            'December',
-                          ]}
-                          setSelectedOption={setStartMonth}
-                          selectedOption={startmonth}
-                        />
-                      </div>
-                    </div>
-                    {/* </div> */}
-                  </div>
-
-                  <div className="flex justify-end mt-5 gap-4.5">
-                    <button
-                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type=""
-                      onClick={(e) => {
-                        handlecreateSection();
-                        e.preventDefault();
-               
-                      }}
-                    >
-                      Save
-                    </button>
-                    <button
-                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="reset"
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div className="grid  gap-8">
+      <div className='flex gap-1'>
+      <div className="w-3/12  ">
+         
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
                   Set Current Session
                 </h3>
               </div>
-              <div className="p-7">
+              <div className="p-5">
                 <form action="#">
                   <div className="w-full mb-4 sm:w-2/2">
-                    <div className=" flex gap-2 ">
-                      <div className="w-full mb-1 sm:w-1/2">
+                    <div className="  gap-2 ">
+                      <div className="w-full mb-3 ">
                         <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          className="mb-2 block text-sm font-medium text-black dark:text-white"
                           htmlFor="fullName"
                         >
                           Session
                         </label>
 
                         <div className="relative z-20 bg-white dark:bg-form-input">
-                          <SessionSelect setsectionprop={setSessionoption} />
+                          <SessionSelect1 setsectionprop={setSessionoption} />
                         </div>
                       </div>
-                      <div className="w-full sm:w-1/2">
+                      <div className="w-full ">
                         <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          className="mb-2 block text-sm font-medium text-black dark:text-white"
                           htmlFor="fullName"
                         >
                           Session Start Month
@@ -487,9 +356,8 @@ const Session = () => {
                 </form>
               </div>
             </div>
-          </div>
         </div>
-        <div className="w-8/12 flex-col">
+        <div className="w-9/12 flex-col">
           <div
             className={
               'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
@@ -519,8 +387,20 @@ const Session = () => {
                         handleDownloadPdf();
                       }}
                     >
-                      Download Page (PDF)
+                      Download (PDF)
                     </label>
+
+                    <button
+                      className="flex w- my-2 justify-center rounded bg-primary py-2 w-full font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                       
+                        setVisible5(true)
+                      }}
+                    >
+                      Add New Session
+                    </button>
                   </div>
 
                   <div className="w-full sm:w-2/5">
@@ -531,7 +411,7 @@ const Session = () => {
                         handleDownloadCSV();
                       }}
                     >
-                      Download Page (Excel)
+                      Download (Excel)
                     </label>
                   </div>
                 </div>
@@ -604,7 +484,7 @@ const Session = () => {
 
                                 <DeleteSVG
                                   clickFunction={() =>{
-                                    setDel(item.id)
+                                    setDel({id:item.id, code: item.sessioncode})
                                     setVisible4(true)
                                   } }
                                 />
@@ -693,8 +573,7 @@ const Session = () => {
             </div>
           </div>{' '}
         </div>
-    
-      </div>{' '}
+        </div>
     </DefaultLayout>
   );
 };

@@ -1,26 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchAllClassAction,
-} from '../redux/slices/classSlice';
+import { fetchAllClassAction } from '../redux/slices/classSlice';
 import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
-
 const SessionSelect = (props) => {
-
-  
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
   const [clazz, setclazz] = useState();
 
   const session = useSelector((state) => state?.session);
 
- 
-  const { fetchsession,fetchsessionactive} =
-    session;
+  const { fetchsession, fetchsessionactive } = session;
 
   useEffect(() => {
-
     if (fetchsession?.success == 1) {
       let i = 0;
       let arr = [];
@@ -29,35 +21,21 @@ const SessionSelect = (props) => {
         i++;
       }
 
-      
-
       setClasss(arr);
-
-
     }
-
-  }, [fetchsession ]);
-
+  }, [fetchsession]);
 
   useEffect(() => {
-
-    if (fetchsessionactive?.success == 1) {   
-      setclazz(fetchsessionactive?.data[0].sessionname);
+    if (fetchsessionactive?.success == 1) {
+      setclazz(fetchsessionactive?.data[0]?.sessionname);
     }
-
-  }, [fetchsessionactive ]);
-
-
+  }, [fetchsessionactive]);
 
   useEffect(() => {
-    props.setsectionprop(clazz)
+    props.setsectionprop(clazz);
   }, [clazz]);
 
-
-
-
   return (
-
     <>
       <SelectGroupTwo
         values={classs}

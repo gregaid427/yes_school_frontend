@@ -75,8 +75,8 @@ export const deletesessionByIdAction = createAsyncThunk(
         position: 'bottom-right',
       });
 
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/session/single/${payload}`,
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/session/single`, payload
       );
 
       if (data) {
@@ -151,7 +151,7 @@ export const updatesessionStatusAction = createAsyncThunk(
   },
 );
 export const createsessionAction = createAsyncThunk(
-  'password/reset',
+  'create/session',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       const toastId = toast.loading('Loading...', {
