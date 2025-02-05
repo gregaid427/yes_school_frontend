@@ -43,6 +43,8 @@ import { fetchfeeCartegoryAction, fetchfeespaidbysessionAction, FetchPaymentscho
 import { fetchActivesessionAction, fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import StudentaccountModal from '../../components/studentaccountModal';
 import SessionSelect from '../../components/SessionSelect';
+import autoTable from 'jspdf-autotable';
+import jsPDF from 'jspdf';
 
 const StudentAccount = () => {
   ///////////////////////////////////
@@ -112,26 +114,21 @@ const StudentAccount = () => {
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
-  const { fetchfeespaid } = fee;
+  const { fetchStudentcustom } = fee;
 
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-    if (fetchfeespaid?.success == 1) {
-      let data = fetchfeespaid?.data;
-    
+    if (fetchcustom?.success == 1) {
+      let data = fetchcustom?.data;
       setdata(data);
     }
-  }, [fetchfeespaid]);
+  }, [fetchcustom]);
 
  
 
 
-  useEffect(() => {
-    setdata([]);
-    
-  }, []);
 
 
 
@@ -228,6 +225,8 @@ const StudentAccount = () => {
     dispatch(deleteSingleStudentAction(data));
   };
 
+console.log(nodes)
+
   data = {
     nodes: data.nodes.filter((item) =>
       searchval === 'First Name'
@@ -238,6 +237,7 @@ const StudentAccount = () => {
     ),
   };
   const [sessionoption, setSessionoption] = useState('');
+  
 
   function setModalVisible() {
     setVisible(false);
@@ -247,21 +247,50 @@ const StudentAccount = () => {
     useKeysAsHeaders: true,
     filename: `${clazz} : ${sectionzz} `,
   });
-
   function handleGetClassData() {
     console.log(clazz);
 
     let data = {
       class: clazz,
       section: sectionzz,
-      session: sessionoption,
-
     };
     console.log(data);
-  
-      dispatch(fetchfeespaidbysessionAction(data));
-    
+    if (sectionzz == 'All Sections') {
+      //  setclazz(clazz)
+      dispatch(fetchStudentsClassAction(data));
+    }
+    if (sectionzz != 'All Sections') {
+      setsectionzz(sectionzz);
+      dispatch(fetchCustomStudentsClassAction(data));
+    }
   }
+  const [selectedValue, setSelectedValue] = useState('option1');
+
+  useEffect(() => {
+
+    setSelectedValue('option1');
+  }, []); 
+  
+  const handleRadioChange = (value) => {
+      setSelectedValue(value);
+    };
+  
+    const handleDownloadPdf = async () => {
+      const doc = new jsPDF();
+  
+      autoTable(doc, { html: '#my-table' });
+  
+      doc.save(`${clazz} -- ${sectionzz}  `);
+    };
+  const styles = {
+    radioButton: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap:'4px',
+    },
+  
+  };
   const footerContent = (
     <div>
       <button
@@ -343,10 +372,10 @@ const StudentAccount = () => {
                     className="mb-2 block text-sm font-medium text-black dark:text-white"
                     htmlFor="phoneNumber"
                   >
-                    Session{' '}
+                    Section{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                  <SessionSelect setsectionprop={setSessionoption} />
+                  <SectionSelect1 setsectionprop={setsectionzz} />
                   </div>
                 </div>
                 <div className="w-full sm:w-2/5">
@@ -405,7 +434,80 @@ const StudentAccount = () => {
                 {/* <button onClick={() => toPDF()}>Download PDF</button> */}
               </div>
             </div>
+<div className='flex justify-between'>
+            <div className='flex row gap-5 '>
+      <div  style={styles.radioButton}>
+        <input
+          type="radio"
+          id="option1"
+          value="option1"
+          checked={selectedValue === 'option1'}
+          onChange={() => { 
+         //   props.setRepeated(props.repeat.filter((element)=>element !== props.stdId))
+         setdata(
+          fetchcustom?.data
+        );
+            handleRadioChange('option1')}}
+        />
+        <label htmlFor="option1" >
+          None
+        </label>
+      </div>
+
+      <div style={styles.radioButton}>
+        <input
+          type="radio"
+          id="option2"
+          value="option2"
+          checked={selectedValue === 'option2'}
+          onChange={() =>{  
+            // props.setRepeated([props.stdId,...props.repeat])
+            handleRadioChange('option2')
+            setdata(
+              fetchcustom?.data?.filter((item) => item?.accountbalance > 0),
+            );
+          }
+        }
+
+/>
+        <label htmlFor="option2" >
+          Owing
+        </label>
+      </div>
+
+      <div style={styles.radioButton}>
+        <input
+          type="radio"
+          id="option3"
+          value="option3"
+          checked={selectedValue === 'option3'}
+          onChange={() =>{ 
+            //props.handleAction()
+            handleRadioChange('option3')
+            setdata(
+              fetchcustom?.data?.filter((item) => item?.accountbalance == 0),
+            );
+          }}
+        />
+        <label htmlFor="option3" >
+          Not Owing
+        </label>
+      </div>
+    </div>
+    <div>
+    <label
+                  className="pt-2 block text-sm cursor-pointer font-medium text-ash dark:text-white"
+         // style={{ color: '#A9B5B3' }}
+                  onClick={(e) => {
+                    handleDownloadPdf();
+                  }}
+                >
+                  Download Page (PDF)
+                </label>
+    </div>
+
           </div>
+        </div>
         </div>
         <div
           className={
@@ -463,7 +565,7 @@ const StudentAccount = () => {
                           </Cell>
                           <Cell className="flex   justify-between  ">
                             <span className="">
-                            {(item.accountbalance > 0 ? '🟠'+ ' '+item.accountbalance : ''+ '🟢'+item.accountbalance)}
+                            {(item.accountbalance > 0 ? '⚪'+ ' '+item.accountbalance : ' '+ '🟢'+item.accountbalance)}
                             </span>{' '}
                             {/* <span className="float-right mr-15">
                               {item?.accountbalance < 0 ? (
@@ -560,25 +662,29 @@ const StudentAccount = () => {
                 pagination={pagination}
                 theme={theme}
               >
-                {(tableList) => (
+                  {(tableList) => (
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
                         <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Section</HeaderCell>
-                        <HeaderCell>Gender</HeaderCell>
+                        {/* <HeaderCell>Class</HeaderCell> */}
+                        <HeaderCell> Current Arrears</HeaderCell>
+                        <HeaderCell>Fee Paid</HeaderCell>
+
+
+                        <HeaderCell>Current Bal.</HeaderCell>
+
                       </HeaderRow>
                     </Header>
 
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
-                        <Row
-                          key={item.student_id}
-                          item={item}
-                          className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
-                        >
+                        <Row key={item.student_id}
+                            item={item}
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                          >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -589,12 +695,37 @@ const StudentAccount = () => {
                               ' ' +
                               item.lastName}
                           </Cell>
+                         
                           <Cell className="  ">
-                            <span>{item.section}</span>
+                            <span>{item.arrears}</span>
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.gender}</span>
+                            <span>{item.feepaid == null ? '0.00' : item.feepaid}</span>
                           </Cell>
+                          <Cell className="flex   justify-between  ">
+                            <span className="">
+                            {(item.accountbalance)}
+                            </span>{' '}
+                            {/* <span className="float-right mr-15">
+                              {item?.accountbalance < 0 ? (
+                                <TableBtn
+                                  clickFunction={() => {}}
+                                  text={' Debit '}
+                                  color={'bg-[#6D343E]'}
+                                />
+                              ) : item?.accountbalance == 0 ? (
+                                ''
+                              ) : (
+                                <TableBtn
+                                  clickFunction={() => {}}
+                                  text={'Credit'}
+                                  color={'bg-success'}
+                                />
+                              )}
+                            </span> */}
+                          </Cell>
+
+                         
                         </Row>
                       ))}
                     </Body>

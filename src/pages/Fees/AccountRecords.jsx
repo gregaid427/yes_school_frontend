@@ -32,17 +32,29 @@ import {
 } from '../../redux/slices/studentSlice';
 import Loader from '../../common/Loader';
 
-
 import SectionSelect1 from '../../components/SectionsSelect1';
 import ClassSelect from '../../components/ClassSelect';
-import { fetchschoolinfoAction, fetchUserdataAction } from '../../redux/slices/usersSlice';
+import {
+  fetchschoolinfoAction,
+  fetchUserdataAction,
+} from '../../redux/slices/usersSlice';
 import TableBtn from '../../components/Svgs/TableBtn';
 import CollectFeesModal from '../../components/collectFeesModal';
 import FeesReceiptModal from '../../components/FeesReceiptModal';
-import { fetchfeeCartegoryAction, fetchfeespaidbysessionAction, FetchPaymentscholarshipsAction, resetpayfee } from '../../redux/slices/feeSlice';
-import { fetchActivesessionAction, fetchAllsessionAction } from '../../redux/slices/sessionSlice';
+import {
+  fetchfeeCartegoryAction,
+  fetchfeespaidbysessionAction,
+  FetchPaymentscholarshipsAction,
+  resetpayfee,
+} from '../../redux/slices/feeSlice';
+import {
+  fetchActivesessionAction,
+  fetchAllsessionAction,
+} from '../../redux/slices/sessionSlice';
 import StudentaccountModal from '../../components/studentaccountModal';
 import SessionSelect from '../../components/SessionSelect';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const AccountRecords = () => {
   ///////////////////////////////////
@@ -80,10 +92,8 @@ const AccountRecords = () => {
   const [name, SetName] = useState('');
   const [singleCart, setSingleCart] = useState([]);
 
-  
-  
-  console.log(nodes)
-  
+  console.log(nodes);
+
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
@@ -95,7 +105,7 @@ const AccountRecords = () => {
     if (fetchsessionactive?.success == 1) {
       let data = fetchsessionactive?.data[0];
       setsession(data?.sessionname);
-   //   console.log('sessionz');
+      //   console.log('sessionz');
     }
   }, [fetchsessionactive]);
   const {
@@ -108,32 +118,24 @@ const AccountRecords = () => {
     fetchcustomloading,
     singleStudent,
     singleStudentloading,
-    
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
   const { fetchfeespaid } = fee;
-
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
     if (fetchfeespaid?.success == 1) {
       let data = fetchfeespaid?.data;
-    
+
       setdata(data);
     }
   }, [fetchfeespaid]);
 
- 
-
-
   useEffect(() => {
     setdata([]);
-    
   }, []);
-
-
 
   // useEffect(() => {
 
@@ -176,22 +178,22 @@ const AccountRecords = () => {
       //   //  background-color: #24303F;
 
        `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
   useEffect(() => {
     dispatch(fetchActivesessionAction());
     dispatch(fetchAllsessionAction());
-
-  }, []);  const user = useSelector((state) => state?.user);
+  }, []);
+  const user = useSelector((state) => state?.user);
   const { allschool } = user;
 
   const pagination = usePagination(data, {
@@ -208,12 +210,9 @@ const AccountRecords = () => {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
-  const handleviewbtn = (value,info) => {
+  const handleviewbtn = (value, info) => {
     show('top-right');
-    setSingleCart(
-      info?.filter((item) => item?.scartegory.includes(value)),
-    );
-
+    setSingleCart(info?.filter((item) => item?.scartegory.includes(value)));
   };
   const handleEditbtn = (value) => {
     dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
@@ -253,15 +252,19 @@ const AccountRecords = () => {
 
     let data = {
       class: clazz,
-      section: sectionzz,
       session: sessionoption,
-
     };
     console.log(data);
-  
-      dispatch(fetchfeespaidbysessionAction(data));
-    
+
+    dispatch(fetchfeespaidbysessionAction(data));
   }
+  const handleDownloadPdf = async () => {
+    const doc = new jsPDF();
+
+    autoTable(doc, { html: '#my-table' });
+
+    doc.save(`${clazz} -- ${sessionoption}  `);
+  };
   const footerContent = (
     <div>
       <button
@@ -295,7 +298,13 @@ const AccountRecords = () => {
           setVisible(false);
         }}
       >
-        <StudentaccountModal close={setVisible} stdname={name} val={propp} infotype={sectionzz} session={session}/>
+        <StudentaccountModal
+          close={setVisible}
+          stdname={name}
+          val={propp}
+          infotype={sectionzz}
+          session={session}
+        />
       </Dialog>
       <Dialog
         resizable={false}
@@ -310,7 +319,13 @@ const AccountRecords = () => {
           setVisible1(false);
         }}
       >
-        <FeesReceiptModal close={setVisible1} val={propp} response={receipt} cart={singleCart} school={allschool} />
+        <FeesReceiptModal
+          close={setVisible1}
+          val={propp}
+          response={receipt}
+          cart={singleCart}
+          school={allschool}
+        />
       </Dialog>
       <div className=" flex-col">
         <div
@@ -318,8 +333,6 @@ const AccountRecords = () => {
             'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
           }
         >
-
-
           <div className="max-w-full overflow-x-auto">
             <div className="w-full  flex justify-between ">
               <div className=" flex w-7/12 gap-3">
@@ -335,6 +348,15 @@ const AccountRecords = () => {
                     <div className="relative z-20 bg-white dark:bg-form-input">
                       <ClassSelect setsectionprop={setclazz} clazz={clazz} />
                     </div>
+                    <label
+                  className="pt-2 block text-sm cursor-pointer font-medium text-ash dark:text-white"
+         // style={{ color: '#A9B5B3' }}
+                  onClick={(e) => {
+                    handleDownloadPdf();
+                  }}
+                >
+                  Download Page (PDF)
+                </label>
                   </div>
                 </div>
 
@@ -346,7 +368,7 @@ const AccountRecords = () => {
                     Session{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                  <SessionSelect setsectionprop={setSessionoption} />
+                    <SessionSelect setsectionprop={setSessionoption} />
                   </div>
                 </div>
                 <div className="w-full sm:w-2/5">
@@ -427,23 +449,22 @@ const AccountRecords = () => {
                         <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
                         {/* <HeaderCell>Class</HeaderCell> */}
-                        <HeaderCell> Current Arrears</HeaderCell>
+                        <HeaderCell>Arrears</HeaderCell>
                         <HeaderCell>Fee Paid</HeaderCell>
 
-
-                        <HeaderCell>Current Bal.</HeaderCell>
+                        <HeaderCell> Balance</HeaderCell>
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
-                        <Row key={item.student_id}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          >
+                        <Row
+                          key={item.student_id}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -454,16 +475,21 @@ const AccountRecords = () => {
                               ' ' +
                               item.lastName}
                           </Cell>
-                         
+
                           <Cell className="  ">
                             <span>{item.arrears}</span>
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.feepaid == null ? '0.00' : item.feepaid}</span>
+                            <span>
+                              {item.amountpaid == null
+                                ? '0.00'
+                                : item.amountpaid}
+                            </span>
                           </Cell>
                           <Cell className="flex   justify-between  ">
                             <span className="">
-                            {(item.accountbalance > 0 ? '🟠'+ ' '+item.accountbalance : ''+ '🟢'+item.accountbalance)}
+                            {(item.accountbalance > 0 ? '⚪'+ ' '+item.accountbalance : ' '+ '🟢'+item.accountbalance)}
+
                             </span>{' '}
                             {/* <span className="float-right mr-15">
                               {item?.accountbalance < 0 ? (
@@ -489,14 +515,20 @@ const AccountRecords = () => {
                               <TableBtn
                                 text={'Account Info'}
                                 clickFunction={() => {
-                                  dispatch(FetchPaymentscholarshipsAction({id:item.student_id}))
+                                  dispatch(
+                                    FetchPaymentscholarshipsAction({
+                                      id: item.student_id,
+                                    }),
+                                  );
                                   setProp(item);
-                                  handleviewbtn(item?.cartegory,info);
-                                  SetName(item.firstName +
-                                    ' ' +
-                                    item.otherName +
-                                    ' ' +
-                                    item.lastName)
+                                  handleviewbtn(item?.cartegory, info);
+                                  SetName(
+                                    item.firstName +
+                                      ' ' +
+                                      item.otherName +
+                                      ' ' +
+                                      item.lastName,
+                                  );
                                 }}
                                 color={'bg-primary'}
                               />
@@ -560,24 +592,27 @@ const AccountRecords = () => {
                 pagination={pagination}
                 theme={theme}
               >
-                {(tableList) => (
+              {(tableList) => (
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
                         <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Section</HeaderCell>
-                        <HeaderCell>Gender</HeaderCell>
+                        {/* <HeaderCell>Class</HeaderCell> */}
+                        <HeaderCell> Arrears</HeaderCell>
+                        <HeaderCell>Fee Paid</HeaderCell>
+
+                        <HeaderCell> Balance</HeaderCell>
+
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
                         <Row
                           key={item.student_id}
                           item={item}
-                          className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                         >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
@@ -589,12 +624,42 @@ const AccountRecords = () => {
                               ' ' +
                               item.lastName}
                           </Cell>
+
                           <Cell className="  ">
-                            <span>{item.section}</span>
+                            <span>{item.arrears}</span>
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.gender}</span>
+                            <span>
+                              {item.amountpaid == null
+                                ? '0.00'
+                                : item.amountpaid}
+                            </span>
                           </Cell>
+                          <Cell className="flex   justify-between  ">
+                            <span className="">
+                            {(item.accountbalance)}
+
+                            </span>{' '}
+                            {/* <span className="float-right mr-15">
+                              {item?.accountbalance < 0 ? (
+                                <TableBtn
+                                  clickFunction={() => {}}
+                                  text={' Debit '}
+                                  color={'bg-[#6D343E]'}
+                                />
+                              ) : item?.accountbalance == 0 ? (
+                                ''
+                              ) : (
+                                <TableBtn
+                                  clickFunction={() => {}}
+                                  text={'Credit'}
+                                  color={'bg-success'}
+                                />
+                              )}
+                            </span> */}
+                          </Cell>
+
+                       
                         </Row>
                       ))}
                     </Body>
@@ -607,7 +672,6 @@ const AccountRecords = () => {
       </div>
     </DefaultLayout>
   );
-
 };
 
 export default AccountRecords;

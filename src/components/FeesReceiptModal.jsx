@@ -190,7 +190,7 @@ const { username, userMail} = user;
                       </p>
                       {/* <p>Accra, Ghana</p>   */}
                     </div>
-                   
+                  
                   </div>
                   <div className="flex border-b justify-between  border-stroke  dark:border-strokedark">
                     <div className="w-full flex py-3 justify-between">
@@ -209,10 +209,15 @@ const { username, userMail} = user;
                         </p>
                         <p></p>
                       </div>
-                      <div className="w-4/12">
-                        <p className="text-xl font-bold text-center  ">
+                      <div className="w-4/12 text-center">
+                        <p className="text-xl font-bold text-center flex flex-col  ">
                           Fee Receipt
+                          <span className="text-xs font-extralight items-center    ">
+                          {' '}
+                         ({sessionz?.activeaccountid})
+                        </span>
                         </p>
+                        
                       </div>
                       <div className="w-4/12 text-right text-sm">
                         <p>{date}</p>

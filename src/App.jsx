@@ -126,6 +126,7 @@ import BulkBillDownload from './pages/settings/BulkBillDownload';
 import StudentAccount from './pages/Fees/StudentAccount';
 import FeeGenerateRecords from './pages/Fees/FeeGenerateRecords';
 import AccountRecords from './pages/Fees/AccountRecords';
+import SessionAccountReport from './pages/Fees/SessionAccountReport';
 
 function App() {
   const navigate = useNavigate();
@@ -797,6 +798,17 @@ function App() {
                 <>
                   <PageTitle title="Fees" />
                   <StudentAccount />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/fees/sessionaccountsreport"
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <SessionAccountReport />
                 </>
               }
             />{' '}

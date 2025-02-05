@@ -1678,6 +1678,37 @@ export const GetBulkBillAction = createAsyncThunk(
   },
 );
 
+
+export const SessionAcctReportAction = createAsyncThunk(
+  'fee/getsessionacct',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/sessionacctreport`,payload,
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const deleteSinglefeeStockAction = createAsyncThunk(
   'fee/deleteASinglefeestock',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -1754,12 +1785,17 @@ const FeeSlices = createSlice({
     resetgetbulkbill(state) {
       state.GetBulkBill = null;
     },
+    SessionAcctReportAction(state) {
+      state.SessionAcctReport = null;
+    },
+    resetCloseSessionAcount(state) {
+      state.CloseSessionAcount = null;
+    },
   },
   extraReducers: (builder) => {
     
     builder.addCase(CloseSessionAcountAction.pending, (state, action) => {
       state.CloseSessionAcountloading = true;
-      state.CloseSessionAcount = false;
       state.CloseSessionAcount = false;
     });
     builder.addCase(CloseSessionAcountAction.fulfilled, (state, action) => {
@@ -2479,6 +2515,7 @@ const FeeSlices = createSlice({
       state.customloading = undefined;
       state.custom = undefined;
     });
+    
 
     builder.addCase(ReverseFee.pending, (state, action) => {
       state.reverseloading = true;
@@ -2495,6 +2532,23 @@ const FeeSlices = createSlice({
       state.reverserror = action.payload;
       state.reverseloading = undefined;
       state.reverse = undefined;
+    });
+
+    builder.addCase(SessionAcctReportAction.pending, (state, action) => {
+      state.SessionAcctReportloading = true;
+      state.SessionAcctReport = false;
+    });
+
+    builder.addCase(SessionAcctReportAction.fulfilled, (state, action) => {
+      state.SessionAcctReport = action?.payload;
+      state.SessionAcctReportloading = false;
+      state.SessionAcctReporterror = undefined;
+      //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(SessionAcctReportAction.rejected, (state, action) => {
+      state.SessionAcctReporterror = action.payload;
+      state.SessionAcctReportloading = undefined;
+      state.SessionAcctReport = undefined;
     });
 
     builder.addCase(fetchSinglefeeAction.pending, (state, action) => {
@@ -2592,6 +2646,8 @@ export const {
   resetfetchAllAssignRecord,
   resetgetbulkbill,
   resetgetsinglebill,
+  resetCloseSessionAcount,
+  resetSessionAcctReportAction
 } = FeeSlices.actions;
 
 export default FeeSlices.reducer;

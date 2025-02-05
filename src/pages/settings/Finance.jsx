@@ -43,6 +43,7 @@ import {
   fetchfeeAssignGroupRecordAction,
   fetchfeeAssignRecordAction,
   fetchfeeCartegoryAction,
+  resetCloseSessionAcount,
   resetdeleteassignedfee,
   resetGeneratefee,
 } from '../../redux/slices/feeSlice';
@@ -68,6 +69,8 @@ import GenerateFeeResponseModal from '../../components/GenerateFeeResponseModal'
 import GenerateFeeResponseSuccessModal from '../../components/GenerateFeeResponseSuccessModal';
 import { fetchstdCartegoryAction } from '../../redux/slices/studentSlice';
 import SessionModal from '../../components/SessionModal';
+import DeleteModal from '../../components/DeleteModal';
+import CloseAccountModal from '../../components/CloseAccountModal';
 
 const Finance = () => {
   const formRef1 = useRef();
@@ -87,6 +90,8 @@ const Finance = () => {
     custom,
     fetchAllAssignRecord,
     GetSingleBill,
+    CloseSessionAcount,
+    SessionAcctReport
   } = fee;
 
   const [pagesval, setpagesval] = useState(30);
@@ -125,7 +130,7 @@ const Finance = () => {
   const [visible14, setVisible14] = useState(false);
   const [visible15, setVisible15] = useState(false);
   const [visible16, setVisible16] = useState(false);
-
+  const [visible17, setVisible17] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -319,7 +324,12 @@ const Finance = () => {
   const [classData1, setClassData1] = useState([]);
   const [check, setCheck] = useState(true);
   const [check1, setCheck1] = useState(null);
-  const [check2, setCheck2] = useState(null);
+  const [check2, setCheck2] = useState(null); 
+   const [activeaccount, setactiveaccount] = useState(null);
+
+
+
+  
 
   function handleFileUpload(e) {
     console.log('called');
@@ -401,6 +411,16 @@ const Finance = () => {
       setVisible6(false);
     }
   }, [AssignfeeGroup, custom]);
+
+
+  useEffect(() => {
+    if (CloseSessionAcount?.success == 1) {
+      setVisible17(true);
+      dispatch(resetCloseSessionAcount())
+    }
+  
+  }, [CloseSessionAcount]);
+
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -494,7 +514,7 @@ const Finance = () => {
           setVisible(false);
         }}
       >
-        <GenerateFeeModak close={setVisible} val={propdata} openModal={setVisible16} />
+        <GenerateFeeModak close={setVisible} val={propdata} account={setactiveaccount} openModal={setVisible16} />
       </Dialog>
       <Dialog
         visible={visible2}
@@ -621,6 +641,21 @@ const Finance = () => {
         resizable={false}
       >
         <SessionModal  close={setVisible16} openModal={setVisible16} />
+      </Dialog>
+
+
+      <Dialog
+        visible={visible17}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible17) return;
+          setVisible17(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <CloseAccountModal  close={setVisible17} data={activeaccount}  openModal={setVisible17} />
       </Dialog>
 
       <div className="flex w-full gap-2">

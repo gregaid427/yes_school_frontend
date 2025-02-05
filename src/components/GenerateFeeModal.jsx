@@ -36,8 +36,8 @@ const GenerateFeeModak = (props) => {
 
   const data = {
     createdby: username?.payload,
-    oldsession: sessionoption,
-    newsession: sessionoption1,
+    oldsession: sessionoption1,
+    newsession: sessionoption,
   };
 
   const handleSubmit = () => {
@@ -55,6 +55,11 @@ const GenerateFeeModak = (props) => {
       dispatch(CloseSessionAcountAction(data));
     }
   };
+  
+  useEffect(() => {
+    props?.account(sessionoption);
+  }, [sessionoption]);
+
   useEffect(() => {
     setDesc(props.val);
     console.log(props.val);
