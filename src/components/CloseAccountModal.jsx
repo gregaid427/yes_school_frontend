@@ -29,14 +29,15 @@ const CloseAccountModal = (props) => {
 
   }
 
+  
 
   useEffect(() => {
     if (SessionAcctReport?.success == 1) {
-      navigate('/fees/sessionaccountsreport')
+      navigate('/settings/sessionaccountsreport')
     }
-    else{
-      toast.error('Error Getting Report')
-    }
+    // else{
+    //   toast.error('Error Getting Report')
+    // }
   }, [SessionAcctReport]);
   return (
     <div className="w-full">
@@ -66,7 +67,7 @@ const CloseAccountModal = (props) => {
                     htmlFor=""
                   >
                   
-                       Current Session's Account :
+                       Current Active Session's Account :
                
                   </label>
 
@@ -75,7 +76,7 @@ const CloseAccountModal = (props) => {
                     htmlFor=""
                   >
                   
-                  🟢 {props?.data}
+                   {props?.data}
                
                   </label>
                   

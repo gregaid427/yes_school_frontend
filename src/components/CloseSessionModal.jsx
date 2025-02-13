@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import SessionSelect from './SessionSelect';
 import SessionSelect1 from './SessionSelect1';
 
-const GenerateFeeModak = (props) => {
+const CloseSessionModal = (props) => {
   const dispatch = useDispatch();
 
   const session = useSelector((state) => state?.session);
@@ -36,30 +36,50 @@ const GenerateFeeModak = (props) => {
 
   const data = {
     createdby: username?.payload,
-    session: sessionoption,
+    oldsession: sessionoption1,
+    newsession: sessionoption,
   };
 
   const handleSubmit = () => {
     if (sessionoption == 'None') {
       // setDisplay(newsession);
-      return toast.error('Select a Session');
+      return toast.error('Select New Session');
     }
-    // if (sessionoption1 == 'None') {
-    //   return toast.error('Select Old Session');
-    // }
-    // if (sessionoption1 == sessionoption) {
-    //   return toast.error('Both Session Cannot Be same');
-    // } 
-    else {
+    if (sessionoption1 == 'None') {
+      return toast.error('Select Old Session');
+    }
+    if (sessionoption1 == sessionoption) {
+      return toast.error('Both Session Cannot Be same');
+    } else {
       setDisplay(false);
-      dispatch(GenerateFeeAction(data));
+      dispatch(CloseSessionAcountAction(data));
     }
   };
   
+  useEffect(() => {
+    props?.account(sessionoption1);
+  }, [sessionoption1]);
+
   
 
- 
-  
+  useEffect(() => {
+    setDesc(props.val);
+    console.log(props.val);
+  }, []);
+  useEffect(() => {
+    if (props.val) {
+      let i = 0;
+      let arr = [];
+      while (i < props.val?.length) {
+        if (props.val[i]?.amount == null) {
+          arr.push(props.val[i]?.title);
+        }
+        i++;
+        if (i + 1 == props.val?.length) setclazz(arr);
+      }
+    }
+  }, []);
+  console.log(clazz);
   return (
     <div className="w-full">
       <div className="w-full ">
@@ -68,7 +88,7 @@ const GenerateFeeModak = (props) => {
             <div className="rounded-sm border py-3 px-7 border-stroke bg-white shadow-default dark:border-strokedark dark:dark:bg-form-input">
               <div className="border-b border-stroke  dark:border-strokedark">
                 <h3 className="font-medium mb-5  text-black dark:text-white">
-                  Generate Fee
+                  Close Session Account
                 </h3>
               </div>
               <div className={!clazz[0] ? '' : 'hidden'}>
@@ -104,18 +124,18 @@ const GenerateFeeModak = (props) => {
                   <SessionSelect1 setsectionprop={setSessionoption} />
                 </div>
 
-                {/* <div className="flex justify-between">
+                <div className="flex justify-between">
                   <label
                     className="mb-1 w-2/2 block py-3 text-sm font-medium text-black dark:text-white"
                     htmlFor=" "
                   >
-                    Select Current / Outgoing Session{' '}
+                     Session To Close Account on{' '}
                   </label>
                 </div>
 
                 <div className="relative z-20 bg-white dark:bg-form-input">
-                  <SessionSelect1 setsectionprop={setSessionoption1} />
-                </div> */}
+                  <SessionSelect setsectionprop={setSessionoption1} />
+                </div>
                 <div className="py-8 flex gap-2">
                   <button
                     className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
@@ -180,4 +200,4 @@ const GenerateFeeModak = (props) => {
   );
 };
 
-export default GenerateFeeModak;
+export default CloseSessionModal;

@@ -38,11 +38,15 @@ import { Dialog } from 'primereact/dialog';
 import AssignFeeModal from '../../components/AssignFeeModal';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import {
+  CurrentAccountDetailAction,
+  fetchAllAssignLogAction,
   fetchAllAssignRecordAction,
   fetchAllfeeAssignRecordAction,
   fetchfeeAssignGroupRecordAction,
   fetchfeeAssignRecordAction,
   fetchfeeCartegoryAction,
+  FetchGenerateFeeAction,
+  FetchSessionAcountAction,
   resetCloseSessionAcount,
   resetdeleteassignedfee,
   resetGeneratefee,
@@ -71,6 +75,11 @@ import { fetchstdCartegoryAction } from '../../redux/slices/studentSlice';
 import SessionModal from '../../components/SessionModal';
 import DeleteModal from '../../components/DeleteModal';
 import CloseAccountModal from '../../components/CloseAccountModal';
+import CloseSessionModal from '../../components/CloseSessionModal';
+import CurrentAccountDetailModal from '../../components/CurrentAccountDetailModal';
+import AccountClosureListModal from '../AccountClosureListModal';
+import FeeGenerateRecordList from '../FeeGenerateRecordList';
+import AssignFeeLogModal from '../AssignFeeLogModal';
 
 const Finance = () => {
   const formRef1 = useRef();
@@ -91,7 +100,7 @@ const Finance = () => {
     fetchAllAssignRecord,
     GetSingleBill,
     CloseSessionAcount,
-    SessionAcctReport
+    SessionAcctReport,
   } = fee;
 
   const [pagesval, setpagesval] = useState(30);
@@ -131,6 +140,13 @@ const Finance = () => {
   const [visible15, setVisible15] = useState(false);
   const [visible16, setVisible16] = useState(false);
   const [visible17, setVisible17] = useState(false);
+  const [visible20, setVisible20] = useState(false);
+  const [visible21, setVisible21] = useState(false);
+  const [visible22, setVisible22] = useState(false);
+  const [visible23, setVisible23] = useState(false);
+  const [visible24, setVisible24] = useState(false);
+  const [visible25, setVisible25] = useState(false);
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -324,12 +340,8 @@ const Finance = () => {
   const [classData1, setClassData1] = useState([]);
   const [check, setCheck] = useState(true);
   const [check1, setCheck1] = useState(null);
-  const [check2, setCheck2] = useState(null); 
-   const [activeaccount, setactiveaccount] = useState(null);
-
-
-
-  
+  const [check2, setCheck2] = useState(null);
+  const [activeaccount, setactiveaccount] = useState(null);
 
   function handleFileUpload(e) {
     console.log('called');
@@ -412,15 +424,12 @@ const Finance = () => {
     }
   }, [AssignfeeGroup, custom]);
 
-
   useEffect(() => {
     if (CloseSessionAcount?.success == 1) {
       setVisible17(true);
-      dispatch(resetCloseSessionAcount())
+      dispatch(resetCloseSessionAcount());
     }
-  
   }, [CloseSessionAcount]);
-
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -491,7 +500,7 @@ const Finance = () => {
           if (!visible14) return;
           setVisible10(false);
         }}
-      >
+      > 
         <GenerateFeeResponseModal close={setVisible14} val={check1} />
       </Dialog>
       <Dialog
@@ -514,7 +523,28 @@ const Finance = () => {
           setVisible(false);
         }}
       >
-        <GenerateFeeModak close={setVisible} val={propdata} account={setactiveaccount} openModal={setVisible16} />
+        <GenerateFeeModak
+          close={setVisible}
+          val={propdata}
+          account={setactiveaccount}
+          openModal={setVisible16}
+        />
+      </Dialog>
+      <Dialog
+        visible={visible20}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible20) return;
+          setVisible20(false);
+        }}
+      >
+        <CloseSessionModal
+          close={setVisible20}
+          val={propdata}
+          account={setactiveaccount}
+          openModal={setVisible16}
+        />
       </Dialog>
       <Dialog
         visible={visible2}
@@ -548,7 +578,7 @@ const Finance = () => {
           setVisible3(false);
         }}
       >
-        <SearchStudentsModal close={setVisible3} openModal={setVisible9} />
+        <SearchStudentsModal close={setVisible3}  openModal={setVisible9} />
       </Dialog>
       <Dialog
         visible={visible9}
@@ -640,9 +670,8 @@ const Finance = () => {
         draggable={false}
         resizable={false}
       >
-        <SessionModal  close={setVisible16} openModal={setVisible16} />
+        <SessionModal close={setVisible16} openModal={setVisible16} />
       </Dialog>
-
 
       <Dialog
         visible={visible17}
@@ -655,7 +684,69 @@ const Finance = () => {
         draggable={false}
         resizable={false}
       >
-        <CloseAccountModal  close={setVisible17} data={activeaccount}  openModal={setVisible17} />
+        <CloseAccountModal
+          close={setVisible17}
+          data={activeaccount}
+          openModal={setVisible17}
+        />
+      </Dialog>
+      <Dialog
+        visible={visible21}
+        position={'top'}
+        style={{ height: 'auto', width: '53%' }}
+        onHide={() => {
+          if (!visible21) return;
+          setVisible21(false);
+        }}
+      >
+        <CurrentAccountDetailModal close={setVisible21} />
+      </Dialog>
+      <Dialog
+        visible={visible22}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible22) return;
+          setVisible22(false);
+        }}
+      >
+        <UpdateStudentAccountModal close={setVisible22} />
+      </Dialog>
+
+      <Dialog
+        visible={visible23}
+        position={'top-right'}
+        style={{ height: 'auto', width: '70%', marginRight: '10px' }}
+        onHide={() => {
+          if (!visible23) return;
+          setVisible23(false);
+        }}
+      >
+        <AccountClosureListModal close={setVisible23} />
+      </Dialog>
+
+      <Dialog
+        visible={visible24}
+        position={'top-right'}
+        style={{ height: 'auto', width: '80%', marginRight: '10px' }}
+        onHide={() => {
+          if (!visible24) return;
+          setVisible24(false);
+        }}
+      >
+        <FeeGenerateRecordList close={setVisible24} />
+      </Dialog>
+
+      <Dialog
+        visible={visible25}
+        position={'top-right'}
+        style={{ height: 'auto', width: '80%', marginRight: '10px' }}
+        onHide={() => {
+          if (!visible25) return;
+          setVisible25(false);
+        }}
+      >
+        <AssignFeeLogModal close={setVisible25} />
       </Dialog>
 
       <div className="flex w-full gap-2">
@@ -697,19 +788,20 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                        Close Session Account 
+                        Close Session Account
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          show('top-right');
+                          setVisible20(true);
                           dispatch(fetchfeeAssignGroupRecordAction());
                         }}
                       >
                         Select
                       </button>
                     </div>
+
                     <div className="flex justify-between">
                       <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                         <div
@@ -721,13 +813,14 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                        Generate Fee For New Session
+                        View Current Opened Account
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          setVisible2(true);
+                          setVisible21(true);
+                          dispatch(CurrentAccountDetailAction());
                         }}
                       >
                         Select
@@ -744,13 +837,14 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                        Generate Fee For Single Student
+                        Account Closure Log
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          setVisible3(true);
+                          setVisible23(true);
+                          dispatch(FetchSessionAcountAction());
                         }}
                       >
                         Select
@@ -855,6 +949,30 @@ const Finance = () => {
                         Select
                       </button>
                     </div>
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Generate Fee Log
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          setVisible24(true);
+                          dispatch(FetchGenerateFeeAction());
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -947,7 +1065,32 @@ const Finance = () => {
                         type=""
                         onClick={() => {
                           show('top-right');
-                          dispatch(fetchfeeAssignGroupRecordAction());
+                         // dispatch(fetchfeeAssignGroupRecordAction());
+                         navigate('/fees/Assignfees')
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Assign Fee Log
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          setVisible25(true);
+                          dispatch(fetchAllAssignLogAction());
                         }}
                       >
                         Select
@@ -1063,7 +1206,7 @@ const Finance = () => {
                 <div className="w-full overflow-x-auto">
                   <div className="w-full  flex justify-between  ">
                     <h3 className="font-medium text-black py-3 dark:text-white">
-                      Finace Activity Records
+                      Finance Logs
                     </h3>
                   </div>
                 </div>
@@ -1075,32 +1218,10 @@ const Finance = () => {
               >
                 <div className="w-full">
                   <label className="  text-sm font-medium text-ash dark:text-white">
-                    Generate Reports Options:
+                     Finance Log Options:
                   </label>
                   <div className=" flex flex-col gap-2">
-                    <div className="flex justify-between ">
-                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
-                        <div
-                          className={` flex h-5 w-5 items-center justify-center rounded border ${
-                            true && 'border-primary bg-gray dark:bg-transparent'
-                          }`}
-                        >
-                          <span
-                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
-                          ></span>
-                        </div>{' '}
-                        Fee Payments & Payment Reversals
-                      </label>
-                      <button
-                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={() => {
-                          navigate('/fees/manage');
-                        }}
-                      >
-                        Select
-                      </button>
-                    </div>
+                   
                     <div className="flex justify-between">
                       <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                         <div
@@ -1111,16 +1232,15 @@ const Finance = () => {
                           <span
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
-                        </div>
-                        Generate Fee Records
+                        </div>{' '}
+                        Account Closure Log
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          //setVisible10(true)
-                          navigate('/fees/feegeneraterecords');
-                          // dispatch(fetchAllAssignRecordAction());
+                          setVisible23(true);
+                          dispatch(FetchSessionAcountAction());
                         }}
                       >
                         Select
@@ -1137,13 +1257,38 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                        Total Fees Collected
+                        Generate Fee Log
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          setVisible13(true);
+                          setVisible24(true);
+                          dispatch(FetchGenerateFeeAction());
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Assign Fee Log
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          setVisible25(true);
+                          dispatch(fetchAllAssignLogAction());
                         }}
                       >
                         Select
@@ -1201,6 +1346,29 @@ const Finance = () => {
                         Select
                       </button>
                     </div>
+                    <div className="flex justify-between ">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Fee Payments & Payment Reversals
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate('/fees/manage');
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
                     <div className="flex justify-between">
                       <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                         <div
@@ -1213,6 +1381,151 @@ const Finance = () => {
                           ></span>
                         </div>
                         Fee Class Assignments
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          //setVisible10(true)
+                          dispatch(fetchAllAssignRecordAction());
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>
+                        Session Fee Report
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          //setVisible10(true)
+                          dispatch(fetchAllAssignRecordAction());
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Total Fees Collected
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          setVisible13(true);
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="w-full flex-col">
+              <div
+                className={
+                  'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
+                }
+              >
+                <div className="w-full overflow-x-auto">
+                  <div className="w-full  flex justify-between  ">
+                    <h3 className="font-medium text-black py-3 dark:text-white">
+                      Other Finance Actions
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+                }
+              >
+                <div className="w-full">
+                  <label className="  text-sm font-medium text-ash dark:text-white">
+                    Actions Options:
+                  </label>
+                  <div className=" flex flex-col gap-2">
+                    <div className="flex justify-between ">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Generate Bill{' '}
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate('/fees/Bulkbill');
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                    <div className="flex justify-between ">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Fee Payments & Payment Reversals
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate('/fees/manage');
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>
+                        Clear Account Logs
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"

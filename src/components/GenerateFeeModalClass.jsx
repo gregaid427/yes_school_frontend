@@ -22,6 +22,11 @@ const GenerateFeeModalClass = (props) => {
   const [sessionoption, setSessionoption] = useState('');
   const fee = useSelector((state) => state?.fees);
   const { cartegory } = fee;
+  const user = useSelector((state) => state?.user);
+  const { username, userMail } = user;
+  const session = useSelector((state) => state?.session);
+
+  const {  fetchsessionactive } = session;
 
   const [data1, setdata1] = useState(0);
   const [data2, setdata2] = useState({ test: 0 });
@@ -52,7 +57,9 @@ const GenerateFeeModalClass = (props) => {
   let arrString =  selectedArr.map(x => `"${x}"`).join(',')
  const data ={
   class : arrString,
-  clazz : selectedArr
+  clazz : selectedArr,
+  createdby: username?.payload,
+  session : fetchsessionactive?.data[0]?.sessionname
 
  }
    

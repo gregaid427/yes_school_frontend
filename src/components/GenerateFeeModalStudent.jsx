@@ -31,19 +31,19 @@ const GenerateFeeModalStudent = (props) => {
   let navigate = useNavigate();
   const student = useSelector((state) => state?.student);
   const { singleStudent } = student;
+  const user = useSelector((state) => state?.user);
+  const { username, userMail } = user;
+  const session = useSelector((state) => state?.session);
 
-  const handleSubmit = () => {
-    if (id == '') {
-      return toast.error('Error -Enter Student Id');
-    } else {
-      dispatch(fetchSingleStudent(id));
-    }
-  };
+  const {  fetchsessionactive } = session;
 
   const data ={
     id : props.info.student_id,
     class : classs,
-    cartegory : cart
+    cartegory : cart,
+    createdby: username?.payload,
+        session : fetchsessionactive?.data[0]?.sessionname
+
   }
   const handleGenerate = () => {
   console.log(data)

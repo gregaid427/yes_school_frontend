@@ -780,7 +780,7 @@ function App() {
               }
             />{' '}
           </Route>
-          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+          {/* <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/fees/feegeneraterecords"
               element={
@@ -790,7 +790,7 @@ function App() {
                 </>
               }
             />{' '}
-          </Route>
+          </Route> */}
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/fees/studaccount"
@@ -804,7 +804,7 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
-              path="/fees/sessionaccountsreport"
+              path="/settings/sessionaccountsreport"
               element={
                 <>
                   <PageTitle title="Fees" />

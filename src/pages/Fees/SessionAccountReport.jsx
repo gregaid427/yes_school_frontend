@@ -39,7 +39,7 @@ import ViewSVG from '../../components/Svgs/View';
 import DefaultLayout from '../../layout/DefaultLayout';
 import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
 import TableBtn from '../../components/Svgs/TableBtn';
-import { fetchfeespaidbysessionAction, resetSessionAcctReportAction } from '../../redux/slices/feeSlice';
+import { fetchfeespaidbysessionAction, resetfetchfeespaid, resetSessionAcctReport, resetSessionAcctReportAction } from '../../redux/slices/feeSlice';
 import AccountDetails from '../../components/AccountDetails';
 
 const SessionAccountReport = () => {
@@ -103,8 +103,10 @@ const SessionAccountReport = () => {
       setdata(data);
       setdata1(data1);
       setdata2(data2);
-      console.log(SessionAcctReport)
+      dispatch(resetSessionAcctReport())
     }
+
+
   }, [SessionAcctReport]);
 
   let data = { nodes };
@@ -187,6 +189,7 @@ const SessionAccountReport = () => {
       let data = fetchfeespaid?.data;
       setpropdata(data)
       setVisible2(true)
+      dispatch(resetfetchfeespaid())
     }
   }, [fetchfeespaid]);
 
@@ -389,7 +392,7 @@ const SessionAccountReport = () => {
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
-                  All Classes
+                  Session Account Report
                 </h3>
 
                 <div className="gap-3 flex py-4">
@@ -573,7 +576,7 @@ const SessionAccountReport = () => {
                           <Row
                             key={item.id}
                             item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                            className="dark:border-strokedark dark:dark:bg-form-input  text-black  border-stroke bg-white dark:text-white flex "
                           >
                             <Cell className="  ">{item.class}</Cell>
                             <Cell className="  ">{item.arrears}</Cell>
