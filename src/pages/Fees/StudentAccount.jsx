@@ -32,15 +32,25 @@ import {
 } from '../../redux/slices/studentSlice';
 import Loader from '../../common/Loader';
 
-
 import SectionSelect1 from '../../components/SectionsSelect1';
 import ClassSelect from '../../components/ClassSelect';
-import { fetchschoolinfoAction, fetchUserdataAction } from '../../redux/slices/usersSlice';
+import {
+  fetchschoolinfoAction,
+  fetchUserdataAction,
+} from '../../redux/slices/usersSlice';
 import TableBtn from '../../components/Svgs/TableBtn';
 import CollectFeesModal from '../../components/collectFeesModal';
 import FeesReceiptModal from '../../components/FeesReceiptModal';
-import { fetchfeeCartegoryAction, fetchfeespaidbysessionAction, FetchPaymentscholarshipsAction, resetpayfee } from '../../redux/slices/feeSlice';
-import { fetchActivesessionAction, fetchAllsessionAction } from '../../redux/slices/sessionSlice';
+import {
+  fetchfeeCartegoryAction,
+  fetchfeespaidbysessionAction,
+  FetchPaymentscholarshipsAction,
+  resetpayfee,
+} from '../../redux/slices/feeSlice';
+import {
+  fetchActivesessionAction,
+  fetchAllsessionAction,
+} from '../../redux/slices/sessionSlice';
 import StudentaccountModal from '../../components/studentaccountModal';
 import SessionSelect from '../../components/SessionSelect';
 import autoTable from 'jspdf-autotable';
@@ -82,10 +92,8 @@ const StudentAccount = () => {
   const [name, SetName] = useState('');
   const [singleCart, setSingleCart] = useState([]);
 
-  
-  
-  console.log(nodes)
-  
+  console.log(nodes);
+
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
@@ -97,7 +105,7 @@ const StudentAccount = () => {
     if (fetchsessionactive?.success == 1) {
       let data = fetchsessionactive?.data[0];
       setsession(data?.sessionname);
-   //   console.log('sessionz');
+      //   console.log('sessionz');
     }
   }, [fetchsessionactive]);
   const {
@@ -110,12 +118,10 @@ const StudentAccount = () => {
     fetchcustomloading,
     singleStudent,
     singleStudentloading,
-    
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
   const { fetchStudentcustom } = fee;
-
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -125,12 +131,6 @@ const StudentAccount = () => {
       setdata(data);
     }
   }, [fetchcustom]);
-
- 
-
-
-
-
 
   // useEffect(() => {
 
@@ -173,22 +173,22 @@ const StudentAccount = () => {
       //   //  background-color: #24303F;
 
        `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
   useEffect(() => {
     dispatch(fetchActivesessionAction());
     dispatch(fetchAllsessionAction());
-
-  }, []);  const user = useSelector((state) => state?.user);
+  }, []);
+  const user = useSelector((state) => state?.user);
   const { allschool } = user;
 
   const pagination = usePagination(data, {
@@ -205,12 +205,9 @@ const StudentAccount = () => {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
-  const handleviewbtn = (value,info) => {
+  const handleviewbtn = (value, info) => {
     show('top-right');
-    setSingleCart(
-      info?.filter((item) => item?.scartegory.includes(value)),
-    );
-
+    setSingleCart(info?.filter((item) => item?.scartegory.includes(value)));
   };
   const handleEditbtn = (value) => {
     dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
@@ -225,7 +222,7 @@ const StudentAccount = () => {
     dispatch(deleteSingleStudentAction(data));
   };
 
-console.log(nodes)
+  console.log(nodes);
 
   data = {
     nodes: data.nodes.filter((item) =>
@@ -237,7 +234,6 @@ console.log(nodes)
     ),
   };
   const [sessionoption, setSessionoption] = useState('');
-  
 
   function setModalVisible() {
     setVisible(false);
@@ -267,29 +263,30 @@ console.log(nodes)
   const [selectedValue, setSelectedValue] = useState('option1');
 
   useEffect(() => {
-
     setSelectedValue('option1');
-  }, []); 
-  
+  }, []);
+  useEffect(() => {
+    setdata([])
+  }, []);
+
   const handleRadioChange = (value) => {
-      setSelectedValue(value);
-    };
-  
-    const handleDownloadPdf = async () => {
-      const doc = new jsPDF();
-  
-      autoTable(doc, { html: '#my-table' });
-  
-      doc.save(`${clazz} -- ${sectionzz}  `);
-    };
+    setSelectedValue(value);
+  };
+
+  const handleDownloadPdf = async () => {
+    const doc = new jsPDF();
+
+    autoTable(doc, { html: '#my-table' });
+
+    doc.save(`${clazz} -- ${sectionzz}  `);
+  };
   const styles = {
     radioButton: {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      gap:'4px',
+      gap: '4px',
     },
-  
   };
   const footerContent = (
     <div>
@@ -324,7 +321,13 @@ console.log(nodes)
           setVisible(false);
         }}
       >
-        <StudentaccountModal close={setVisible} stdname={name} val={propp} infotype={sectionzz} session={session}/>
+        <StudentaccountModal
+          close={setVisible}
+          stdname={name}
+          val={propp}
+          infotype={sectionzz}
+          session={session}
+        />
       </Dialog>
       <Dialog
         resizable={false}
@@ -339,16 +342,23 @@ console.log(nodes)
           setVisible1(false);
         }}
       >
-        <FeesReceiptModal close={setVisible1} val={propp} response={receipt} cart={singleCart} school={allschool} />
+        <FeesReceiptModal
+          close={setVisible1}
+          val={propp}
+          response={receipt}
+          cart={singleCart}
+          school={allschool}
+        />
       </Dialog>
       <div className=" flex-col">
         <div
           className={
-            'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+            'rounded-sm border max-w-full border-stroke bg-white px-5 pt-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
           }
         >
-
-
+            <h3 className="font- text-lg text-black border-b  mb-4   border-stroke dark:border-strokedark dark:text-white">
+                  Students' Current Sesion Account Details
+                </h3>
           <div className="max-w-full overflow-x-auto">
             <div className="w-full  flex justify-between ">
               <div className=" flex w-7/12 gap-3">
@@ -375,7 +385,7 @@ console.log(nodes)
                     Section{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                  <SectionSelect1 setsectionprop={setsectionzz} />
+                    <SectionSelect1 setsectionprop={setsectionzz} />
                   </div>
                 </div>
                 <div className="w-full sm:w-2/5">
@@ -434,80 +444,74 @@ console.log(nodes)
                 {/* <button onClick={() => toPDF()}>Download PDF</button> */}
               </div>
             </div>
-<div className='flex justify-between'>
-            <div className='flex row gap-5 '>
-      <div  style={styles.radioButton}>
-        <input
-          type="radio"
-          id="option1"
-          value="option1"
-          checked={selectedValue === 'option1'}
-          onChange={() => { 
-         //   props.setRepeated(props.repeat.filter((element)=>element !== props.stdId))
-         setdata(
-          fetchcustom?.data
-        );
-            handleRadioChange('option1')}}
-        />
-        <label htmlFor="option1" >
-          None
-        </label>
-      </div>
+            <div className="flex justify-between">
+              <div className="flex row gap-5 ">
+                <div style={styles.radioButton}>
+                  <input
+                    type="radio"
+                    id="option1"
+                    value="option1"
+                    checked={selectedValue === 'option1'}
+                    onChange={() => {
+                      //   props.setRepeated(props.repeat.filter((element)=>element !== props.stdId))
+                      setdata(fetchcustom?.data);
+                      handleRadioChange('option1');
+                    }}
+                  />
+                  <label htmlFor="option1">None</label>
+                </div>
 
-      <div style={styles.radioButton}>
-        <input
-          type="radio"
-          id="option2"
-          value="option2"
-          checked={selectedValue === 'option2'}
-          onChange={() =>{  
-            // props.setRepeated([props.stdId,...props.repeat])
-            handleRadioChange('option2')
-            setdata(
-              fetchcustom?.data?.filter((item) => item?.accountbalance > 0),
-            );
-          }
-        }
+                <div style={styles.radioButton}>
+                  <input
+                    type="radio"
+                    id="option2"
+                    value="option2"
+                    checked={selectedValue === 'option2'}
+                    onChange={() => {
+                      // props.setRepeated([props.stdId,...props.repeat])
+                      handleRadioChange('option2');
+                      setdata(
+                        fetchcustom?.data?.filter(
+                          (item) => item?.accountbalance > 0,
+                        ),
+                      );
+                    }}
+                  />
+                  <label htmlFor="option2">Owing</label>
+                </div>
 
-/>
-        <label htmlFor="option2" >
-          Owing
-        </label>
-      </div>
-
-      <div style={styles.radioButton}>
-        <input
-          type="radio"
-          id="option3"
-          value="option3"
-          checked={selectedValue === 'option3'}
-          onChange={() =>{ 
-            //props.handleAction()
-            handleRadioChange('option3')
-            setdata(
-              fetchcustom?.data?.filter((item) => item?.accountbalance == 0),
-            );
-          }}
-        />
-        <label htmlFor="option3" >
-          Not Owing
-        </label>
-      </div>
-    </div>
-    <div>
-    <label
+                <div style={styles.radioButton}>
+                  <input
+                    type="radio"
+                    id="option3"
+                    value="option3"
+                    checked={selectedValue === 'option3'}
+                    onChange={() => {
+                      //props.handleAction()
+                      handleRadioChange('option3');
+                      setdata(
+                        fetchcustom?.data?.filter(
+                          (item) => item?.accountbalance == 0,
+                        ),
+                      );
+                    }}
+                  />
+                  <label htmlFor="option3">Not Owing</label>
+                </div>
+              </div>
+              <div>
+                <label
                   className="pt-2 block text-sm cursor-pointer font-medium text-ash dark:text-white"
-         // style={{ color: '#A9B5B3' }}
+                  // style={{ color: '#A9B5B3' }}
                   onClick={(e) => {
                     handleDownloadPdf();
                   }}
                 >
                   Download Page (PDF)
                 </label>
-    </div>
-
+              </div>
+            </div>
           </div>
-        </div>
         </div>
         <div
           className={
@@ -532,20 +536,19 @@ console.log(nodes)
                         <HeaderCell> Current Arrears</HeaderCell>
                         <HeaderCell>Fee Paid</HeaderCell>
 
-
                         <HeaderCell>Current Bal.</HeaderCell>
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
-                        <Row key={item.student_id}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          >
+                        <Row
+                          key={item.student_id}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -556,16 +559,20 @@ console.log(nodes)
                               ' ' +
                               item.lastName}
                           </Cell>
-                         
+
                           <Cell className="  ">
                             <span>{item.arrears}</span>
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.feepaid == null ? '0.00' : item.feepaid}</span>
+                            <span>
+                              {item.feepaid == null ? '0.00' : item.feepaid}
+                            </span>
                           </Cell>
                           <Cell className="flex   justify-between  ">
                             <span className="">
-                            {(item.accountbalance > 0 ? '⚪'+ ' '+item.accountbalance : ' '+ '🟢'+item.accountbalance)}
+                              {item.accountbalance > 0
+                                ? '⚪' + ' ' + item.accountbalance
+                                : ' ' + '🟢' + item.accountbalance}
                             </span>{' '}
                             {/* <span className="float-right mr-15">
                               {item?.accountbalance < 0 ? (
@@ -591,14 +598,20 @@ console.log(nodes)
                               <TableBtn
                                 text={'Account Info'}
                                 clickFunction={() => {
-                                  dispatch(FetchPaymentscholarshipsAction({id:item.student_id}))
+                                  dispatch(
+                                    FetchPaymentscholarshipsAction({
+                                      id: item.student_id,
+                                    }),
+                                  );
                                   setProp(item);
-                                  handleviewbtn(item?.cartegory,info);
-                                  SetName(item.firstName +
-                                    ' ' +
-                                    item.otherName +
-                                    ' ' +
-                                    item.lastName)
+                                  handleviewbtn(item?.cartegory, info);
+                                  SetName(
+                                    item.firstName +
+                                      ' ' +
+                                      item.otherName +
+                                      ' ' +
+                                      item.lastName,
+                                  );
                                 }}
                                 color={'bg-primary'}
                               />
@@ -656,13 +669,8 @@ console.log(nodes)
               </span>
             </div>
             <div className="hidden">
-              <Table
-                id="my-table"
-                data={data}
-                pagination={pagination}
-                theme={theme}
-              >
-                  {(tableList) => (
+              <Table id="my-table" data={data} theme={theme}>
+                {(tableList) => (
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
@@ -672,19 +680,17 @@ console.log(nodes)
                         <HeaderCell> Current Arrears</HeaderCell>
                         <HeaderCell>Fee Paid</HeaderCell>
 
-
                         <HeaderCell>Current Bal.</HeaderCell>
-
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
-                        <Row key={item.student_id}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          >
+                        <Row
+                          key={item.student_id}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -695,17 +701,17 @@ console.log(nodes)
                               ' ' +
                               item.lastName}
                           </Cell>
-                         
+
                           <Cell className="  ">
                             <span>{item.arrears}</span>
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.feepaid == null ? '0.00' : item.feepaid}</span>
+                            <span>
+                              {item.feepaid == null ? '0.00' : item.feepaid}
+                            </span>
                           </Cell>
                           <Cell className="flex   justify-between  ">
-                            <span className="">
-                            {(item.accountbalance)}
-                            </span>{' '}
+                            <span className="">{item.accountbalance}</span>{' '}
                             {/* <span className="float-right mr-15">
                               {item?.accountbalance < 0 ? (
                                 <TableBtn
@@ -724,8 +730,6 @@ console.log(nodes)
                               )}
                             </span> */}
                           </Cell>
-
-                         
                         </Row>
                       ))}
                     </Body>
@@ -738,7 +742,6 @@ console.log(nodes)
       </div>
     </DefaultLayout>
   );
-
 };
 
 export default StudentAccount;

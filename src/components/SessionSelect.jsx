@@ -6,7 +6,7 @@ import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 const SessionSelect = (props) => {
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
-  const [clazz, setclazz] = useState();
+  const [clazz, setclazz] = useState(props.clazz);
 
   const session = useSelector((state) => state?.session);
 

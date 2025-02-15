@@ -15,7 +15,6 @@ const ClassSelect = (props) => {
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
   const [clazz, setclazz] = useState(props.clazz);
-  console.log(clazz);
   const clad = useSelector((state) => state?.classes);
   const [val, setVal] = useState([]);
 

@@ -86,7 +86,7 @@ const GenerateFeeModak = (props) => {
                     className="mb-1 w-2/2 block py-3 text-sm font-medium text-black dark:text-white"
                     htmlFor=" "
                   >
-                    Select New / Upcoming Session{' '}
+                    Select Session To Generate Fee{' '}
                   </label>
                   <button
                     className="flex w-auto max-h-min justify-center mt-1 rounded bg-primary py-1 px-2 font-sm text-gray hover:bg-opacity-90"

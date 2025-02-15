@@ -1452,6 +1452,9 @@ export const deleteFeeCartItemAction = createAsyncThunk(
       if (data) {
         toast.dismiss(toastId);
       }
+      if (data.success == 0) {
+        toast.error('Error Deleting Item');
+      }
       return data;
     } catch (error) {
       console.log(error);
@@ -1542,6 +1545,10 @@ export const CloseSessionAcountAction = createAsyncThunk(
 
       if (data) {
         toast.dismiss(toastId);
+      }
+      if (data?.success == 2) {
+        toast.dismiss(toastId);
+        toast.error('Account Already Closed For Session');
       }
       return data;
     } catch (error) {
@@ -1669,6 +1676,45 @@ export const GetFeeRecordAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getstudentrecord`,
+        payload,
+      );
+
+      if (data == []) {
+        toast.error('No Records Found');
+      }
+      if (data == null) {
+        toast.error('Error Getting Record');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const GetSessionFeeRecordAction = createAsyncThunk(
+  'fetch/getsessionrecord',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/getstudentsessionrecord`,
         payload,
       );
 
@@ -1928,6 +1974,13 @@ const FeeSlices = createSlice({
     },
     resetfetchfeespaid(state) {
       state.fetchfeespaid = null;
+    },
+    
+    resetGetFeeRecord(state) {
+      state.GetFeeRecord  = null;
+    },
+    resetGetSessionFeeRecord(state) {
+      state.GetSessionFeeRecord  = null;
     },
   },
   extraReducers: (builder) => {
@@ -2250,6 +2303,23 @@ const FeeSlices = createSlice({
       state.GetFeeRecordloading = false;
       state.GetFeeRecorderror = action.payload;
       state.GetFeeRecord = undefined;
+      //   state.fetchAllfee = undefined;
+    });
+    builder.addCase(GetSessionFeeRecordAction.pending, (state, action) => {
+      state.GetFeeRecordloading = true;
+      state.GetSessionFeeRecord = false;
+      // state.fetchAllfee = false;
+    });
+    builder.addCase(GetSessionFeeRecordAction.fulfilled, (state, action) => {
+      state.GetSessionFeeRecord = action?.payload;
+      state.GetSessionFeeRecordloading = false;
+      state.GetSessionFeeRecorderror = undefined;
+      //  state.fetchAllfee = action?.payload;
+    });
+    builder.addCase(GetSessionFeeRecordAction.rejected, (state, action) => {
+      state.GetSessionFeeRecordloading = false;
+      state.GetSessionFeeRecorderror = action.payload;
+      state.GetSessionFeeRecord = undefined;
       //   state.fetchAllfee = undefined;
     });
 
@@ -2651,39 +2721,39 @@ const FeeSlices = createSlice({
     builder.addCase(deleteSinglefeeAction.pending, (state, action) => {
       state.deleteSinglefeeloading = true;
       state.deleteSinglefee = false;
-      state.fetchAllfee = false;
+      // state.fetchAllfee = false;
     });
 
     builder.addCase(deleteSinglefeeAction.fulfilled, (state, action) => {
       state.deleteSinglefee = action?.payload;
       state.deleteSinglefeeloading = false;
       state.error = undefined;
-      state.fetchAllfee = action?.payload;
+      // state.fetchAllfee = action?.payload;
     });
     builder.addCase(deleteSinglefeeAction.rejected, (state, action) => {
       state.error = action.payload;
       state.deleteSinglefee = undefined;
       state.deleteSinglefeeloading = undefined;
-      state.fetchAllfee = undefined;
+      // state.fetchAllfee = undefined;
     });
 
     builder.addCase(deleteSingleFeeCartAction.pending, (state, action) => {
       state.deleteSingleCartloading = true;
       state.deleteSinglefee = false;
-      state.cartegory = false;
+      // state.cartegory = false;
     });
 
     builder.addCase(deleteSingleFeeCartAction.fulfilled, (state, action) => {
       state.deleteSinglefee = action?.payload;
       state.deleteSingleCartloading = false;
       state.error = undefined;
-      state.cartegory = action?.payload;
+      // state.cartegory = action?.payload;
     });
     builder.addCase(deleteSingleFeeCartAction.rejected, (state, action) => {
       state.error = action.payload;
       state.deleteSinglefee = undefined;
       state.deleteSingleCartloading = undefined;
-      state.cartegory = undefined;
+      // state.cartegory = undefined;
     });
 
     builder.addCase(PayFeeAction.pending, (state, action) => {
@@ -2853,7 +2923,9 @@ export const {
   resetSessionAcctReportAction,
   resetCurrentAccountDetail,
   resetfetchfeespaid,
-  resetSessionAcctReport
+  resetSessionAcctReport,
+  resetGetFeeRecord,
+  resetGetSessionFeeRecord
 } = FeeSlices.actions;
 
 export default FeeSlices.reducer;

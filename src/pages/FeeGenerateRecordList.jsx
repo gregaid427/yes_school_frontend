@@ -90,7 +90,7 @@ const FeeGenerateRecordList = (props) => {
      `,
 
       Table: `
-  --data-table-library_grid-template-columns:  5% 15% 12% 25% 15%  28%;
+  --data-table-library_grid-template-columns:  8% 20% 12% 35% 13%  12%;
 `,
     },
   ]);

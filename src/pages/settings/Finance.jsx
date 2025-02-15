@@ -342,6 +342,10 @@ const Finance = () => {
   const [check1, setCheck1] = useState(null);
   const [check2, setCheck2] = useState(null);
   const [activeaccount, setactiveaccount] = useState(null);
+  const [oldaccount, setoldaccount] = useState(null);
+
+
+  
 
   function handleFileUpload(e) {
     console.log('called');
@@ -543,7 +547,10 @@ const Finance = () => {
           close={setVisible20}
           val={propdata}
           account={setactiveaccount}
+          oldaccount={setoldaccount}
+
           openModal={setVisible16}
+          
         />
       </Dialog>
       <Dialog
@@ -687,6 +694,7 @@ const Finance = () => {
         <CloseAccountModal
           close={setVisible17}
           data={activeaccount}
+          oldaccount={oldaccount}
           openModal={setVisible17}
         />
       </Dialog>
@@ -716,7 +724,7 @@ const Finance = () => {
       <Dialog
         visible={visible23}
         position={'top-right'}
-        style={{ height: 'auto', width: '70%', marginRight: '10px' }}
+        style={{ height: 'auto', width: '82%', marginRight: '10px' }}
         onHide={() => {
           if (!visible23) return;
           setVisible23(false);
@@ -890,7 +898,7 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                        Generate Fee For New Session
+                        Generate Fee For  Session (All Students)
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"

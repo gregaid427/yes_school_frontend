@@ -652,15 +652,16 @@ const SessionAccountReport = () => {
                 <Table
                   id="my-table"
                   data={data}
-                  pagination={pagination}
-                  theme={theme}
                 >
-                  {(tableList) => (
+                   {(tableList) => (
                     <>
                       <Header>
-                        <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
+                        <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
                           <HeaderCell>Class</HeaderCell>
-                          {/* <HeaderCell>Instructor</HeaderCell> */}
+                          <HeaderCell>Balance BF</HeaderCell>
+                          <HeaderCell>Fees Collected</HeaderCell>
+                          <HeaderCell>Balance CF</HeaderCell>
+
                         </HeaderRow>
                       </Header>
 
@@ -669,15 +670,16 @@ const SessionAccountReport = () => {
                           <Row
                             key={item.id}
                             item={item}
-                            className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
+                            className="dark:border-strokedark dark:dark:bg-form-input  text-black  border-stroke bg-white dark:text-white flex "
                           >
-                            <Cell className="  ">
-                              <span>{item.title}</span>
-                            </Cell>
+                            <Cell className="  ">{item.class}</Cell>
+                            <Cell className="  ">{item.arrears}</Cell>
+                            <Cell className="  ">{item.paid}</Cell>
+                            <Cell className="  ">{item.balance}</Cell>
 
-                            {/* <Cell className="  ">
-                              <span>{item.instructor}</span>
-                            </Cell> */}
+                            {/* <Cell className="  ">{item.section ? item.section : '-'}</Cell> */}
+
+                           
                           </Row>
                         ))}
                       </Body>

@@ -661,7 +661,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Account Records
+                              Session  Records
                             </NavLink>
                           </li>
                           <li>
@@ -730,7 +730,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Payment Records
+                              Payment Log
                             </NavLink>
                           </li>
                           <li>
@@ -741,7 +741,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Search Records
+                               Payment Records
                             </NavLink>
                           </li>
                           <li>

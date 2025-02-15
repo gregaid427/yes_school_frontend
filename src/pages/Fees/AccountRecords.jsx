@@ -45,6 +45,8 @@ import {
   fetchfeeCartegoryAction,
   fetchfeespaidbysessionAction,
   FetchPaymentscholarshipsAction,
+  GetSessionFeeRecordAction,
+  resetGetSessionFeeRecord,
   resetpayfee,
 } from '../../redux/slices/feeSlice';
 import {
@@ -55,12 +57,16 @@ import StudentaccountModal from '../../components/studentaccountModal';
 import SessionSelect from '../../components/SessionSelect';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import PaymentRecordsModal from '../../components/PaymentRecordsMordal';
+import SessionSelect1 from '../../components/SessionSelect1';
+import toast from 'react-hot-toast';
 
 const AccountRecords = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
+  const [visible2, setVisible2] = useState(false);
 
   const [position, setPosition] = useState('top');
 
@@ -121,7 +127,7 @@ const AccountRecords = () => {
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
-  const { fetchfeespaid } = fee;
+  const { fetchfeespaid, GetSessionFeeRecord } = fee;
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -241,22 +247,30 @@ const AccountRecords = () => {
   function setModalVisible() {
     setVisible(false);
   }
+  const [record, setRecord] = useState([]);
+  useEffect(() => {
+    if (GetSessionFeeRecord?.success == 1 && GetSessionFeeRecord?.data != []) {
+      setRecord(GetSessionFeeRecord?.data);
 
+      setVisible2(true);
+    }
+  }, [GetSessionFeeRecord]);
   const csvConfig = mkConfig({
     useKeysAsHeaders: true,
     filename: `${clazz} : ${sectionzz} `,
   });
 
   function handleGetClassData() {
-    console.log(clazz);
-
     let data = {
       class: clazz,
       session: sessionoption,
     };
     console.log(data);
-
-    dispatch(fetchfeespaidbysessionAction(data));
+    if (sessionoption == 'None') {
+      toast.error('Please Select Session');
+    } else {
+      dispatch(fetchfeespaidbysessionAction(data));
+    }
   }
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
@@ -327,6 +341,26 @@ const AccountRecords = () => {
           school={allschool}
         />
       </Dialog>
+      <Dialog
+        resizable={false}
+        draggable={false}
+        // headerClassName=" px-7 py-2  dark:bg-primary font-bold text-black dark:text-white"
+        visible={visible2}
+        className=""
+        position={'top'}
+        style={{ width: '65%', color: 'white' }}
+        onHide={() => {
+          if (!visible2) return;
+          setVisible2(false);
+        }}
+      >
+        <PaymentRecordsModal
+          close={setVisible2}
+          rec={record}
+          val={propp}
+          infotype={sectionzz}
+        />
+      </Dialog>
       <div className=" flex-col">
         <div
           className={
@@ -349,14 +383,14 @@ const AccountRecords = () => {
                       <ClassSelect setsectionprop={setclazz} clazz={clazz} />
                     </div>
                     <label
-                  className="pt-2 block text-sm cursor-pointer font-medium text-ash dark:text-white"
-         // style={{ color: '#A9B5B3' }}
-                  onClick={(e) => {
-                    handleDownloadPdf();
-                  }}
-                >
-                  Download Page (PDF)
-                </label>
+                      className="pt-2 block text-sm cursor-pointer font-medium text-ash dark:text-white"
+                      // style={{ color: '#A9B5B3' }}
+                      onClick={(e) => {
+                        handleDownloadPdf();
+                      }}
+                    >
+                      Download Page (PDF)
+                    </label>
                   </div>
                 </div>
 
@@ -368,7 +402,7 @@ const AccountRecords = () => {
                     Session{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SessionSelect setsectionprop={setSessionoption} />
+                    <SessionSelect1 setsectionprop={setSessionoption} />
                   </div>
                 </div>
                 <div className="w-full sm:w-2/5">
@@ -488,8 +522,9 @@ const AccountRecords = () => {
                           </Cell>
                           <Cell className="flex   justify-between  ">
                             <span className="">
-                            {(item.accountbalance > 0 ? '⚪'+ ' '+item.accountbalance : ' '+ '🟢'+item.accountbalance)}
-
+                              {item.accountbalance > 0
+                                ? '⚪' + ' ' + item.accountbalance
+                                : ' ' + '🟢' + item.accountbalance}
                             </span>{' '}
                             {/* <span className="float-right mr-15">
                               {item?.accountbalance < 0 ? (
@@ -513,22 +548,16 @@ const AccountRecords = () => {
                           <Cell>
                             <div className="gap-2 flex">
                               <TableBtn
-                                text={'Account Info'}
+                                text={'Payment History'}
                                 clickFunction={() => {
                                   dispatch(
-                                    FetchPaymentscholarshipsAction({
+                                    GetSessionFeeRecordAction({
                                       id: item.student_id,
+                                      session: sessionoption,
                                     }),
                                   );
+
                                   setProp(item);
-                                  handleviewbtn(item?.cartegory, info);
-                                  SetName(
-                                    item.firstName +
-                                      ' ' +
-                                      item.otherName +
-                                      ' ' +
-                                      item.lastName,
-                                  );
                                 }}
                                 color={'bg-primary'}
                               />
@@ -586,13 +615,8 @@ const AccountRecords = () => {
               </span>
             </div>
             <div className="hidden">
-              <Table
-                id="my-table"
-                data={data}
-                pagination={pagination}
-                theme={theme}
-              >
-              {(tableList) => (
+              <Table id="my-table" data={data} theme={theme}>
+                {(tableList) => (
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
@@ -603,7 +627,6 @@ const AccountRecords = () => {
                         <HeaderCell>Fee Paid</HeaderCell>
 
                         <HeaderCell> Balance</HeaderCell>
-
                       </HeaderRow>
                     </Header>
 
@@ -636,10 +659,7 @@ const AccountRecords = () => {
                             </span>
                           </Cell>
                           <Cell className="flex   justify-between  ">
-                            <span className="">
-                            {(item.accountbalance)}
-
-                            </span>{' '}
+                            <span className="">{item.accountbalance}</span>{' '}
                             {/* <span className="float-right mr-15">
                               {item?.accountbalance < 0 ? (
                                 <TableBtn
@@ -658,8 +678,6 @@ const AccountRecords = () => {
                               )}
                             </span> */}
                           </Cell>
-
-                       
                         </Row>
                       ))}
                     </Body>

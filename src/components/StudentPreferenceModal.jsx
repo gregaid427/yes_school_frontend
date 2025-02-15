@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import PreferenceRadio from './PreferenceRadio';
 import { PreferencesAction, resetpreference } from '../redux/slices/feeSlice';
+import { fetchCustomStudentsClassAccountAction, fetchStudentsClassAccountAction } from '../redux/slices/studentSlice';
 
 const StudentPreferenceModal = (props) => {
   const dispatch = useDispatch();
@@ -17,6 +18,22 @@ const StudentPreferenceModal = (props) => {
   const { cartegory, Preferences } = fee;
   console.log(props);
   const { CreateInventorycart } = inventory;
+
+  function handleGetClassData(props) {
+
+    let data = {
+      class: props.clazz,
+      section: props.sectionzz,
+    };
+    console.log(data);
+    if (props.sectionzz == 'All Sections') {
+      dispatch(fetchStudentsClassAccountAction(data));
+    }
+    if (props.sectionzz != 'All Sections') {
+      dispatch(fetchCustomStudentsClassAccountAction(data));
+    }
+  }
+
   useEffect(() => {
     if (Preferences?.success == 0) {
       // toast.error('Error - Adding Item Cartegory ');
@@ -25,23 +42,15 @@ const StudentPreferenceModal = (props) => {
     }
 
     if (Preferences?.success == 1) {
-      //toast.success('New Item Cartegory Added Successfully');
-      // dispatch(fetchInventCartegoryAction());
+      handleGetClassData(props)
       dispatch(resetpreference());
       props.close(false);
     }
 
-    // if (fetchAllClass?.success == 1) {
-    //   let i = 0;
-    //   let arr = [];
-    //   while (i < clad?.fetchAllClass?.data.length) {
-    //     arr.push(clad?.fetchAllClass?.data[i].title);
-    //     i++;
-    //   }
-
-    //   setClasss(arr);
     // }
   }, [Preferences]);
+
+
 
   const [amount, setAmount] = useState(0);
   const [repeat, setRepeat] = useState([]);

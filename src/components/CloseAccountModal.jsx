@@ -25,7 +25,7 @@ const CloseAccountModal = (props) => {
 
   function handlegetreport(){
 
-    dispatch(SessionAcctReportAction({'id':props?.data}))
+    dispatch(SessionAcctReportAction({'id':props?.oldaccount}))
 
   }
 

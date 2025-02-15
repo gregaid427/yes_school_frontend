@@ -147,9 +147,7 @@ const StudentPreference = () => {
   }, []);
 
 
-  useEffect(() => {
-    dispatch(fetchfeeCartegoryAction());
-  }, []);
+  
 
   // useEffect(() => {
 
@@ -303,7 +301,7 @@ const StudentPreference = () => {
           setVisible(false);
         }}
       >
-        <StudentPreferenceModal close={setVisible} val={propp} cart={cartz} />
+        <StudentPreferenceModal close={setVisible} val={propp} cart={cartz} clazz={clazz}  sectionzz={sectionzz}/>
       </Dialog>
     
       <div className=" flex-col">

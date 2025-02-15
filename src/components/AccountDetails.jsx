@@ -20,11 +20,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import TableBtn from '../components/Svgs/TableBtn';
 
-
 import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 import Downloadicon from './Svgs/downloadicon';
-;
-
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 const AccountDetails = (props) => {
   ///////////////////////////////////
 
@@ -39,7 +38,6 @@ const AccountDetails = (props) => {
   };
 
   //////////////////////////////////////
-
 
   const [searchval, setSearchval] = useState('First Name');
   const [pagesval, setpagesval] = useState(30);
@@ -62,17 +60,13 @@ const AccountDetails = (props) => {
 
   console.log(nodes);
 
+
   const dispatch = useDispatch();
 
-
   useEffect(() => {
-    setTimeout(() => setLoader(false), 1000);
 
-
-      setdata(props.data);
+    setdata(props.data);
   }, []);
-
- 
 
   // useEffect(() => {
 
@@ -126,7 +120,7 @@ const AccountDetails = (props) => {
       // `,
     },
   ]);
- 
+
   const pagination = usePagination(data, {
     state: {
       page: 0,
@@ -140,7 +134,6 @@ const AccountDetails = (props) => {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
- 
   data = {
     nodes: data.nodes.filter((item) =>
       searchval === 'First Name'
@@ -161,64 +154,54 @@ const AccountDetails = (props) => {
     filename: `${clazz} : ${sectionzz} `,
   });
 
-  
-  return  (
-   
-      <div className=" flex-col">
-        <div
-          className={
-            'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
-          }
-        >
-          <div className="border-b border-stroke   dark:border-strokedark">
-         <div className='flex justify-between' >
-         <h3 className="font-medium  text-black dark:text-white">
-          Students' Session Account Records {' '}
-          </h3>
-          <div className='flex gap-3'>
-          <h3
-            className="flex w-full justify-center rounded py-1 px-2 gap-1 cursor-pointer font-medium text-gray hover:bg-opacity-90"
-            type=""
-            onClick={(e) => {
-            
-            }}
-          >
-           <Downloadicon /> 
-           
-           
-             PDF
-          </h3>
-          <button
-            className="flex w-full justify-center rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-            type=""
-            onClick={(e) => {
-            
-            }}
-          >
-            Print
-          </button>
+  const handleDownloadPdf = async () => {
+    const doc = new jsPDF();
 
-          <button
-            className="flex w-full justify-center rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-            type=""
-            onClick={(e) => {
-              e.preventDefault();
-              props.close(false);
-            }}
-          >
-            close
-          </button>
+    autoTable(doc, { html: '#my-table1' });
+
+    doc.save(`${nodes[0].class}`);
+  };
+
+  return (
+    <div className=" flex-col">
+      <div
+        className={
+          'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-2 '
+        }
+      >
+        <div className="border-b border-stroke   dark:border-strokedark">
+          <div className="flex justify-between">
+            <h3 className="font-medium  text-black dark:text-white">
+              Students' Session Account Records{' '}
+            </h3>
+            <div className="flex gap-4">
+              <label
+                className=" block w-full my-auto  text-sm font-medium text-ash dark:text-white"
+                // style={{ color: '#A9B5B3' }}
+                onClick={(e) => {
+                  handleDownloadPdf();
+                }}
+              >
+                Download (PDF)
+              </label>
+
+              <button
+                className="flex  justify-center rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                type=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  props.close(false);
+                }}
+              >
+                close
+              </button>
+            </div>
           </div>
-         </div>
-         
         </div>
-          <div className="max-w-full overflow-x-auto">
-            <div className="w-full  flex justify-between ">
-              <div className=" flex w-7/12 gap-3">
-                
-
-              
-                {/* <div className="w-full sm:w-1/3 flex  justify-end align-top  ">
+        <div className="max-w-full overflow-x-auto">
+          <div className="w-full  flex justify-between ">
+            <div className=" flex w-6/12 gap-3">
+              {/* <div className="w-full sm:w-1/3 flex  justify-end align-top  ">
                     <button onClick={(e)=>{handleDownloadPdf()}}
                       className="btn sm:w-2/3 h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
                       type="submit"
@@ -226,102 +209,99 @@ const AccountDetails = (props) => {
                       Search
                     </button>
                   </div> */}
-              </div>
+            </div>
 
-              <div className={' w-3/12 flex flex-col mt-1 float-right '}>
-                <div className="flex justify-between align-middle mb-1">
-                  <label
-                    className="mb-1 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor=" "
-                  >
-                    Search By{' '}
-                  </label>
-                  <div className="relative  z-20 w-3/5 bg-white dark:bg-form-input">
-                    <SelectGroupTwo
-                      values={['First Name', 'Last Name', 'ID']}
-                      setSelectedOption={(val) => setSearchval(val)}
-                      selectedOption={searchval}
-                    />
-                  </div>
+            <div className={' w-3/12 flex flex-col mt-1 float-right '}>
+              <div className="flex justify-between align-middle mb-1">
+                <label
+                  className="mb-1 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
+                  htmlFor=" "
+                >
+                  Search By{' '}
+                </label>
+                <div className="relative  z-20 w-3/5 bg-white dark:bg-form-input">
+                  <SelectGroupTwo
+                    values={['First Name', 'Last Name', 'ID']}
+                    setSelectedOption={(val) => setSearchval(val)}
+                    selectedOption={searchval}
+                  />
                 </div>
-
-                <input
-                  className="w-full rounded border border-stroke bg-gray py-1 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  key={1}
-                  type="search"
-                  placeholder={'type here'}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
-                />
-                {/* <button onClick={() => toPDF()}>Download PDF</button> */}
               </div>
+
+              <input
+                className="w-full rounded border border-stroke bg-gray py-1 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                key={1}
+                type="search"
+                placeholder={'type here'}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
+              {/* <button onClick={() => toPDF()}>Download PDF</button> */}
             </div>
           </div>
         </div>
-        <div
-          className={
-            'rounded-sm  w-full border border-stroke bg-white px-7  pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
-          }
-        >
-          
-          <div className="flex gap-3  flex-col">
-            <div>
-              <Table
-                data={data}
-                pagination={pagination}
-                theme={theme}
-                layout={{ custom: true }}
-              >
-                {(tableList) => (
-                  <>
-                    <Header>
-                      <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <HeaderCell className="">ID</HeaderCell>
-                        <HeaderCell>Name</HeaderCell>
-                        {/* <HeaderCell>Class</HeaderCell> */}
-                        <HeaderCell> Current Arrears</HeaderCell>
-                        <HeaderCell>Fee Paid</HeaderCell>
+      </div>
+      <div
+        className={
+          'rounded-sm  w-full border border-stroke bg-white px-7  pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
+        }
+      >
+        <div className="flex gap-3  flex-col">
+          <div>
+            <Table
+              data={data}
+              pagination={pagination}
+              theme={theme}
+              layout={{ custom: true }}
+            >
+              {(tableList) => (
+                <>
+                  <Header>
+                    <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
+                      <HeaderCell className="">ID</HeaderCell>
+                      <HeaderCell>Name</HeaderCell>
+                      {/* <HeaderCell>Class</HeaderCell> */}
+                      <HeaderCell> Current Arrears</HeaderCell>
+                      <HeaderCell>Fee Paid</HeaderCell>
 
-                        <HeaderCell>Balance</HeaderCell>
+                      <HeaderCell>Balance</HeaderCell>
+                    </HeaderRow>
+                  </Header>
 
-                      </HeaderRow>
-                    </Header>
+                  <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    {tableList?.map((item) => (
+                      <Row
+                        key={item.student_id}
+                        item={item}
+                        className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                      >
+                        <Cell className="  ">
+                          <span>{item.student_id}</span>
+                        </Cell>
+                        <Cell className="capitalize">
+                          {item.firstName +
+                            ' ' +
+                            item.otherName +
+                            ' ' +
+                            item.lastName}
+                        </Cell>
 
-                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList?.map((item) => (
-                        <Row
-                          key={item.student_id}
-                          item={item}
-                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                        >
-                          <Cell className="  ">
-                            <span>{item.student_id}</span>
-                          </Cell>
-                          <Cell className="capitalize">
-                            {item.firstName +
-                              ' ' +
-                              item.otherName +
-                              ' ' +
-                              item.lastName}
-                          </Cell>
-
-                          <Cell className="  ">
-                            <span>{item.arrears}</span>
-                          </Cell>
-                          <Cell className="  ">
-                            <span>
-                              {item.amountpaid == null
-                                ? '0.00'
-                                : item.amountpaid}
-                            </span>
-                          </Cell>
-                          <Cell className="flex   justify-between  ">
-                            <span className="">
-                            {(item.accountbalance > 0 ? '⚪'+ ' '+item.accountbalance : ' '+ '🟢'+item.accountbalance)}
-
-                            </span>{' '}
-                            {/* <span className="float-right mr-15">
+                        <Cell className="  ">
+                          <span>{item.arrears}</span>
+                        </Cell>
+                        <Cell className="  ">
+                          <span>
+                            {item.amountpaid == null ? '0.00' : item.amountpaid}
+                          </span>
+                        </Cell>
+                        <Cell className="flex   justify-between  ">
+                          <span className="">
+                            {item.accountbalance > 0
+                              ? '⚪' + ' ' + item.accountbalance
+                              : ' ' + '🟢' + item.accountbalance}
+                          </span>{' '}
+                          {/* <span className="float-right mr-15">
                               {item?.accountbalance < 0 ? (
                                 <TableBtn
                                   clickFunction={() => {}}
@@ -338,111 +318,138 @@ const AccountDetails = (props) => {
                                 />
                               )}
                             </span> */}
-                          </Cell>
-
-                          
-                        </Row>
-                      ))}
-                    </Body>
-                  </>
-                )}
-              </Table>
-            </div>
-            <div
-              className=" align-middle"
-              style={{ display: 'flex', justifyContent: 'space-between' }}
-            >
-              <div className="flex">
-                <span className="mt-2">
-                  Total Pages: {pagination.state.getTotalPages(data.nodes)}
+                        </Cell>
+                      </Row>
+                    ))}
+                  </Body>
+                </>
+              )}
+            </Table>
+          </div>
+          <div
+            className=" align-middle"
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+          >
+            <div className="flex">
+              <span className="mt-2">
+                Total Pages: {pagination.state.getTotalPages(data.nodes)}
+              </span>
+              <div className="flex  align-middle  flex-row mr-3">
+                <span className="flex mt-2 ml-8 align-middle">
+                  Records Per Page:{' '}
                 </span>
-                <div className="flex  align-middle  flex-row mr-3">
-                  <span className="flex mt-2 ml-8 align-middle">
-                    Records Per Page:{' '}
-                  </span>
-                  <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
-                    <SelectGroupTwo
-                      values={[30, 50, 100, 200, 500, 'All']}
-                      setSelectedOption={(val) => setpagesval(val)}
-                      selectedOption={pagesval}
-                    />
-                  </div>
+                <div className="relative flex align-middle ml-3  z-20   bg-white dark:bg-form-input">
+                  <SelectGroupTwo
+                    values={[30, 50, 100, 200, 500, 'All']}
+                    setSelectedOption={(val) => setpagesval(val)}
+                    selectedOption={pagesval}
+                  />
                 </div>
               </div>
-
-              <span>
-                Page:{' '}
-                {pagination.state.getPages(data.nodes).map((_, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    className="rounded"
-                    style={{
-                      color: pagination.state.page === index ? 'white' : '',
-                      width: '20px',
-                      margin: '0px 5px',
-                      padding: '2px',
-                      backgroundColor:
-                        pagination.state.page === index ? '#3C50E0' : '',
-                    }}
-                    onClick={() => pagination.fns.onSetPage(index)}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-              </span>
             </div>
-            <div className="hidden">
-              <Table
-                id="my-table"
-                data={data}
-                pagination={pagination}
-                theme={theme}
-              >
-                {(tableList) => (
-                  <>
-                    <Header>
-                      <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <HeaderCell className="">ID</HeaderCell>
-                        <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Section</HeaderCell>
-                        <HeaderCell>Gender</HeaderCell>
-                      </HeaderRow>
-                    </Header>
 
-                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      {tableList?.map((item) => (
-                        <Row
-                          key={item.student_id}
-                          item={item}
-                          className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
-                        >
-                          <Cell className="  ">
-                            <span>{item.student_id}</span>
-                          </Cell>
-                          <Cell className="capitalize">
-                            {item.firstName +
-                              ' ' +
-                              item.otherName +
-                              ' ' +
-                              item.lastName}
-                          </Cell>
-                          <Cell className="  ">
-                            <span>{item.section}</span>
-                          </Cell>
-                          <Cell className="  ">
-                            <span>{item.gender}</span>
-                          </Cell>
-                        </Row>
-                      ))}
-                    </Body>
-                  </>
-                )}
-              </Table>
-            </div>
+            <span>
+              Page:{' '}
+              {pagination.state.getPages(data.nodes).map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className="rounded"
+                  style={{
+                    color: pagination.state.page === index ? 'white' : '',
+                    width: '20px',
+                    margin: '0px 5px',
+                    padding: '2px',
+                    backgroundColor:
+                      pagination.state.page === index ? '#3C50E0' : '',
+                  }}
+                  onClick={() => pagination.fns.onSetPage(index)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </span>
           </div>
-        </div>{' '}
-      </div>
+          <div className="hidden">
+            <Table
+              id="my-table1"
+              data={data}
+              theme={theme}
+            >
+               {(tableList) => (
+                <>
+                  <Header>
+                    <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
+                      <HeaderCell className="">ID</HeaderCell>
+                      <HeaderCell>Name</HeaderCell>
+                      {/* <HeaderCell>Class</HeaderCell> */}
+                      <HeaderCell> Current Arrears</HeaderCell>
+                      <HeaderCell>Fee Paid</HeaderCell>
+
+                      <HeaderCell>Balance</HeaderCell>
+                    </HeaderRow>
+                  </Header>
+
+                  <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    {tableList?.map((item) => (
+                      <Row
+                        key={item.student_id}
+                        item={item}
+                        className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                      >
+                        <Cell className="  ">
+                          <span>{item.student_id}</span>
+                        </Cell>
+                        <Cell className="capitalize">
+                          {item.firstName +
+                            ' ' +
+                            item.otherName +
+                            ' ' +
+                            item.lastName}
+                        </Cell>
+
+                        <Cell className="  ">
+                          <span>{item.arrears}</span>
+                        </Cell>
+                        <Cell className="  ">
+                          <span>
+                            {item.amountpaid == null ? '0.00' : item.amountpaid}
+                          </span>
+                        </Cell>
+                        <Cell className="flex   justify-between  ">
+                          <span className="">
+                            {item.accountbalance > 0
+                              ? ' ' + ' ' + item.accountbalance
+                              : ' ' + '' + item.accountbalance}
+                          </span>{' '}
+                          {/* <span className="float-right mr-15">
+                              {item?.accountbalance < 0 ? (
+                                <TableBtn
+                                  clickFunction={() => {}}
+                                  text={' Debit '}
+                                  color={'bg-[#6D343E]'}
+                                />
+                              ) : item?.accountbalance == 0 ? (
+                                ''
+                              ) : (
+                                <TableBtn
+                                  clickFunction={() => {}}
+                                  text={'Credit'}
+                                  color={'bg-success'}
+                                />
+                              )}
+                            </span> */}
+                        </Cell>
+                      </Row>
+                    ))}
+                  </Body>
+                </>
+              )}
+            </Table>
+          </div>
+        </div>
+      </div>{' '}
+    </div>
   );
 };
 

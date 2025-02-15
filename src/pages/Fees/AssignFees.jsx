@@ -70,7 +70,8 @@ const AssignFees = () => {
     AssignfeeGroup,
     AllAssignfee,
     updateFeeCartItem,
-    deleteSinglefee,deleteGoupFeeCart
+    deleteSinglefee,deleteGoupFeeCart,
+    deleteFeeCartItem
   } = fee;
 
   const [pagesval, setpagesval] = useState(30);
@@ -146,8 +147,30 @@ const AssignFees = () => {
       setVisible(false);
       dispatch(fetchAllfeeAssignRecordAction());
     }
+  
+  }, [AssignfeeGroup]);
+
+  useEffect(() => {
+    // setTimeout(() => setLoader(false), 1000);
+
+    if (deleteSinglefee?.success == 1) {
+     
+      dispatch(fetchAllfeeAssignRecordAction());
+    } if (deleteGoupFeeCart?.success == 1) {
+     
+      dispatch(fetchAllfeeAssignRecordAction());
+    }
     
-  }, [AssignfeeGroup,deleteSinglefee,deleteGoupFeeCart]);
+    if (deleteFeeCartItem?.success == 1) {
+     
+      dispatch(fetchAllfeeAssignRecordAction());
+    }
+    
+    if (updateFeeCartItem?.success == 1) {
+     
+      dispatch(fetchAllfeeAssignRecordAction());
+    }
+  }, [deleteSinglefee,deleteGoupFeeCart,deleteFeeCartItem,updateFeeCartItem]);
 
   fetchAllClass;
 
@@ -347,7 +370,7 @@ const AssignFees = () => {
     dispatch(deleteFeeCartItemAction(data));
   };
 
-  console.log(del);
+  console.log(cart);
 
   return loader ? (
     <Loader />
@@ -657,9 +680,11 @@ const AssignFees = () => {
                                     /> */}
                                       <TableBtn
                                         clickFunction={() => {
-                                          setDel(subitem[index]?.class);
-                                          setcart(subitem[index]?.scartegory);
+                                          setDel(subitem[0]?.class);
+                                          setcart(subitem[0]?.scartegory);
                                           setVisible8(true);
+                                       
+
                                         }}
                                         text={'Delete Cartegory'}
                                         color={'bg-[#475768d8]'}

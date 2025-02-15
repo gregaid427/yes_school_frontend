@@ -6,7 +6,7 @@ import {
 } from '../redux/slices/inventSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import { PayFeeAction } from '../redux/slices/feeSlice';
+import { PayFeeAction, resetGetFeeRecord, resetGetSessionFeeRecord } from '../redux/slices/feeSlice';
 import { fetchAllClassAction } from '../redux/slices/classSlice';
 import { fetchActivesessionAction } from '../redux/slices/sessionSlice';
 import { fetchschoolinfoAction } from '../redux/slices/usersSlice';
@@ -128,11 +128,9 @@ const PaymentRecordsModal = (props) => {
                       id=""
                       placeholder=""
                       defaultValue={
-                        props.val?.firstName +
-                          ' ' +
-                          props.val?.otherName +
-                          ' ' +
-                          props.val?.lastName}
+                        props.val?.student_id
+
+                        }
                       
                       
                       disabled
@@ -151,7 +149,16 @@ const PaymentRecordsModal = (props) => {
                       name=""
                       id=""
                       placeholder=""
-                      defaultValue={ props.val?.student_id}
+                      defaultValue={
+                        
+                        props.val?.firstName +
+                        ' ' +
+                        props.val?.otherName +
+                        ' ' +
+                        props.val?.lastName
+                        
+                        
+                      }
                       disabled
                     />
                   </div>
@@ -185,17 +192,17 @@ const PaymentRecordsModal = (props) => {
                     className="my-auto w-1/6 block text-sm font-medium text-black dark:text-white"
                     htmlFor=""
                   >
-                    Date
+                    Date (y/m/d)
                   </label>
                   <label
                     className="my-auto w-1/6 block text-sm font-medium text-black dark:text-white"
                     htmlFor=""
                   >
-                     By
+                    Initiated By
                   </label>
                 </div>
                 {props.rec?.map((item, index) => (
-                  <div className="flex my-1">
+                  <div className="flex my-1" key={index}>
                     <label
                       className="my-auto w-1/6 block text-sm font-medium text-black dark:text-white"
                       htmlFor=""
@@ -247,6 +254,8 @@ const PaymentRecordsModal = (props) => {
                     type=""
                     onClick={(e) => {
                       e.preventDefault();
+                      dispatch(resetGetSessionFeeRecord())
+
                       props.close(false);
                     }}
                   >

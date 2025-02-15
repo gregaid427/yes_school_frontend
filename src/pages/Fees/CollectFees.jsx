@@ -511,7 +511,7 @@ const CollectFees = () => {
                           </Cell>
                           <Cell className="flex   justify-between  ">
                             <span className="">
-                              {(item.accountbalance > 0 ? '🟠'+ ' '+item.accountbalance :  '🟢'+ ' '+item.accountbalance)}
+                              {(item.accountbalance > 0 ? '⚪'+ ' '+item.accountbalance :  '🟢'+ ' '+item.accountbalance)}
                             </span>{' '}
                             {/* <span className="float-right mr-15">
                               {item?.accountbalance < 0 ? (

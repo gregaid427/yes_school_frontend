@@ -44,6 +44,7 @@ import FeesReceiptModal from '../../components/FeesReceiptModal';
 import {
   fetchfeeCartegoryAction,
   GetFeeRecordAction,
+  resetGetFeeRecord,
   resetpayfee,
 } from '../../redux/slices/feeSlice';
 import { fetchActivesessionAction } from '../../redux/slices/sessionSlice';
@@ -252,7 +253,7 @@ useEffect(() => {
      setRecord(GetFeeRecord?.data)
      show('top-right');
 
-    
+    dispatch(resetGetFeeRecord())
     }
   }, [GetFeeRecord]);
 

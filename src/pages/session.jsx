@@ -453,7 +453,7 @@ const Session = () => {
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
                           <HeaderCell>Session</HeaderCell>
-                          <HeaderCell>Start Month</HeaderCell>
+                          <HeaderCell>Account ID</HeaderCell>
 
                           <HeaderCell>Status</HeaderCell>
 
@@ -470,7 +470,7 @@ const Session = () => {
                           
                           >
                             <Cell className="  ">{item.sessionname}</Cell>
-                            <Cell className="  ">{item.startmonth}</Cell>
+                            <Cell className="  ">{item.sessionaccountid}</Cell>
 
                             <Cell className="  ">
                               {item.active == 'true' ? <ActiveSVG /> : ''}

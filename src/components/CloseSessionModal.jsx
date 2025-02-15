@@ -57,9 +57,13 @@ const CloseSessionModal = (props) => {
   };
   
   useEffect(() => {
-    props?.account(sessionoption1);
-  }, [sessionoption1]);
+    props?.account(sessionoption);
+  }, [sessionoption]);
 
+
+  useEffect(() => {
+    props?.oldaccount(sessionoption1);
+  }, [sessionoption1]);
   
 
   useEffect(() => {
@@ -79,7 +83,7 @@ const CloseSessionModal = (props) => {
       }
     }
   }, []);
-  console.log(clazz);
+  console.log(sessionoption1);
   return (
     <div className="w-full">
       <div className="w-full ">

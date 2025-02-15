@@ -38,6 +38,7 @@ import { fetchUserdataAction } from '../redux/slices/usersSlice';
 
 import TableBtn from '../components/Svgs/TableBtn';
 import GenerateFeeModalStudent from '../components/GenerateFeeModalStudent';
+import { SessionAcctReportAction } from '../redux/slices/feeSlice';
 
 const AccountClosureListModal = (props) => {
   ///////////////////////////////////
@@ -56,7 +57,18 @@ const AccountClosureListModal = (props) => {
   const dispatch = useDispatch();
 
   const fee = useSelector((state) => state?.fees);
-  const { FetchSessionAcount } = fee;
+  const { FetchSessionAcount,SessionAcctReport } = fee;
+
+
+
+  useEffect(() => {
+    if (SessionAcctReport?.success == 1) {
+      navigate('/settings/sessionaccountsreport')
+    }
+    // else{
+    //   toast.error('Error Getting Report')
+    // }
+  }, [SessionAcctReport]);
 
   useEffect(() => {
     if (FetchSessionAcount?.success == 1) {
@@ -83,7 +95,7 @@ const AccountClosureListModal = (props) => {
      `,
 
       Table: `
-  --data-table-library_grid-template-columns:  5% 20% 15% 30% 30%;
+  --data-table-library_grid-template-columns:  4% 20% 10% 30% 30% 6%;
 `,
     },
   ]);
@@ -142,7 +154,7 @@ const AccountClosureListModal = (props) => {
           }
         >
           <label
-            className="mb-1 w-2/2 block  text-sm font-medium text-black dark:text-white"
+            className="mb-1 w-2/2 block   font-medium text-lg text-black dark:text-white"
             htmlFor=" "
           >
             Account Closure Log{' '}
@@ -176,7 +188,7 @@ const AccountClosureListModal = (props) => {
                 {(tableList) => (
                   <>
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      <Row className="dark:border-strokedark Uppercase dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Row className="dark:border-strokedark Uppercase dark:bg-boxdark font-bold  text-black  border-stroke bg-white dark:text-white flex ">
                         <Cell className="  ">
                           <span>ID</span>
                         </Cell>
@@ -187,6 +199,8 @@ const AccountClosureListModal = (props) => {
                         <Cell>
                           <div className="gap-2 flex">Session Opened On</div>
                         </Cell>
+                        <Cell className="  ">Report</Cell>
+
                       </Row>
 
                       {tableList?.map((item) => (
@@ -207,6 +221,15 @@ const AccountClosureListModal = (props) => {
                             <Cell className="  ">
                               <span>{item.newsession}</span>
                             </Cell>
+                            <Cell className="  ">
+                            <TableBtn
+                                  clickFunction={() => {
+                                    dispatch(SessionAcctReportAction({'id': item.oldsession }))
+
+                                  }}
+                                  text={' View '}
+                                  color={'bg-primary'}
+                                />                            </Cell>
                           </Row>
                         </>
                       ))}

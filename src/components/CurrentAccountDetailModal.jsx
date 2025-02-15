@@ -72,7 +72,7 @@ const CurrentAccountDetailModal = (props) => {
                     className="my-auto w-2/5 block text-sm font-medium text-black dark:text-white"
                     htmlFor=""
                   >
-                    {data?.createdBy}
+                    {data?.createdby}
                     </label>
                 
                 </div>
