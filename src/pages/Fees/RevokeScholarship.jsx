@@ -32,7 +32,7 @@ import {
 import ClassSelect3 from '../../components/ClassSelect3';
 import TableBtn from '../../components/Svgs/TableBtn';
 
-const ScholarshipList = () => {
+const RevokeScholarship = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
@@ -428,8 +428,8 @@ const ScholarshipList = () => {
                         {/* <HeaderCell className="">ID</HeaderCell> */}
                         <HeaderCell>Name</HeaderCell>
                         <HeaderCell>Scholarship</HeaderCell>
-                        <HeaderCell>Cover</HeaderCell>
-                        <HeaderCell>Amount</HeaderCell>
+                        <HeaderCell>Amount/Cover</HeaderCell>
+                        <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
 
@@ -456,16 +456,30 @@ const ScholarshipList = () => {
                           </Cell>
 
                           <Cell className="  ">
-                          <div className="gap-2 flex">
-                             {item.cartegorycovering}
-                             
-                            </div>
+                            <span>
+                              {item.amount +
+                                ' ' +
+                                '-' +
+                                ' ' +
+                                item.cartegorycovering}
+                            </span>
                           </Cell>
 
                           <Cell>
-                          
-                            {item.amount 
-                                }
+                            <div className="gap-2 flex">
+                              {/* 
+                              <ViewSVG
+                                clickFunction={() => handleviewbtn(item)}
+                              />
+                              <EditSVG
+                                clickFunction={() => handleEditbtn(item)}
+                              /> */}
+                              <TableBtn
+                                clickFunction={() => handleRevoke(item.id)}
+                                text={'Revoke Scholarship'}
+                                color={'bg-primary'}
+                              />
+                            </div>
                           </Cell>
                         </Row>
                       ))}
@@ -481,4 +495,4 @@ const ScholarshipList = () => {
   );
 };
 
-export default ScholarshipList;
+export default RevokeScholarship;

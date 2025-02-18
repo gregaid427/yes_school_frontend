@@ -929,6 +929,35 @@ export const fetchAllAssignLogAction = createAsyncThunk(
     }
   },
 );
+export const FetchClearLogAction = createAsyncThunk(
+  'fetch/clearlog',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/clearlog`,
+        payload,
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const fetchAllAssignRecordAction = createAsyncThunk(
   'fetch/getAllassignrecord',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -1883,8 +1912,73 @@ export const deleteSinglefeeStockAction = createAsyncThunk(
     }
   },
 );
+export const ClearLogAction = createAsyncThunk(
+  'delete/clearlog',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
 
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/clearlog`,
+        payload,
+      );
 
+    if (data?.success == 1) {   toast.dismiss(toastId);
+        toast.success('Logs Deleted Successfully');
+        setTimeout(() => toast.dismiss(), 2000);
+      }
+
+      if (data == null) {
+        toast.error('Error Deleting Logs');
+      }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+            ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const FetchAcountUpdateAction = createAsyncThunk(
+  'fee/fetchaccountUpdate',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/fetchaccountUpdate`,payload
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const FetchSessionAcountAction = createAsyncThunk(
   'fee/fetchaccountclosure',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -1982,6 +2076,9 @@ const FeeSlices = createSlice({
     resetGetSessionFeeRecord(state) {
       state.GetSessionFeeRecord  = null;
     },
+    resetClearlog(state) {
+      state.ClearLog  = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(CloseSessionAcountAction.pending, (state, action) => {
@@ -1999,6 +2096,21 @@ const FeeSlices = createSlice({
       state.CloseSessionAcount = undefined;
     });
     
+    builder.addCase(FetchAcountUpdateAction.pending, (state, action) => {
+      state.FetchAcountUpdateloading = true;
+      state.FetchAcountUpdate = false;
+    });
+    builder.addCase(FetchAcountUpdateAction.fulfilled, (state, action) => {
+      state.FetchAcountUpdate = action?.payload;
+      state.AllAssignLogloading = false;
+      state.FetchAcountUpdateerror = undefined;
+    });
+    builder.addCase(FetchAcountUpdateAction.rejected, (state, action) => {
+      state.FetchAcountUpdateloading = false;
+      state.FetchAcountUpdateerror = action.payload;
+      state.FetchAcountUpdate = undefined;
+    });
+    
     builder.addCase(fetchAllAssignLogAction.pending, (state, action) => {
       state.AllAssignLogloading = true;
       state.AllAssignLog = false;
@@ -2014,6 +2126,37 @@ const FeeSlices = createSlice({
       state.AllAssignLog = undefined;
     });
 
+
+    builder.addCase(FetchClearLogAction.pending, (state, action) => {
+      state.FetchClearLogloading = true;
+      state.FetchClearLog = false;
+    });
+    builder.addCase(FetchClearLogAction.fulfilled, (state, action) => {
+      state.FetchClearLog = action?.payload;
+      state.FetchClearLogloading = false;
+      state.FetchClearLogerror = undefined;
+    });
+    builder.addCase(FetchClearLogAction.rejected, (state, action) => {
+      state.FetchClearLogloading = false;
+      state.FetchClearLognerror = action.payload;
+      state.FetchClearLog = undefined;
+    });
+
+
+    builder.addCase(ClearLogAction.pending, (state, action) => {
+      state.ClearLogActiontloading = true;
+      state.ClearLog = false;
+    });
+    builder.addCase(ClearLogAction.fulfilled, (state, action) => {
+      state.ClearLog = action?.payload;
+      state.ClearLogActionloading = false;
+      state.ClearLogActionterror = undefined;
+    });
+    builder.addCase(ClearLogAction.rejected, (state, action) => {
+      state.ClearLogActionloading = false;
+      state.ClearLogActionerror = action.payload;
+      state.ClearLog = undefined;
+    });
 
     builder.addCase(FetchSessionAcountAction.pending, (state, action) => {
       state.FetchSessionAcountloading = true;
@@ -2333,6 +2476,7 @@ const FeeSlices = createSlice({
       state.Revokeloading = false;
       state.Revokeerror = undefined;
       //  state.fetchAllfee = action?.payload;
+      
     });
     builder.addCase(RevokeScholarshipAction.rejected, (state, action) => {
       state.Revokeloading = false;
@@ -2398,45 +2542,46 @@ const FeeSlices = createSlice({
     builder.addCase(
       ResetAllAccountBalanceByClassAction.pending,
       (state, action) => {
-        state.Generatefeeloading = true;
-        state.Generatefee = false;
+        state.ResetAllAccountloading = true;
+        state.ResetAllAccount = false;
         // state.fetchAllfee = false;
       },
     );
     builder.addCase(
       ResetAllAccountBalanceByClassAction.fulfilled,
       (state, action) => {
-        state.Generatefee = action?.payload;
-        state.Generatefeeloading = false;
-        state.Generatefeerror = undefined;
+        state.ResetAllAccount = action?.payload;
+        state.ResetAllAccountloading = false;
+        state.ResetAllAccountrror = undefined;
         //  state.fetchAllfee = action?.payload;
       },
     );
+    
     builder.addCase(
       ResetAllAccountBalanceByClassAction.rejected,
       (state, action) => {
-        state.Generatefeeloading = false;
-        state.Generatefeerror = action.payload;
-        state.Generatefee = undefined;
+        state.ResetAllAccountloading = false;
+        state.ResetAllAccountrror = action.payload;
+        state.ResetAllAccount = undefined;
         //   state.fetchAllfee = undefined;
       },
     );
 
     builder.addCase(ResetAllAccountBalanceAction.pending, (state, action) => {
-      state.Generatefeeloading = true;
-      state.Generatefee = false;
+      state.ResetAllAccountloading = true;
+      state.ResetAllAccount = false;
       // state.fetchAllfee = false;
     });
     builder.addCase(ResetAllAccountBalanceAction.fulfilled, (state, action) => {
-      state.Generatefee = action?.payload;
-      state.Generatefeeloading = false;
-      state.Generatefeerror = undefined;
+      state.ResetAllAccount = action?.payload;
+      state.ResetAllAccountloading = false;
+      state.ResetAllAccounterror = undefined;
       //  state.fetchAllfee = action?.payload;
     });
     builder.addCase(ResetAllAccountBalanceAction.rejected, (state, action) => {
-      state.Generatefeeloading = false;
-      state.Generatefeerror = action.payload;
-      state.Generatefee = undefined;
+      state.ResetAllAccountloading = false;
+      state.ResetAllAccounterror = action.payload;
+      state.ResetAllAccount = undefined;
       //   state.fetchAllfee = undefined;
     });
 
@@ -2925,6 +3070,7 @@ export const {
   resetfetchfeespaid,
   resetSessionAcctReport,
   resetGetFeeRecord,
+  resetClearlog,
   resetGetSessionFeeRecord
 } = FeeSlices.actions;
 

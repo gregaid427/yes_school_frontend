@@ -19,9 +19,11 @@ const UpdateAllStudentAccountModal = (props) => {
   const { cartegory, Generatefee, custom } = fee;
   let navigate = useNavigate();
   const student = useSelector((state) => state?.student);
+  const user = useSelector((state) => state?.user);
+  const { username, userMail } = user;
 
   const handleSubmit = () => {
-    dispatch(ResetAllAccountBalanceAction({ amount: amount }));
+    dispatch(ResetAllAccountBalanceAction({ amount: amount,createdby: username?.payload, }));
   };
 
   useEffect(() => {

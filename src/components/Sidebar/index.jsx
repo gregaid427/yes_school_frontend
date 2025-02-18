@@ -653,9 +653,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Students Account
                             </NavLink>
                           </li>
-                          <li>
+                          {/* <li>
                             <NavLink
-                              to="/fees/accountrecords"
+                              to="/settings/accountrecords"
                               className={({ isActive }) =>
                                 'group relative flex items-center  gap-2.5 rounded-md px-1 font-small text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
@@ -663,7 +663,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             >
                               Session  Records
                             </NavLink>
-                          </li>
+                          </li> */}
                           <li>
                             <NavLink
                               to="/fees/addfeesgroup"
@@ -688,7 +688,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             </NavLink>
                           </li>
 
-                          <li>
+                          {/* <li>
                             <NavLink
                               to="/fees/Scholarship"
                               className={({ isActive }) =>
@@ -698,10 +698,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             >
                               Scholarship
                             </NavLink>
-                          </li>
-                          <li>
+                          </li> */}
+                          {/* <li>
                             <NavLink
-                              to="/fees/enrollscholarship"
+                              to="/settings/scholarshipenroll"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
@@ -709,7 +709,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             >
                               Scholarship Enroll
                             </NavLink>
-                          </li>
+                          </li> */}
                           <li>
                             <NavLink
                               to="/fees/Scholarshipenroll"
@@ -730,7 +730,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Payment Log
+                            Fee  Payment Log
                             </NavLink>
                           </li>
                           <li>
@@ -741,10 +741,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                               Payment Records
+                             Fee  Payment Records
                             </NavLink>
                           </li>
-                          <li>
+                          {/* <li>
                             <NavLink
                               to="/fees/preference"
                               className={({ isActive }) =>
@@ -754,7 +754,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             >
                               Student Preference
                             </NavLink>
-                          </li>
+                          </li> */}
                           <li>
                             <NavLink
                               to="/fees/preferencelist"
@@ -763,7 +763,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Preference List
+                             Fee Preference List
                             </NavLink>
                           </li>
                         </ul>

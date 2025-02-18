@@ -16,6 +16,7 @@ import { fetchAllClassAction } from '../redux/slices/classSlice';
 const UpdateClassAccountModal = (props) => {
   const dispatch = useDispatch();
   const [display, setDisplay] = useState(0);
+  const [type, setType] = useState('custom');
 
   const [clazz, setclazz] = useState();
   const [amount, setAmount] = useState(0);
@@ -28,7 +29,8 @@ const UpdateClassAccountModal = (props) => {
   const [sessionoption, setSessionoption] = useState('');
   const fee = useSelector((state) => state?.fees);
   const { cartegory } = fee;
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail } = user;
   const [data1, setdata1] = useState(0);
   const [data2, setdata2] = useState({ test: 0 });
   const [data3, setdata3] = useState({ test: 0 });
@@ -59,9 +61,11 @@ const UpdateClassAccountModal = (props) => {
   const data = {
     class: arrString,
     amount: amount,
+    type: type,
+    createdby: username?.payload,
   };
   const handleSubmit = () => {
-    if (amount < 0) {
+    if (type == 'custom' && amount < 0) {
       return toast.error('Error - Enter Valid Amount');
     } else {
       dispatch(ResetAllAccountBalanceByClassAction(data));
@@ -88,6 +92,8 @@ const UpdateClassAccountModal = (props) => {
       setclazz(arr[0]);
     }
   }, [fetchAllClassloading]);
+  const [isChecked1, setIsChecked1] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
 
   return (
     <div className="w-full">
@@ -136,7 +142,7 @@ const UpdateClassAccountModal = (props) => {
                           toast.error('Please Select Class');
                           console.log(selectedArr);
                         } else {
-                          setDisplay(3);
+                          setDisplay(2);
                           console.log(selectedArr);
                         }
                       }}
@@ -156,93 +162,145 @@ const UpdateClassAccountModal = (props) => {
                     </button>
                   </div>
                 </form>
-                <form className={display == 1 ? '' : 'hidden'}>
+
+                <form className={display == 2 ? '' : 'hidden'}>
                   <div className="flex gap-4">
                     <div className="w-full">
-                      <div className="w-full mb-4 sm:w-2/2">
-                        <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor=""
-                        >
-                          Class
-                        </label>
-                        <div className="relative z-20 bg-white dark:bg-form-input">
-                          <ClassSelect3
-                            setsectionprop={setclazz}
-                            clazz={clazz}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mb-5.5">
-                        <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="emailAddress"
-                        >
-                          Description/Notes
-                        </label>
-                        <div className="relative">
-                          <textarea
-                            className="w-full rounded border border-stroke bg-gray py-2  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            name="bio"
-                            id="bio"
-                            rows={2}
-                            placeholder=""
-                            onChange={(e) => setDesc(e.target.value)}
-                          ></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type=""
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setDisplay(2);
-                      }}
-                    >
-                      Next
-                    </button>
-                    <button
-                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="reset"
-                      onClick={(e) => {
-                        e.preventDefault();
-
-                        props.close(false);
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-
-                <form className={display == 3 ? '' : 'hidden'}>
-                  <div className="flex gap-4">
-                    <div className="w-full">
-                      <div className="w-full mb-4 sm:w-2/2">
-                        <div className="w-full">
+                      <div className="w-full mb-1 sm:w-2/2">
+                        <div className="w-full mb-5">
                           <div className="flex flex-col justify-between">
                             <label
-                              className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
+                              className="mb-1 py-auto block text-sm font-medium text-black dark:text-white"
                               htmlFor=""
                             >
                               Selected Classes :
                             </label>
                             <label
-                              className="mb-3 py-auto block text-sm font-medium text-black dark:text-white"
+                              className="mb-1 py-auto block text-sm font-medium text-black dark:text-white"
                               htmlFor=""
                             >
                               {selectedArr.toString()}
                             </label>
                           </div>
                         </div>
-                        <div className="w-full py-6 flex mb-4 sm:w-2/2">
+                        <div className="w-full">
+                          <div className="flex flex-col justify-between">
+                            <label
+                              className="mb-1 py-auto block text-sm font-medium text-black dark:text-white"
+                              htmlFor=""
+                            >
+                              Select Update Options :
+                            </label>
+                            <div className=" flex   ">
+                              <div className=" flex gap-2  sm:w-full">
+                              <label
+                                  htmlFor={'type'}
+                                  className="flex cursor-pointer select-none  "
+                                >
+                                  <div className="relative py-2">
+                                    <input
+                                      title={'type'}
+                                      type="checkbox"
+                                      id={'type'}
+                                      className="sr-only "
+                                      onChange={() => {
+                                        setIsChecked1(true);
+                                        setIsChecked(false);
+
+                                        setType('custom');
+                                      }}
+                                    />
+                                    <div
+                                      className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                        isChecked1 &&
+                                        'border-primary bg-gray dark:bg-transparent'
+                                      }`}
+                                    >
+                                      <span
+                                        className={`h-2.5 w-2.5 rounded-sm ${isChecked1 && 'bg-primary'}`}
+                                      ></span>
+                                    </div>
+                                  </div>
+                                 
+                                </label>
+                                <label
+                                  className=" block text-sm py-2 font-medium text-black dark:text-white"
+                                  htmlFor="checkboxLabelOne"
+                                >
+                                  {'Custom Account Balance'}
+                                </label>
+                              </div>
+
+                              <div className="flex justify-start gap-2  sm:w-2/4">
+                               
+                                <input
+                                    className="w-full rounded border border-stroke bg-gray py-1 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                    type="number"
+                                    name=""
+                                    id=""
+                                    placeholder=""
+                                    defaultValue={0}
+                                    onChange={(e) => {
+                                      setAmount(e.target.value);
+                                    }}
+                                  />
+                              </div>
+                            </div>
+                            <div className=" flex gap-2  sm:w-full">
+                            <label
+                                  htmlFor={'type2'}
+                                  className="flex cursor-pointer select-none "
+                                >
+                                  <div className="relative ">
+                                    <input
+                                      title={'type2'}
+                                      type="checkbox"
+                                      id={'type2'}
+                                      className="sr-only"
+                                      onChange={() => {
+                                        setIsChecked1(false);
+                                        setIsChecked(true);
+
+                                        setType('reset');
+                                      }}
+                                    />
+                                    <div
+                                      className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                        isChecked &&
+                                        'border-primary bg-gray dark:bg-transparent'
+                                      }`}
+                                    >
+                                      <span
+                                        className={`h-2.5 w-2.5 rounded-sm ${isChecked && 'bg-primary'}`}
+                                      ></span>
+                                    </div>
+                                  </div>
+                                </label>
+                            <div className="   sm:w-full">
+                              
+                                <label
+                                  className=" block text-sm font-medium text-black dark:text-white"
+                                  htmlFor="checkboxLabelOne"
+                                >
+                                  {'Reset Accounts To Zero Balance'}
+                                </label>
+                                <label
+                                  className="mb-3 block text-sm font-small text-black dark:text-white"
+                                  htmlFor="checkboxLabelOne"
+                                >
+                                  (includes accnt balance,arrears, scholarship)
+                                </label>
+                              </div>
+
+                              <div className="flex justify-start sm:w-2/4">
+                               
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {/* <div className="w-full py-3 flex mb-1 sm:w-2/2">
                           <label
-                            className="my-auto w-3/5 block text-sm font-medium text-black dark:text-white"
+                            className="my-auto w-4/5 block text-sm font-medium text-black dark:text-white"
                             htmlFor=""
                           >
                             Enter Account balance
@@ -258,7 +316,18 @@ const UpdateClassAccountModal = (props) => {
                               setAmount(e.target.value);
                             }}
                           />
-                        </div>
+                        </div> */}
+
+                        {/* <button
+                      className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      type=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSubmit();
+                      }}
+                    >
+                      Reset Account Balances To Zero
+                    </button> */}
                       </div>
                     </div>
                   </div>
@@ -270,6 +339,7 @@ const UpdateClassAccountModal = (props) => {
                       onClick={(e) => {
                         e.preventDefault();
                         handleSubmit();
+                        props.close(false)
                       }}
                     >
                       Proceed

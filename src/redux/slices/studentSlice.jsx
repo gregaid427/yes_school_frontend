@@ -550,6 +550,7 @@ export const StudentPicture = createAsyncThunk(
     }
   },
 );
+
 export const deleteSingleStudentAction = createAsyncThunk(
   'delete/singlestudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {

@@ -87,22 +87,16 @@ export const loginUserAction = createAsyncThunk(
       );
       console.log(data);
 
-      // if (data?.success == 0) {
-      //   const toast = useRef(null);
+      if (data?.success == 0 || data == undefined || data?.success== 1) {
+            toast.dismiss(toastId);
 
-      //     toast.current.show({severity:'warn', summary: 'Warning', detail:'Message Content', life: 3000});
-
-      //            // toast.error("Incorrect Email or Password", { className: "toast-message1" });
-      // }
-
-       if (data) {
-        toast.dismiss(toastId);
-   
       }
+   
       return data;
     } catch (error) {
       console.log(error);
      //       ErrorToast('Error', error);
+     toast.dismiss();
 
       // console.log(error);
       // console.log(error?.response);

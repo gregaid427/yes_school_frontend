@@ -39,14 +39,17 @@ import AssignFeeModal from '../../components/AssignFeeModal';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import {
   CurrentAccountDetailAction,
+  FetchAcountUpdateAction,
   fetchAllAssignLogAction,
   fetchAllAssignRecordAction,
   fetchAllfeeAssignRecordAction,
+  FetchClearLogAction,
   fetchfeeAssignGroupRecordAction,
   fetchfeeAssignRecordAction,
   fetchfeeCartegoryAction,
   FetchGenerateFeeAction,
   FetchSessionAcountAction,
+  resetClearlog,
   resetCloseSessionAcount,
   resetdeleteassignedfee,
   resetGeneratefee,
@@ -80,6 +83,9 @@ import CurrentAccountDetailModal from '../../components/CurrentAccountDetailModa
 import AccountClosureListModal from '../AccountClosureListModal';
 import FeeGenerateRecordList from '../FeeGenerateRecordList';
 import AssignFeeLogModal from '../AssignFeeLogModal';
+import ClearedLogModal from '../ClearedLogModal';
+import SearchStudentsModalAlt from '../SearchStudentsModalAlt';
+import StudentAccountUpdateModal from '../StudentAccountUpdateModal';
 
 const Finance = () => {
   const formRef1 = useRef();
@@ -101,6 +107,8 @@ const Finance = () => {
     GetSingleBill,
     CloseSessionAcount,
     SessionAcctReport,
+    ClearLog,
+    AllAssignLog,
   } = fee;
 
   const [pagesval, setpagesval] = useState(30);
@@ -146,6 +154,8 @@ const Finance = () => {
   const [visible23, setVisible23] = useState(false);
   const [visible24, setVisible24] = useState(false);
   const [visible25, setVisible25] = useState(false);
+  const [visible26, setVisible26] = useState(false);
+  const [visible27, setVisible27] = useState(false);
 
 
   const navigate = useNavigate();
@@ -266,7 +276,6 @@ const Finance = () => {
     if (Generatefee?.success == 1) {
       setVisible(false);
       setVisible5(false);
-      setVisible7(false);
       setVisible8(false);
 
       dispatch(resetGeneratefee());
@@ -344,50 +353,22 @@ const Finance = () => {
   const [activeaccount, setactiveaccount] = useState(null);
   const [oldaccount, setoldaccount] = useState(null);
 
-
-  
-
-  function handleFileUpload(e) {
-    console.log('called');
-    setCheck(false);
-    const reader = new FileReader();
-    reader.readAsBinaryString(e.target.files[0]);
-    reader.onload = (e) => {
-      const data = e.target.result;
-      const workbook = XLSX.read(data, { type: 'binary' });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const parsedData = XLSX.utils.sheet_to_json(sheet);
-      setClassData(parsedData);
-
-      const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789';
-
-      function generateString(length) {
-        let result = '';
-        const charactersLength = characters.length;
-        for (let i = 0; i < length; i++) {
-          result += characters.charAt(
-            Math.floor(Math.random() * charactersLength),
-          );
-        }
-
-        return result;
-      }
-
-      let newArr1 = parsedData.map((v) => ({
-        ...v,
-        password: generateString(5),
-        email: v.firstName + generateString(3).toLocaleLowerCase(),
-        class: classname,
-        section: sectionname,
-      }));
-      setClassData1(newArr1);
-    };
-  }
   useEffect(() => {
-    console.log(classData1);
-  }, [classData, check]);
+    if (AllAssignLog?.success == 1) {
+      let data = AllAssignLog?.data;
+      setdata(data);
+    }
+  }, [AllAssignLog]);
+
+  useEffect(() => {
+    console.log('clearrrrrr');
+    if (ClearLog?.success == 1) {
+      setVisible23(false);
+      setVisible24(false);
+      setVisible25(false);
+      dispatch(resetClearlog());
+    }
+  }, [ClearLog]);
 
   const [position, setPosition] = useState('center');
 
@@ -423,10 +404,8 @@ const Finance = () => {
     if (AssignfeeGroup?.success == 1) {
       setVisible4(false);
     }
-    if (custom?.success == 1) {
-      setVisible6(false);
-    }
-  }, [AssignfeeGroup, custom]);
+    
+  }, [AssignfeeGroup, ]);
 
   useEffect(() => {
     if (CloseSessionAcount?.success == 1) {
@@ -504,7 +483,7 @@ const Finance = () => {
           if (!visible14) return;
           setVisible10(false);
         }}
-      > 
+      >
         <GenerateFeeResponseModal close={setVisible14} val={check1} />
       </Dialog>
       <Dialog
@@ -548,9 +527,7 @@ const Finance = () => {
           val={propdata}
           account={setactiveaccount}
           oldaccount={setoldaccount}
-
           openModal={setVisible16}
-          
         />
       </Dialog>
       <Dialog
@@ -585,7 +562,7 @@ const Finance = () => {
           setVisible3(false);
         }}
       >
-        <SearchStudentsModal close={setVisible3}  openModal={setVisible9} />
+        <SearchStudentsModal close={setVisible3} openModal={setVisible9} />
       </Dialog>
       <Dialog
         visible={visible9}
@@ -623,13 +600,13 @@ const Finance = () => {
       <Dialog
         visible={visible6}
         position={'top'}
-        style={{ height: 'auto', width: '35%' }}
+        style={{ height: 'auto', width: '63%' }}
         onHide={() => {
           if (!visible6) return;
           setVisible6(false);
         }}
       >
-        <UpdateStudentAccountModal close={setVisible6} />
+        <SearchStudentsModalAlt close={setVisible6} />
       </Dialog>
       <Dialog
         visible={visible7}
@@ -646,7 +623,7 @@ const Finance = () => {
       <Dialog
         visible={visible8}
         position={'top'}
-        style={{ height: 'auto', width: '35%' }}
+        style={{ height: 'auto', width: '40%' }}
         onHide={() => {
           if (!visible8) return;
           setVisible8(false);
@@ -755,6 +732,29 @@ const Finance = () => {
         }}
       >
         <AssignFeeLogModal close={setVisible25} />
+      </Dialog>
+
+      <Dialog
+        visible={visible26}
+        position={'top-right'}
+        style={{ height: 'auto', width: '60%', marginRight: '10px' }}
+        onHide={() => {
+          if (!visible26) return;
+          setVisible26(false);
+        }}
+      >
+        <ClearedLogModal close={setVisible26} />
+      </Dialog>
+      <Dialog
+        visible={visible27}
+        position={'top-right'}
+        style={{ height: 'auto', width: '60%', marginRight: '10px' }}
+        onHide={() => {
+          if (!visible27) return;
+          setVisible27(false);
+        }}
+      >
+        <StudentAccountUpdateModal close={setVisible27} />
       </Dialog>
 
       <div className="flex w-full gap-2">
@@ -898,7 +898,7 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                        Generate Fee For  Session (All Students)
+                        Generate Fee For Session (All Students)
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
@@ -1026,8 +1026,7 @@ const Finance = () => {
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          setVisible4(true);
-                        }}
+                             navigate('/settings/assignfees')                        }}
                       >
                         Select
                       </button>
@@ -1073,8 +1072,8 @@ const Finance = () => {
                         type=""
                         onClick={() => {
                           show('top-right');
-                         // dispatch(fetchfeeAssignGroupRecordAction());
-                         navigate('/fees/Assignfees')
+                          // dispatch(fetchfeeAssignGroupRecordAction());
+                          navigate('/fees/Assignfees');
                         }}
                       >
                         Select
@@ -1105,6 +1104,208 @@ const Finance = () => {
                       </button>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div className="w-full flex-col">
+              <div
+                className={
+                  'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
+                }
+              >
+                <div className="w-full overflow-x-auto">
+                  <div className="w-full  flex justify-between  ">
+                    <h3 className="font-medium text-black py-3 dark:text-white">
+                      Scholarship
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+                }
+              >
+                <div className="w-full">
+                  <label className="  text-sm font-medium text-ash dark:text-white">
+                    Options :
+                  </label>
+                  <div className=" flex flex-col mb-2 gap-2">
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Add Scholarship Scheme
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate('/settings/scholarship');
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className=" flex flex-col gap-2">
+                    <div className="flex justify-between ">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Enroll Student on Scholarship
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate('/settings/enrollscholarship');
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Revoke Students' Scholarship
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate('/settings/revokescholarship');
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                         Students Scholarship List
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate('/fees/Scholarshipenroll');
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="w-full flex-col">
+              <div
+                className={
+                  'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
+                }
+              >
+                <div className="w-full overflow-x-auto">
+                  <div className="w-full  flex justify-between  ">
+                    <h3 className="font-medium text-black py-3 dark:text-white">
+                       Fee Preference
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+                }
+              >
+                <div className="w-full">
+                  <label className="  text-sm font-medium text-ash dark:text-white">
+                    Options :
+                  </label>
+                  <div className=" flex flex-col mb-2 gap-2">
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Manage Fee Preferences
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate("/settings/preference");
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className=" flex flex-col gap-2">
+                    <div className="flex justify-between ">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                         Students Preference List
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate("/settings/preferencelist");
+                        }}
+                      >
+                        Select
+                      </button>
+                      </div>
+                      </div>
+
                 </div>
               </div>
             </div>
@@ -1166,7 +1367,7 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                        Update Entire Class Account Balance
+                        Update Entire Classes Account Balance
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
@@ -1201,6 +1402,33 @@ const Finance = () => {
                         Select
                       </button>
                     </div>
+
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                         Student Account Update Log
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          dispatch(FetchAcountUpdateAction())
+                          setVisible27(true);
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                
+                  
                   </div>
                 </div>
               </div>
@@ -1226,10 +1454,32 @@ const Finance = () => {
               >
                 <div className="w-full">
                   <label className="  text-sm font-medium text-ash dark:text-white">
-                     Finance Log Options:
+                    Finance Log Options:
                   </label>
                   <div className=" flex flex-col gap-2">
-                   
+                  <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Fee Payment Log
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                         navigate('/settings/managefee')
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
                     <div className="flex justify-between">
                       <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                         <div
@@ -1302,6 +1552,30 @@ const Finance = () => {
                         Select
                       </button>
                     </div>
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Deleted Logs Record
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          setVisible26(true);
+                          dispatch(FetchClearLogAction());
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1331,52 +1605,6 @@ const Finance = () => {
                     Generate Reports Options:
                   </label>
                   <div className=" flex flex-col gap-2">
-                    <div className="flex justify-between ">
-                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
-                        <div
-                          className={` flex h-5 w-5 items-center justify-center rounded border ${
-                            true && 'border-primary bg-gray dark:bg-transparent'
-                          }`}
-                        >
-                          <span
-                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
-                          ></span>
-                        </div>{' '}
-                        Generate Bill{' '}
-                      </label>
-                      <button
-                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={() => {
-                          navigate('/fees/Bulkbill');
-                        }}
-                      >
-                        Select
-                      </button>
-                    </div>
-                    <div className="flex justify-between ">
-                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
-                        <div
-                          className={` flex h-5 w-5 items-center justify-center rounded border ${
-                            true && 'border-primary bg-gray dark:bg-transparent'
-                          }`}
-                        >
-                          <span
-                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
-                          ></span>
-                        </div>{' '}
-                        Fee Payments & Payment Reversals
-                      </label>
-                      <button
-                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={() => {
-                          navigate('/fees/manage');
-                        }}
-                      >
-                        Select
-                      </button>
-                    </div>
                     <div className="flex justify-between">
                       <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                         <div
@@ -1388,7 +1616,7 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>
-                        Fee Class Assignments
+                        Assigned Class Fees
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
@@ -1412,14 +1640,36 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>
-                        Session Fee Report
+                        Current Session Fee Report
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          //setVisible10(true)
-                          dispatch(fetchAllAssignRecordAction());
+                          navigate('/settings/accountrecords');
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
+                    <div className="flex justify-between">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>
+                        Closed Sessions' Fee Report
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate('/settings/accountrecords');
                         }}
                       >
                         Select
@@ -1517,53 +1767,6 @@ const Finance = () => {
                         type=""
                         onClick={() => {
                           navigate('/fees/manage');
-                        }}
-                      >
-                        Select
-                      </button>
-                    </div>
-                    <div className="flex justify-between">
-                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
-                        <div
-                          className={` flex h-5 w-5 items-center justify-center rounded border ${
-                            true && 'border-primary bg-gray dark:bg-transparent'
-                          }`}
-                        >
-                          <span
-                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
-                          ></span>
-                        </div>
-                        Clear Account Logs
-                      </label>
-                      <button
-                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={() => {
-                          //setVisible10(true)
-                          dispatch(fetchAllAssignRecordAction());
-                        }}
-                      >
-                        Select
-                      </button>
-                    </div>
-                    <div className="flex justify-between">
-                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
-                        <div
-                          className={` flex h-5 w-5 items-center justify-center rounded border ${
-                            true && 'border-primary bg-gray dark:bg-transparent'
-                          }`}
-                        >
-                          <span
-                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
-                          ></span>
-                        </div>{' '}
-                        Total Fees Collected
-                      </label>
-                      <button
-                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={() => {
-                          setVisible13(true);
                         }}
                       >
                         Select

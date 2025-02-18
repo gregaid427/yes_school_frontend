@@ -52,9 +52,8 @@ import { fetchstdCartegoryAction } from '../../redux/slices/studentSlice';
 import DeleteIcon from '../../components/Svgs/deleteIcon';
 import EditIcon from '../../components/Svgs/editIcon';
 import DeleteModal from '../../components/DeleteModal';
-import { Print } from 'print-react';
 
-const AssignFees = () => {
+const AssignFeesSettings = () => {
   const formRef1 = useRef();
   function resetFormStates() {
     // formRef.current.reset();
@@ -71,9 +70,8 @@ const AssignFees = () => {
     AssignfeeGroup,
     AllAssignfee,
     updateFeeCartItem,
-    deleteSinglefee,
-    deleteGoupFeeCart,
-    deleteFeeCartItem,
+    deleteSinglefee,deleteGoupFeeCart,
+    deleteFeeCartItem
   } = fee;
 
   const [pagesval, setpagesval] = useState(30);
@@ -149,31 +147,30 @@ const AssignFees = () => {
       setVisible(false);
       dispatch(fetchAllfeeAssignRecordAction());
     }
+  
   }, [AssignfeeGroup]);
 
   useEffect(() => {
     // setTimeout(() => setLoader(false), 1000);
 
     if (deleteSinglefee?.success == 1) {
+     
+      dispatch(fetchAllfeeAssignRecordAction());
+    } if (deleteGoupFeeCart?.success == 1) {
+     
       dispatch(fetchAllfeeAssignRecordAction());
     }
-    if (deleteGoupFeeCart?.success == 1) {
-      dispatch(fetchAllfeeAssignRecordAction());
-    }
-
+    
     if (deleteFeeCartItem?.success == 1) {
+     
       dispatch(fetchAllfeeAssignRecordAction());
     }
-
+    
     if (updateFeeCartItem?.success == 1) {
+     
       dispatch(fetchAllfeeAssignRecordAction());
     }
-  }, [
-    deleteSinglefee,
-    deleteGoupFeeCart,
-    deleteFeeCartItem,
-    updateFeeCartItem,
-  ]);
+  }, [deleteSinglefee,deleteGoupFeeCart,deleteFeeCartItem,updateFeeCartItem]);
 
   fetchAllClass;
 
@@ -349,15 +346,6 @@ const AssignFees = () => {
     setVisible(true);
   };
 
-  const handleDownloadPdf = async () => {
-    // const doc = new jsPDF();
-    // const els = document.getElementsByClassName('my-table');
-    // const pdf = new jsPDF("p", "mm", "a4");
-    // pdf.html(els[0]).then(() => {
-    //    pdf.save("download.pdf");
-    // });
-  };
-
   const handledeletebtn1 = () => {
     const data = {
       cart: cart,
@@ -381,8 +369,6 @@ const AssignFees = () => {
     //  dispatch(deleteSingleFeeCartAction(data));
     dispatch(deleteFeeCartItemAction(data));
   };
-  const ref = useRef({ openPrintDialog: () => Promise });
-  const [printDialogOpen, setPrintDialogOpen] = useState(false);
 
   console.log(cart);
 
@@ -503,32 +489,20 @@ const AssignFees = () => {
             'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
           }
         >
-          <div className="w-full flex justify-between">
-            <div className="  flex justify-between  ">
+          <div className="w-full overflow-x-auto">
+            <div className="w-full  flex justify-between  ">
               <h3 className="font-medium text-black py-3 dark:text-white">
                 Assigned Fee List
               </h3>
             </div>
-            <div className="flex gap-5  " id="my-tabl">
-              <div className="  flex justify-between  ">
-                <h3
-                  className="font-medium text-black py-3 cursor-pointer dark:text-white"
-                  onClick={() => {
-                    ref.current.openPrintDialog();
-                  }}
-                >
-                  Print Page
-                </h3>
-              </div>
-            </div>
           </div>
         </div>
-        {/* <div
+        <div
           className={
             'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
           }
-        > */}
-        {/* <div className="w-full  flex gap-7">
+        >
+          <div className="w-full  flex gap-7">
             <div className=" flex w-9/12 justify-between gap-4">
               <div className=" ">
                 <button
@@ -542,44 +516,29 @@ const AssignFees = () => {
                 </button>
               </div>
             </div>
-          </div> */}
-        {/* </div> */}
-
-        <Print
-          ref={ref}
-          printWidth={900}
-          marginTop={48}
-          marginLeft={20}
-          marginRight={20}
-          onOpenPrintDialog={() => {
-            setPrintDialogOpen(true);
-          }}
-          onClosePrintDialog={() => {
-            setPrintDialogOpen(false);
-          }}
+          </div>
+        </div>
+        <div
+          className={
+            'rounded-sm  w-full border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
+          }
         >
-          {' '}
-          <div
-            className={
-              'rounded-sm  border border-stroke bg-white px-2 pt-1 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark '
-            }
-          >
-            {info?.map((item, index) => (
-              <>
-                <div className="flex gap-3 px-6   my-6 flex-col">
-                  <div className="w-full border-b border-t border-stroke dark:border-stone-500 py-1 dark:bg-boxdark  flex-col">
-                    <div
-                      className={
-                        'rounded-sm  max-w-full   px-5 shadow-default   '
-                      }
-                    >
-                      <div className="w-full overflow-x-auto flex justify-between">
-                        <div className="  flex justify-between  ">
-                          <h3 className="font-bold text-sm text-black py-1 dark:text-white">
-                            {item[0][0]?.class}
-                          </h3>
-                        </div>
-                        {/* <div className="flex gap-2">
+          {info?.map((item, index) => (
+            <>
+              <div className="flex gap-3 px-6  my-6 flex-col">
+                <div className="w-full border-b border-t border-stroke dark:border-stone-500 py-1 dark:bg-boxdark  flex-col">
+                  <div
+                    className={
+                      'rounded-sm  max-w-full   px-5 shadow-default   '
+                    }
+                  >
+                    <div className="w-full overflow-x-auto flex justify-between">
+                      <div className="  flex justify-between  ">
+                        <h3 className="font-bold text-sm text-black py-1 dark:text-white">
+                          {item[0][0]?.class}
+                        </h3>
+                      </div>
+                      <div className="flex gap-2">
                         {' '}
                         <button
                           className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-sm  text-gray hover:bg-opacity-90"
@@ -605,59 +564,70 @@ const AssignFees = () => {
                         >
                           Delete All
                         </button>
-                      </div> */}
                       </div>
                     </div>
-                    <div className={'rounded-sm px-1 py-2 '}>
-                      <div className="w-full">
-                        <div className={'w-full flex flex-col gap-1'}>
-                          {false ? (
-                            <label className=" flex  text-sm font-bold text-ash dark:text-white">
-                              ⚠️ No Fee Cartegory Available
-                            </label>
-                          ) : (
-                            <div className="grid  grid-cols-3 gap-1">
-                              {' '}
-                              {item?.map((subitem, index) => (
-                                <>
-                                  <div
-                                    className={
-                                      'flex flex-col w-full gap-1  border  border-stroke dark:border-stone-700 rounded p-2 '
-                                    }
-                                  >
-                                    <div className="flex justify-between">
-                                      <label className=" flex   text-sm font-bold text-ash dark:text-white">
-                                        <div
-                                          className={`mr-1 flex h-4 w-4 items-center justify-center rounded border ${
-                                            true &&
-                                            'border-primary bg-gray dark:bg-transparent'
-                                          }`}
-                                        >
-                                          <span
-                                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
-                                          ></span>
-                                        </div>{' '}
-                                        {subitem[0]?.scartegory}
-                                      </label>
+                  </div>
+                  <div className={'rounded-sm px-1 py-2 '}>
+                    <div className="w-full">
+                      <div className={'w-full flex flex-col gap-1'}>
+                        {false ? (
+                          <label className=" flex  text-sm font-bold text-ash dark:text-white">
+                            ⚠️ No Fee Cartegory Available
+                          </label>
+                        ) : (
+                          <div className="grid  grid-cols-3 gap-1">
+                            {' '}
+                            {item?.map((subitem, index) => (
+                              <>
+                                <div
+                                  className={
+                                    'flex flex-col w-full gap-1  border  border-stroke dark:border-stone-700 rounded p-2 '
+                                  }
+                                >
+                                  <div className="flex justify-between">
+                                    <label className=" flex   text-sm font-bold text-ash dark:text-white">
+                                      <div
+                                        className={`mr-1 flex h-4 w-4 items-center justify-center rounded border ${
+                                          true &&
+                                          'border-primary bg-gray dark:bg-transparent'
+                                        }`}
+                                      >
+                                        <span
+                                          className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                                        ></span>
+                                      </div>{' '}
+                                      {subitem[0]?.scartegory}
+                                    </label>
+                                  </div>
+                                  <div className="flex flex-col">
+                                    {subitem[0]?.feename == undefined ? ( <div className='flex justify-between'>
+                                      <p>⚠️ No Fee Items Assigned </p> 
+                                       <button
+                                      className="flex  float-end rounded bg-primary py-1 px-1 font-medium text-sm  text-gray hover:bg-opacity-90"
+                                      type=""
+                                      onClick={() => {
+                                        setClass(item[0][0]?.class);
+                                        setcart(subitem[0]?.scartegory)
+                                        setVisible2(true);
+                                        setType(false)
+                                      }}
+                                    >
+                                      Assign 
+                                    </button>
                                     </div>
-                                    <div className="flex flex-col">
-                                      {subitem[0]?.feename == undefined ? (
-                                        <div className="flex justify-between">
-                                          <p>⚠️ No Fee Items Assigned </p>
-                                        </div>
-                                      ) : (
-                                        subitem?.map((item, index) => (
-                                          <div className="flex" key={index}>
-                                            <div className="flex w-full  justify-between mr-2">
-                                              <label className=" flex gap-1  text-sm font-small text-ash dark:text-white">
-                                                - {item?.feename}
-                                              </label>
-                                              <label className=" flex gap-1  text-sm font-small text-ash dark:text-white">
-                                                {item?.amount}
-                                              </label>
-                                            </div>
+                                    ) : (
+                                      subitem?.map((item, index) => (
+                                        <div className="flex" key={index}>
+                                          <div className="flex w-full  justify-between mr-2">
+                                            <label className=" flex gap-1  text-sm font-small text-ash dark:text-white">
+                                              - {item?.feename}
+                                            </label>
+                                            <label className=" flex gap-1  text-sm font-small text-ash dark:text-white">
+                                              {item?.amount}
+                                            </label>
+                                          </div>
 
-                                            {/* <div className="">
+                                          <div className="">
                                             <div className="flex">
                                               <EditIcon
                                                 clickFunction={() => {
@@ -672,35 +642,35 @@ const AssignFees = () => {
                                                 }}
                                               />
                                             </div>
-                                          </div> */}
                                           </div>
-                                        ))
-                                      )}
-
-                                      <div
-                                        className={
-                                          subitem[0]?.feename == undefined
-                                            ? 'hidden'
-                                            : 'flex'
-                                        }
-                                      >
-                                        <div className="flex  w-full justify-between">
-                                          <label className=" flex gap-1 float-end  text-sm font-bold text-ash dark:text-white">
-                                            Total : {subitem[0]?.total}
-                                          </label>
-                                          <label className=" flex gap-1  text-md font-bold text-ash dark:text-white">
-                                            {/* {item.total} */}
-                                          </label>
                                         </div>
+                                      ))
+                                    )}
+
+                                    <div
+                                      className={
+                                        subitem[0]?.feename == undefined
+                                          ? 'hidden'
+                                          : 'flex'
+                                      }
+                                    >
+                                      <div className="flex  w-full justify-between">
+                                        <label className=" flex gap-1 float-end  text-sm font-bold text-ash dark:text-white">
+                                          Total : {subitem[0]?.total}
+                                        </label>
+                                        <label className=" flex gap-1  text-md font-bold text-ash dark:text-white">
+                                          {/* {item.total} */}
+                                        </label>
                                       </div>
-                                      <div
-                                        className={
-                                          subitem[0]?.feename == undefined
-                                            ? 'hidden'
-                                            : 'flex float-end justify-items-end justify-end align-text-bottom '
-                                        }
-                                      >
-                                        {/* <TableBtn
+                                    </div>
+                                    <div
+                                      className={
+                                        subitem[0]?.feename == undefined
+                                          ? 'hidden'
+                                          : 'flex float-end justify-items-end justify-end align-text-bottom '
+                                      }
+                                    >
+                                      {/* <TableBtn
                                       clickFunction={() => {
                                         // setinfo(item);
                                         // setVisible9(true);
@@ -708,7 +678,7 @@ const AssignFees = () => {
                                       text={'Add Item'}
                                       color={'bg-[#475768d8]'}
                                     /> */}
-                                        {/* <TableBtn
+                                      <TableBtn
                                         clickFunction={() => {
                                           setDel(subitem[0]?.class);
                                           setcart(subitem[0]?.scartegory);
@@ -718,26 +688,25 @@ const AssignFees = () => {
                                         }}
                                         text={'Delete Cartegory'}
                                         color={'bg-[#475768d8]'}
-                                      /> */}
-                                      </div>
+                                      />
                                     </div>
                                   </div>
-                                </>
-                              ))}
-                            </div>
-                          )}
-                        </div>
+                                </div>
+                              </>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>{' '}
-                </div>
-              </>
-            ))}
-          </div>{' '}
-        </Print>
+                  </div>
+                </div>{' '}
+              </div>
+            </>
+          ))}
+        </div>{' '}
       </div>
     </DefaultLayout>
   );
 };
 
-export default AssignFees;
+export default AssignFeesSettings;

@@ -127,6 +127,9 @@ import StudentAccount from './pages/Fees/StudentAccount';
 import FeeGenerateRecords from './pages/Fees/FeeGenerateRecords';
 import AccountRecords from './pages/Fees/AccountRecords';
 import SessionAccountReport from './pages/Fees/SessionAccountReport';
+import RevokeScholarship from './pages/Fees/RevokeScholarship';
+import AssignFeesSettings from './pages/Fees/AssignFeesSettings';
+import ManageFeePaid from './pages/Fees/ManageFeePaid';
 
 function App() {
   const navigate = useNavigate();
@@ -296,11 +299,22 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
-              path="/fees/scholarship"
+              path="/settings/scholarship"
               element={
                 <>
                   <PageTitle title="Fees" />
                   <Scholarship />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/settings/revokescholarship"
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <RevokeScholarship />
                 </>
               }
             />{' '}
@@ -312,6 +326,18 @@ function App() {
                 <>
                   <PageTitle title="Fees" />
                   <ScholarshipList />
+                </>
+              }
+            />{' '}
+          </Route>\
+          
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path='/settings/managefee'
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <ManageFeePaid />
                 </>
               }
             />{' '}
@@ -329,7 +355,7 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
-              path="/fees/enrollscholarship"
+              path="/settings/enrollscholarship"
               element={
                 <>
                   <PageTitle title="Fees" />
@@ -340,7 +366,7 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
-              path="/fees/preference"
+              path="/settings/preference"
               element={
                 <>
                   <PageTitle title="Fees" />
@@ -349,6 +375,7 @@ function App() {
               }
             />{' '}
           </Route>
+          
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/fees/addfeesgroup"
@@ -771,7 +798,7 @@ function App() {
           
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
-              path="/fees/accountrecords"
+              path="/settings/accountrecords"
               element={
                 <>
                   <PageTitle title="Fees" />
@@ -813,6 +840,7 @@ function App() {
               }
             />{' '}
           </Route>
+          
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/fees/Assignfees"
@@ -820,6 +848,17 @@ function App() {
                 <>
                   <PageTitle title="Fees" />
                   <AssignFees />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/settings/assignfees"
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <AssignFeesSettings />
                 </>
               }
             />{' '}

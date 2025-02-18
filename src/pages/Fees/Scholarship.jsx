@@ -283,7 +283,7 @@ const Scholarship = () => {
                       className="flex  justify-center rounded bg-primary py-2 px-4 font-medium text-gray hover:bg-opacity-90"
                       type=""
                       onClick={() => {
-                        navigate('/fees/enrollscholarship');
+                        navigate('/settings/enrollscholarship');
                       }}
                     >
                       Enroll Student

@@ -41,7 +41,7 @@ import GenerateFeeModalStudent from '../components/GenerateFeeModalStudent';
 import DeleteModal from '../components/DeleteModal';
 import { ClearLogAction } from '../redux/slices/feeSlice';
 
-const AssignFeeLogModal = (props) => {
+const FetchClearLog = (props) => {
   ///////////////////////////////////
 
   const [visible9, setVisible9] = useState(false);
@@ -52,26 +52,20 @@ const AssignFeeLogModal = (props) => {
 
   const [pagesval, setpagesval] = useState(30);
 
-
   const [nodes, setdata] = useState([]);
   const [CSVTemplate, setCSVTemplate] = useState([]);
 
   const dispatch = useDispatch();
 
-
-
   const fee = useSelector((state) => state?.fees);
-  const { AllAssignLog } = fee;
+  const { FetchClearLog } = fee;
 
   useEffect(() => {
-
-    if (AllAssignLog?.success == 1) {
-      let data = AllAssignLog?.data;
+    if (FetchClearLog?.success == 1) {
+      let data = FetchClearLog?.data;
       setdata(data);
     }
-  }, [AllAssignLog]);
-
- 
+  }, [FetchClearLog]);
 
   let data = { nodes };
 
@@ -91,7 +85,7 @@ const AssignFeeLogModal = (props) => {
      `,
 
       Table: `
-  --data-table-library_grid-template-columns:  5% 20% 15%  60%;
+  --data-table-library_grid-template-columns:  5% 40% 15%  40%;
 `,
     },
   ]);
@@ -127,25 +121,21 @@ const AssignFeeLogModal = (props) => {
       }),
     );
   };
-  
- 
-
- 
 
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
 
     autoTable(doc, { html: '#my-table' });
 
-    doc.save(`${Account-Closure-List}  `);
+    doc.save(`${Account - Closure - List}  `);
   };
-  
+
   const user = useSelector((state) => state?.user);
-  const { username, userMail} = user;
+  const { username, userMail } = user;
   const handledeletbtn = () => {
     let data = {
-     log: 'assignfee',
-     createdBy: username?.payload,
+      log: 'assignfee',
+      createdBy: username?.payload,
     };
     dispatch(ClearLogAction(data));
   };
@@ -154,7 +144,6 @@ const AssignFeeLogModal = (props) => {
     const csv = generateCsv(csvConfig)(CSVTemplate);
     download(csvConfig)(csv);
   };
- 
 
   return (
     <>
@@ -168,8 +157,7 @@ const AssignFeeLogModal = (props) => {
         }}
       >
         <DeleteModal delete={handledeletbtn} close={setVisible9} />
-        </Dialog>
-
+      </Dialog>
 
       <div className="mx-5 px-3 flex-col rounded-sm border max-w-full shadow-default border-stroke bg-white  dark:border-strokedark dark:dark:bg-form-input pb-5 ">
         <div
@@ -177,16 +165,15 @@ const AssignFeeLogModal = (props) => {
             'rounded-sm  max-w-full justify-between flex px-5 pt-6 shadow-default border-stroke bg-white  dark:border-strokedark dark:dark:bg-form-input pb-5 '
           }
         >
-           <label
-                    className="mb-1 w-2/2 block text-lg  font-medium text-black dark:text-white"
-                    htmlFor=" "
-                  >
-                    Assigned Fee Log{' '}
-                    </label>
+          <label
+            className="mb-1 w-2/2 block text-lg  font-medium text-black dark:text-white"
+            htmlFor=" "
+          >
+            Clear Log Records{' '}
+          </label>
 
-
-                    <div className='flex gap-2'>
-                    <button
+          <div className="flex gap-2">
+            {/* <button
               className="flex  justify-center bg-primary rounded py-1 px-6 font-medium text-black  dark:text-white"
               type=""
               onClick={(e) => {
@@ -196,8 +183,8 @@ setVisible9(true)
 }}
             >
               Clear Log
-            </button>
-                    <button
+            </button> */}
+            <button
               className="flex  justify-center bg-primary rounded py-1 px-6 font-medium text-black  dark:text-white"
               type=""
               onClick={(e) => {
@@ -207,7 +194,7 @@ setVisible9(true)
             >
               close
             </button>
-            </div>
+          </div>
         </div>
         <div
           className={
@@ -231,15 +218,14 @@ setVisible9(true)
                         <Cell className="  ">
                           <span>#</span>
                         </Cell>
-                        <Cell className="capitalize">Assigned By</Cell>
+                        <Cell className="capitalize">Initiated  By</Cell>
                         <Cell className="  ">Date (y/m/d) </Cell>
 
-                        
                         <Cell>
-                          <div className="gap-2 flex">Assigned For </div>
+                          <div className="gap-2 flex">Deleted Logs For </div>
                         </Cell>
                       </Row>
-                      
+
                       {tableList?.map((item) => (
                         <>
                           <Row
@@ -247,21 +233,15 @@ setVisible9(true)
                             item={item}
                             className="dark:border-strokedark dark:dark:bg-form-input  text-black  border-stroke bg-white dark:text-white flex "
                           >
-                              <Cell className="capitalize">
-                              {item.id}
-                            </Cell>
+                            <Cell className="capitalize">{item.id}</Cell>
                             <Cell className="  ">
                               <span>{item.createdby}</span>
                             </Cell>
-                            <Cell className="capitalize">
-                              {item.createdat}
-                            </Cell>
-                           
+                            <Cell className="capitalize">{item.createdat}</Cell>
+
                             <Cell className="  ">
-                              <span>{item?.entity}</span>
+                              <span>{item?.activity}</span>
                             </Cell>
-                          
-                           
                           </Row>
                         </>
                       ))}
@@ -318,15 +298,15 @@ setVisible9(true)
             </div>
           </div>
           <div
-            className={nodes.length == 0 ?   'flex gap-3  flex-col' : 'hidden'}
+            className={nodes.length == 0 ? 'flex gap-3  flex-col' : 'hidden'}
           >
             <label
-                    className="mb-1 w-2/2 block text-center  text-sm font-medium text-black dark:text-white"
-                    htmlFor=" "
-                  >
-                    No Records Available{' '}
-                    </label>
-            </div>
+              className="mb-1 w-2/2 block text-center  text-sm font-medium text-black dark:text-white"
+              htmlFor=" "
+            >
+              No Records Available{' '}
+            </label>
+          </div>
         </div>
       </div>
     </>
@@ -335,4 +315,4 @@ setVisible9(true)
   );
 };
 
-export default AssignFeeLogModal;
+export default FetchClearLog;

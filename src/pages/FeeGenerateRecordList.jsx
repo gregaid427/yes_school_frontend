@@ -37,13 +37,16 @@ import Loader from '../common/Loader';
 import { fetchUserdataAction } from '../redux/slices/usersSlice';
 
 import TableBtn from '../components/Svgs/TableBtn';
-import GenerateFeeModalStudent from '../components/GenerateFeeModalStudent';
 import ViewClassesModaL from '../components/ViewClassesModaL';
+import { ClearLogAction } from '../redux/slices/feeSlice';
+import DeleteModal from '../components/DeleteModal';
 
 const FeeGenerateRecordList = (props) => {
   ///////////////////////////////////
 
   const [visible9, setVisible9] = useState(false);
+  const [visible19, setVisible19] = useState(false);
+
 
   //////////////////////////////////////
 
@@ -128,7 +131,16 @@ const FeeGenerateRecordList = (props) => {
   };
   
  
-
+ 
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
+  const handledeletbtn = () => {
+    let data = {
+     log: 'generatefee',
+     createdBy: username?.payload,
+    };
+    dispatch(ClearLogAction(data));
+  };
  
 
   const handleDownloadPdf = async () => {
@@ -161,7 +173,17 @@ const FeeGenerateRecordList = (props) => {
       >
         <ViewClassesModaL close={setVisible9} info={info} />
       </Dialog>
-
+      <Dialog
+        visible={visible19}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible19) return;
+          setVisible19(false);
+        }}
+      >
+        <DeleteModal delete={handledeletbtn} close={setVisible19} />
+        </Dialog>
       <div className="mx-5 px-3 flex-col rounded-sm border max-w-full shadow-default border-stroke bg-white  dark:border-strokedark dark:dark:bg-form-input pb-5 ">
         <div
           className={
@@ -169,11 +191,26 @@ const FeeGenerateRecordList = (props) => {
           }
         >
            <label
-                    className="mb-1 w-2/2 block  text-sm font-medium text-black dark:text-white"
+                    className="mb-1 w-2/2 block  text-lg font-medium text-black dark:text-white"
                     htmlFor=" "
                   >
                     Generate Fee Log{' '}
                     </label>
+                  
+
+
+                    <div className='flex gap-2'>
+                    <button
+              className="flex  justify-center bg-primary rounded py-1 px-6 font-medium text-black  dark:text-white"
+              type=""
+              onClick={(e) => {
+                e.preventDefault();
+setVisible19(true)           
+
+}}
+            >
+              Clear Log
+            </button>
                     <button
               className="flex  justify-center bg-primary rounded py-1 px-6 font-medium text-black  dark:text-white"
               type=""
@@ -184,6 +221,10 @@ const FeeGenerateRecordList = (props) => {
             >
               close
             </button>
+            </div>
+
+
+                  
         </div>
         <div
           className={
@@ -203,9 +244,10 @@ const FeeGenerateRecordList = (props) => {
                 {(tableList) => (
                   <>
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      <Row className="dark:border-strokedark Uppercase dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Row
+                      key={1} className="dark:border-strokedark Uppercase dark:bg-boxdark font-medium text-lg text-black  border-stroke bg-white dark:text-white flex ">
                         <Cell className="  ">
-                          <span>ID</span>
+                          <span>#</span>
                         </Cell>
                         <Cell className="capitalize">Initiated by</Cell>
                         <Cell className="  ">Date (y/m/d) </Cell>
@@ -219,10 +261,10 @@ const FeeGenerateRecordList = (props) => {
                         </Cell>
                       </Row>
                       
-                      {tableList?.map((item) => (
+                      {tableList?.map((item,index) => (
                         <>
                           <Row
-                            key={item.id}
+                            key={index}
                             item={item}
                             className="dark:border-strokedark dark:dark:bg-form-input  text-black  border-stroke bg-white dark:text-white flex "
                           >

@@ -46,7 +46,7 @@ import ManageFeeModal from '../../components/AssignFeeModal';
 import GenerateFeeModak from '../../components/GenerateFeeModal';
 import ManageHistoryModal from '../../components/ManageHistoryModal';
 
-const ManageFee = () => {
+const ManageFeePaid = () => {
   const formRef1 = useRef();
   function resetFormStates() {
     // formRef.current.reset();
@@ -125,7 +125,7 @@ const ManageFee = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  25% 15% 20% 10% 10% 20% ;
+      --data-table-library_grid-template-columns:  20% 10% 20% 10% 10% 20% 10%;
     `,
     //       Row: `
 //   &:nth-of-type(odd) {
@@ -396,6 +396,7 @@ setItem(value)
                         <HeaderCell> Date</HeaderCell>
                         <HeaderCell>Received By</HeaderCell>
 
+                        <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
 
@@ -421,7 +422,15 @@ setItem(value)
                           <Cell className="  ">{item?.amountpaid ? item?.amountpaid:item?.amountinvolved}</Cell>
                           <Cell className="  ">{item?.date}</Cell>
                           <Cell className="  ">{item?.collectedby}</Cell>
-                        
+                          <Cell>
+                            <div className="gap-2 flex">
+                              <TableBtn
+                                clickFunction={() =>item?.amountpaid  ? handleViewbtn(item) : ''}
+                                text={'Manage'}
+                                color={'bg-primary'}
+                              />
+                            </div>
+                          </Cell>
                         </Row>
                       ))}
                     </Body>
@@ -518,4 +527,4 @@ setItem(value)
   );
 };
 
-export default ManageFee;
+export default ManageFeePaid;

@@ -23,7 +23,7 @@ const ScholarshipModal = (props) => {
   const [amount, setAmount] = useState(0);
   const [chosen, setchosen] = useState('');
   const [custom, setCustom] = useState([{title:''}]);
-
+console.log(Assignbycustom)
   const [chosendata, setchosendata] = useState([{title:'loading...'}]);
 
   const formRef1 = useRef();
@@ -75,7 +75,7 @@ if(props?.cartinfo){
     console.log(chosendata[0]?.applicable);
     console.log(chosendata[0]?.type);
 
-    console.log(cartegory);
+    console.log(props);
 
     if (chosendata[0]?.type == 'Fixed Value') {
       setAmount(chosendata[0].amount);
@@ -83,9 +83,9 @@ if(props?.cartinfo){
     } else {
       console.log('we are in percentage');
 
-      if (chosendata[0]?.applicable == 'FEE PAYABLE') {
+      if (chosendata[0]?.applicable == 'TOTAL SESSION FEE') {
         setAmount(
-          (chosendata[0]?.percent / 100) * Assignbycustom?.data[0].total,
+          (chosendata[0]?.percent / 100) * props.val?.feepayable,
         );
         console.log('vaaaaaaaaaaaaaaaaaaaaaaal');
       } else {
@@ -111,7 +111,7 @@ if(props?.cartinfo){
       }
     }
   }, [chosendata]);
-
+let acctbal = eval(props.val?.accountbalance - amount)
   console.log(chosendata);
   const user = useSelector((state) => state?.user);
   const { username, userMail} = user;
@@ -125,6 +125,7 @@ if(props?.cartinfo){
     scholarship: scholarr,
     scholarId: scholarrid,
     cover: cover,
+    accountbalance : Math.abs(acctbal)
   };
 
   const handleSubmit = (e) => {

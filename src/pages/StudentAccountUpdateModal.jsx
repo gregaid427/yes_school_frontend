@@ -38,10 +38,13 @@ import { fetchUserdataAction } from '../redux/slices/usersSlice';
 
 import TableBtn from '../components/Svgs/TableBtn';
 import GenerateFeeModalStudent from '../components/GenerateFeeModalStudent';
+import {
+  ClearLogAction,
+  SessionAcctReportAction,
+} from '../redux/slices/feeSlice';
 import DeleteModal from '../components/DeleteModal';
-import { ClearLogAction } from '../redux/slices/feeSlice';
 
-const AssignFeeLogModal = (props) => {
+const StudentAccountUpdateModal = (props) => {
   ///////////////////////////////////
 
   const [visible9, setVisible9] = useState(false);
@@ -52,26 +55,20 @@ const AssignFeeLogModal = (props) => {
 
   const [pagesval, setpagesval] = useState(30);
 
-
   const [nodes, setdata] = useState([]);
   const [CSVTemplate, setCSVTemplate] = useState([]);
 
   const dispatch = useDispatch();
 
-
-
   const fee = useSelector((state) => state?.fees);
-  const { AllAssignLog } = fee;
+  const { FetchAcountUpdate, SessionAcctReport } = fee;
 
   useEffect(() => {
-
-    if (AllAssignLog?.success == 1) {
-      let data = AllAssignLog?.data;
+    if (FetchAcountUpdate?.success == 1) {
+      let data = FetchAcountUpdate?.data;
       setdata(data);
     }
-  }, [AllAssignLog]);
-
- 
+  }, [FetchAcountUpdate]);
 
   let data = { nodes };
 
@@ -91,10 +88,11 @@ const AssignFeeLogModal = (props) => {
      `,
 
       Table: `
-  --data-table-library_grid-template-columns:  5% 20% 15%  60%;
+  --data-table-library_grid-template-columns:  4% 20% 10% 30% 30% 6%;
 `,
     },
   ]);
+  const [visible19, setVisible19] = useState(false);
 
   const pagination = usePagination(data, {
     state: {
@@ -127,77 +125,67 @@ const AssignFeeLogModal = (props) => {
       }),
     );
   };
-  
- 
 
- 
-
+  const user = useSelector((state) => state?.user);
+  const { username, userMail } = user;
+  const handledeletbtn = () => {
+    let data = {
+      log: 'accountupdate',
+      createdby: username?.payload,
+    };
+    dispatch(ClearLogAction(data));
+  };
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
 
     autoTable(doc, { html: '#my-table' });
 
-    doc.save(`${Account-Closure-List}  `);
-  };
-  
-  const user = useSelector((state) => state?.user);
-  const { username, userMail} = user;
-  const handledeletbtn = () => {
-    let data = {
-     log: 'assignfee',
-     createdBy: username?.payload,
-    };
-    dispatch(ClearLogAction(data));
+    doc.save(`${Account - Closure - List}  `);
   };
 
   const handleDownloadCSV = async () => {
     const csv = generateCsv(csvConfig)(CSVTemplate);
     download(csvConfig)(csv);
   };
- 
 
   return (
     <>
       <Dialog
-        visible={visible9}
+        visible={visible19}
         position={'top'}
         style={{ height: 'auto', width: '35%' }}
         onHide={() => {
-          if (!visible9) return;
-          setVisible9(false);
+          if (!visible19) return;
+          setVisible19(false);
         }}
       >
-        <DeleteModal delete={handledeletbtn} close={setVisible9} />
-        </Dialog>
-
-
+        <DeleteModal delete={handledeletbtn} close={setVisible19} />
+      </Dialog>
       <div className="mx-5 px-3 flex-col rounded-sm border max-w-full shadow-default border-stroke bg-white  dark:border-strokedark dark:dark:bg-form-input pb-5 ">
         <div
           className={
-            'rounded-sm  max-w-full justify-between flex px-5 pt-6 shadow-default border-stroke bg-white  dark:border-strokedark dark:dark:bg-form-input pb-5 '
+            'rounded-sm  max-w-full flex justify-between px-5 pt-6 shadow-default border-stroke bg-white  dark:border-strokedark dark:dark:bg-form-input pb-5 '
           }
         >
-           <label
-                    className="mb-1 w-2/2 block text-lg  font-medium text-black dark:text-white"
-                    htmlFor=" "
-                  >
-                    Assigned Fee Log{' '}
-                    </label>
+          <label
+            className="mb-1 w-2/2 block   font-medium text-lg text-black dark:text-white"
+            htmlFor=" "
+          >
+            Account Update Log{' '}
+          </label>
 
-
-                    <div className='flex gap-2'>
-                    <button
+          <div className="flex gap-2">
+            <button
               className="flex  justify-center bg-primary rounded py-1 px-6 font-medium text-black  dark:text-white"
               type=""
               onClick={(e) => {
                 e.preventDefault();
-setVisible9(true)           
-
-}}
+                setVisible19(true);
+              }}
             >
               Clear Log
             </button>
-                    <button
+            <button
               className="flex  justify-center bg-primary rounded py-1 px-6 font-medium text-black  dark:text-white"
               type=""
               onClick={(e) => {
@@ -207,7 +195,7 @@ setVisible9(true)
             >
               close
             </button>
-            </div>
+          </div>
         </div>
         <div
           className={
@@ -227,41 +215,44 @@ setVisible9(true)
                 {(tableList) => (
                   <>
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      <Row className="dark:border-strokedark Uppercase dark:bg-boxdark text-lg  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Row
+                        key={1}
+                        className="dark:border-strokedark Uppercase dark:bg-boxdark font-bold  text-black  border-stroke bg-white dark:text-white flex "
+                      >
                         <Cell className="  ">
-                          <span>#</span>
+                          <span>ID</span>
                         </Cell>
-                        <Cell className="capitalize">Assigned By</Cell>
-                        <Cell className="  ">Date (y/m/d) </Cell>
+                        <Cell className="capitalize">Account Updated By</Cell>
+                        <Cell className="  ">Date (y/m/d)</Cell>
+                        <Cell className="  ">Update Scope</Cell>
 
-                        
                         <Cell>
-                          <div className="gap-2 flex">Assigned For </div>
+                          <div className="gap-2 flex">Accnt Balance</div>
                         </Cell>
+                        <Cell className="  ">Arrears</Cell>
                       </Row>
-                      
+
                       {tableList?.map((item) => (
                         <>
                           <Row
                             key={item.id}
                             item={item}
-                            className="dark:border-strokedark dark:dark:bg-form-input  text-black  border-stroke bg-white dark:text-white flex "
+                            className="dark:border-strokedark dark:dark:bg-form-input text-black  border-stroke bg-white dark:text-white flex "
                           >
-                              <Cell className="capitalize">
-                              {item.id}
-                            </Cell>
+                            <Cell className="capitalize">{item.id}</Cell>
                             <Cell className="  ">
                               <span>{item.createdby}</span>
                             </Cell>
-                            <Cell className="capitalize">
-                              {item.createdat}
-                            </Cell>
-                           
+                            <Cell className="capitalize">{item.createdat}</Cell>
                             <Cell className="  ">
-                              <span>{item?.entity}</span>
+                              <span>{item.activity}</span>
                             </Cell>
-                          
-                           
+                            <Cell className="  ">
+                              <span>{item.balance}</span>
+                            </Cell>
+                            <Cell className="  ">
+                              <span>{item.arrears}</span>
+                            </Cell>
                           </Row>
                         </>
                       ))}
@@ -318,15 +309,15 @@ setVisible9(true)
             </div>
           </div>
           <div
-            className={nodes.length == 0 ?   'flex gap-3  flex-col' : 'hidden'}
+            className={nodes.length == 0 ? 'flex gap-3  flex-col' : 'hidden'}
           >
             <label
-                    className="mb-1 w-2/2 block text-center  text-sm font-medium text-black dark:text-white"
-                    htmlFor=" "
-                  >
-                    No Records Available{' '}
-                    </label>
-            </div>
+              className="mb-1 w-2/2 block text-center  text-sm font-medium text-black dark:text-white"
+              htmlFor=" "
+            >
+              No Records Available{' '}
+            </label>
+          </div>
         </div>
       </div>
     </>
@@ -335,4 +326,4 @@ setVisible9(true)
   );
 };
 
-export default AssignFeeLogModal;
+export default StudentAccountUpdateModal;

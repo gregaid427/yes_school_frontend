@@ -38,7 +38,8 @@ import { fetchUserdataAction } from '../redux/slices/usersSlice';
 
 import TableBtn from '../components/Svgs/TableBtn';
 import GenerateFeeModalStudent from '../components/GenerateFeeModalStudent';
-import { SessionAcctReportAction } from '../redux/slices/feeSlice';
+import { ClearLogAction, SessionAcctReportAction } from '../redux/slices/feeSlice';
+import DeleteModal from '../components/DeleteModal';
 
 const AccountClosureListModal = (props) => {
   ///////////////////////////////////
@@ -99,6 +100,7 @@ const AccountClosureListModal = (props) => {
 `,
     },
   ]);
+  const [visible19, setVisible19] = useState(false);
 
   const pagination = usePagination(data, {
     state: {
@@ -132,6 +134,16 @@ const AccountClosureListModal = (props) => {
     );
   };
 
+
+  const user = useSelector((state) => state?.user);
+  const { username, userMail} = user;
+  const handledeletbtn = () => {
+    let data = {
+     log: 'accountclosure',
+     createdby: username?.payload,
+    };
+    dispatch(ClearLogAction(data));
+  };
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
 
@@ -147,6 +159,17 @@ const AccountClosureListModal = (props) => {
 
   return (
     <>
+     <Dialog
+        visible={visible19}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible19) return;
+          setVisible19(false);
+        }}
+      >
+        <DeleteModal delete={handledeletbtn} close={setVisible19} />
+        </Dialog>
       <div className="mx-5 px-3 flex-col rounded-sm border max-w-full shadow-default border-stroke bg-white  dark:border-strokedark dark:dark:bg-form-input pb-5 ">
         <div
           className={
@@ -159,16 +182,30 @@ const AccountClosureListModal = (props) => {
           >
             Account Closure Log{' '}
           </label>
-          <button
-            className="flex  justify-center bg-primary rounded py-1 px-6 font-medium text-black  dark:text-white"
-            type=""
-            onClick={(e) => {
-              e.preventDefault();
-              props.close(false);
-            }}
-          >
-            close
-          </button>
+       
+          <div className='flex gap-2'>
+                    <button
+              className="flex  justify-center bg-primary rounded py-1 px-6 font-medium text-black  dark:text-white"
+              type=""
+              onClick={(e) => {
+                e.preventDefault();
+setVisible19(true)           
+
+}}
+            >
+              Clear Log
+            </button>
+                    <button
+              className="flex  justify-center bg-primary rounded py-1 px-6 font-medium text-black  dark:text-white"
+              type=""
+              onClick={(e) => {
+                e.preventDefault();
+                props.close(false);
+              }}
+            >
+              close
+            </button>
+            </div>
         </div>
         <div
           className={
@@ -188,7 +225,8 @@ const AccountClosureListModal = (props) => {
                 {(tableList) => (
                   <>
                     <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                      <Row className="dark:border-strokedark Uppercase dark:bg-boxdark font-bold  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Row
+                      key={1} className="dark:border-strokedark Uppercase dark:bg-boxdark font-bold  text-black  border-stroke bg-white dark:text-white flex ">
                         <Cell className="  ">
                           <span>ID</span>
                         </Cell>
