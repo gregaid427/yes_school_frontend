@@ -88,7 +88,7 @@ const GenerateFeeResponseSuccessModal = (props) => {
 
 ))}
 
-                <div className="p-8 flex gap-2">
+                <div className="py-5 flex gap-2">
                   
                   <button
                     className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
@@ -98,7 +98,7 @@ const GenerateFeeResponseSuccessModal = (props) => {
                       navigate('/fees/Assignfees')
                     }}
                   >
-                    Get Fees List
+                    Get Assigned Fees List
                   </button>
                   <button
                     className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"

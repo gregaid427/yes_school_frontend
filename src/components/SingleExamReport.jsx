@@ -19,7 +19,7 @@ const ExamReportModal = (props) => {
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
   const dispatch = useDispatch();
   const inventory = useSelector((state) => state?.inventory);
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const { CreateInventorycart } = inventory;
   const user = useSelector((state) => state?.user);
   const { allschool } = user;
@@ -54,25 +54,17 @@ const navigate = useNavigate()
   const [examinfo, setexaminfo] = useState();
   const [val, setVal] = useState();
 
-  
   const [pictureurl, setPictureurl] = useState(null);
 
   const formRef1 = useRef();
-  const location = useLocation()
+  const location = useLocation();
 
   useEffect(() => {
-    console.log(location?.state)
-    if (location?.state == null) {
-     
-     // return navigate(-1);
-    } else {
-      const { val, examinfo} = location?.state;
-      console.log(val);
-      console.log(examinfo);
-      setexaminfo(examinfo);
+    console.log(props.val);
+    console.log(props.examinfo);
+    setexaminfo(props.examinfo);
 
-      setVal(val);
-    }
+    setVal(props.val);
   }, []);
   useEffect(() => {
     if (fetchsessionactive?.success == 1) {
@@ -85,11 +77,8 @@ const navigate = useNavigate()
     // formRef.current.reset();
     formRef1.current.reset();
   }
-
-
+console.log(props)
   return (
-    <DefaultLayout>
-
     <div className="w-full">
       <div className="grid  gap-8">
         <div className="col-span-12">
@@ -126,11 +115,11 @@ const navigate = useNavigate()
                   type=""
                   onClick={(e) => {
                     e.preventDefault();
-                    
-                    navigate(-1)
+
+                    props.close(false);
                   }}
                 >
-                  Back
+                  Close
                 </button>
               </div>
             </div>
@@ -148,10 +137,7 @@ const navigate = useNavigate()
                   setPrintDialogOpen(false);
                 }}
               >
-                <div
-                  className="w-full flex flex-col   py-3"
-                  style={{  }}
-                >
+                <div className="w-full flex flex-col   py-3" style={{}}>
                   <div className="w-full ">
                     <div className="flex border-b justify-between pb-2 border-stroke  dark:border-strokedark">
                       <img
@@ -191,8 +177,7 @@ const navigate = useNavigate()
                         <div className="w-full flex gap-1">
                           <p className="text-sm  ">Exam :</p>
                           <p className="text-sm  ">
-                            {examinfo?.examgroup} -{' '}
-                            {examinfo?.session}
+                            {examinfo?.examgroup} - {examinfo?.session}
                           </p>
                         </div>
 
@@ -201,11 +186,11 @@ const navigate = useNavigate()
 
                           <p>
                             Name :{' '}
-                            {val?.firstName +
+                            {props.std?.firstName +
                               ' ' +
-                              val?.otherName +
+                              props.std?.otherName +
                               ' ' +
-                              val?.lastName}
+                              props.std?.lastName}
                           </p>
 
                           <p></p>
@@ -213,10 +198,8 @@ const navigate = useNavigate()
                         <div className="w-full flex gap-1">
                           <p className="text-sm  ">Class / Section :</p>
                           <p className="text-sm  ">
-                            {val?.class}
-                            {val?.section == 'NONE'
-                              ? ''
-                              : '/' + val?.section}
+                            {props.std?.class}
+                            {props.std?.section == 'NONE' ? '' : '/' + val?.section}
                           </p>
                         </div>
                         {/* <div className="w-4/12 text-right text-sm">
@@ -323,18 +306,17 @@ const navigate = useNavigate()
                       </thead> */}
                         <div className="w-full flex"> </div>
 
-                       
-                          <tr className="w-full  border-stroke  dark:border-strokedark ">
-                            {' '}
-                            <th className="text-sm  font-light w-1/12"></th>
-                            <th className="text-sm text-right font-light w-6/12">
-                              Class Rank :
-                            </th>
-                            <th className="text-sm font-light w-full">
-                           {examinfo?.result[0]?.overallposition }  of  {examinfo?.result[0]?.classize }  
-
-                            </th>
-                          </tr>
+                        <tr className="w-full  border-stroke  dark:border-strokedark ">
+                          {' '}
+                          <th className="text-sm  font-light w-1/12"></th>
+                          <th className="text-sm text-right font-light w-6/12">
+                            Class Rank :
+                          </th>
+                          <th className="text-sm font-light w-full">
+                            {examinfo?.result[0]?.overallposition} of{' '}
+                            {examinfo?.result[0]?.classize}
+                          </th>
+                        </tr>
                         <thead className="w-full   ">
                           <tr className="w-full border-t border-stroke  dark:border-strokedark ">
                             {' '}
@@ -367,16 +349,16 @@ const navigate = useNavigate()
                     </div>
                   </div> */}
                   </div>
-                  <div  style={{  pageBreakAfter: 'always' }}  >
+                  <div style={{ pageBreakAfter: 'always' }}>
                     <div className="text-sm mt-6  w-full">
                       <p className=" ">Teacher's Remark</p>
-                      <p className=""> {examinfo?.result[0]?.teacherreamark } </p>
-                      <p className="text-center w-4/12 ">
-                       
+                      <p className="">
+                        {' '}
+                        {examinfo?.result[0]?.teacherreamark}{' '}
                       </p>
+                      <p className="text-center w-4/12 "></p>
                     </div>
                   </div>
-                  
                 </div>
               </Print>
             </div>
@@ -384,8 +366,6 @@ const navigate = useNavigate()
         </div>
       </div>
     </div>
-    </DefaultLayout>
-
   );
 };
 

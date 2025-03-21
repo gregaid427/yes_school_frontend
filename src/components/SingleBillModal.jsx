@@ -44,7 +44,7 @@ const SingleBillModal = (props) => {
     // }
   }, [allschool]);
 
-  let payable = Number(props.val?.feepayable) - Number(props?.val?.scholarship) + Number(props?.val?.arrears)
+  let payable = Number(props.val?.feepayable)  + Number(props?.val?.arrears)
 
 
   

@@ -304,7 +304,7 @@ const { username, userMail} = user;
                           </th>
                           <th className="text-sm font-bold  w-4/12">
                             {eval(
-                              props.val?.feepayable - props?.val?.scholarship + parseFloat(props?.response?.arrears)
+                              props.val?.feepayable  + parseFloat(props?.response?.arrears)
                             )}
                           </th>
                         </tr>

@@ -10,6 +10,9 @@ import ClassSelect from '../components/ClassSelect';
 import SectionSelect2 from '../components/SectionsSelect2';
 import { useNavigate } from 'react-router-dom';
 import StudentCartegorySelect from '../components/StudentCartegorySelect';
+import ScholarshipSelect from '../components/ScholarshipSelect';
+import PreferenceRadio from '../components/PreferenceRadio';
+import { fetchfeeCartegoryAction, resetpreference } from '../redux/slices/feeSlice';
 
 // import { useHistory } from 'react-router-dom';
 
@@ -68,8 +71,12 @@ const Admission = () => {
     setButonState(1);
     console.log(buttonState);
   }
+  let myarr = [];
+  const [cartz, setcartegory] = useState();
+ 
 
-  const [isChecked, setIsChecked] = useState(false);
+  const [repeat, setRepeat] = useState([]);
+  const [selectedInfo, setSelectedInfo] = useState();
 
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
@@ -100,23 +107,25 @@ const Admission = () => {
   const [cartegory, setCartegory] = useState('GENERAL');
   const [gRelation1, setRelation1] = useState('');
   const [gRelation2, setRelation2] = useState('');
-
   const [religion, setreligion] = useState('Christianity');
   const [dateofbirth, setdateofbirth] = useState('01-01-2020');
-  const [createdBy, setcreatedBy] = useState('');
+  const [acctbal, setacctbal] = useState(0);
   const [buttonState, setButonState] = useState(1);
 
-  const [clazz, setclazz] = useState();
+  const [clazz, setclazz] = useState('-');
   const [sectionzz, setsectionzz] = useState();
   const [feeArrears, setFeeArrears] = useState(0.0);
   const [feeCredit, setFeeCredit] = useState(0.0);
   const navigate = useNavigate();
   const user = useSelector((state) => state?.user);
   const { username, userMail} = user;
+  const [chosen, setchosen] = useState('');
+  const [feecart, setFeeCartegory] = useState([]);
+
   const handleSubmit = (e) => {
     // if(!picture) return console.log('no image')
 
-    if (firstName == '') return toast.error('Please Fill Out Required Fields');
+   
  
     let data = {
       firstName: firstName,
@@ -149,10 +158,19 @@ const Admission = () => {
       feeArrears: feeArrears,
       feeCredit: feeCredit,
       createdBy: username?.payload,
+      preference : repeat == [] ? 0 : repeat,
+      scholarship : selectedInfo == undefined ? 0 : selectedInfo[0].amount,
+      accountbalance : acctbal,
+      scholarinfo : selectedInfo
+      
     };
-
+console.log(data)
     dispatch(CreatestudentAction(data));
   };
+
+  useEffect(() => {
+    dispatch(fetchfeeCartegoryAction());
+  }, []);
 
   function joinName(fn, on, ln) {
     return fn + ' ' + on + ' ' + ln;
@@ -164,7 +182,7 @@ const Admission = () => {
     formRef2.current.reset();
     formRef3.current.reset();
     formRef4.current.reset();
-    formRef5.current.reset();
+   // formRef5.current.reset();
 
     setButonState(1);
   }
@@ -192,12 +210,43 @@ const Admission = () => {
   }, [CreateStudent]);
 
   function handleNextButton() {
+    if (firstName == '' || lastName == '' ) return toast.error('Please Fill Out Required Fields');
+    if (clazz == '-' ) return toast.error('Select Class');
+
     setButonState(buttonState + 1);
   }
-
+  const [amount, setAmount] = useState(0);
   function handleBackButton() {
     setButonState(buttonState - 1);
   }
+  const fee = useSelector((state) => state?.fees);
+  const { Preferences,feecartegory } = fee;
+  useEffect(() => {
+    if (Preferences?.success == 0) {
+      // toast.error('Error - Adding Item Cartegory ');
+      //    dispatch(resetcreatecart())
+      // dispatch(fetchAllClassAction())
+    }
+
+    if (Preferences?.success == 1) {
+      dispatch(resetpreference());
+    }
+
+    // }
+  }, [Preferences]);
+
+  useEffect(() => {
+   
+    if (feecartegory?.success == 1) {
+      let data = feecartegory?.data;
+      setFeeCartegory(data);
+      console.log(feecartegory?.data);
+    }
+  }, [ feecartegory]);
+
+console.log('repeat')
+console.log(repeat)
+
 
   return (
     <DefaultLayout>
@@ -376,6 +425,100 @@ const Admission = () => {
                     Next
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div className="w-2/6 ">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
+                <h3 className="font-medium text-black dark:text-white">
+                  Student Account Information
+                </h3>
+              </div>
+              <div className="p-7">
+                <form ref={formRef1}>
+                  <div className="mb-5 flex flex-col sm:flex-row">
+                    <div className="w-full sm:w-2/2">
+                      <label
+                        className="block text-sm font-medium text-black dark:text-white"
+                        htmlFor="fullName"
+                      >
+                        Account Balance
+                      </label>
+                      <div className="w-full">
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name=""
+                        id=""
+                        placeholder=""
+                        defaultValue="0"
+                        onChange={(e) => setacctbal(e.target.value)}
+                      />
+                  </div>
+                    </div>
+
+                  
+                  </div>
+
+                  {/* <div className=" flex flex-col  ">
+                    <div className="w-full mb-3">
+                      <label
+                        className=" block text-sm font-medium text-black dark:text-white"
+                        htmlFor="phoneNumber"
+                      >
+                        Scholarship 
+                      </label>
+                    
+
+                    </div>
+                    <div className='w-full'>
+                      <ScholarshipSelect setsectionprop={setchosen} selectinfo={setSelectedInfo} />
+
+                     </div>
+                  </div> */}
+
+                  
+                  <div className="mb-5.5 flex flex-col  ">
+                  <div className="w-full mb-3 mt-4 sm:w-2/2">
+                  <label
+                    className="mb-2 block text-sm font-medium text-black dark:text-white"
+                    htmlFor=""
+                  >
+                    Select Fee Item Preferences
+                  </label>{' '}
+                  <div>
+                    {feecart?.map((item, index) => (
+                      <div key={index}>
+                        <div className=" flex flex-col my-2 border-b border-t dark:border-strokedark border-stroke  sm:w-full">
+                        <label
+                            className="block pt-1  text-sm font-medium text-black dark:text-white"
+                            htmlFor="checkboxLabelOne"
+                          >
+                            {'- ' + item?.name}
+                          </label>
+                          <div className="">
+                            <PreferenceRadio
+                              setRepeated={setRepeat}
+                              repeat={repeat}
+                              stdId={item?.name}
+                              myarr={[]}
+                            />
+                          </div>
+
+                         
+                        </div>
+
+                      
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                  </div>
+
+                
+                </form>
+              
               </div>
             </div>
           </div>

@@ -24,22 +24,21 @@ export const CreatestudentAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/users/newstudent`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('New Student Added Successfully');
-
       }
 
       if (data == null) {
         toast.error('Error Adding New Student');
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -66,7 +65,8 @@ export const CreatestudentImageAction = createAsyncThunk(
           },
         },
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Picture Uploaded Successfully');
         toast.dismiss(toastId);
       }
@@ -78,14 +78,13 @@ export const CreatestudentImageAction = createAsyncThunk(
         toast.error('Error Uploading Picture');
         toast.dismiss(toastId);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -107,9 +106,8 @@ export const fetchBulkStudent = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/`,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
@@ -135,9 +133,8 @@ export const fetchSingleStudent = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/single/${payload}`,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
@@ -163,7 +160,8 @@ export const MasrkstudentWaiting = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/waiting`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Students Class Status Updated');
       }
 
@@ -171,14 +169,13 @@ export const MasrkstudentWaiting = createAsyncThunk(
         toast.error('Error');
       }
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -199,7 +196,8 @@ export const fetchStudentsClassAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/custom`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.dismiss();
       }
       if (data?.success == '1' && data?.data[0] == null) {
@@ -209,9 +207,8 @@ export const fetchStudentsClassAction = createAsyncThunk(
       if (data == null) {
         toast.error('Error Adding New Student');
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
@@ -243,14 +240,13 @@ export const fetchStudentsClassAccountAction = createAsyncThunk(
       if (data == null) {
         toast.error('Error Adding New Student');
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -273,7 +269,8 @@ export const fetchCustomStudentsClassAction = createAsyncThunk(
         payload,
       );
       // toast.loading('Empty Class List');
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.dismiss();
       }
       if (data?.success == '1' && data?.data[0] == null) {
@@ -292,9 +289,8 @@ export const fetchCustomStudentsClassAction = createAsyncThunk(
       if (data == null) {
         toast.error('Error Adding New Student');
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
@@ -337,14 +333,13 @@ export const fetchStudentsCustomAction = createAsyncThunk(
       if (data == null) {
         toast.error('Error Adding New Student');
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -384,14 +379,13 @@ export const fetchCustomStudentsClassAccountAction = createAsyncThunk(
       if (data == null) {
         toast.error('Error Adding New Student');
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -420,14 +414,13 @@ export const fetchStudentsClassPromoteAction = createAsyncThunk(
       if (data == null) {
         toast.error('Error Adding New Student');
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -467,14 +460,13 @@ export const fetchCustomStudentsClassPromoteAction = createAsyncThunk(
       if (data == null) {
         toast.error('Error Adding New Student');
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -496,17 +488,17 @@ export const UpdatestudentAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
-     toast.dismiss()
-      }
-       if (data) {
+      if (data?.success == 1) {
         toast.dismiss(toastId);
-   
+        toast.dismiss();
+      }
+      if (data) {
+        toast.dismiss(toastId);
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -534,14 +526,13 @@ export const StudentPicture = createAsyncThunk(
         },
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -550,7 +541,43 @@ export const StudentPicture = createAsyncThunk(
     }
   },
 );
+export const deletesinglegraduateAction = createAsyncThunk(
+  'delete/gradstudent',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
 
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/graduatesingledel`,
+        payload,
+      );
+
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
+        toast.success('Deleted Successfully');
+        setTimeout(() => toast.dismiss(), 2000);
+      }
+
+      if (data == null) {
+        toast.error('Error Deleting Record');
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const deleteSingleStudentAction = createAsyncThunk(
   'delete/singlestudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -564,7 +591,8 @@ export const deleteSingleStudentAction = createAsyncThunk(
         payload,
       );
 
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Deleted Successfully');
         setTimeout(() => toast.dismiss(), 2000);
       }
@@ -572,14 +600,13 @@ export const deleteSingleStudentAction = createAsyncThunk(
       if (data == null) {
         toast.error('Error Deleting Record');
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -600,7 +627,8 @@ export const PromoteAllAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/allpromote`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Students Promoted Succesfully');
       }
 
@@ -608,14 +636,13 @@ export const PromoteAllAction = createAsyncThunk(
         toast.error('Error Promoting Student');
       }
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -636,7 +663,8 @@ export const PromoteSelectedAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/selectedpromote`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Students Promoted Succesfully');
       }
 
@@ -644,14 +672,13 @@ export const PromoteSelectedAction = createAsyncThunk(
         toast.error('Error Promoting Student');
       }
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -665,31 +692,31 @@ export const CreatestdCartegoryAction = createAsyncThunk(
   'new/Newstdcart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/student/createstudentcart`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Student Cartegory Added Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Adding  Cartegory');
       }
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -699,16 +726,14 @@ export const CreatestdCartegoryAction = createAsyncThunk(
   },
 );
 
-
 export const fetchstdCartegoryAction = createAsyncThunk(
   'fetch/stdcart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
-     try {
-      
-       toast.dismiss();
+    try {
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.get(
@@ -716,13 +741,12 @@ export const fetchstdCartegoryAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ErrorAltToast('⚠️ Error', error);
       if (!error?.response) {
         throw error;
@@ -735,10 +759,10 @@ export const deleteSingleStdCartAction = createAsyncThunk(
   'delete/deletestdCart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
@@ -746,14 +770,13 @@ export const deleteSingleStdCartAction = createAsyncThunk(
         payload,
       );
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -763,35 +786,103 @@ export const deleteSingleStdCartAction = createAsyncThunk(
   },
 );
 
+export const FetchgraduatedAction = createAsyncThunk(
+  'get/graduated',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/graduated`,
+        payload,
+      );
+
+      if (data?.success == 0) {
+        toast.error('Empty Record');
+      }
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const DeletegraduatedAction = createAsyncThunk(
+  'delete/graduated',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/delgraduated`,
+        payload,
+      );
+
+      if (data?.success == 1) {
+        toast.success('Deleted Successfully');
+      }
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const UpdateStdCartAction = createAsyncThunk(
   'new/updateCart',
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-       toast.dismiss();
+      toast.dismiss();
 
       const toastId = toast.loading('Loading...', {
-        position: 'bottom-right',     
+        position: 'bottom-right',
       });
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/student/updatestudentcart`,
         payload,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success(' Cartegory Update Successfully');
       }
       if (data?.success == 0) {
         toast.error('Error Updating  Cartegory');
       }
 
-          if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
-      console.log(error)
-                ErrorToast('Error', error);
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -800,7 +891,6 @@ export const UpdateStdCartAction = createAsyncThunk(
     }
   },
 );
-
 
 export const truncateTableAction = createAsyncThunk(
   'delete/allrecords',
@@ -814,14 +904,13 @@ export const truncateTableAction = createAsyncThunk(
         `${import.meta.env.VITE_APP_BASE_URL}/student/truncate`,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -892,13 +981,49 @@ const StudentSlices = createSlice({
     //   state.error = null;
     //   state.CreateStudent = null;
     // });
-   
+    
+    builder.addCase(deletesinglegraduateAction.pending, (state, action) => {
+      state.deletegraduateloading = true;
+      state.deletegraduate = false;
+      state.Fetchgraduate = false;
+
+    });
+    builder.addCase(deletesinglegraduateAction.fulfilled, (state, action) => {
+      state.deletegraduate = action?.payload;
+      state.deletegraduateloading = false;
+      state.deletegraduateerror = undefined;
+      state.Fetchgraduate = action?.payload;
+
+    });
+    builder.addCase(deletesinglegraduateAction.rejected, (state, action) => {
+      state.deletegraduateerror = action.payload;
+      state.deletegraduate = undefined;
+      state.deletegraduateloading = undefined;
+      state.Fetchgraduate = undefined;
+
+    });
+
+    builder.addCase(DeletegraduatedAction.pending, (state, action) => {
+      state.Deletegraduatedloading = true;
+      state.Deletegraduated = false;
+    });
+    builder.addCase(DeletegraduatedAction.fulfilled, (state, action) => {
+      state.Deletegraduated = action?.payload;
+      state.Deletegraduatedloading = false;
+      state.Deletegraduatedterror = undefined;
+      state.Fetchgraduate = action?.payload;
+
+    });
+    builder.addCase(DeletegraduatedAction.rejected, (state, action) => {
+      state.Deletegraduatedterror = action.payload;
+      state.Deletegraduated = undefined;
+      state.Deletegraduatedloading = undefined;
+    });
+
     builder.addCase(UpdateStdCartAction.pending, (state, action) => {
       state.UpdateStdCartloading = true;
       state.UpdateStdCart = false;
       state.fetchstdCartegory = false;
-
-      
     });
     builder.addCase(UpdateStdCartAction.fulfilled, (state, action) => {
       state.UpdateStdCart = action?.payload;
@@ -911,9 +1036,7 @@ const StudentSlices = createSlice({
       state.UpdateStdCart = undefined;
       state.UpdateStdCartloading = undefined;
       state.fetchstdCartegory = undefined;
-
     });
-
 
     builder.addCase(fetchBulkStudent.pending, (state, action) => {
       state.loading = true;
@@ -929,7 +1052,6 @@ const StudentSlices = createSlice({
       state.fetchStudent = undefined;
       state.loading = undefined;
     });
-    
 
     builder.addCase(CreatestdCartegoryAction.pending, (state, action) => {
       state.createstdcartloading = true;
@@ -946,7 +1068,6 @@ const StudentSlices = createSlice({
       state.createstdcartloading = undefined;
     });
 
-
     builder.addCase(CreatestudentImageAction.pending, (state, action) => {
       state.studentImageloading = true;
       state.studentImage = false;
@@ -962,8 +1083,6 @@ const StudentSlices = createSlice({
       state.studentImageloading = undefined;
     });
 
-    
-    
     builder.addCase(fetchstdCartegoryAction.pending, (state, action) => {
       state.fetchstdCartegoryloading = true;
       state.fetchstdCartegory = false;
@@ -993,7 +1112,7 @@ const StudentSlices = createSlice({
       state.studentPromote = undefined;
       state.studentPromoteloading = undefined;
     });
-    
+
     builder.addCase(deleteSingleStdCartAction.pending, (state, action) => {
       state.deleteSingleStdCartloading = true;
       state.deleteSingleStdCart = false;
@@ -1004,7 +1123,6 @@ const StudentSlices = createSlice({
       state.deleteSingleStdCartloading = false;
       state.deleteSingleStdCarterror = undefined;
       state.fetchstdCartegory = action?.payload;
-
     });
     builder.addCase(deleteSingleStdCartAction.rejected, (state, action) => {
       state.deleteSingleStdCarterror = action.payload;
@@ -1012,7 +1130,6 @@ const StudentSlices = createSlice({
       state.deleteSingleStdCartloading = undefined;
       state.fetchstdCartegory = undefined;
     });
-
 
     builder.addCase(PromoteAllAction.pending, (state, action) => {
       state.studentPromoteloading = true;
@@ -1068,6 +1185,20 @@ const StudentSlices = createSlice({
       },
     );
 
+    builder.addCase(FetchgraduatedAction.pending, (state, action) => {
+      state.Fetchgraduateloading = true;
+      state.Fetchgraduate = false;
+    });
+    builder.addCase(FetchgraduatedAction.fulfilled, (state, action) => {
+      state.Fetchgraduate = action?.payload;
+      state.Fetchgraduateloading = false;
+      state.Fetchgraduateerror = undefined;
+    });
+    builder.addCase(FetchgraduatedAction.rejected, (state, action) => {
+      state.Fetchgraduateerror = action.payload;
+      state.Fetchgraduate = undefined;
+      state.Fetchgraduatemloading = undefined;
+    });
     builder.addCase(
       fetchCustomStudentsClassPromoteAction.pending,
       (state, action) => {

@@ -7,7 +7,7 @@ import {
 } from '../redux/slices/classSlice';
 import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
-const ClassSelect = (props) => {
+const ClassSelect4 = (props) => {
   useEffect(() => {
     // dispatch(fetchAllClass());
     dispatch(fetchAllClassNoAction());
@@ -15,6 +15,7 @@ const ClassSelect = (props) => {
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
   const [clazz, setclazz] = useState(props.clazz);
+  console.log(clazz);
   const clad = useSelector((state) => state?.classes);
   const [val, setVal] = useState([]);
 
@@ -41,14 +42,14 @@ const ClassSelect = (props) => {
   useEffect(() => {
     if (fetchAllClass?.success == 1) {
       let i = 0;
-      let arr = ['-'];
+      let arr = ['-','GRADUATED'];
       while (i < clad?.fetchAllClass?.data.length) {
         arr.push(clad?.fetchAllClass?.data[i].title);
         i++;
       }
 
       setClasss(arr);
-     clazz == undefined ? setclazz(arr[0]): setclazz(props.clazz);
+      setclazz(arr[0]);
     }
   }, [fetchAllClassloading]);
 
@@ -67,4 +68,4 @@ const ClassSelect = (props) => {
   );
 };
 
-export default ClassSelect;
+export default ClassSelect4;

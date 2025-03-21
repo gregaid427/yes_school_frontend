@@ -608,6 +608,7 @@ const ClassSlices = createSlice({
       state.fetchAllClassExam = null;
     },
     customSectionAction(state,data) {
+      console.log('callledd')
       state.customSection =['NONE',...data.payload] ;
       state.customSection1 =['NONE','All Sections',...data.payload] ;
       state.customSection2 =['All Sections',...data.payload] ;

@@ -113,7 +113,7 @@ const CloseSessionModal = (props) => {
                     Select New / Upcoming Session{' '}
                   </label>
                   <button
-                    className="flex w-auto max-h-min justify-center mt-1 rounded bg-primary py-1 px-2 font-sm text-gray hover:bg-opacity-90"
+                    className="flex w-auto h-9  justify-center mt-1 rounded bg-primary py-1 px-2 font-sm text-gray hover:bg-opacity-90"
                     type=""
                     onClick={(e) => {
                       e.preventDefault();

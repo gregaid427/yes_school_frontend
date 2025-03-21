@@ -2837,9 +2837,12 @@ const FeeSlices = createSlice({
     builder.addCase(fetchfeeCartegoryAction.pending, (state, action) => {
       state.cartegoryloading = true;
       state.cartegory = false;
+      state.feecartegory = false;
+
     });
     builder.addCase(fetchfeeCartegoryAction.fulfilled, (state, action) => {
       state.cartegory = action?.payload;
+      state.feecartegory = action?.payload;
       state.cartegoryloading = false;
       state.error = undefined;
     });
@@ -2847,6 +2850,8 @@ const FeeSlices = createSlice({
       state.error = action.payload;
       state.cartegoryloading = undefined;
       state.cartegory = undefined;
+      state.feecartegory = undefined;
+
     });
 
     builder.addCase(fetchScholarshipAction.pending, (state, action) => {

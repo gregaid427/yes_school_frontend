@@ -46,7 +46,7 @@ const UpdateStudentAccountModal = (props) => {
   };
   const handleUpdate = (e) => {
     console.log(data1)
-    if (amount < 1) {
+    if (amount < 0) {
       return toast.error('Error - Enter Valid Amount');
     } else {
       dispatch(CustomBalUpdate(data1));
@@ -130,7 +130,7 @@ const UpdateStudentAccountModal = (props) => {
                 <div className="border-b flex flex-col my-2 py-1 border-t border-stroke dark:border-strokedark">
                   <p>
                     <span className="flex justify-around my-1 text-black dark:text-white text-md py-1 text-center mx-auto">
-                      Update Student's Account balance
+                      Update Student's Account Balance
                     </span>
                   </p>
                   <div className="gap-2  ">
@@ -153,7 +153,7 @@ const UpdateStudentAccountModal = (props) => {
                         }}
                       />
                     </div>
-                    <div className="w-full flex mb-1 sm:w-2/2">
+                    {/* <div className="w-full flex mb-1 sm:w-2/2">
                       <label
                         className="my-auto w-3/5 block text-sm font-medium text-black dark:text-white"
                         htmlFor=""
@@ -171,7 +171,7 @@ const UpdateStudentAccountModal = (props) => {
                           setArrears(e.target.value);
                         }}
                       />
-                    </div>
+                    </div> */}
                     <div className="w-full flex my-4 gap-2 ">
                       <button
                         className="flex w-full justify-center rounded bg-primary py-2 px-3 font-medium text-gray hover:bg-opacity-90"

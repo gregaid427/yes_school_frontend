@@ -7,6 +7,7 @@ const ScholarshipSelect = (props) => {
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
   const [clazz, setclazz] = useState(props.clazz);
+  const [selecter, setselecter] = useState([]);
 
   const fee = useSelector((state) => state?.fees);
   const { CreateScholar } = fee;
@@ -15,22 +16,33 @@ const ScholarshipSelect = (props) => {
     dispatch(fetchScholarshipAction());
   }, []);
   console.log(CreateScholar?.data);
+  let selectArr = [];
+
   useEffect(() => {
     if (CreateScholar?.success == 1) {
       let i = 0;
       let arr = ['None'];
+      let select = [];
+
       while (i < CreateScholar?.data.length) {
         arr.push(CreateScholar?.data[i].title);
+        select.push(CreateScholar?.data[i]);
         i++;
       }
+      console.log(select)
 
+      setselecter(select)
       setClasss(arr);
       setclazz(arr[0]);
     }
   }, [CreateScholar]);
+  console.log(selecter)
+
 
   useEffect(() => {
     props.setsectionprop(clazz);
+    props.selectinfo(selecter.filter((item) =>
+      item.title === clazz))
   }, [clazz]);
 
   return (

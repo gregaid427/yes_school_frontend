@@ -54,12 +54,7 @@ import ClassReportModal from '../../components/ClassReportModal';
 import RemarksExamModal from '../../components/RemarksExamModal';
 
 const ExamReportDetail = () => {
-  const formRef1 = useRef();
-  function resetFormStates() {
-    // formRef.current.reset();
-    formRef1.current.reset();
-    console.log('reset');
-  }
+  
 
   const exam = useSelector((state) => state?.exam);
   const { SingleReport, ClassReport, FetchExamCustom } = exam;
@@ -79,6 +74,8 @@ const ExamReportDetail = () => {
 
   const [datacart, setdatacart] = useState([]);
   const [val, setVal] = useState();
+  const [std, setstd] = useState();
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -103,7 +100,7 @@ const ExamReportDetail = () => {
       // setVisible4(true);
       if (classdata)
         navigate('/exam/classreport', {
-          state: { action: 1, val: info, examinfo: examinfo, result: data },
+          state: {  action: 1, val: info, examinfo: examinfo, result: data},
         });
       setClassdata(data);
       dispatch(resetclassreport());
@@ -116,7 +113,7 @@ const ExamReportDetail = () => {
     if (SingleReport?.success == 1) {
       let data = SingleReport?.data;
       if (data.length == 0) {
-        return toast.error('No Results Available');
+        return toast.error('Select Exam Group');
       }
       setsingledata(data);
 
@@ -126,9 +123,10 @@ const ExamReportDetail = () => {
         examgroup: clazz,
         result: data,
       };
-      navigate('/exam/singlereport', {
-        state: { action: 1, val: val, examinfo: examinfo },
-      });
+      // navigate('/exam/singlereport', {
+      //   state: { action: 1, val: val, examinfo: examinfo },
+      // });
+      setVisible4(true)
       dispatch(resetsinglereport());
     }
   }, [SingleReport]);
@@ -141,6 +139,11 @@ const ExamReportDetail = () => {
       setdata(data);
     }
   }, [fetchcustom]);
+
+
+  useEffect(() => {
+    setdata([]);
+  }, []);
 
   let data = { nodes };
 
@@ -229,7 +232,7 @@ const ExamReportDetail = () => {
     examgroup: clazz,
   };
   function handleGetData() {
-    setBtn(true);
+  //  setBtn(true);
     dispatch(FetchExamCustomAction(mydata));
   }
 
@@ -243,6 +246,12 @@ const ExamReportDetail = () => {
     }
   }, [FetchExamCustom]);
 
+  useEffect(() => {
+    if (clazz == 'None'){
+      setDisplay(false)
+    }
+  }, [clazz]);
+
   function handleGetstudentreport(val) {
     let data = {
       stdid: val?.student_id,
@@ -252,6 +261,7 @@ const ExamReportDetail = () => {
     dispatch(FetchSingleReportAction(data));
   }
   function handleGetClassreport() {
+    
     let data = {
       classcode: info?.classId,
       clazz: info?.title,
@@ -287,55 +297,35 @@ const ExamReportDetail = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-      <Dialog
-        visible={visible}
-        position={'top'}
-        style={{ height: 'auto', width: '60%' }}
-        onHide={() => {
-          if (!visible) return;
-          setVisible(false);
-        }}
-      >
-        <ExamReportModal
-          close={setVisible}
-          val={val}
-          examinfo={examinfo}
-          newsubject={setVisible4}
-        />
-      </Dialog>
-      <Dialog
+     <Dialog
         visible={visible4}
         position={'top'}
-        style={{ height: 'auto', width: '65%' }}
+        style={{ height: 'auto', width: '63%' }}
         onHide={() => {
           if (!visible4) return;
           setVisible4(false);
         }}
       >
-        <ClassReportModal
-          close={setVisible4}
-          val={info}
-          examinfo={examinfo}
-          result={classdata}
-        />
+        <ExamReportModal  action={1} val={info} examinfo ={examinfo} std={std}  result ={data} close={setVisible4} />
       </Dialog>
-
       <Dialog
         visible={visible5}
         position={'top'}
-        style={{ height: 'auto', width: '40%' }}
+        style={{ height: 'auto', width: '35%' }}
         onHide={() => {
           if (!visible5) return;
           setVisible5(false);
         }}
       >
-        <RemarksExamModal
+      <RemarksExamModal
           close={setVisible5}
           val2={val2}
           examinfo={examinfo}
           result={classdata}
         />
       </Dialog>
+
+      
 
       <div className=" flex-col">
         <div
@@ -501,10 +491,10 @@ const ExamReportDetail = () => {
                               <div className="gap-2 flex">
                                 <TableBtn
                                   clickFunction={() => {
-                                    if (clazz == 'None')
-                                      return toast.error('Select Exam Group');
-                                    else if (sectionzz == undefined)
-                                      return toast.error('Select Session');
+                                    // if (clazz == 'None')
+                                    //   return toast.error('Select Exam Group');
+                                    // else if (sectionzz == undefined)
+                                    //   return toast.error('Select Session');
                                     setVal2(item);
 
                                     setVisible5(true);
@@ -517,10 +507,10 @@ const ExamReportDetail = () => {
                                   clickFunction={() => {
                                     if (clazz == 'None')
                                       return toast.error('Select Exam Group');
-                                    else if (sectionzz == undefined)
-                                      return toast.error('Select Session');
-                                    setVal(item);
-
+                                    // else if (sectionzz == undefined)
+                                    //   return toast.error('Select Session');
+                                    // setVal(item);
+                                    setstd(item)
                                     handleGetstudentreport(item);
                                   }}
                                   text={'View / Print'}

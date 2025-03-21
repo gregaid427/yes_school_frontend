@@ -47,6 +47,8 @@ const SetStudent = () => {
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
   const [del, setDel] = useState(false);
+  const [userid, setuserid] = useState();
+
 
 
   const [position, setPosition] = useState('top');
@@ -107,7 +109,7 @@ const SetStudent = () => {
         i++;
       }
       setClasss(arr);
-      setclazz(arr[0]);
+     // setclazz(arr[0]);
     }
   }, [fetchAllClassloading, fetchcustomloading]);
 
@@ -217,6 +219,7 @@ const SetStudent = () => {
       class: clazz,
       section: sectionzz,
       id: del,
+      userid: userid
     };
     dispatch(deleteSingleStudentAction(data));
   };
@@ -336,7 +339,7 @@ const SetStudent = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz}/>
                     </div>
                   </div>
                   <label
@@ -506,7 +509,8 @@ const SetStudent = () => {
                               <RemoveSVG
                                 clickFunction={() =>{
                                   setVisible1(true)
-                                  setDel(item.student_id)}
+                                  setDel(item.student_id)
+                                  setuserid(item.userId)}
                                 }
                               />
                             </div>

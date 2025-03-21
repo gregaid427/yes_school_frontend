@@ -48,6 +48,7 @@ import ClassSelect2 from '../components/ClassSelect2';
 import SetSessionAlert from '../components/SetSessionAlert';
 import NewGuardModal from '../components/NewGuardianModal';
 import PromoteModal from '../components/PromoteModal';
+import ClassSelect4 from '../components/ClassSelect4';
 
 const Promotion = () => {
   ///////////////////////////////////
@@ -583,7 +584,7 @@ const Promotion = () => {
                   </label>
                   <div className="flex row  py-auto gap-2 w-4/6">
                     <div className="w-3/6">
-                      <ClassSelect
+                      <ClassSelect4
                         setsectionprop={setNextclass}
                         clazz={clazz}
                       />

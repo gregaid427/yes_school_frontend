@@ -3,7 +3,7 @@ import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
 import userThree from '../images/user/user-03.png';
 import DefaultLayout from '../layout/DefaultLayout';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import ViewSVG from '../components/Svgs/View';
 import DeleteSVG from '../components/Svgs/delete';
 import EditSVG from '../components/Svgs/edit';
@@ -44,6 +44,7 @@ import DeleteModal from '../components/DeleteModal';
 
 const Student = () => {
   ///////////////////////////////////
+  const location = useLocation();
 
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState('top');
@@ -148,6 +149,7 @@ const Student = () => {
       setdata(data);
     }
   }, [fetchStudent]);
+ 
 
   // useEffect(() => {
 
@@ -215,7 +217,7 @@ const Student = () => {
   };
   const handleEditbtn = (value) => {
     dispatch(fetchUserdataAction({ role: 'student', id: value.student_id, userid:value.userId }));
-        navigate('/student/editinfo', { state: { action: 2, value: value } });
+        navigate('/student/editinfo', { state: { action: 2, value: value , clas: clazz, section: sectionzz } });
   };
   const handledeletbtn = () => {
     let data = {
@@ -257,13 +259,11 @@ const Student = () => {
     download(csvConfig)(csv);
   };
   function handleGetClassData() {
-    console.log(clazz);
 
     let data = {
       class: clazz,
       section: sectionzz,
     };
-    console.log(data);
     if (sectionzz == 'All Sections') {
       //  setclazz(clazz)
       dispatch(fetchStudentsClassAction(data));
@@ -273,6 +273,33 @@ const Student = () => {
       dispatch(fetchCustomStudentsClassAction(data));
     }
   }
+  useEffect(() => {
+    console.log(location?.state)
+    console.log('i just ran')
+
+
+    if (location?.state == undefined) {
+      console.log('undefined')
+    } else {
+      const { clas,sect } = location?.state;
+     console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj')
+      let data = {
+        class: clas,
+        section: sect,
+      };
+      setclazz(clas)
+
+      console.log(data);
+      if (sect == 'All Sections') {
+        setsectionzz(sect);
+        dispatch(fetchStudentsClassAction(data));
+      }
+      if (sect != 'All Sections') {
+        setsectionzz(sect);
+        dispatch(fetchCustomStudentsClassAction(data));
+      }     
+    }
+  }, [location?.state]);
 
   return loader ? (
     <Loader />
@@ -332,7 +359,7 @@ const Student = () => {
                     Section{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SectionSelect1 setsectionprop={setsectionzz} />
+                    <SectionSelect1 setsectionprop={setsectionzz} default={sectionzz} />
                   </div>
                   <label
                     className="pt-4 block text-sm font-medium text-ash dark:text-white"

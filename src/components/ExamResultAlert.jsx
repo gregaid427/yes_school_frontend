@@ -4,6 +4,7 @@ import { MasrkstudentWaiting } from '../redux/slices/studentSlice';
 import { useNavigate } from 'react-router-dom';
 
 const ExamResultAlert = (props) => {
+  console.log(props)
   let navigate = useNavigate();
   return (
     <div className="w-full">
@@ -41,7 +42,7 @@ const ExamResultAlert = (props) => {
                   onClick={(e) => {
                     e.preventDefault();
                     navigate("/exam/editresult", {
-                      state: { action: 1, value: props.info ,examdetail :props.response},
+                      state: { action: 1, value: props?.info ,examdetail :props.response},
                     });
                     props.close(false);
                   }}

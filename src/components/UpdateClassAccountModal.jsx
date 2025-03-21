@@ -288,7 +288,7 @@ const UpdateClassAccountModal = (props) => {
                                   className="mb-3 block text-sm font-small text-black dark:text-white"
                                   htmlFor="checkboxLabelOne"
                                 >
-                                  (includes accnt balance,arrears, scholarship)
+                                  (includes accnt balance & arrears)
                                 </label>
                               </div>
 

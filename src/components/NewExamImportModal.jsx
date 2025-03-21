@@ -206,9 +206,9 @@ const NewExamImportModal = (props) => {
         result : classData
       };
   
-      console.log(data);
+      //console.log(data);
       navigate('/exam/addimportresult', {
-        state: { action: 1, value: data },
+        state: { action: 1, value: data, response:['pp'] },
       });
       // dispatch(CreateExamAction(data));
     };

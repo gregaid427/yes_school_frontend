@@ -182,14 +182,14 @@ const NewExam = () => {
       }),
     );
   }
-
+console.log(val1)
   useEffect(() => {
     console.log('fetch custom empty')
     if (fetchcustomstudent?.success == 1 && fetchcustomstudent?.data.length !=0 ) {
       let data = fetchcustomstudent?.data;
       const csvConfig = mkConfig({
         useKeysAsHeaders: true,
-        filename: `${val1?.title}`,
+        filename: `${val1?.title} ${val1?.section == null ? '' : val1?.section} `,
       });
       const csv = generateCsv(csvConfig)(data);
       download(csvConfig)(csv);
@@ -208,7 +208,6 @@ const NewExam = () => {
   const [visible4, setVisible4] = useState(false);
   const [visible3, setVisible3] = useState(false);
   useEffect(() => {
-    dispatch(fetchSubjectAction());
     dispatch(FetchExamGroupAction());
     dispatch(fetchAllsessionAction());
   }, []);

@@ -130,6 +130,8 @@ import SessionAccountReport from './pages/Fees/SessionAccountReport';
 import RevokeScholarship from './pages/Fees/RevokeScholarship';
 import AssignFeesSettings from './pages/Fees/AssignFeesSettings';
 import ManageFeePaid from './pages/Fees/ManageFeePaid';
+import Preference from './pages/Fees/Preference';
+import SetstudentGraduated from './pages/SetstudentGraduated';
 
 function App() {
   const navigate = useNavigate();
@@ -289,6 +291,17 @@ function App() {
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/fees/preferencelist"
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <Preference />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/settings/preferencelist"
               element={
                 <>
                   <PageTitle title="Fees" />
@@ -698,11 +711,22 @@ function App() {
           </Route>{' '}
           <Route element={<RequireAuth allowedRoles={['6']} code={code} />}>
             <Route
-              path="/settings/students"
+              path="/settings/stds"
               element={
                 <>
                   <PageTitle title="Settings" />
                   <SetStudent />
+                </>
+              }
+            />{' '}
+          </Route>{' '}
+          <Route element={<RequireAuth allowedRoles={['6']} code={code} />}>
+            <Route
+              path="/settings/graduated"
+              element={
+                <>
+                  <PageTitle title="Settings" />
+                  <SetstudentGraduated />
                 </>
               }
             />{' '}

@@ -25,7 +25,9 @@ const SectionSelect1 = (props) => {
 
 
     setsections(customSection2);
-    setsectionzz(customSection2[0]);
+    props.default == undefined ? setsectionzz(customSection2[0]): setsectionzz(props.default);
+
+    ;
     console.log(customSection2)
   // }
 }, [customSection2]);

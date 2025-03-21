@@ -57,9 +57,10 @@ const EditExamResult = (props) => {
     } else {
       const { value, examdetail } = location?.state;
       setVal(value);
+      console.log(examdetail);
+
       setDetail(examdetail[0]?.code);
 
-      console.log(value);
 
       dispatch(FetchSingleGradeGroupAction({ title: value?.chosengrade }));
       dispatch(
@@ -463,7 +464,7 @@ const { username, userMail} = user;
                                       className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       // key={1}
                                       type="number"
-                                      defaultValue={item?.othersScore}
+                                     defaultValue={item?.othersscore}
                                       onChange={(e) => {
                                         var newData = FinalResult.map((el) => {
                                           if (el.student_id == item.student_id)

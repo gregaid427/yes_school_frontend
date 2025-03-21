@@ -28,14 +28,16 @@ const fetchUserdatEdit = () => {
   const [PageAction, setPageAction] = useState();
 
   const location = useLocation();
-  const { action, value } = location?.state;
-  console.log(action);
+  const { action, value, clas, section } = location?.state;
 
   const [isChecked, setIsChecked] = useState(false);
 
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const { fetchUserdatloading, updateStudent } = student;
+
+  const [sect, setSect] = useState('');
+  const [classss, setClas] = useState('');
 
   const [data, setData] = useState('');
   const [paramaction, setParamaction] = useState(1);
@@ -207,7 +209,6 @@ const fetchUserdatEdit = () => {
   const [info1, setInfo1] = useState([]);
   const [info2, setInfo2] = useState([]);
 
-
   useEffect(() => {
     if (fetchUserdat?.success == 1) {
       setData(fetchUserdat?.data);
@@ -245,10 +246,9 @@ const fetchUserdatEdit = () => {
       setsectionzz(value.section);
       setfileName(value.filename);
       setimagelink(value.imagelink);
-      fetchUserdat?.info == [] ? setInfo([]) :   setInfo(fetchUserdat?.info);
-      fetchUserdat?.info1 == [] ? setInfo1([]) :  setInfo1(fetchUserdat?.info1);
-      fetchUserdat?.info2 == [] ? setInfo2([])  :  setInfo2(fetchUserdat?.info2);
-
+      fetchUserdat?.info == [] ? setInfo([]) : setInfo(fetchUserdat?.info);
+      fetchUserdat?.info1 == [] ? setInfo1([]) : setInfo1(fetchUserdat?.info1);
+      fetchUserdat?.info2 == [] ? setInfo2([]) : setInfo2(fetchUserdat?.info2);
 
       if (fetchSection?.success == 1) {
         let arrr = [value.section];
@@ -286,9 +286,27 @@ const fetchUserdatEdit = () => {
     return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
   }
   let customfile = hashgenerator() + picturename;
+  useEffect(() => {
+    console.log(location?.state)
+    if (location?.state == null) {
+      //return navigate(-1);
+    } else {
+      const { clas, section } = location?.state;
 
-  function handleBackButton() {
-    navigate(-1);
+      setClas(clas);
+      setSect(section);
+
+      // let data = {
+      //   class: value?.title,
+      //   section: value?.section == '-' ? null : value?.section,
+      // };
+      // dispatch(fetchStudentsClassAction(data));
+    }
+  }, [location?.state]);
+
+  function handleBackButton(clas, sect) {
+    console.log(sect);
+    navigate('/student/info', { state: { action: 3, clas: clas, sect: sect } });
   }
   console.log(fetchUserdat);
 
@@ -462,12 +480,12 @@ const fetchUserdatEdit = () => {
                   </div>
                 </div>
 
-                <div className="mb-3">
+                <div className="">
                   <h3 className="font-medium text-black dark:text-white">
                     Login Credentials
                   </h3>
                 </div>
-                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                <div className=" flex flex-col gap-5.5 sm:flex-row">
                   <div className="w-full flex gap-4 sm:w-2/2">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -746,42 +764,42 @@ const fetchUserdatEdit = () => {
                           ></textarea>
                         </div>
                       </div>
-                      
-                <div className="mb-3">
-                  <h3 className="font-medium text-black dark:text-white">
-                    Login Credentials
-                  </h3>
-                </div>
-                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                  <div className="w-full flex gap-4 sm:w-2/2">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="fullName"
-                    >
-                      Username :
-                    </label>
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="fullName"
-                    >
-                      {info1[0]?.email}
-                    </label>
-                  </div>
-                  <div className="w-full flex gap-4 sm:w-2/2">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="phoneNumber"
-                    >
-                      Password :
-                    </label>
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="fullName"
-                    >
-                      {info1[0]?.pass}
-                    </label>
-                  </div>
-                </div>
+
+                      <div className="mb-3">
+                        <h3 className="font-medium text-black dark:text-white">
+                          Login Credentials
+                        </h3>
+                      </div>
+                      <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                        <div className="w-full flex gap-4 sm:w-2/2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="fullName"
+                          >
+                            Username :
+                          </label>
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="fullName"
+                          >
+                            {info1[0]?.email}
+                          </label>
+                        </div>
+                        <div className="w-full flex gap-4 sm:w-2/2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="phoneNumber"
+                          >
+                            Password :
+                          </label>
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="fullName"
+                          >
+                            {info1[0]?.pass}
+                          </label>
+                        </div>
+                      </div>
                     </form>
                   </div>
                 </div>{' '}
@@ -789,7 +807,7 @@ const fetchUserdatEdit = () => {
 
               <div className={!data[1] ? 'hidden' : ''}>
                 <div className=" w-full">
-                  <div className="p-7">
+                  <div className="px-7">
                     <form>
                       <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
                         <div className="w-full sm:w-2/2">
@@ -944,42 +962,42 @@ const fetchUserdatEdit = () => {
                         </div>
                       </div>
                     </form>
-                    
-                <div className="mb-3">
-                  <h3 className="font-medium text-black dark:text-white">
-                    Login Credentials
-                  </h3>
-                </div>
-                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                  <div className="w-full flex gap-4 sm:w-2/2">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="fullName"
-                    >
-                      Username :
-                    </label>
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="fullName"
-                    >
-                      {info2[0]?.email}
-                    </label>
-                  </div>
-                  <div className="w-full flex gap-4 sm:w-2/2">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="phoneNumber"
-                    >
-                      Password :
-                    </label>
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="fullName"
-                    >
-                      {info2[0]?.pass}
-                    </label>
-                  </div>
-                </div>
+
+                    <div className="mb-3">
+                      <h3 className="font-medium text-black dark:text-white">
+                        Login Credentials
+                      </h3>
+                    </div>
+                    <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                      <div className="w-full flex gap-4 sm:w-2/2">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="fullName"
+                        >
+                          Username :
+                        </label>
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="fullName"
+                        >
+                          {info2[0]?.email}
+                        </label>
+                      </div>
+                      <div className="w-full flex gap-4 sm:w-2/2">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="phoneNumber"
+                        >
+                          Password :
+                        </label>
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="fullName"
+                        >
+                          {info2[0]?.pass}
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
                   {/* <div className="flex w-4/12 mx-8 pb-5   gap-4.5">
@@ -1003,37 +1021,37 @@ const fetchUserdatEdit = () => {
           </div>
         </div>
         {/* Fees Management info */}
-
-                  <div className="flex flex-row w-4/6    gap-3" style={{}}>
-                    <div className="w-full ">
-                      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                        <div className="px-7 py-2">
-                          <div className="flex justify-end gap-4.5">
-                            <button
-                              className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                              type=""
-                              onClick={(e) => handleBackButton()}
-                            >
-                              Back
-                            </button>
-
-                            <button
-                              className={
-                                action == 1
-                                  ? 'hidden'
-                                  : 'flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90'
-                              }
-                              type=""
-                              onClick={(e) => handleSubmit()}
-                            >
-                              Save{' '}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-row w-4/6    gap-3" style={{}}>
+        <div className="w-full ">
+          <div className="rounded-sm   bg-white shadow-default  dark:bg-boxdark">
+            <div className="px-7 pb-4">
+              <div className="flex justify-end gap-4.5">
+                <button
+                  className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                  type=""
+                  onClick={(e) => handleBackButton(classss, sect)}
+                >
+                  Back
+                </button>
+
+                <button
+                  className={
+                    action == 1
+                      ? 'hidden'
+                      : 'flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90'
+                  }
+                  type=""
+                  onClick={(e) => handleSubmit()}
+                >
+                  Save{' '}
+                </button>
               </div>
             </div>
           </div>

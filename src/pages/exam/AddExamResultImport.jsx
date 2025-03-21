@@ -113,12 +113,16 @@ const AddExamResultImport = (props) => {
   const clad = useSelector((state) => state?.classes);
 
   const { fetchAllClassExam } = clad;
+  const [response, setResponse] = useState();
 
   useEffect(() => {
+
+
     if (fetchAllClassExam?.success == 1) {
       let data = fetchAllClassExam?.data;
       console.log(data);
       if (data.length != 0) {
+        setResponse(data);
         setVisible1(true);
         //setdata([])
 
@@ -283,7 +287,7 @@ const { username, userMail} = user;
         draggable={false}
         resizable={false}
       >
-        <ExamResultAlert info={value} close={setVisible1} />
+        <ExamResultAlert info={value} response={response} close={setVisible1} />
       </Dialog>
 
       <div className="flex gap-2 row">

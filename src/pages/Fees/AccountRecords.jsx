@@ -486,7 +486,7 @@ const AccountRecords = () => {
                         <HeaderCell>Arrears</HeaderCell>
                         <HeaderCell>Fee Paid</HeaderCell>
 
-                        <HeaderCell> Balance</HeaderCell>
+                        <HeaderCell>Closing Balance</HeaderCell>
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>

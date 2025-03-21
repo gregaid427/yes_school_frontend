@@ -183,7 +183,7 @@ const SearchStudentsModal = (props) => {
      `,
 
       Table: `
-  --data-table-library_grid-template-columns:  17% 40% 23% 10% 10%;
+  --data-table-library_grid-template-columns:  17% 40% 13% 10% 10% 10%;
 `,
     },
   ]);
@@ -417,7 +417,10 @@ const SearchStudentsModal = (props) => {
                         </Cell>
                         <Cell className="capitalize">Name</Cell>
                         <Cell className="  ">Section</Cell>
+                        <Cell className="  ">Accnt Bal</Cell>
                         <Cell className="  ">Sex</Cell>
+
+                     
 
                         <Cell>
                           <div className="gap-2 flex">Action</div>
@@ -441,8 +444,12 @@ const SearchStudentsModal = (props) => {
                                 ' ' +
                                 item.lastName}
                             </Cell>
+                            
                             <Cell className="  ">
                               <span>{item.section}</span>
+                            </Cell>
+                            <Cell className="  ">
+                              <span>{item.accountbalance}</span>
                             </Cell>
                             <Cell className="  ">
                               <span>{item.gender}</span>

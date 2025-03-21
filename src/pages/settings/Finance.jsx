@@ -237,11 +237,11 @@ const Finance = () => {
 
   const [search, setSearch] = useState('');
 
-  data = {
-    nodes: data.nodes.filter((item) =>
-      item.class.toLowerCase().includes(search.toLowerCase()),
-    ),
-  };
+  // data = {
+  //   nodes: data.nodes.filter((item) =>
+  //     item.class.toLowerCase().includes(search.toLowerCase()),
+  //   ),
+  // };
 
   function onPaginationChange(action, state) {}
 
@@ -1630,7 +1630,7 @@ const Finance = () => {
                     Generate Reports Options:
                   </label>
                   <div className=" flex flex-col gap-2">
-                    <div className="flex justify-between">
+                  <div className="flex justify-between ">
                       <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                         <div
                           className={` flex h-5 w-5 items-center justify-center rounded border ${
@@ -1640,16 +1640,14 @@ const Finance = () => {
                           <span
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
-                        </div>
-                        Assigned Class Fees
+                        </div>{' '}
+                        Assign Fee For Classes
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          //setVisible10(true)
-                          dispatch(fetchAllAssignRecordAction());
-                        }}
+                             navigate('/settings/assignfees')                        }}
                       >
                         Select
                       </button>
@@ -1671,7 +1669,7 @@ const Finance = () => {
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          navigate('/settings/accountrecords');
+                          navigate("/fees/records");
                         }}
                       >
                         Select
@@ -1774,29 +1772,7 @@ const Finance = () => {
                         Select
                       </button>
                     </div>
-                    <div className="flex justify-between ">
-                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
-                        <div
-                          className={` flex h-5 w-5 items-center justify-center rounded border ${
-                            true && 'border-primary bg-gray dark:bg-transparent'
-                          }`}
-                        >
-                          <span
-                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
-                          ></span>
-                        </div>{' '}
-                        Fee Payments & Payment Reversals
-                      </label>
-                      <button
-                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={() => {
-                          navigate('/fees/manage');
-                        }}
-                      >
-                        Select
-                      </button>
-                    </div>
+                    
                   </div>
                 </div>
               </div>

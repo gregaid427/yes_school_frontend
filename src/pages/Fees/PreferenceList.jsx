@@ -454,7 +454,7 @@ const PreferenceList = () => {
                         <Header>
                           <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
                             <HeaderCell>Name</HeaderCell>
-                            <HeaderCell>Exempted Fee Cartegories</HeaderCell>
+                            <HeaderCell>Exempted Fee Items</HeaderCell>
                             <HeaderCell>Actions</HeaderCell>
                           </HeaderRow>
                         </Header>

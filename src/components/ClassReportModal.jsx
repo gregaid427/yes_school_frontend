@@ -124,7 +124,14 @@ const ClassReportModal = (props) => {
                 type=""
                 onClick={(e) => {
                   e.preventDefault();
-                  close(navigate(-1));
+
+                  
+                  // navigate("/exam/report", {
+                  //   state: { action: 2, value: val},
+                  // });
+                  navigate("/exam/reportdetail", {
+                    state: { action: 2, value: val},
+                  });
                 }}
               >
                 Back
@@ -195,23 +202,23 @@ const ClassReportModal = (props) => {
                               <div className="w-full flex gap-1">
                                 <p className="text-sm  ">Exam :</p>
                                 <p className="text-sm  ">
-                                  {examinfo?.examgroup} -{examinfo?.session}
+                                  {examinfo?.examgroup} - {examinfo?.session}
                                 </p>
                               </div>
 
                               <div className="w-4/12 text-sm">
                                 <p>
                                   Student id :{' '}
-                                  {result[index][index]?.student_id}
+                                  {result[index][0]?.student_id}
                                 </p>
 
                                 <p>
                                   Name :
-                                  {value[index]?.firstName +
+                                  {value[0]?.firstName +
                                     ' ' +
-                                    value[index]?.otherName +
+                                    value[0]?.otherName +
                                     ' ' +
-                                    value[index]?.lastName}
+                                    value[0]?.lastName}
                                 </p>
 
                                 <p></p>
@@ -380,7 +387,7 @@ const ClassReportModal = (props) => {
                             <p className=" ">Teacher's Remark</p>
                             <p className="">
                               {' '}
-                              {examinfo?.result[0]?.teacherreamark}{' '}
+                              {value[0].teacherreamark}{' '}
                             </p>
 
                             {/* <p className="text-center w-4/12 ">

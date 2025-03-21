@@ -123,6 +123,8 @@ const AddExamResult = (props) => {
   const { fetchAllClassExam } = clad;
 
   useEffect(() => {
+
+
     if (fetchAllClassExam?.success == 1) {
       let data = fetchAllClassExam?.data;
       console.log(data);

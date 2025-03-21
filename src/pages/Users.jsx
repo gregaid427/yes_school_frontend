@@ -88,7 +88,7 @@ const Users = () => {
 
                   <td className="border-b border-[#eee]  dark:border-strokedark">
                     <div className="flex items-center ">
-                      <Link to="/settings/students">
+                      <Link to="/settings/stds">
                         <button
                           className="btn float-right flex justify-center rounded bg-primary py-1 px-3 font-small text-gray hover:shadow-1"
                           type="submit"
@@ -119,11 +119,71 @@ const Users = () => {
                     </div>
                   </td>
                 </tr>
-
+                
                 <tr>
                   <td className="border-b px-7 py-3 border-[#eee]  dark:border-strokedark ">
                     <h5 className="font-medium text-black dark:text-white">
                       {'Staff / Teacher'}
+                    </h5>
+                  </td>
+
+                  <td className="border-b border-[#eee]  dark:border-strokedark">
+                    <div className="flex items-center ">
+                      <Link to="/settings/staff">
+                        <button
+                          className="btn float-right flex justify-center rounded bg-primary py-1 px-3 font-small text-gray hover:shadow-1"
+                          type="submit"
+                        >
+                          Select
+                        </button>
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border-b px-7 py-3 border-[#eee]  dark:border-strokedark ">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {'Graduated Students'}
+                    </h5>
+                  </td>
+
+                  <td className="border-b border-[#eee]  dark:border-strokedark">
+                    <div className="flex items-center ">
+                      <Link to="/settings/graduated">
+                        <button
+                          className="btn float-right flex justify-center rounded bg-primary py-1 px-3 font-small text-gray hover:shadow-1"
+                          type="submit"
+                        >
+                          Select
+                        </button>
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border-b px-7 py-3 border-[#eee]  dark:border-strokedark ">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {'Deleted Students'}
+                    </h5>
+                  </td>
+
+                  <td className="border-b border-[#eee]  dark:border-strokedark">
+                    <div className="flex items-center ">
+                      <Link to="/settings/staff">
+                        <button
+                          className="btn float-right flex justify-center rounded bg-primary py-1 px-3 font-small text-gray hover:shadow-1"
+                          type="submit"
+                        >
+                          Select
+                        </button>
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border-b px-7 py-3 border-[#eee]  dark:border-strokedark ">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {'Deleted Staff/Parents'}
                     </h5>
                   </td>
 

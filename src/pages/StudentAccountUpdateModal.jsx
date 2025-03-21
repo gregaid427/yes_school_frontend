@@ -88,7 +88,7 @@ const StudentAccountUpdateModal = (props) => {
      `,
 
       Table: `
-  --data-table-library_grid-template-columns:  4% 20% 10% 30% 30% 6%;
+  --data-table-library_grid-template-columns:  10% 30% 13% 37% 10% ;
 `,
     },
   ]);
@@ -220,7 +220,7 @@ const StudentAccountUpdateModal = (props) => {
                         className="dark:border-strokedark Uppercase dark:bg-boxdark font-bold  text-black  border-stroke bg-white dark:text-white flex "
                       >
                         <Cell className="  ">
-                          <span>ID</span>
+                          <span>#</span>
                         </Cell>
                         <Cell className="capitalize">Account Updated By</Cell>
                         <Cell className="  ">Date (y/m/d)</Cell>
@@ -229,7 +229,6 @@ const StudentAccountUpdateModal = (props) => {
                         <Cell>
                           <div className="gap-2 flex">Accnt Balance</div>
                         </Cell>
-                        <Cell className="  ">Arrears</Cell>
                       </Row>
 
                       {tableList?.map((item) => (
@@ -250,9 +249,7 @@ const StudentAccountUpdateModal = (props) => {
                             <Cell className="  ">
                               <span>{item.balance}</span>
                             </Cell>
-                            <Cell className="  ">
-                              <span>{item.arrears}</span>
-                            </Cell>
+                           
                           </Row>
                         </>
                       ))}

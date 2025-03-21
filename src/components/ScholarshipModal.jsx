@@ -112,6 +112,8 @@ if(props?.cartinfo){
     }
   }, [chosendata]);
 let acctbal = eval(props.val?.accountbalance - amount)
+let payable = eval(props.val?.feepayable - amount)
+
   console.log(chosendata);
   const user = useSelector((state) => state?.user);
   const { username, userMail} = user;
@@ -125,7 +127,9 @@ let acctbal = eval(props.val?.accountbalance - amount)
     scholarship: scholarr,
     scholarId: scholarrid,
     cover: cover,
-    accountbalance : Math.abs(acctbal)
+    accountbalance : Math.abs(acctbal),
+    feepayable: payable,
+
   };
 
   const handleSubmit = (e) => {
