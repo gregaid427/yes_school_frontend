@@ -5,6 +5,7 @@ import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 const StudentCartegorySelect = (props) => {
   const [sections, setsections] = useState([]);
   const [sectionzz, setsectionzz] = useState();
+  const [selecter, setselecter] = useState([]);
 
   const student = useSelector((state) => state?.student);
 
@@ -30,16 +31,26 @@ const StudentCartegorySelect = (props) => {
     if (fetchstdCartegory?.success == 1) {
       let i = 0;
       let arr = ['GENERAL'];
+      let select = [];
+
       while (i < fetchstdCartegory?.data.length) {
         arr.push(fetchstdCartegory?.data[i].title);
+        select.push(fetchstdCartegory?.data[i]);
+
         i++;
       }
+      setselecter(select)
 
       setsections(arr);
       setsectionzz(arr[0]);
     }
   }, [fetchstdCartegory]);
 
+  useEffect(() => {
+    props.setsectionprop(sectionzz);
+    props.selectinfo(selecter.filter((item) =>
+      item.title === sectionzz))
+  }, [sectionzz]);
 
   return (
     <>

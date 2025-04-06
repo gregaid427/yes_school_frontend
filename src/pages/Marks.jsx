@@ -43,6 +43,7 @@ import toast from 'react-hot-toast';
 const Marks = () => {
   const [pagesval, setpagesval] = useState(30);
   const [amount, setAmount] = useState([]);
+  const [selectedInfo, setSelectedInfo] = useState();
 
   const [loader, setLoader] = useState(true);
 
@@ -485,7 +486,7 @@ const Marks = () => {
                         Exam Type
                       </label>
                       <div className="relative z-20 bg-white dark:bg-form-input">
-                        <ExpenseHeadSelect setsectionprop={SetExpenseHead} />
+                        <ExpenseHeadSelect setsectionprop={SetExpenseHead}  selectinfo={setSelectedInfo}/>
                       </div>
                     </div>
                     <div className="w-full mb-4 sm:w-2/2">

@@ -132,6 +132,8 @@ import AssignFeesSettings from './pages/Fees/AssignFeesSettings';
 import ManageFeePaid from './pages/Fees/ManageFeePaid';
 import Preference from './pages/Fees/Preference';
 import SetstudentGraduated from './pages/SetstudentGraduated';
+import Setdeletedstudent from './pages/Setdeletedstudent';
+import LoginLog from './pages/settings/LoginLog';
 
 function App() {
   const navigate = useNavigate();
@@ -326,11 +328,24 @@ function App() {
               path="/settings/revokescholarship"
               element={
                 <>
-                  <PageTitle title="Fees" />
+                  <PageTitle title="settings" />
                   <RevokeScholarship />
                 </>
               }
             />{' '}
+            
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/settings/users/loginlog"
+              element={
+                <>
+                  <PageTitle title="settings" />
+                  <LoginLog />
+                </>
+              }
+            />{' '}
+            
           </Route>
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
@@ -720,6 +735,19 @@ function App() {
               }
             />{' '}
           </Route>{' '}
+          <Route element={<RequireAuth allowedRoles={['6']} code={code} />}>
+            <Route
+              path="/settings/deletedstd"
+              element={
+                <>
+                  <PageTitle title="Settings" />
+                  <Setdeletedstudent />
+                </>
+              }
+            />{' '}
+                      </Route>{' '}
+
+        
           <Route element={<RequireAuth allowedRoles={['6']} code={code} />}>
             <Route
               path="/settings/graduated"

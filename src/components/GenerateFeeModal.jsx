@@ -19,7 +19,8 @@ const GenerateFeeModak = (props) => {
   const [display, setDisplay] = useState(false);
   const [sessionoption, setSessionoption] = useState('None');
   const [sessionoption1, setSessionoption1] = useState('');
-
+  const [selectedInfo, setSelectedInfo] = useState();
+  const [selectedInfo1, setSelectedInfo1] = useState();
   const [clazz, setclazz] = useState([]);
   const [isChecked1, setIsChecked1] = useState();
   const [selectedArr, setselectedArr] = useState([]);
@@ -101,7 +102,7 @@ const GenerateFeeModak = (props) => {
                 </div>
 
                 <div className="relative z-20 bg-white dark:bg-form-input">
-                  <SessionSelect1 setsectionprop={setSessionoption} />
+                <SessionSelect1 setsectionprop={setSessionoption}  selectinfo={setSelectedInfo1} />
                 </div>
 
                 {/* <div className="flex justify-between">

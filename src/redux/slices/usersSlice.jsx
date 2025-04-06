@@ -87,7 +87,7 @@ export const loginUserAction = createAsyncThunk(
       );
       console.log(data);
 
-      if (data?.success == 0 || data == undefined || data?.success== 1) {
+      if (data?.success == 0 || data == undefined || data?.success== 1 || data?.success== 6) {
             toast.dismiss(toastId);
 
       }
@@ -119,6 +119,34 @@ export const fetchAllstaffAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/users/staff`,
+        payload,
+      );
+
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const LoginLogAction = createAsyncThunk(
+  'fetch/loginlog',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/loginlog`,
         payload,
       );
 
@@ -607,6 +635,9 @@ const UsersSlices = createSlice({
     resetcreateGuardian(state) {
       state.CreateUser = null;
     },
+    resetallstaff(state) {
+      state.allstaff = null;
+    },
     setUser(state, data) {
       state.UserData = data;
       console.log('called');
@@ -640,6 +671,25 @@ const UsersSlices = createSlice({
       state.error = action.payload;
       state.CreateUser = undefined;
     });
+
+
+    
+
+    builder.addCase(LoginLogAction.pending, (state, action) => {
+      state.LoginLogloading = true;
+      state.LoginLog = false;
+    });
+    builder.addCase(LoginLogAction.fulfilled, (state, action) => {
+      state.LoginLog = action?.payload;
+      state.LoginLogloading = false;
+      state.LoginLogerror = undefined;
+    });
+    builder.addCase(LoginLogAction.rejected, (state, action) => {
+      state.LoginLogloading = false;
+      state.LoginLogerror = action.payload;
+      state.LoginLog = undefined;
+    });
+
 
     builder.addCase(UpdateStaffAction.pending, (state, action) => {
       state.UpdateStaffloading = true;
@@ -872,6 +922,7 @@ export const {
   reset,
   resetcreateGuardian,
   setUser,
+  resetallstaff,
   resetAllUserData,
   setUserMail,
   setRoleCode,

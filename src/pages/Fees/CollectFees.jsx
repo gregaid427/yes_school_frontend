@@ -80,6 +80,7 @@ const CollectFees = () => {
   const [receipt, setReceipt] = useState('');
   const [name, SetName] = useState('');
   const [singleCart, setSingleCart] = useState([]);
+  const [classinfo, setclassinfo] = useState();
 
   
   
@@ -384,7 +385,7 @@ const CollectFees = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo} />
                     </div>
                   </div>
                 </div>

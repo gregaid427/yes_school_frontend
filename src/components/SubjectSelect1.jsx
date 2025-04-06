@@ -6,6 +6,7 @@ import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 const SubjectSelect1 = (props) => {
   const [sections, setsections] = useState([]);
   const [sectionzz, setsectionzz] = useState();
+  const [selecter, setselecter] = useState([]);
 
   const sub = useSelector((state) => state?.subject);
   const { fetchAllSubject } = sub;
@@ -18,15 +19,27 @@ const SubjectSelect1 = (props) => {
     if (fetchAllSubject?.success == 1) {
       let arrr = ['NONE'];
       let i = 0;
+      let select = [];
+
       while (i < sub?.fetchAllSubject?.data.length) {
         arrr.push(sub?.fetchAllSubject?.data[i]?.subjectname);
+        select.push(sub?.fetchAllSubject?.data[i]);
+
         i++;
       }
+      setselecter(select)
 
       setsections(arrr);
       setsectionzz(arrr[0]);
     }
   }, [fetchAllSubject]);
+
+  
+  useEffect(() => {
+    props.setsectionprop(sectionzz);
+    props.selectinfo(selecter.filter((item) =>
+      item.subjectname === sectionzz))
+  }, [sectionzz]);
 
   return (
     <>

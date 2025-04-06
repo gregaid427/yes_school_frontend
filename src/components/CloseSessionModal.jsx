@@ -12,7 +12,8 @@ import SessionSelect1 from './SessionSelect1';
 
 const CloseSessionModal = (props) => {
   const dispatch = useDispatch();
-
+  const [selectedInfo, setSelectedInfo] = useState();
+  const [selectedInfo1, setSelectedInfo1] = useState();
   const session = useSelector((state) => state?.session);
 
   const { fetchsession, fetchsessionactive } = session;
@@ -125,7 +126,7 @@ const CloseSessionModal = (props) => {
                 </div>
 
                 <div className="relative z-20 bg-white dark:bg-form-input">
-                  <SessionSelect1 setsectionprop={setSessionoption} />
+                  <SessionSelect1 setsectionprop={setSessionoption}  selectinfo={setSelectedInfo1} />
                 </div>
 
                 <div className="flex justify-between">
@@ -138,7 +139,7 @@ const CloseSessionModal = (props) => {
                 </div>
 
                 <div className="relative z-20 bg-white dark:bg-form-input">
-                  <SessionSelect setsectionprop={setSessionoption1} />
+                  <SessionSelect setsectionprop={setSessionoption1} selectinfo={setSelectedInfo} />
                 </div>
                 <div className="py-8 flex gap-2">
                   <button

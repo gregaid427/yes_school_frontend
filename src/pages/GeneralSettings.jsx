@@ -43,6 +43,7 @@ const GeneralSettings = () => {
   const [picturename, setPicturename] = useState();
   const [pictureurl, setPictureurl] = useState(null);
   const [pictureurlshow, setPictureurlshow] = useState(null);
+  const [classinfo, setclassinfo] = useState();
 
 
   const [startmonth, setStartMonth] = useState('JANUARY');
@@ -380,7 +381,7 @@ const GeneralSettings = () => {
                         </label>
 
                         <div className="relative z-20 bg-white dark:bg-form-input">
-                          <SessionSelect setsectionprop={setSessionoption} />
+                          <SessionSelect setsectionprop={setSessionoption} selectinfo={setclassinfo} />
                         </div>
                       </div>
                       <div className="w-full sm:w-1/2">

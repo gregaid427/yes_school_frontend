@@ -6,6 +6,7 @@ const FeeCartSelect = (props) => {
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
   const [clazz, setclazz] = useState(props.clazz);
+  const [selecter, setselecter] = useState([]);
 
   const fees = useSelector((state) => state?.fees);
 
@@ -16,11 +17,16 @@ const FeeCartSelect = (props) => {
       let i = 0;
       // let arr = [];
       let arr = ['TOTAL SESSION FEE'];
+      let select = [];
+
 
       while (i < fees?.cartegory?.data.length) {
         arr.push(fees?.cartegory?.data[i].name);
+        select.push(fees?.cartegory?.data[i]);
+
         i++;
       }
+      setselecter(select)
 
       setClasss(arr);
       setclazz(arr[0]);
@@ -30,6 +36,8 @@ const FeeCartSelect = (props) => {
   useEffect(() => {
     props.setsectionprop(clazz);
     console.log(clazz)
+    props.selectinfo(selecter.filter((item) =>
+      item.name === clazz))
   }, [clazz]);
 
   return (

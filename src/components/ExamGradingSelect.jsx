@@ -8,11 +8,13 @@ import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
 
 const ExamGrading = (props) => {
+  
 
   
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
   const [clazz, setclazz] = useState();
+  const [selecter, setselecter] = useState([]);
 
   const exam = useSelector((state) => state?.exam);
   const {examgroup,fetchGradegroup  } = exam;
@@ -21,13 +23,18 @@ const ExamGrading = (props) => {
     if (fetchGradegroup?.success == 1) {
       let i = 0;
       let arr = ['None'];
+      let select = [];
+
       while (i < fetchGradegroup?.data.length) {
         arr.push(fetchGradegroup?.data[i].gradetitle);
+        select.push(fetchGradegroup?.data[i]);
+
         i++;
       }
 
       
-
+      setselecter(select)
+ 
       setClasss(arr);
       setclazz(arr[0]);
 
@@ -38,6 +45,8 @@ const ExamGrading = (props) => {
 
   useEffect(() => {
     props.setsectionprop(clazz)
+    props.selectinfo(selecter.filter((item) =>
+      item.gradetitle === clazz))
   }, [clazz]);
 
 

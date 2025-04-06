@@ -21,6 +21,7 @@ const NewExamModal = (props) => {
   const [selectedArr, setselectedArr] = useState([]);
   const [chosen, setchosendata] = useState([]);
   const [grades, setGrades] = useState([]);
+  const [selectedInfo, setSelectedInfo] = useState();
 
   const [clazz, setclazz] = useState('None');
   const [sectionzz, setsectionzz] = useState(null);
@@ -177,7 +178,7 @@ const { username, userMail} = user;
                         Select Exam Group
                       </label>{' '}
                       <div className="relative z-20 bg-white dark:bg-form-input">
-                        <ExamGroupSelect setsectionprop={setexamgroupoption} />
+                      <ExamGroupSelect setsectionprop={setexamgroupoption} selectinfo={setSelectedInfo} />
                       </div>
                     </div>
                     <div className="w-full mb-1 sm:w-2/2">
@@ -188,7 +189,7 @@ const { username, userMail} = user;
                         Select Grading Type
                       </label>{' '}
                       <div className="relative z-20 bg-white dark:bg-form-input">
-                        <ExamGrading setsectionprop={setexamgradeoption} />
+                      <ExamGrading setsectionprop={setexamgradeoption} selectinfo={setSelectedInfo} />
                       </div>
                       <div
                         className={examgradeoption == 'None' ? 'hidden' : ''}

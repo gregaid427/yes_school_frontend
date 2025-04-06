@@ -13,6 +13,7 @@ const ExamGroupSelect = (props) => {
   const dispatch = useDispatch();
   const [classs, setClasss] = useState([]);
   const [clazz, setclazz] = useState();
+  const [selecter, setselecter] = useState([]);
 
   const exam = useSelector((state) => state?.exam);
   const {examgroup,createxamgroup  } = exam;
@@ -21,12 +22,17 @@ const ExamGroupSelect = (props) => {
     if (examgroup?.success == 1) {
       let i = 0;
       let arr = ['None'];
+      let select = [];
+
       while (i < examgroup?.data.length) {
         arr.push(examgroup?.data[i].grouptitle);
+        select.push(examgroup?.data[i]);
+
         i++;
       }
 
       
+      setselecter(select)
 
       setClasss(arr);
       setclazz(arr[0]);
@@ -38,6 +44,8 @@ const ExamGroupSelect = (props) => {
 
   useEffect(() => {
     props.setsectionprop(clazz)
+    props.selectinfo(selecter.filter((item) =>
+      item.grouptitle === clazz))
   }, [clazz]);
 
 

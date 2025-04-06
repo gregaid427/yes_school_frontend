@@ -65,7 +65,7 @@ const BulkBill = () => {
   const fee = useSelector((state) => state?.fees);
   const { GetSingleBill, GetBulkBill, BulKBill } = fee;
   const [loader, setLoader] = useState(true);
-
+  const [selectedInfo, setSelectedInfo] = useState();
   const [searchval, setSearchval] = useState('First Name');
   const [pagesval, setpagesval] = useState(30);
 
@@ -84,6 +84,7 @@ const BulkBill = () => {
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
+  const [classinfo, setclassinfo] = useState();
 
   const session = useSelector((state) => state?.session);
 
@@ -406,7 +407,7 @@ const BulkBill = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo} />
                     </div>
                   </div>
                   {/* <label
@@ -449,7 +450,7 @@ const BulkBill = () => {
                     Session{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SessionSelect setsectionprop={setSessionoption} />
+                    <SessionSelect setsectionprop={setSessionoption} selectinfo={setSelectedInfo} />
                   </div>
                 </div>
                 <div className="w-3/12">

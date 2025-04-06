@@ -89,6 +89,8 @@ const SearchAttendance = () => {
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const attendance = useSelector((state) => state?.attendance);
+  const [classinfo, setclassinfo] = useState();
+
 
   const {
     loading,
@@ -310,7 +312,7 @@ const SearchAttendance = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo} />
                     </div>
                   </div>
                 </div>

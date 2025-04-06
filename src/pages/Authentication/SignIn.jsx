@@ -91,6 +91,10 @@ const SignIn = () => {
       toast.error('Incorrect Email or Password');
       // toast.error("Incorrect Email or Password", { className: "toast-message1" });
     }
+    if (loginUser?.success == 6) {
+      toast.error('Account Is Inactive ');
+      // toast.error("Incorrect Email or Password", { className: "toast-message1" });
+    }
   }, [loginUser]);
 
   return loading ? (

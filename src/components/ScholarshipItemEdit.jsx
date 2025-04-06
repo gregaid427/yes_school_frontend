@@ -13,6 +13,7 @@ import FeeCartSelect from './FeecartSelect';
 const ScholarshipItemEdit = (props) => {
   const dispatch = useDispatch();
   const fees = useSelector((state) => state?.fees);
+  const [selectedInfo, setSelectedInfo] = useState();
 
   const { cartegory } = fees;
 
@@ -273,7 +274,7 @@ const ScholarshipItemEdit = (props) => {
                           </label>{' '}
                         </div>
                         <div className="w-1/2">
-                          <FeeCartSelect setsectionprop={setfeecart} />
+                          <FeeCartSelect setsectionprop={setfeecart} selectinfo={setSelectedInfo}/>
                         </div>
                       </div>
                     </div>

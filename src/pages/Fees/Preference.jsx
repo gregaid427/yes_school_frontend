@@ -73,6 +73,7 @@ const Preference = () => {
   const [cartz, setcartegory] = useState();
   const [info, setinfo] = useState();
   const [receipt, setReceipt] = useState('');
+  const [classinfo, setclassinfo] = useState();
 
 
   const dispatch = useDispatch();
@@ -370,7 +371,7 @@ const Preference = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo} />
                     </div>
                   </div>
                 </div>

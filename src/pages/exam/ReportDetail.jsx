@@ -226,6 +226,9 @@ const ExamReportDetail = () => {
 
   const [btn, setBtn] = useState('center');
   const [val2, setVal2] = useState(false);
+  const [selectedInfo, setSelectedInfo] = useState();
+  const [selectedInfo1, setSelectedInfo1] = useState();
+
 
   const mydata = {
     session: sectionzz,
@@ -359,7 +362,7 @@ const ExamReportDetail = () => {
                   </label>
 
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <ExamGroupSelect setsectionprop={setclazz} clazz={clazz} />
+                  <ExamGroupSelect setsectionprop={setexamgroupoption} selectinfo={setSelectedInfo} />
                   </div>
                 </div>
               </div>
@@ -372,7 +375,7 @@ const ExamReportDetail = () => {
                   Session{' '}
                 </label>
                 <div className="relative z-20 bg-white dark:bg-form-input">
-                  <SessionSelect setsectionprop={setsectionzz} />
+                  <SessionSelect setsectionprop={setsectionzz} selectinfo={setSelectedInfo1} />
                 </div>
               </div>
               <div className="w-full sm:w-2/5">

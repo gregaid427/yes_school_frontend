@@ -2,7 +2,10 @@ import SelectGroupTwo from '../components/Forms/SelectGroup/SelectGroupTwo';
 import DefaultLayout from '../layout/DefaultLayout';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CreatestudentAction, fetchstdCartegoryAction } from '../redux/slices/studentSlice';
+import {
+  CreatestudentAction,
+  fetchstdCartegoryAction,
+} from '../redux/slices/studentSlice';
 import { toast } from 'react-hot-toast';
 
 import { reset } from '../redux/slices/studentSlice';
@@ -12,7 +15,10 @@ import { useNavigate } from 'react-router-dom';
 import StudentCartegorySelect from '../components/StudentCartegorySelect';
 import ScholarshipSelect from '../components/ScholarshipSelect';
 import PreferenceRadio from '../components/PreferenceRadio';
-import { fetchfeeCartegoryAction, resetpreference } from '../redux/slices/feeSlice';
+import {
+  fetchfeeCartegoryAction,
+  resetpreference,
+} from '../redux/slices/feeSlice';
 
 // import { useHistory } from 'react-router-dom';
 
@@ -73,7 +79,6 @@ const Admission = () => {
   }
   let myarr = [];
   const [cartz, setcartegory] = useState();
- 
 
   const [repeat, setRepeat] = useState([]);
   const [selectedInfo, setSelectedInfo] = useState();
@@ -118,15 +123,21 @@ const Admission = () => {
   const [feeCredit, setFeeCredit] = useState(0.0);
   const navigate = useNavigate();
   const user = useSelector((state) => state?.user);
-  const { username, userMail} = user;
-  const [chosen, setchosen] = useState('');
+  const { username, userMail } = user;
+  const [classinfo, setclassinfo] = useState();
+  const [sectioninfo, setSectioninfo] = useState();
+  const [cartegoryid, setCartegoryid] = useState();
+
+  console.log(sectioninfo);
+  console.log(sectionzz);
+
   const [feecart, setFeeCartegory] = useState([]);
 
   const handleSubmit = (e) => {
     // if(!picture) return console.log('no image')
-
-   
- 
+    let temp = repeat.push('0');
+    let pref = repeat.length == 0 ? 0 : repeat;
+    let sectid = sectioninfo[0]?.id == undefined ? '-' : sectioninfo[0]?.id;
     let data = {
       firstName: firstName,
       lastName: lastName,
@@ -137,7 +148,9 @@ const Admission = () => {
       contact4: gcontact4,
       gender: gender,
       class: clazz,
+      classid: classinfo[0]?.classId,
       section: sectionzz,
+      sectionid: sectionzz == 'NONE' ? '-' : sectid,
       religion: religion,
       dateofbirth: dateofbirth,
       role: 'student',
@@ -154,17 +167,17 @@ const Admission = () => {
       gsex1: gsex1,
       gsex2: gsex2,
       cartegory: cartegory,
+      cartegoryid: selectedInfo[0]?.id,
       picture: picture,
       feeArrears: feeArrears,
       feeCredit: feeCredit,
       createdBy: username?.payload,
-      preference : repeat == [] ? 0 : repeat,
-      scholarship : selectedInfo == undefined ? 0 : selectedInfo[0].amount,
-      accountbalance : acctbal,
-      scholarinfo : selectedInfo
-      
+      preference: repeat.length == 0 ? 0 : pref,
+      scholarship: selectedInfo == undefined ? 0 : selectedInfo[0].amount,
+      accountbalance: acctbal,
+      scholarinfo: selectedInfo,
     };
-console.log(data)
+    console.log(data);
     dispatch(CreatestudentAction(data));
   };
 
@@ -182,7 +195,7 @@ console.log(data)
     formRef2.current.reset();
     formRef3.current.reset();
     formRef4.current.reset();
-   // formRef5.current.reset();
+    // formRef5.current.reset();
 
     setButonState(1);
   }
@@ -210,8 +223,9 @@ console.log(data)
   }, [CreateStudent]);
 
   function handleNextButton() {
-    if (firstName == '' || lastName == '' ) return toast.error('Please Fill Out Required Fields');
-    if (clazz == '-' ) return toast.error('Select Class');
+    if (firstName == '' || lastName == '')
+      return toast.error('Please Fill Out Required Fields');
+    if (clazz == '-') return toast.error('Select Class');
 
     setButonState(buttonState + 1);
   }
@@ -220,7 +234,7 @@ console.log(data)
     setButonState(buttonState - 1);
   }
   const fee = useSelector((state) => state?.fees);
-  const { Preferences,feecartegory } = fee;
+  const { Preferences, feecartegory } = fee;
   useEffect(() => {
     if (Preferences?.success == 0) {
       // toast.error('Error - Adding Item Cartegory ');
@@ -234,19 +248,17 @@ console.log(data)
 
     // }
   }, [Preferences]);
-
+  console.log(classinfo);
   useEffect(() => {
-   
     if (feecartegory?.success == 1) {
       let data = feecartegory?.data;
       setFeeCartegory(data);
       console.log(feecartegory?.data);
     }
-  }, [ feecartegory]);
+  }, [feecartegory]);
 
-console.log('repeat')
-console.log(repeat)
-
+  console.log('repeat');
+  console.log(repeat);
 
   return (
     <DefaultLayout>
@@ -362,7 +374,8 @@ console.log(repeat)
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="fullName"
                       >
-                        Date of Birth
+                        Date of Birth{' '}
+                        <span className="text-xm font-thin">(mm/dd/yyyy)</span>
                       </label>
 
                       <input
@@ -387,7 +400,10 @@ console.log(repeat)
                           Class
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
-                          <ClassSelect setsectionprop={setclazz} />
+                          <ClassSelect
+                            setsectionprop={setclazz}
+                            selectinfo={setclassinfo}
+                          />
                         </div>
                       </div>
 
@@ -399,22 +415,28 @@ console.log(repeat)
                           Section{' '}
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
-                          <SectionSelect2 setsectionprop={setsectionzz} />
+                          <SectionSelect2
+                            setsectionprop={setsectionzz}
+                            selectinfo={setSectioninfo}
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="w-full">
-                        <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="phoneNumber"
-                        >
-                          Student Cartegory{' '}
-                        </label>
-                        <div className="relative z-20 bg-white dark:bg-form-input">
-                          <StudentCartegorySelect setsectionprop={setCartegory} />
-                        </div>
-                      </div>
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="phoneNumber"
+                    >
+                      Student Cartegory{' '}
+                    </label>
+                    <div className="relative z-20 bg-white dark:bg-form-input">
+                      <StudentCartegorySelect
+                        setsectionprop={setCartegory}
+                        selectinfo={setSelectedInfo}
+                      />
+                    </div>
+                  </div>
                 </form>
                 <div className="flex mt-5  gap-4.5">
                   <button
@@ -446,19 +468,17 @@ console.log(repeat)
                         Account Balance
                       </label>
                       <div className="w-full">
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        defaultValue="0"
-                        onChange={(e) => setacctbal(e.target.value)}
-                      />
-                  </div>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="text"
+                          name=""
+                          id=""
+                          placeholder=""
+                          defaultValue="0"
+                          onChange={(e) => setacctbal(e.target.value)}
+                        />
+                      </div>
                     </div>
-
-                  
                   </div>
 
                   {/* <div className=" flex flex-col  ">
@@ -478,47 +498,39 @@ console.log(repeat)
                      </div>
                   </div> */}
 
-                  
                   <div className="mb-5.5 flex flex-col  ">
-                  <div className="w-full mb-3 mt-4 sm:w-2/2">
-                  <label
-                    className="mb-2 block text-sm font-medium text-black dark:text-white"
-                    htmlFor=""
-                  >
-                    Select Fee Item Preferences
-                  </label>{' '}
-                  <div>
-                    {feecart?.map((item, index) => (
-                      <div key={index}>
-                        <div className=" flex flex-col my-2 border-b border-t dark:border-strokedark border-stroke  sm:w-full">
-                        <label
-                            className="block pt-1  text-sm font-medium text-black dark:text-white"
-                            htmlFor="checkboxLabelOne"
-                          >
-                            {'- ' + item?.name}
-                          </label>
-                          <div className="">
-                            <PreferenceRadio
-                              setRepeated={setRepeat}
-                              repeat={repeat}
-                              stdId={item?.name}
-                              myarr={[]}
-                            />
+                    <div className="w-full mb-3 mt-4 sm:w-2/2">
+                      <label
+                        className="mb-2 block text-sm font-medium text-black dark:text-white"
+                        htmlFor=""
+                      >
+                        Select Fee Item Preferences
+                      </label>{' '}
+                      <div>
+                        {feecart?.map((item, index) => (
+                          <div key={index}>
+                            <div className=" flex flex-col my-2 border-b border-t dark:border-strokedark border-stroke  sm:w-full">
+                              <label
+                                className="block pt-1  text-sm font-medium text-black dark:text-white"
+                                htmlFor="checkboxLabelOne"
+                              >
+                                {'- ' + item?.name}
+                              </label>
+                              <div className="">
+                                <PreferenceRadio
+                                  setRepeated={setRepeat}
+                                  repeat={repeat}
+                                  stdId={item?.name}
+                                  myarr={[]}
+                                />
+                              </div>
+                            </div>
                           </div>
-
-                         
-                        </div>
-
-                      
+                        ))}
                       </div>
-                    ))}
+                    </div>
                   </div>
-                </div>
-                  </div>
-
-                
                 </form>
-              
               </div>
             </div>
           </div>

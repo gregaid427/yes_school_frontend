@@ -45,7 +45,7 @@ const ScholarshipItem = (props) => {
   const [feecartegory, setfeecart] = useState('TOTAL SESSION FEE');
   const [percent, setPercent] = useState(false);
   const [type, settype] = useState('Fixed Value');
-
+  const [selectedInfo, setSelectedInfo] = useState();
   const formRef1 = useRef();
 
   function resetFormStates() {
@@ -251,7 +251,7 @@ const ScholarshipItem = (props) => {
                         Select Fee Cartegory Applicable
                       </label>{' '}
                       <div>
-                        <FeeCartSelect setsectionprop={setfeecart} />
+                        <FeeCartSelect setsectionprop={setfeecart} selectinfo={setSelectedInfo} />
                       </div>
                     </div>
                   </div>

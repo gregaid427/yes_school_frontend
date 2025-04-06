@@ -67,7 +67,7 @@ const AccountRecords = () => {
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
   const [visible2, setVisible2] = useState(false);
-
+  const [selectedInfo, setSelectedInfo] = useState();
   const [position, setPosition] = useState('top');
 
   const show = (position) => {
@@ -128,6 +128,7 @@ const AccountRecords = () => {
 
   const { fetchAllClassloading, fetchAllClass } = classes;
   const { fetchfeespaid, GetSessionFeeRecord } = fee;
+  const [classinfo, setclassinfo] = useState();
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -380,7 +381,7 @@ const AccountRecords = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo}/>
                     </div>
                     <label
                       className="pt-2 block text-sm cursor-pointer font-medium text-ash dark:text-white"
@@ -402,7 +403,7 @@ const AccountRecords = () => {
                     Session{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SessionSelect1 setsectionprop={setSessionoption} />
+                    <SessionSelect1 setsectionprop={setSessionoption} selectinfo={setSelectedInfo}/>
                   </div>
                 </div>
                 <div className="w-full sm:w-2/5">

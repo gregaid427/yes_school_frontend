@@ -285,6 +285,7 @@ const SearchStudentsModal = (props) => {
       dispatch(fetchCustomStudentsClassAction(data));
     }
   }
+  const [classinfo, setclassinfo] = useState();
 
   return (
     <>
@@ -319,7 +320,7 @@ const SearchStudentsModal = (props) => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz}  selectinfo={setclassinfo} />
                     </div>
                   </div>
                 </div>

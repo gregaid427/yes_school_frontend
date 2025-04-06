@@ -49,7 +49,7 @@ const FeeGenerateRecords = () => {
 
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
-
+  const [selectedInfo, setSelectedInfo] = useState();
   const [position, setPosition] = useState('top');
 
   const show = (position) => {
@@ -89,6 +89,7 @@ const FeeGenerateRecords = () => {
   const classes = useSelector((state) => state?.classes);
   const fee = useSelector((state) => state?.fees);
   const session1 = useSelector((state) => state?.session);
+  const [classinfo, setclassinfo] = useState();
 
   const { fetchsessionactive, fetchsession } = session1;
   useEffect(() => {
@@ -333,7 +334,7 @@ const FeeGenerateRecords = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo}/>
                     </div>
                   </div>
                 </div>
@@ -346,7 +347,7 @@ const FeeGenerateRecords = () => {
                     Session{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                  <SessionSelect setsectionprop={setSessionoption} />
+                  <SessionSelect setsectionprop={setSessionoption} selectinfo={setSelectedInfo} />
                   </div>
                 </div>
                 <div className="w-full sm:w-2/5">

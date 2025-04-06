@@ -62,6 +62,7 @@ const PreferenceList = () => {
 
   const [searcher, setSearcher] = useState('firstName');
   const [isChecked2, setIsChecked2] = useState(false);
+  const [classinfo, setclassinfo] = useState();
 
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
@@ -370,7 +371,7 @@ const PreferenceList = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo} />
                     </div>
                   </div>
                 </div>

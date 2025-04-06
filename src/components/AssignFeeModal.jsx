@@ -29,6 +29,7 @@ const AssignFeeModal = (props) => {
   const [data2, setdata2] = useState({ test: 0 });
   const [data3, setdata3] = useState({ test: 0 });
   const [data4, setdata4] = useState({ test: 0 });
+  const [selectedInfo, setSelectedInfo] = useState();
 
   console.log(selectedArr);
 
@@ -202,7 +203,7 @@ const AssignFeeModal = (props) => {
                           Student Cartegory{' '}
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
-                          <StudentCartegorySelect setsectionprop={setCartegory} />
+                          <StudentCartegorySelect setsectionprop={setCartegory} selectinfo={setSelectedInfo}/>
                         </div>
                       </div>
 

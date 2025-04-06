@@ -37,6 +37,7 @@ import {
   deleteStaffAction,
   fetchAllstaffAction,
   inactiveStaffAction,
+  resetallstaff,
 } from '../redux/slices/usersSlice';
 import ActiveSVG from '../components/Svgs/active';
 import DeleteModal from '../components/DeleteModal';
@@ -97,11 +98,14 @@ const Staff = () => {
       setstudent(false);
       setInventory(false);
       setVisible1(false)
+      dispatch(resetallstaff())
     }
   }, [allstaff]);
   useEffect(() => {
     if (allstaff1?.success == 1) {
       resetFormStates();
+      dispatch(resetallstaff())
+
     }
   }, [allstaff1]);
 
@@ -115,7 +119,7 @@ const Staff = () => {
 
       // `,
       Table: `
-      --data-table-library_grid-template-columns:  47% 15% 38%;
+      --data-table-library_grid-template-columns:  43% 15% 42%;
     `,
       HeaderRow: `
     .th {
@@ -212,9 +216,9 @@ console.log(codes)
   const handlecreateStaff = () => {
     if (fname == '') {
       toast.error('Error - Name Cannot Be Empty');
-    }  if (email == '') {
+    }else  if (email == '') {
       toast.error('Error - Email Cannot Be Empty');
-    } if (password == '') {
+    }else if (password == '') {
       toast.error('Error - Password Cannot Be Empty');
     }else {
       dispatch(CreatesStaffAction(classdata));

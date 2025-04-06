@@ -78,6 +78,7 @@ const EnrollScholarship = () => {
   const [sectionzz, setsectionzz] = useState('All Sections');
   const [propp, setProp] = useState();
   const [cartz, setcartegory] = useState();
+  const [classinfo, setclassinfo] = useState();
 
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
@@ -353,7 +354,7 @@ console.log(CreateScholar)
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo} />
                     </div>
                   </div>
                 </div>

@@ -17,19 +17,25 @@ const ClassSelect = (props) => {
   const [clazz, setclazz] = useState(props.clazz);
   const clad = useSelector((state) => state?.classes);
   const [val, setVal] = useState([]);
+  const [selecter, setselecter] = useState([]);
 
+console.log(selecter)
   const { fetchAllClassloading, fetchAllClass, fetchAllClassNo } = clad;
 
   useEffect(() => {
     let arr = [];
     let i = 0;
+
     if (fetchAllClassNo) {
       for (const element of fetchAllClassNo?.data) {
         if (clazz == element?.title) {
           arr.push(element?.section);
+
         }
+
         i++;
         setVal(arr);
+
       }
     }
   }, [clazz]);
@@ -42,10 +48,15 @@ const ClassSelect = (props) => {
     if (fetchAllClass?.success == 1) {
       let i = 0;
       let arr = ['-'];
+      let select = [];
+
       while (i < clad?.fetchAllClass?.data.length) {
         arr.push(clad?.fetchAllClass?.data[i].title);
+        select.push(clad?.fetchAllClass?.data[i]);
+
         i++;
       }
+      setselecter(select)
 
       setClasss(arr);
      clazz == undefined ? setclazz(arr[0]): setclazz(props.clazz);
@@ -54,6 +65,8 @@ const ClassSelect = (props) => {
 
   useEffect(() => {
     props.setsectionprop(clazz);
+    props.selectinfo(selecter.filter((item) =>
+      item.title === clazz))
   }, [clazz]);
 
   return (
@@ -68,3 +81,7 @@ const ClassSelect = (props) => {
 };
 
 export default ClassSelect;
+
+
+
+

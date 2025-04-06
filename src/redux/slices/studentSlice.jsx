@@ -578,6 +578,43 @@ export const deletesinglegraduateAction = createAsyncThunk(
     }
   },
 );
+export const deletesingledeletedstdAction = createAsyncThunk(
+  'delete/deletedstudent',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/deldeletedstudent`,
+        payload,
+      );
+
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
+        toast.success('Deleted Successfully');
+        setTimeout(() => toast.dismiss(), 2000);
+      }
+
+      if (data == null) {
+        toast.error('Error Deleting Record');
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const deleteSingleStudentAction = createAsyncThunk(
   'delete/singlestudent',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -820,6 +857,40 @@ export const FetchgraduatedAction = createAsyncThunk(
     }
   },
 );
+export const FetchDeletedStaffAction = createAsyncThunk(
+  'get/deletedstaff',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/deletedstaff`,
+        payload,
+      );
+
+      if (data?.success == 0) {
+        toast.error('Empty Record');
+      }
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const DeletegraduatedAction = createAsyncThunk(
   'delete/graduated',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -839,6 +910,71 @@ export const DeletegraduatedAction = createAsyncThunk(
         toast.success('Deleted Successfully');
       }
 
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const DeleteAllDeletedStdAction = createAsyncThunk(
+  'delete/alldeleted',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/delalldeletedstudent`,
+        payload,
+      );
+
+      if (data?.success == 1) {
+        toast.success('Deleted Successfully');
+      }
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const FetchDeleteStudentAction = createAsyncThunk(
+  'fetch/deleted',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/deletedstudent`,
+        payload,
+      );
+
+    
       if (data) {
         toast.dismiss(toastId);
       }
@@ -982,6 +1118,29 @@ const StudentSlices = createSlice({
     //   state.CreateStudent = null;
     // });
     
+
+    builder.addCase(deletesingledeletedstdAction.pending, (state, action) => {
+      state.deletesingledeletedstdloading = true;
+      state.deletesingledeletedstd = false;
+      state.FetchDeleteStudent = false;
+
+      
+    });
+    builder.addCase(deletesingledeletedstdAction.fulfilled, (state, action) => {
+      state.deletesingledeletedstd = action?.payload;
+      state.deletesingledeletedstdloading = false;
+      state.deletesingledeletedstderror = undefined;
+      state.FetchDeleteStudent = action?.payload;
+    });
+    builder.addCase(deletesingledeletedstdAction.rejected, (state, action) => {
+      state.deletesingledeletedstderror = action.payload;
+      state.deletesingledeletedstd = undefined;
+      state.deletesingledeletedstdloading = undefined;
+
+    });
+
+
+
     builder.addCase(deletesinglegraduateAction.pending, (state, action) => {
       state.deletegraduateloading = true;
       state.deletegraduate = false;
@@ -1002,6 +1161,25 @@ const StudentSlices = createSlice({
       state.Fetchgraduate = undefined;
 
     });
+    
+    builder.addCase(DeleteAllDeletedStdAction.pending, (state, action) => {
+      state.DeleteAllDeletedStdloading = true;
+      state.DeleteAllDeletedStd = false;
+    });
+    builder.addCase(DeleteAllDeletedStdAction.fulfilled, (state, action) => {
+      state.DeleteAllDeletedStd = action?.payload;
+      state.DeleteAllDeletedStdloading = false;
+      state.DeleteAllDeletedStderror = undefined;
+      state.FetchDeleteStudent = action?.payload;
+
+    });
+    builder.addCase(DeleteAllDeletedStdAction.rejected, (state, action) => {
+      state.DeleteAllDeletedStderror = action.payload;
+      state.DeleteAllDeletedStd = undefined;
+      state.DeleteAllDeletedStdloading = undefined;
+    });
+
+
 
     builder.addCase(DeletegraduatedAction.pending, (state, action) => {
       state.Deletegraduatedloading = true;
@@ -1018,6 +1196,22 @@ const StudentSlices = createSlice({
       state.Deletegraduatedterror = action.payload;
       state.Deletegraduated = undefined;
       state.Deletegraduatedloading = undefined;
+    });
+
+    builder.addCase(FetchDeleteStudentAction.pending, (state, action) => {
+      state.FetchDeleteStudentloading = true;
+      state.FetchDeleteStudent = false;
+    });
+    builder.addCase(FetchDeleteStudentAction.fulfilled, (state, action) => {
+      state.FetchDeleteStudent = action?.payload;
+      state.FetchDeleteStudentloading = false;
+      state.FetchDeleteStudenterror = undefined;
+
+    });
+    builder.addCase(FetchDeleteStudentAction.rejected, (state, action) => {
+      state.FetchDeleteStudenterror = action.payload;
+      state.FetchDeleteStudent = undefined;
+      state.FetchDeleteStudentloading = undefined;
     });
 
     builder.addCase(UpdateStdCartAction.pending, (state, action) => {
@@ -1184,6 +1378,23 @@ const StudentSlices = createSlice({
         state.fetchStudentcustomballoading = undefined;
       },
     );
+    
+    builder.addCase(FetchDeletedStaffAction.pending, (state, action) => {
+      state.FetchDeletedStaffeloading = true;
+      state.FetchDeletedStaff = false;
+    });
+    builder.addCase(FetchDeletedStaffAction.fulfilled, (state, action) => {
+      state.FetchDeletedStaff = action?.payload;
+      state.Fetchgraduateloading = false;
+      state.FetchDeletedStafferror = undefined;
+    });
+    builder.addCase(FetchDeletedStaffAction.rejected, (state, action) => {
+      state.FetchDeletedStafferror = action.payload;
+      state.FetchDeletedStaf = undefined;
+      state.FetchDeletedStaffloading = undefined;
+    });
+
+
 
     builder.addCase(FetchgraduatedAction.pending, (state, action) => {
       state.Fetchgraduateloading = true;
@@ -1199,6 +1410,8 @@ const StudentSlices = createSlice({
       state.Fetchgraduate = undefined;
       state.Fetchgraduatemloading = undefined;
     });
+
+
     builder.addCase(
       fetchCustomStudentsClassPromoteAction.pending,
       (state, action) => {

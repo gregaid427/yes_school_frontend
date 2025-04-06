@@ -40,6 +40,7 @@ import SetSessionAlert from '../components/SetSessionAlert';
 import DeleteModal from '../components/DeleteModal';
 import SessionModal from '../components/SessionModal';
 import SessionSelect1 from '../components/SessionSelect1';
+import ActiveSVG1 from '../components/Svgs/active1';
 
 const Session = () => {
   const [visible, setVisible] = useState(false);
@@ -74,7 +75,7 @@ const Session = () => {
   const [sections, setsections] = useState([]);
 
   const [nodes, setdata] = useState([]);
-
+  const [selectedInfo, setSelectedInfo] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -297,7 +298,7 @@ const Session = () => {
                         </label>
 
                         <div className="relative z-20 bg-white dark:bg-form-input">
-                          <SessionSelect1 setsectionprop={setSessionoption} />
+                          <SessionSelect1 setsectionprop={setSessionoption}  selectinfo={setSelectedInfo}/>
                         </div>
                       </div>
                       <div className="w-full ">
@@ -473,7 +474,7 @@ const Session = () => {
                             <Cell className="  ">{item.sessionaccountid}</Cell>
 
                             <Cell className="  ">
-                              {item.active == 'true' ? <ActiveSVG /> : ''}
+                              {item.active == 'true' ? <ActiveSVG1 /> : ''}
                             </Cell>
 
                             <Cell>

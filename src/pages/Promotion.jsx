@@ -75,6 +75,9 @@ const Promotion = () => {
   const [isChecked2, setIsChecked2] = useState(false);
   const [radioReset, setradioReset] = useState(false);
 
+  const [classinfo1, setclassinfo1] = useState();
+  const [classinfo2, setclassinfo2] = useState();
+
   
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
@@ -211,8 +214,11 @@ const Promotion = () => {
     // if(nextClass==clazz) return  toast.error('Error: Cannot Promote To Same Class');
 
     let data = {
+      nextclassid: classinfo2[0].classId,
       nextclass: nextClass,
       prevclass: clazz,
+      prevclassid: classinfo1[0].classId,
+
     };
     dispatch(PromoteAllAction(data));
   };
@@ -220,8 +226,11 @@ const Promotion = () => {
   
 
     const data = {
+      type : type,
       value: repeat,
       nextclass: nextClass,
+      nextclassid: classinfo2[0].classId,
+      prevclassid: classinfo1[0].classId,
       prevclass: clazz,
     };
     console.log(data)
@@ -249,6 +258,9 @@ const Promotion = () => {
   function setModalVisible() {
     setVisible(false);
   }
+
+  console.log(classinfo1)
+  console.log(classinfo2)
 
   const csvConfig = mkConfig({
     useKeysAsHeaders: true,
@@ -331,7 +343,7 @@ const Promotion = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo1} />
                     </div>
                   </div>
                 </div>
@@ -587,6 +599,7 @@ const Promotion = () => {
                       <ClassSelect4
                         setsectionprop={setNextclass}
                         clazz={clazz}
+                        selectinfo={setclassinfo2}
                       />
                     </div>
                   </div>

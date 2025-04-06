@@ -55,6 +55,7 @@ const SearchRecords = () => {
 
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
+  const [classinfo, setclassinfo] = useState();
 
   const [position, setPosition] = useState('top');
 
@@ -381,7 +382,7 @@ useEffect(() => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo} />
                     </div>
                   </div>
                 </div>

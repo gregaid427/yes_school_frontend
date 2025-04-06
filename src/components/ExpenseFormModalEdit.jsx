@@ -10,6 +10,7 @@ import { CreatesExpenseAction, UpdateExpenseAction } from '../redux/slices/expen
 const ExpenseFormModalEdit = (props) => {
     const dispatch = useDispatch();
 
+    const [selectedInfo, setSelectedInfo] = useState();
 
     const [amount, setAmount] = useState(props?.info?.amount);
 
@@ -87,7 +88,7 @@ const ExpenseFormModalEdit = (props) => {
                         Expense Head
                       </label>
                       <div className="relative z-20 bg-white dark:bg-form-input">
-                        <ExpenseHeadSelect setsectionprop={SetExpenseHead} />
+                        <ExpenseHeadSelect setsectionprop={SetExpenseHead} selectinfo={setSelectedInfo}/>
                       </div>
                     </div>
                     <div className="w-full mb-4 sm:w-2/2">

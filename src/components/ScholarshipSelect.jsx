@@ -45,6 +45,8 @@ const ScholarshipSelect = (props) => {
       item.title === clazz))
   }, [clazz]);
 
+  //const [selectedInfo, setSelectedInfo] = useState();
+
   return (
     <>
       <SelectGroupTwo

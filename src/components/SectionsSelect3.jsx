@@ -14,6 +14,7 @@ const SectionSelect3 = (props) => {
 
     useEffect(() => {
         props.setsectionprop(sectionzz)
+        props.selectinfo(customSection1[0])
     }, [sectionzz]);
 
     useEffect(() => {
@@ -25,20 +26,8 @@ const SectionSelect3 = (props) => {
       console.log(customSection1)
     // }
   }, [customSection1]);
-  // useEffect(() => {
-  //   if (fetchSection?.success == 1) {
-  //     let arrr = ['None','All Sections'];
-  //     let i = 0;
-  //     while (i < clad?.fetchSection?.data.length) {
-  //       arrr.push(clad?.fetchSection?.data[i]?.sectionName);
-  //       i++;
-  //     }
-
-  //     setsections(arrr);
-  //     setsectionzz(arrr[0]);
-  //   }
-  // }, [sectionloading]);
-
+ 
+ 
   return (
     <>
       <SelectGroupTwo

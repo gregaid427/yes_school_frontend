@@ -15,6 +15,7 @@ const SessionSelect1 = (props) => {
   const [clazz, setclazz] = useState();
 
   const session = useSelector((state) => state?.session);
+  const [selecter, setselecter] = useState([]);
 
  
   const { fetchsession,fetchsessionactive} =
@@ -25,13 +26,17 @@ const SessionSelect1 = (props) => {
     if (fetchsession?.success == 1) {
       let i = 0;
       let arr = ['None'];
+      let select = [];
+
       while (i < session?.fetchsession?.data.length) {
         arr.push(session?.fetchsession?.data[i]?.sessionname);
+        select.push(session?.fetchsession?.data[i]);
+
         i++;
       }
 
       
-
+      setselecter(select)
       setClasss(arr);
       setclazz('None');
 
@@ -42,6 +47,8 @@ const SessionSelect1 = (props) => {
 
   useEffect(() => {
     props.setsectionprop(clazz)
+    props.selectinfo(selecter.filter((item) =>
+      item.sessionname === clazz))
   }, [clazz]);
 
 

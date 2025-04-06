@@ -26,11 +26,12 @@ import {
 } from '@table-library/react-table-library/table';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  deleteSingleStudentAction,
-  fetchBulkStudent,
-  fetchCustomStudentsClassAction,
+  DeleteAllDeletedStdAction,
+  DeletegraduatedAction,
+  deletesingledeletedstdAction,
+  deletesinglegraduateAction,
+  FetchDeleteStudentAction,
   fetchSingleStudent,
-  fetchStudentsClassAction,
 } from '../redux/slices/studentSlice';
 import Loader from '../common/Loader';
 import StudentModal from '../components/StudentModal';
@@ -41,15 +42,15 @@ import InactiveSVG from '../components/Svgs/Inactive';
 import RemoveSVG from '../components/Svgs/Remove';
 import DeleteModal from '../components/DeleteModal';
 
-const SetStudent = () => {
+const Setdeletedstudent = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
+  const [visible2, setVisible2] = useState(false);
+
   const [visible1, setVisible1] = useState(false);
-  const [del, setDel] = useState(false);
+  const [del, setDel] = useState();
   const [userid, setuserid] = useState();
-
-
 
   const [position, setPosition] = useState('top');
 
@@ -67,7 +68,6 @@ const SetStudent = () => {
 
   const [searcher, setSearcher] = useState('firstName');
   const [isChecked2, setIsChecked2] = useState(false);
-  const [classinfo, setclassinfo] = useState();
 
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
@@ -81,61 +81,25 @@ const SetStudent = () => {
   const classes = useSelector((state) => state?.classes);
 
   const {
-    loading,
-    error,
-    fetchStudent,
-    fetchStudentcustom,
-    fetchcustom,
-    fetchStudentcustomloading,
-    fetchcustomloading,
-    singleStudent,
-    singleStudentloading,
+
+    FetchDeleteStudent,
+    deletegraduate,
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
 
   useEffect(() => {
+    dispatch(FetchDeleteStudentAction());
     setTimeout(() => setLoader(false), 1000);
-
-    if (fetchcustom?.success == 1) {
-      let data = fetchcustom?.data;
-      setdata(data);
-    }
-
-    if (fetchAllClass?.success == 1) {
-      let i = 0;
-      let arr = [];
-      while (i < classes?.fetchAllClass?.data.length) {
-        arr.push(classes?.fetchAllClass?.data[i].title);
-        i++;
-      }
-      setClasss(arr);
-     // setclazz(arr[0]);
-    }
-  }, [fetchAllClassloading, fetchcustomloading]);
-
-  useEffect(() => {
-    setTimeout(() => setLoader(false), 1000);
-
-    if (fetchStudentcustom?.success == 1) {
-      let data = fetchStudentcustom?.data;
-      setdata(data);
-    }
-  }, [fetchStudentcustomloading]);
-
-  useEffect(() => {
-    setdata([]);
   }, []);
 
   useEffect(() => {
-    setTimeout(() => setLoader(false), 1000);
-
-    if (fetchStudent?.success == 1) {
-      let data = fetchStudent?.data;
+    if (FetchDeleteStudent?.success == 1) {
+      let data = FetchDeleteStudent?.data;
       setdata(data);
-      setVisible1(false)
+      setVisible1(false);
     }
-  }, [fetchStudent]);
+  }, [FetchDeleteStudent]);
 
   // useEffect(() => {
 
@@ -169,7 +133,7 @@ const SetStudent = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  12% 33% 20% 10% 25%;
+  --data-table-library_grid-template-columns:  12% 33% 20% 10% 10%  15%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -178,15 +142,15 @@ const SetStudent = () => {
       //   //  background-color: #24303F;
 
        `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -212,17 +176,17 @@ const SetStudent = () => {
   const handleEditbtn = (value) => {
     dispatch(fetchSingleStudent(value.student_id));
     navigate('/student/editinfo', {
-      state: { action: 2, value: value},
+      state: { action: 2, value: value },
     });
   };
   const handledeletbtn = () => {
     let data = {
-      class: clazz,
-      section: sectionzz,
       id: del,
-      userid: userid
     };
-    dispatch(deleteSingleStudentAction(data));
+    dispatch(deletesingledeletedstdAction(data));
+  };
+  const handledeletallbtn = () => {
+    dispatch(DeleteAllDeletedStdAction());
   };
 
   data = {
@@ -255,23 +219,7 @@ const SetStudent = () => {
     const csv = generateCsv(csvConfig)(nodes);
     download(csvConfig)(csv);
   };
-  function handleGetClassData() {
-    console.log(clazz);
 
-    let data = {
-      class: clazz,
-      section: sectionzz,
-    };
-    console.log(data);
-    if (sectionzz == 'All Sections') {
-      setclazz(clazz);
-      dispatch(fetchStudentsClassAction(data));
-    }
-    if (sectionzz != 'All Sections') {
-      setsectionzz(sectionzz);
-      dispatch(fetchCustomStudentsClassAction(data));
-    }
-  }
   const footerContent = (
     <div>
       <button
@@ -319,7 +267,20 @@ const SetStudent = () => {
         draggable={false}
         resizable={false}
       >
-        <DeleteModal delete={handledeletbtn} close={setVisible1} />
+        <DeleteModal delete={handledeletallbtn} close={setVisible1} />
+      </Dialog>
+      <Dialog
+        visible={visible2}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible2) return;
+          setVisible2(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <DeleteModal delete={handledeletbtn} close={setVisible2} />
       </Dialog>
       <div className=" flex-col">
         <div
@@ -327,117 +288,50 @@ const SetStudent = () => {
             'rounded-sm border max-w-full border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
           }
         >
-          <div className="max-w-full overflow-x-auto">
-            <div className="w-full  flex justify-between ">
-              <div className=" flex w-8/12 gap-3">
-                <div className="sm:w-2/5 ">
-                  <div>
-                    <label
-                      className="mb-2 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="fullName"
-                    >
-                      Class
-                    </label>
-
-                    <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo}/>
-                    </div>
-                  </div>
-                  <label
-                    className="pt-4 block text-sm font-medium text-ash dark:text-white"
-           // style={{ color: '#A9B5B3' }}
-                    onClick={(e) => {
-                      handleDownloadPdf();
-                    }}
-                  >
-                    Download Page (PDF)
-                  </label>
+          <div className="flex  justify-between ">
+            <div className=" w-4/12">
+              <label
+                className=" block  text-lg mb-3 font-medium text-ash dark:text-white"
+                // style={{ color: '#A9B5B3' }}
+              >
+                Deleted Students' Records{' '}
+              </label>
+              <button
+                onClick={() => setVisible1(true)}
+                className="btn h-10  flex justify-center rounded  bg-danger py-2 px-3 font-medium text-gray hover:shadow-1"
+                type="submit"
+              >
+                Delete All Records
+              </button>
+            </div>
+            <div className="flex w-4/12 flex-col">
+              <div className="flex justify-between align-middle mb-2">
+                <label
+                  className="mb-3 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
+                  htmlFor=" "
+                >
+                  Search By{' '}
+                </label>
+                <div className="relative  z-20 w-3/5 bg-white dark:bg-form-input">
+                  <SelectGroupTwo
+                    values={['First Name', 'Last Name', 'ID']}
+                    setSelectedOption={(val) => setSearchval(val)}
+                    selectedOption={searchval}
+                  />
                 </div>
-
-                <div className="w-full sm:w-2/5">
-                  <label
-                    className="mb-2 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="phoneNumber"
-                  >
-                    Section{' '}
-                  </label>
-                  <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SectionSelect1 setsectionprop={setsectionzz} />
-                  </div>
-                  <label
-                    className="pt-4 block text-sm font-medium text-ash dark:text-white"
-           // style={{ color: '#A9B5B3' }}
-                    onClick={(e) => {
-                      handleDownloadCSV();
-                    }}
-                  >
-                    Download Page (Excel)
-                  </label>
-                </div>
-                <div className="w-full sm:w-2/5">
-                  <label
-                    className="mb-2 block text-sm font-medium  dark:text-black"
-                    htmlFor=""
-                  >
-                    .{' '}
-                  </label>
-                  <div className="relative sm:w-1/5 z-20 bg-white dark:bg-form-input">
-                    <button
-                      onClick={() => handleGetClassData()}
-                      className="btn h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
-                      type="submit"
-                    >
-                      Search
-                    </button>
-                  </div>
-                  <div className="relative sm:w-4/5 z-20 mt-2 bg-white dark:bg-form-input">
-                    <button
-                      onClick={() => navigate('/student/admission')}
-                      className="btn h-10 w-full   flex justify-center rounded  bg-primary py-2 px-3 font-medium text-gray hover:shadow-1"
-                      type="submit"
-                    >
-                      Add New Student
-                    </button>
-                  </div>
-                </div>
-                {/* <div className="w-full sm:w-1/3 flex  justify-end align-top  ">
-                    <button onClick={(e)=>{handleDownloadPdf()}}
-                      className="btn sm:w-2/3 h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
-                      type="submit"
-                    >
-                      Search
-                    </button>
-                  </div> */}
               </div>
 
-              <div className={' w-3/12 flex flex-col float-right '}>
-                <div className="flex justify-between align-middle mb-2">
-                  <label
-                    className="mb-3 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor=" "
-                  >
-                    Search By{' '}
-                  </label>
-                  <div className="relative  z-20 w-3/5 bg-white dark:bg-form-input">
-                    <SelectGroupTwo
-                      values={['First Name', 'Last Name', 'ID']}
-                      setSelectedOption={(val) => setSearchval(val)}
-                      selectedOption={searchval}
-                    />
-                  </div>
-                </div>
+              <input
+                className="w-full rounded border border-stroke bg-gray py-2 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                key={1}
+                type="search"
+                placeholder={'type here'}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
 
-                <input
-                  className="w-full rounded border border-stroke bg-gray py-2 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  key={1}
-                  type="search"
-                  placeholder={'type here'}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
-                />
-                {/* <button onClick={() => toPDF()}>Download PDF</button> */}
-              </div>
+              {/* <button onClick={() => toPDF()}>Download PDF</button> */}
             </div>
           </div>
         </div>
@@ -462,18 +356,19 @@ const SetStudent = () => {
                         <HeaderCell>Name</HeaderCell>
                         <HeaderCell>Class (Section)</HeaderCell>
                         <HeaderCell>Gender</HeaderCell>
+                        <HeaderCell>Acct Bal</HeaderCell>
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
-                        <Row key={item.student_id}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          >
+                        <Row
+                          key={item.id}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -492,27 +387,30 @@ const SetStudent = () => {
                           <Cell className="  ">
                             <span>{item.gender}</span>
                           </Cell>
+                          <Cell className="  ">
+                            <span>{item.accountbalance}</span>
+                          </Cell>
 
                           <Cell>
                             <div className="gap-2 flex">
                               {/* <ViewSVG
                                 clickFunction={() => handleviewbtn(item)}
                               /> */}
-                              <EditSVG
+                              {/* <EditSVG
                                 clickFunction={() => handleEditbtn(item)}
-                              />
+                              /> */}
 
-                              <InactiveSVG
+                              {/* <InactiveSVG
                                 clickFunction={() =>
                                   handledeletbtn(item.student_id)
                                 }
-                              />
+                              /> */}
                               <RemoveSVG
-                                clickFunction={() =>{
-                                  setVisible1(true)
-                                  setDel(item.student_id)
-                                  setuserid(item.userId)}
-                                }
+                                clickFunction={() => {
+                                  setVisible2(true);
+                                  setDel(item.student_id);
+                                  setuserid(item.userId);
+                                }}
                               />
                             </div>
                           </Cell>
@@ -585,11 +483,10 @@ const SetStudent = () => {
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
                         <Row
-                          key={item.student_id}
+                          key={item.id}
                           item={item}
                           className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                         >
@@ -625,4 +522,4 @@ const SetStudent = () => {
   );
 };
 
-export default SetStudent;
+export default Setdeletedstudent;

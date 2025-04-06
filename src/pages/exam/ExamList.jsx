@@ -53,6 +53,8 @@ const ExamList = () => {
 
   const exam = useSelector((state) => state?.exam);
   const { FetchExamList, Createexam, FetchExamCustom } = exam;
+  const [selectedInfo, setSelectedInfo] = useState();
+  const [selectedInfo1, setSelectedInfo1] = useState();
 
   const [pagesval, setpagesval] = useState(50);
 
@@ -159,7 +161,6 @@ const ExamList = () => {
   const [classes, setClass] = useState();
 
   const [visible6, setvisible6] = useState(false);
-
   const [position, setPosition] = useState('center');
 
   const mydata = {
@@ -255,7 +256,7 @@ const ExamList = () => {
                   </label>
 
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <ExamGroupSelect setsectionprop={setclazz} clazz={clazz} />
+                    <ExamGroupSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setSelectedInfo}/>
                   </div>
                 </div>
               </div>
@@ -268,7 +269,7 @@ const ExamList = () => {
                   Session{' '}
                 </label>
                 <div className="relative z-20 bg-white dark:bg-form-input">
-                  <SessionSelect setsectionprop={setsectionzz} />
+                  <SessionSelect setsectionprop={setsectionzz} selectinfo={setSelectedInfo1} />
                 </div>
               </div>
               <div className="w-full sm:w-2/5">
@@ -363,7 +364,7 @@ const ExamList = () => {
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
-                        <Row key={item.examcode}
+                        <Row key={item.id}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                           
@@ -494,7 +495,7 @@ const ExamList = () => {
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
                         <Row
-                          key={item.examsid}
+                          key={item.id}
                           item={item}
                           className="dark:bg-dark border dark:bg-boxdark dark:border-strokedark dark:text-white dark:hover:text-white "
                         >

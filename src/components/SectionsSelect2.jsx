@@ -17,13 +17,35 @@ const SectionSelect2 = (props) => {
 
 
   useEffect(() => {
-  
+    
 
       setsections(customSection);
       setsectionzz(customSection[0]);
       console.log(customSection)
     // }
   }, [customSection]);
+  const [selecter, setselecter] = useState([]);
+console.log(fetchSection)
+console.log(selecter)
+console.log(sectionzz)
+
+
+
+  useEffect(() => {
+
+    setselecter(fetchSection?.data);
+   }, [fetchSection?.data]);
+
+  useEffect(() => {
+   // props.setsectionprop(clazz);
+   console.log(selecter)
+   console.log(sectionzz)
+   selecter?.filter((item) =>
+    console.log(item.sectionName) )
+    props.selectinfo(selecter?.filter((item) =>
+      item.sectionName === sectionzz))
+  }, [sectionzz]);
+
 
   return (
     <>

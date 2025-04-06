@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DefaultLayout from '../layout/DefaultLayout';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -25,7 +25,7 @@ const Users = () => {
 
     // dispatch(());
   }, []);
-
+let navigate = useNavigate()
   const [student, setStudent] = useState('loading...');
   const [classes, setClasses] = useState('loading...');
 
@@ -61,9 +61,13 @@ const Users = () => {
       <div className="w-full flex gap-4 ">
             <div className="rounded-sm  w-6/12 border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-            <div className="border-b border-stroke p-7 py-6 dark:border-strokedark">
+            <div className="border-b flex justify-between border-stroke p-7 py-3 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
                 Manage Users
+              </h3>
+
+              <h3 onClick={()=>navigate('loginlog')} className="font-small cursor-pointer text-sm p-2 border  border-stroke  dark:border-strokedark text-black dark:text-white">
+                View Login Log
               </h3>
             </div>
             <table className="w-full table-auto">
@@ -81,7 +85,7 @@ const Users = () => {
               <tbody>
                 <tr>
                   <td className="border-b px-7 py-3 border-[#eee]  dark:border-strokedark ">
-                    <h5 className="font-medium text-black dark:text-white">
+                    <h5 className="font-small text-black dark:text-white">
                       {'Students'}
                     </h5>
                   </td>
@@ -100,8 +104,8 @@ const Users = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="border-b py-1 px-7 py-3 border-[#eee]  dark:border-strokedark ">
-                    <h5 className="font-medium text-black dark:text-white">
+                  <td className="border-b px-7 py-3 border-[#eee]  dark:border-strokedark ">
+                    <h5 className="font-small text-black dark:text-white">
                       {'Parent / Guardian'}
                     </h5>
                   </td>
@@ -122,7 +126,7 @@ const Users = () => {
                 
                 <tr>
                   <td className="border-b px-7 py-3 border-[#eee]  dark:border-strokedark ">
-                    <h5 className="font-medium text-black dark:text-white">
+                    <h5 className="font-small text-black dark:text-white">
                       {'Staff / Teacher'}
                     </h5>
                   </td>
@@ -142,7 +146,7 @@ const Users = () => {
                 </tr>
                 <tr>
                   <td className="border-b px-7 py-3 border-[#eee]  dark:border-strokedark ">
-                    <h5 className="font-medium text-black dark:text-white">
+                    <h5 className="font-small text-black dark:text-white">
                       {'Graduated Students'}
                     </h5>
                   </td>
@@ -162,14 +166,14 @@ const Users = () => {
                 </tr>
                 <tr>
                   <td className="border-b px-7 py-3 border-[#eee]  dark:border-strokedark ">
-                    <h5 className="font-medium text-black dark:text-white">
+                    <h5 className="font-small text-black dark:text-white">
                       {'Deleted Students'}
                     </h5>
                   </td>
 
                   <td className="border-b border-[#eee]  dark:border-strokedark">
                     <div className="flex items-center ">
-                      <Link to="/settings/staff">
+                      <Link to="/settings/deletedstd">
                         <button
                           className="btn float-right flex justify-center rounded bg-primary py-1 px-3 font-small text-gray hover:shadow-1"
                           type="submit"
@@ -180,26 +184,7 @@ const Users = () => {
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td className="border-b px-7 py-3 border-[#eee]  dark:border-strokedark ">
-                    <h5 className="font-medium text-black dark:text-white">
-                      {'Deleted Staff/Parents'}
-                    </h5>
-                  </td>
-
-                  <td className="border-b border-[#eee]  dark:border-strokedark">
-                    <div className="flex items-center ">
-                      <Link to="/settings/staff">
-                        <button
-                          className="btn float-right flex justify-center rounded bg-primary py-1 px-3 font-small text-gray hover:shadow-1"
-                          type="submit"
-                        >
-                          Select
-                        </button>
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
+              
               </tbody>
             </table>
           </div>

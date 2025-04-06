@@ -11,6 +11,7 @@ import StudentCartegorySelect from './StudentCartegorySelect';
 const AssignFeeModalPartial = (props) => {
   const dispatch = useDispatch();
   const [display, setDisplay] = useState(2);
+  const [selectedInfo, setSelectedInfo] = useState();
 
   const [clazz, setclazz] = useState();
   const [isChecked1, setIsChecked1] = useState();
@@ -120,7 +121,7 @@ console.log(props)
                           Student Cartegory{' '}
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
-                          <StudentCartegorySelect setsectionprop={setCartegory} />
+                        <StudentCartegorySelect setsectionprop={setCartegory} selectinfo={setSelectedInfo}/>
                         </div>
                       </div>
 

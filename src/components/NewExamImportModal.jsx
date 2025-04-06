@@ -30,6 +30,8 @@ const NewExamImportModal = (props) => {
   const [chosen, setchosendata] = useState([]);
   const [grades, setGrades] = useState([]);
   const [NewResultData, setNewData] = useState([]);
+  const [selectedInfo, setSelectedInfo] = useState();
+  const [selectedInfo1, setSelectedInfo1] = useState();
 
   
   const [selectsubject, setselectsubject] = useState('NONE');
@@ -256,7 +258,7 @@ const NewExamImportModal = (props) => {
                         Select Exam Cartegory
                       </label>{' '}
                       <div className="relative z-20 bg-white dark:bg-form-input">
-                        <ExamGroupSelect setsectionprop={setexamgroupoption} />
+                      <ExamGroupSelect setsectionprop={setexamgroupoption} selectinfo={setSelectedInfo} />
                       </div>
                     </div>
                     <div className="w-full mb-1 sm:w-2/2">
@@ -267,7 +269,7 @@ const NewExamImportModal = (props) => {
                         Select Session
                       </label>{' '}
                       <div className="relative z-20 bg-white dark:bg-form-input">
-                        <SessionSelect setsectionprop={setsession} />
+                      <SessionSelect setsectionprop={setsession} selectinfo={setSelectedInfo1}  />
                       </div>
                     </div>
                     <div className="w-full mb-1 sm:w-2/2">
@@ -278,7 +280,7 @@ const NewExamImportModal = (props) => {
                         Select Grading Type
                       </label>{' '}
                       <div className="relative z-20 bg-white dark:bg-form-input">
-                        <ExamGrading setsectionprop={setexamgradeoption} />
+                        <ExamGrading setsectionprop={setexamgradeoption} selectinfo={setSelectedInfo} />
                       </div>
                       <div
                         className={examgradeoption == 'None' ? 'hidden' : ''}

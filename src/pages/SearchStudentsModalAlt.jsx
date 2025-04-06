@@ -67,6 +67,8 @@ const SearchStudentsModalAlt = (props) => {
   const [CSVTemplate, setCSVTemplate] = useState([]);
   const [clazz, setclazz] = useState();
   const [sectionzz, setsectionzz] = useState();
+  const [classinfo, setclassinfo] = useState();
+
   const [id, setid] = useState();
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
@@ -301,7 +303,7 @@ const SearchStudentsModalAlt = (props) => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} />
+                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo} />
                     </div>
                   </div>
                 </div>

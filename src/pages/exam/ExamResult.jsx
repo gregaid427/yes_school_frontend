@@ -57,7 +57,7 @@ const ExamResult = () => {
   const [searcher, setSearcher] = useState('firstName');
   const [isChecked2, setIsChecked2] = useState(false);
   const [sessionoption, setSessionoption] = useState('');
-
+  const [selectedInfo, setSelectedInfo] = useState();
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
   const [classs, setClasss] = useState();
@@ -68,6 +68,8 @@ const ExamResult = () => {
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
+  const [classinfo, setclassinfo] = useState();
+  const [classinfo1, setclassinfo1] = useState();
 
   const {
     loading,
@@ -311,7 +313,7 @@ const ExamResult = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} />
+                      <ClassSelect setsectionprop={setclazz} selectinfo={setclassinfo} />
                     </div>
                   </div>
                   <label
@@ -353,7 +355,7 @@ const ExamResult = () => {
                     Session{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SessionSelect setsectionprop={setSessionoption} />
+                    <SessionSelect setsectionprop={setSessionoption} selectinfo={setSelectedInfo} />
                   </div>
                 </div>
                 <div className="w-full sm:w-1/5">
@@ -364,7 +366,7 @@ const ExamResult = () => {
                     Class{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <ClassSelect setsectionprop={setclazz} />
+                    <ClassSelect setsectionprop={setclazz} selectinfo={setclassinfo1} />
                   </div>
                 </div>
                 <div className="w-full sm:w-1/5">

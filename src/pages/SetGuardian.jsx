@@ -66,6 +66,8 @@ const SetGuardian = () => {
   const [classs, setClasss] = useState();
   const [sections, setsections] = useState([]);
   const [clazz, setclazz] = useState();
+  const [classinfo, setclassinfo] = useState();
+
   const [sectionzz, setsectionzz] = useState();
 
   const dispatch = useDispatch();
@@ -324,7 +326,7 @@ const SetGuardian = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} />
+                      <ClassSelect setsectionprop={setclazz} selectinfo={setclassinfo} />
                     </div>
                   </div>
                 </div>
