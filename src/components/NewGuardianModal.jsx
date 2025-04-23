@@ -142,7 +142,7 @@ const NewGuardModal = (props) => {
                           className="mb-2 block w-2/6 text-sm font-medium text-black dark:text-white"
                           htmlFor="fullName"
                         >
-                          Pasword :
+                          Password :
                         </label>
                         <label
                           className="mb-2 block w-4/6 text-sm font-medium text-black dark:text-white"

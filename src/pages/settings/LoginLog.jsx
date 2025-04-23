@@ -23,8 +23,6 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import { Dialog } from 'primereact/dialog';
 import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
 
-
-
 const LoginLog = () => {
   const [pagesval, setpagesval] = useState(30);
   const [amount, setAmount] = useState([]);
@@ -53,11 +51,8 @@ const LoginLog = () => {
   const { LoginLog } = users;
 
   useEffect(() => {
-  dispatch(LoginLogAction())
+    dispatch(LoginLogAction());
   }, []);
-
- 
-
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -178,7 +173,6 @@ const LoginLog = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-    
       <div className={'flex gap-2  w-full'}>
         <div className="w-full flex-col">
           <div
@@ -189,7 +183,7 @@ const LoginLog = () => {
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
-                  Login Log 
+                  Login Log
                 </h3>
               </div>
             </div>
@@ -205,21 +199,19 @@ const LoginLog = () => {
                   <div className="sm:w-2/5 ">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-             // style={{ color: '#A9B5B3' }}
+                      // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadPdf();
                       }}
                     >
                       Download Page (PDF)
                     </label>
-
-                  
                   </div>
 
                   <div className="w-full sm:w-2/5">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-             // style={{ color: '#A9B5B3' }}
+                      // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadCSV();
                       }}
@@ -228,7 +220,6 @@ const LoginLog = () => {
                     </label>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -249,11 +240,10 @@ const LoginLog = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
-                        <HeaderCell>Userid</HeaderCell>
+                          <HeaderCell>Userid</HeaderCell>
                           <HeaderCell>Username</HeaderCell>
                           <HeaderCell>Role</HeaderCell>
                           <HeaderCell>Login DateTime</HeaderCell>
-
                         </HeaderRow>
                       </Header>
 
@@ -264,15 +254,16 @@ const LoginLog = () => {
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                           >
-                                                        <Cell className="  ">{item.id}</Cell>
+                            <Cell className="  ">{item.id}</Cell>
 
-                            <Cell className="  ">{item.firstName +" "+ item.lastName}</Cell>
+                            <Cell className="  ">
+                              {item.firstName + ' ' + item.lastName}
+                            </Cell>
 
                             <Cell className="  ">{item.role}</Cell>
                             <Cell className="  ">{item.date}</Cell>
 
-
-                                {/* <ViewSVG
+                            {/* <ViewSVG
                                   clickFunction={() => {
                                     setInfo(item);
                                     setVisible2(true);
@@ -292,7 +283,6 @@ const LoginLog = () => {
                                     setDel(item.id);
                                   }}
                                 /> */}
-                             
                           </Row>
                         ))}
                       </Body>
@@ -373,7 +363,11 @@ const LoginLog = () => {
                           >
                             <Cell className="  ">{item.name}</Cell>
 
-                            <Cell className="  ">{item.expensehead == 'undefined' ? '-' : item.expensehead}</Cell>
+                            <Cell className="  ">
+                              {item.expensehead == 'undefined'
+                                ? '-'
+                                : item.expensehead}
+                            </Cell>
                             <Cell className="  ">{item.date}</Cell>
                             <Cell className="  ">{item.amount}</Cell>
 

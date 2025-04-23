@@ -35,6 +35,7 @@ import {
   fetchStudentsClassPromoteAction,
   PromoteAllAction,
   PromoteSelectedAction,
+  resetMoveStudent,
   resetPromote,
 } from '../redux/slices/studentSlice';
 import Loader from '../common/Loader';
@@ -49,15 +50,21 @@ import SetSessionAlert from '../components/SetSessionAlert';
 import NewGuardModal from '../components/NewGuardianModal';
 import PromoteModal from '../components/PromoteModal';
 import ClassSelect4 from '../components/ClassSelect4';
+import TableBtn from '../components/Svgs/TableBtn';
+import ChangeSectionModal from '../components/ChangeSectionModal';
 
 const Promotion = () => {
   ///////////////////////////////////
 
   const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
+
   const [position, setPosition] = useState('top');
   const [allStudent, setAllStudent] = useState(true);
   const [onlySelected, setOnlySelected] = useState(false);
   const [repeat, setRepeat] = useState([]);
+ 
+
 
   const show = (position) => {
     setPosition(position);
@@ -72,13 +79,12 @@ const Promotion = () => {
   const [pagesval, setpagesval] = useState(9999999999999);
 
   const [searcher, setSearcher] = useState('firstName');
-  const [isChecked2, setIsChecked2] = useState(false);
+  const [studentdata, setstudentdata] = useState(null);
   const [radioReset, setradioReset] = useState(false);
 
   const [classinfo1, setclassinfo1] = useState();
   const [classinfo2, setclassinfo2] = useState();
 
-  
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
   const [classs, setClasss] = useState();
@@ -105,6 +111,7 @@ const Promotion = () => {
     singleStudent,
     singleStudentloading,
     studentPromote,
+    MoveStudent
   } = student;
   console.log(repeat);
   const { fetchAllClassloading, fetchAllClass } = classes;
@@ -115,6 +122,14 @@ const Promotion = () => {
       setdata(data);
     }
   }, [fetchcustom]);
+  useEffect(() => {
+    if (MoveStudent?.success == 1) {
+      setVisible1(false)
+dispatch(resetMoveStudent())
+setdata([]);
+
+    }
+  }, [MoveStudent]);
 
   useEffect(() => {
     if (fetchStudentcustom?.success == 1) {
@@ -126,11 +141,10 @@ const Promotion = () => {
   useEffect(() => {
     if (studentPromote?.success == 1) {
       setdata([]);
-      setRepeat([])
-      setType('All')
-      setIsChecked1(false)
-      setradioReset(!radioReset)
-
+      setRepeat([]);
+      setType('All');
+      setIsChecked1(false);
+      setradioReset(!radioReset);
     }
     // dispatch(resetPromote());
   }, [studentPromote]);
@@ -162,8 +176,9 @@ const Promotion = () => {
       border-bottom: 1px solid #a0a8ae;
       padding: 5px 0px;
     }
-  `, Table: `
-  --data-table-library_grid-template-columns:  15% 27% 24%  17% 17%;
+  `,
+      Table: `
+  --data-table-library_grid-template-columns:   27% 30%  14% 29%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -173,15 +188,15 @@ const Promotion = () => {
       //   //  background-color: #24303F;
 
        `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -218,24 +233,20 @@ const Promotion = () => {
       nextclass: nextClass,
       prevclass: clazz,
       prevclassid: classinfo1[0].classId,
-
     };
     dispatch(PromoteAllAction(data));
   };
   const handlePromoteselected = () => {
-  
-
     const data = {
-      type : type,
+      type: type,
       value: repeat,
       nextclass: nextClass,
-      nextclassid: classinfo2[0].classId,
-      prevclassid: classinfo1[0].classId,
+      nextclassid: nextClass == 'GRADUATED' ? 0: classinfo2[0].classId,
+      prevclassid: clazz == 'GRADUATED' ? 0: classinfo1[0].classId,
       prevclass: clazz,
     };
-    console.log(data)
+    console.log(data);
     dispatch(PromoteSelectedAction(data));
-
   };
 
   data = {
@@ -259,8 +270,8 @@ const Promotion = () => {
     setVisible(false);
   }
 
-  console.log(classinfo1)
-  console.log(classinfo2)
+  console.log(classinfo1);
+  console.log(classinfo2);
 
   const csvConfig = mkConfig({
     useKeysAsHeaders: true,
@@ -272,8 +283,8 @@ const Promotion = () => {
     download(csvConfig)(csv);
   };
   function handleGetClassData() {
-    setradioReset(!radioReset)
-    setRepeat([])
+    setradioReset(!radioReset);
+    setRepeat([]);
     let data = {
       class: clazz,
       section: sectionzz,
@@ -322,8 +333,32 @@ const Promotion = () => {
         draggable={false}
         resizable={false}
       >
-        <PromoteModal next={nextClass} prev={clazz} promoteAction={handlePromoteselected} type={allStudent} repeatNo={repeat.length} close={setVisible} />
+        <PromoteModal
+          next={nextClass}
+          prev={clazz}
+          promoteAction={handlePromoteselected}
+          type={allStudent}
+          repeatNo={repeat.length}
+          close={setVisible}
+        />
       </Dialog>
+      <Dialog
+        visible={visible1}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible1) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <ChangeSectionModal
+         data={studentdata}
+          close={setVisible1}
+        />
+      </Dialog>
+      
       <div className=" flex-col">
         <div
           className={
@@ -343,7 +378,11 @@ const Promotion = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo1} />
+                      <ClassSelect
+                        setsectionprop={setclazz}
+                        clazz={clazz}
+                        selectinfo={setclassinfo1}
+                      />
                     </div>
                   </div>
                 </div>
@@ -512,10 +551,8 @@ const Promotion = () => {
                               setType('All');
                               setAllStudent(true);
                               setOnlySelected(false);
-                              setradioReset(!radioReset)
-                              setRepeat([])
-
-
+                              setradioReset(!radioReset);
+                              setRepeat([]);
                             }}
                           />
                           <div
@@ -558,10 +595,8 @@ const Promotion = () => {
                               setType('Selected');
                               setAllStudent(false);
                               setOnlySelected(true);
-                              setradioReset(!radioReset)
-                              setRepeat([])
-
-
+                              setradioReset(!radioReset);
+                              setRepeat([]);
                             }}
                           />
                           <div
@@ -615,32 +650,35 @@ const Promotion = () => {
         >
           <div className="flex gap-3  flex-col">
             <div>
-              <Table data={data} pagination={pagination} layout={{ custom: true }} theme={theme}>
+              <Table
+                data={data}
+                pagination={pagination}
+                layout={{ custom: true }}
+                theme={theme}
+              >
                 {(tableList) => (
                   <>
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 dark:text-white  ">
-                        <HeaderCell className="">ID</HeaderCell>
+                        {/* <HeaderCell className="">ID</HeaderCell> */}
                         <HeaderCell>Name</HeaderCell>
-                        <HeaderCell>Class (Section)</HeaderCell>
-                        <HeaderCell>status</HeaderCell>
-
-
+                        <HeaderCell>Current Class</HeaderCell>
+                        <HeaderCell>Promotion Status</HeaderCell>
 
                         <HeaderCell>Actions</HeaderCell>
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
-                        <Row key={item.student_id}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          >
-                          <Cell className="  ">
+                        <Row
+                          key={item.student_id}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
+                          {/* <Cell className="  ">
                             <span>{item.student_id}</span>
-                          </Cell>
+                          </Cell> */}
                           <Cell className="capitalize">
                             {item.firstName +
                               ' ' +
@@ -649,23 +687,42 @@ const Promotion = () => {
                               item.lastName}
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.class}</span> (<span>{item.section ? item.section : 'None'}</span>)
-
+                            <span>{item.class}</span> (
+                            <span>{item.section ? item.section : 'None'}</span>)
                           </Cell>
-                          
-                          <Cell className="  ">
-                            <span>{item.status}</span>
+
+                          {/* <Cell className="  ">
+                            <span> {item.previousclass != item.class ? '🔵' : '⚪️'} {item.previousclass == null ? '-' : item.previousclass}</span>
+                          </Cell> */}
+  <Cell className="  ">
+                            <span>{item.status == 'current' ? '⚪️ Promoted' :  '🔵 Pending'}</span> 
                           </Cell>
 
                           <Cell>
-                          <div className={type === 'All' ? 'hidden' : null}>
-                          <PromotionRadio
-                          reset={radioReset}
-                                setRepeated={setRepeat}
-                                repeat={repeat}
-                                stdId={item.student_id}
+                            <div className="flex row">
+                              <TableBtn
+                                clickFunction={() => {setVisible1(true)
+                                  setstudentdata(item)
+                                }
+                              
+                              }
+                                text={'Move Student'}
+                                color={'bg-primary'}
                               />
-                              {/* <ViewSVG
+                              <div
+                                className={
+                                  type === 'All'
+                                    ? 'hidden'
+                                    : 'flex align-middle justify-center ml-2'
+                                }
+                              >
+                                <PromotionRadio
+                                  reset={radioReset}
+                                  setRepeated={setRepeat}
+                                  repeat={repeat}
+                                  stdId={item.student_id}
+                                />
+                                {/* <ViewSVG
                                 clickFunction={() => handleviewbtn(item)}
                               />
                               <EditSVG
@@ -675,6 +732,7 @@ const Promotion = () => {
                               <DeleteSVG
                                 clickFunction={() => handledeletbtn(item.student_id)}
                               /> */}
+                              </div>
                             </div>
                           </Cell>
                         </Row>
@@ -684,16 +742,17 @@ const Promotion = () => {
                 )}
               </Table>
               <div className={nodes[0] ?? 'hidden '}>
-              <div className="flex w-3/12  pb-5 float-start py-5   gap-4.5">
+                <div className="flex w-3/12  pb-5 float-start py-5   gap-4.5">
                   <button
                     className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                     type=""
-                    onClick={() =>    { 
-                      if(nextClass == clazz) return  toast.error('Error: Cannot Promote To Same Class');
-                      show('top-right')
-
-                    }
-                      }
+                    onClick={() => {
+                      if (nextClass == clazz)
+                        return toast.error(
+                          'Error: Cannot Promote To Same Class',
+                        );
+                      show('top-right');
+                    }}
                   >
                     Promote Students
                   </button>

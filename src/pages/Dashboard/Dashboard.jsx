@@ -6,6 +6,7 @@ import ChartTwo from '../../components/Charts/ChartTwo';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  AppUpdateAction,
   chart1StatAction,
   chartStatAction,
   classStatAction,
@@ -15,9 +16,13 @@ import {
 } from '../../redux/slices/statisticsSlice';
 import useAuth from '../../useAuth';
 import ChartThree from '../../components/Charts/ChartThree';
+import { Dialog } from 'primereact/dialog';
+import SetSessionAlert from '../../components/SetSessionAlert';
+import AppUpdateAlert from '../AppUpdateAlert';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const [visible, setVisible] = useState(false);
 
   const statistics = useSelector((state) => state?.statistics);
   const {
@@ -27,6 +32,7 @@ const Dashboard = () => {
     subjectStat,
     chartStat,
     chart1Stat,
+    AppUpdate
   } = statistics;
 
   const { setAuth, auth } = useAuth();
@@ -38,6 +44,8 @@ const Dashboard = () => {
     dispatch(teacherStatAction());
     dispatch(chartStatAction());
     dispatch(chart1StatAction());
+
+    dispatch(AppUpdateAction());
 
     // dispatch(());
   }, []);
@@ -68,7 +76,21 @@ const Dashboard = () => {
       setStudent(studentStat?.data[0].noStudent);
     }
   }, [studentStat]);
+  useEffect(() => {
+    if (AppUpdate?.success == 1) {
+     if ( AppUpdate?.school == 0 || AppUpdate?.session == 0 ||  AppUpdate?.stdcart == 0 ||  AppUpdate?.logoimg == 0 ){
+        setVisible(true)
 
+      }
+    }
+
+   
+  }, [AppUpdate])
+  useEffect(() => {
+    if (studentStat?.success == 1) {
+      setStudent(studentStat?.data[0].noStudent);
+    }
+  }, [studentStat]);
   useEffect(() => {
     if (classStat?.success == 1) {
       setClasses(classStat?.data[0].noclass);
@@ -157,6 +179,19 @@ const Dashboard = () => {
 
   return (
     <DefaultLayout>
+       <Dialog
+        visible={visible}
+        position={'top'}
+        style={{ height: 'auto', width: '60%', marginTop: '60px' }}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <AppUpdateAlert  close={setVisible} />
+      </Dialog>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats title="Students" total={student}>
           <svg

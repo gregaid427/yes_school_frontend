@@ -6,11 +6,8 @@ import ErrorToast from '../../components/Toasts/Error';
 import SuccessToast from '../../components/Toasts/Success';
 import WarnToast from '../../components/Toasts/Warning';
 import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+import axiosFile from '../../components/axiosFile';
 
-axios.defaults.headers.common = {
-  Authorization: `Bearer ${localStorage.getItem('token')}`,
-  'Content-Type': 'application/json',
-};
 
 export const CreatesfeeAction = createAsyncThunk(
   'new/Newfee',
@@ -24,7 +21,7 @@ export const CreatesfeeAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -55,7 +52,7 @@ export const PayFeeAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/payfee`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -91,7 +88,7 @@ export const CustomBalUpdate = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/updatebal`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -127,7 +124,7 @@ export const ReverseFee = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/reversefee`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -163,7 +160,7 @@ export const FetchPaymentsAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/paymentrecords`,
-        payload,
+        axiosFile,payload,
       );
       if (data?.success == 1 && data?.data == []) {
         toast.success('No Transaction Records');
@@ -198,7 +195,7 @@ export const FetchPaymentscholarshipsAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/paymentscholarshiprecords`,
-        payload,
+        payload,axiosFile
       );
       // if (data?.success == 1 && data?.data == []) {
       //   toast.success('No Records');
@@ -233,7 +230,7 @@ export const GenerateFeeAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefee`,
-        payload,
+        payload,axiosFile
       );
       // if (data?.success == 1) {
       //   toast.dismiss(toastId);
@@ -269,7 +266,7 @@ export const FetchGenerateFeeAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefeerecord`,
-        payload,
+        axiosFile,payload,
       );
       // if (data?.success == 1) {
       //   toast.dismiss(toastId);
@@ -304,6 +301,8 @@ export const CurrentAccountDetailAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/currentopenedaccount`,
+        axiosFile,payload,
+
       );
       // if (data?.success == 1) {
       //   toast.dismiss(toastId);
@@ -340,7 +339,7 @@ export const ResetAllAccountBalanceAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/resetallaccount`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -376,7 +375,7 @@ export const ResetAllAccountBalanceByClassAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/resetclassaccount`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 2) {
         toast.success('Class Has No Students');
@@ -416,7 +415,7 @@ export const GenerateFeeClassAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefeebyclass`,
-        payload,
+        payload,axiosFile
       );
       // if (data?.success == 1) {
       //   toast.dismiss(toastId);
@@ -462,7 +461,7 @@ export const GenerateFeeStudentAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/generatefeebystudent`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 7) {
         toast.dismiss(toastId);
@@ -503,7 +502,7 @@ export const PreferencesAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/preferences`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -540,7 +539,7 @@ export const CreatesfeeCartegoryAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/cart`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -578,7 +577,7 @@ export const CreatesScholarshipAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/scholarship`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -615,7 +614,7 @@ export const UpdateScholarshipAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/updatescholarship`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -652,6 +651,8 @@ export const fetchAllfeeAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/`,
+        axiosFile,payload,
+
       );
 
       if (data) {
@@ -680,6 +681,8 @@ export const fetchfeeStockAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getstock`,
+        axiosFile,payload,
+
       );
 
       if (data) {
@@ -709,7 +712,7 @@ export const EnrollScholarshipAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/enrollscholarship`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -746,7 +749,7 @@ export const GetEnrolledStudentAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/listscholarship`,
-        payload,
+        payload,axiosFile
       );
       // if (data?.success == '1' && data?.data[0] == null) {
       //   toast.success('Empty Class List');
@@ -785,7 +788,7 @@ export const RevokeScholarshipAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/revokescholarship`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -823,7 +826,7 @@ export const fetchSinglefeeAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/single/`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -853,7 +856,7 @@ export const fetchfeeCartegoryAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/cart`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data) {
@@ -883,7 +886,7 @@ export const fetchAllfeeAssignRecordAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getallassignedfeerecord`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data) {
@@ -912,7 +915,7 @@ export const fetchAllAssignLogAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getallassignlog`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data) {
@@ -941,7 +944,7 @@ export const FetchClearLogAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/clearlog`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data) {
@@ -970,7 +973,7 @@ export const fetchAllAssignRecordAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getAssignRecordAction`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data) {
@@ -999,7 +1002,7 @@ export const fetchfeeAssignRecordAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/feerecord`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data) {
@@ -1029,7 +1032,7 @@ export const fetchfeeAssignGroupRecordAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/feerecordgroup`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data) {
@@ -1059,7 +1062,7 @@ export const fetchfeeAssignbycartAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/assignfeerecord`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data) {
@@ -1089,7 +1092,7 @@ export const fetchfeeAssignbycustomAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/assigncustom`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1120,7 +1123,7 @@ export const fetchScholarshipAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/scholarship`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data) {
@@ -1150,7 +1153,7 @@ export const updatefeeAction = createAsyncThunk(
 
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1181,7 +1184,7 @@ export const UpdateFeeCartAction = createAsyncThunk(
 
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/feecart`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -1219,7 +1222,7 @@ export const updatefeeItemAction = createAsyncThunk(
 
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/item`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1250,7 +1253,7 @@ export const updateCartegoryAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/editcartegory`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1280,7 +1283,7 @@ export const deleteScholarshipAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/scholarship/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/scholarship/${payload}`,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -1316,7 +1319,7 @@ export const DeleteAllAssignedFeeAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/deleteallasigned`,
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/deleteallasigned`,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -1355,7 +1358,7 @@ export const deleteAllfeeAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/`,axiosFile
       );
 
       if (data) {
@@ -1384,7 +1387,7 @@ export const deleteSinglefeeAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/${payload}`,axiosFile
       );
 
       if (data) {
@@ -1415,7 +1418,7 @@ export const deleteSingleFeeCartAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/cartegorydel`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1445,7 +1448,7 @@ export const updateFeeCartItemAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/updatecartitem`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1475,7 +1478,7 @@ export const deleteFeeCartItemAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/cartitemdel`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1508,7 +1511,7 @@ export const deleteGoupFeeCartAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/groupcartdel`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1539,7 +1542,7 @@ export const FetchTotalFeesAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/totalfee`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1569,7 +1572,7 @@ export const CloseSessionAcountAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/closeaccount`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1604,7 +1607,7 @@ export const sessionaccountrecordsAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/sessionaccountrecords`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1634,7 +1637,7 @@ export const fetchfeespaidbysessionAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/feespaidsession`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1664,7 +1667,7 @@ export const AssignFeesAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/assignfee`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -1705,7 +1708,7 @@ export const GetFeeRecordAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getstudentrecord`,
-        payload,
+        payload,axiosFile
       );
 
       if (data == []) {
@@ -1744,7 +1747,7 @@ export const GetSessionFeeRecordAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getstudentsessionrecord`,
-        payload,
+        payload,axiosFile
       );
 
       if (data == []) {
@@ -1784,7 +1787,7 @@ export const GetSingleBillAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getsinglebill`,
-        payload,
+        payload,axiosFile
       );
 
       if (data.success == 1 && data.data.length == 0) {
@@ -1824,7 +1827,7 @@ export const GetBulkBillAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/getbulkbill`,
-        payload,
+        payload,axiosFile
       );
 
       if (data.success == 1 && data.data.length == 0) {
@@ -1864,7 +1867,7 @@ export const SessionAcctReportAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/sessionacctreport`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -1894,7 +1897,7 @@ export const deleteSinglefeeStockAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/stock/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/stock/${payload}`,axiosFile
       );
 
       if (data) {
@@ -1922,7 +1925,7 @@ export const ClearLogAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/clearlog`,
-        payload,
+        payload,axiosFile
       );
 
     if (data?.success == 1) {   toast.dismiss(toastId);
@@ -1961,7 +1964,9 @@ export const FetchAcountUpdateAction = createAsyncThunk(
       });
 
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/fetchaccountUpdate`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/fetchaccountUpdate`,
+        axiosFile,payload,
+
       );
 
       if (data) {
@@ -1990,7 +1995,9 @@ export const FetchSessionAcountAction = createAsyncThunk(
       });
 
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/fetchaccountclosure`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/fetchaccountclosure`,
+        axiosFile,payload,
+
       );
 
       if (data) {

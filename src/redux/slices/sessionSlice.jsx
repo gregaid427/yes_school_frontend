@@ -7,6 +7,7 @@ import SuccessToast from '../../components/Toasts/Success';
 import WarnToast from '../../components/Toasts/Warning';
 import ErrorAltToast from '../../components/Toasts/ErrorAlt';
 import toast from 'react-hot-toast';
+import axiosFile from '../../components/axiosFile';
 
 axios.defaults.headers.common = {
   Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -22,7 +23,9 @@ export const fetchAllsessionAction = createAsyncThunk(
       // });
 
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/session/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/session/fetch`,
+        axiosFile,payload,
+
       );
 
       // if (data) {
@@ -49,6 +52,8 @@ export const fetchActivesessionAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/session/active`,
+        axiosFile,payload,
+
       );
 
       //     if (data) {
@@ -76,7 +81,9 @@ export const deletesessionByIdAction = createAsyncThunk(
       });
 
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/session/single`, payload
+        `${import.meta.env.VITE_APP_BASE_URL}/session/single`, 
+        payload,axiosFile
+
       );
 
       if (data) {
@@ -105,7 +112,7 @@ export const updatesessionAction = createAsyncThunk(
 
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/session/`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -132,7 +139,7 @@ export const updatesessionStatusAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/session/status`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -159,10 +166,12 @@ export const createsessionAction = createAsyncThunk(
       });
 
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/session/`,
-        payload,
+        `${import.meta.env.VITE_APP_BASE_URL}/session/create`,
+        payload,axiosFile
       );
-
+      if (data?.success == '1' ) {
+        toast.success('Session Set Successfully');
+      }
       if (data) {
         toast.dismiss(toastId);
       }
@@ -188,7 +197,7 @@ export const truncateTableAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/student/truncate`,
+        `${import.meta.env.VITE_APP_BASE_URL}/student/truncate`,axiosFile
       );
 
       if (data) {

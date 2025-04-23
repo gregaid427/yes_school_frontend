@@ -5,9 +5,9 @@ import SuccessToast from '../../components/Toasts/Success';
 import WarnToast from '../../components/Toasts/Warning';
 import ErrorAltToast from '../../components/Toasts/ErrorAlt';
 import toast from "react-hot-toast";
+import axiosFile from "../../components/axiosFile";
 
 
-axios.defaults.headers.common = {'Authorization': `Bearer ${localStorage.getItem('token')}` ,   'Content-Type': 'application/json'  }
 
 export const CreatesSubjectAction = createAsyncThunk(
   "new/NewSubject",
@@ -21,7 +21,8 @@ export const CreatesSubjectAction = createAsyncThunk(
       });
 
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/subject/`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/subject/`,
+        payload,axiosFile
         
       );
 
@@ -54,8 +55,9 @@ export const fetchSubjectAction = createAsyncThunk(
       });
 
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/subject/`
-        
+        `${import.meta.env.VITE_APP_BASE_URL}/subject/`,
+        axiosFile,payload,
+
       );
 
           if (data) {
@@ -85,7 +87,7 @@ export const UpdateSubjectAction = createAsyncThunk(
       });
 
       const { data } = await axios.patch(
-        `${import.meta.env.VITE_APP_BASE_URL}/subject/`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/subject/`,payload,axiosFile
         
       );
 
@@ -118,7 +120,7 @@ export const DeleteSingleSubjectAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/subject/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/subject/${payload}`,axiosFile
         
       );
 

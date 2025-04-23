@@ -465,7 +465,7 @@ const SetGuardian = () => {
                             <div className="gap-2 flex">
                               <EditSVG
                                 clickFunction={() =>
-                                  navigate("/settings/studentsGuardian", {
+                                  navigate("/settings/stdguardian", {
                                     state: { value: item},
                                   })
                                 }

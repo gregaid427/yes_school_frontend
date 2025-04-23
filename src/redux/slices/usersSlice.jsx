@@ -7,11 +7,9 @@ import ErrorToast from '../../components/Toasts/Error';
 import SuccessToast from '../../components/Toasts/Success';
 import WarnToast from '../../components/Toasts/Warning';
 import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+import axiosFile from '../../components/axiosFile';
 
-axios.defaults.headers.common = {
-  Authorization: `Bearer ${localStorage.getItem('token')}`,
-  'Content-Type': 'application/json',
-};
+
 
 export const CreateUserAction = createAsyncThunk(
   'new/user',
@@ -23,7 +21,7 @@ export const CreateUserAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/`,
-        payload,
+        payload,axiosFile
       );
 
        if (data) {
@@ -53,7 +51,7 @@ export const CreateGuardianAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/guardian`,
-        payload,
+        payload,axiosFile
       );
 
        if (data) {
@@ -83,7 +81,7 @@ export const loginUserAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/login`,
-        payload,
+        payload,axiosFile
       );
       console.log(data);
 
@@ -119,7 +117,7 @@ export const fetchAllstaffAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/users/staff`,
-        payload,
+        axiosFile,payload,
       );
 
        if (data) {
@@ -147,7 +145,7 @@ export const LoginLogAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/users/loginlog`,
-        payload,
+        axiosFile,payload,
       );
 
        if (data) {
@@ -175,7 +173,7 @@ export const passwordsendmail = createAsyncThunk(
 
       const { data } = await axios.post(
         `https://api-optimum.seedogh.com/api/users/mailPasswordreset`,
-        payload,
+        payload,axiosFile
       );
 
        if (data) {
@@ -205,7 +203,7 @@ export const passwordResetAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `https://api-optimum.seedogh.com/api/users/resetPassword`,
-        payload,
+        payload,axiosFile
       );
 
        if (data) {
@@ -235,7 +233,7 @@ export const verifyuser = createAsyncThunk(
 
       const { data } = await axios.post(
         `https://api-optimum.seedogh.com/api/users/verify`,
-        payload,
+        payload,axiosFile
       );
 
        if (data) {
@@ -265,7 +263,7 @@ export const CreatesStaffAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/newstaff`,
-        payload,
+        payload,axiosFile
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('New Staff Created Successfully');
@@ -304,7 +302,7 @@ export const UpdateStaffAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/updatestaff`,
-        payload,
+        payload,axiosFile
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Updated Successfully');
@@ -343,6 +341,8 @@ export const deleteStaffAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/deletestaff/${payload}`,
+        axiosFile
+
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Staff Deleted Successfully');
@@ -380,6 +380,8 @@ export const inactiveStaffAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/inactivestaff/${payload}`,
+        axiosFile
+
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Staff Marked Inactive Successfully');
@@ -387,6 +389,44 @@ export const inactiveStaffAction = createAsyncThunk(
 
       if (data == null) {
         toast.error('Error Marking Inactive Staff');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+            ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const inactiveStudentAction = createAsyncThunk(
+  'inactive/userstudent',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/inactivestudent`,         payload,axiosFile
+
+      );
+    if (data?.success == 1) {   toast.dismiss(toastId);
+        toast.success('Student Marked Inactive Successfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Marking Inactive Student');
       }
       if (data?.success == 0) {
         toast.error(data.message);
@@ -417,6 +457,8 @@ export const activeStaffAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/activestaff/${payload}`,
+        axiosFile
+
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Staff Marked Active Successfully');
@@ -424,6 +466,44 @@ export const activeStaffAction = createAsyncThunk(
 
       if (data == null) {
         toast.error('Error Marking Active Staff');
+      }
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
+       if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+            ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const activeStudentAction = createAsyncThunk(
+  'active/userstudent',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/activestudent`,         payload,axiosFile
+
+      );
+    if (data?.success == 1) {   toast.dismiss(toastId);
+        toast.success('Student Marked Active Successfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Marking Staff Active ');
       }
       if (data?.success == 0) {
         toast.error(data.message);
@@ -454,6 +534,8 @@ export const fetchschoolinfoAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/users/school/`,
+        axiosFile,payload,
+
       );
 
       if (data == null) {
@@ -484,7 +566,7 @@ export const fetchuserbyidAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/userid/`,
-        payload,
+        payload,axiosFile
       );
 
       if (data == null) {
@@ -515,7 +597,7 @@ export const updateschoolinfoAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/school/update`,
-        payload,
+        payload,axiosFile
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Information Updated Successfully');
@@ -553,7 +635,7 @@ export const fetchUserdataAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/userdata`,
-        payload,
+        payload,axiosFile
       );
 
     if (data?.success == 1) {   toast.dismiss(toastId);
@@ -586,7 +668,7 @@ export const SchoollogoAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/logoschool`,
-        payload,
+        payload,axiosFile,
         {
           headers: {
             'Content-type': 'multipart/form-data',
@@ -634,6 +716,9 @@ const UsersSlices = createSlice({
     },
     resetcreateGuardian(state) {
       state.CreateUser = null;
+    },
+    resetschoolinfo(state) {
+      state.updateschoolinfo = null;
     },
     resetallstaff(state) {
       state.allstaff = null;
@@ -689,7 +774,22 @@ const UsersSlices = createSlice({
       state.LoginLogerror = action.payload;
       state.LoginLog = undefined;
     });
+    
 
+    builder.addCase(updateschoolinfoAction.pending, (state, action) => {
+      state.updateschoolinfoloading = true;
+      state.updateschoolinfo = false;
+    });
+    builder.addCase(updateschoolinfoAction.fulfilled, (state, action) => {
+      state.updateschoolinfo = action?.payload;
+      state.updateschoolinfoloading = false;
+      state.updateschoolinfoerror = undefined;
+    });
+    builder.addCase(updateschoolinfoAction.rejected, (state, action) => {
+      state.updateschoolinfoloading = false;
+      state.updateschoolinfoerror = action.payload;
+      state.updateschoolinfo = undefined;
+    });
 
     builder.addCase(UpdateStaffAction.pending, (state, action) => {
       state.UpdateStaffloading = true;
@@ -859,6 +959,39 @@ const UsersSlices = createSlice({
       state.allstafferror = action.payload;
       state.allstaff = undefined;
     });
+
+    
+    builder.addCase(activeStudentAction.pending, (state, action) => {
+      state.activeStudentloading = true;
+      state.activeStudent = undefined;
+    });
+    builder.addCase(activeStudentAction.fulfilled, (state, action) => {
+      state.activeStudent = action?.payload;
+      state.activeStudentloading = false;
+      state.activeStudenterror = undefined;
+    });
+    builder.addCase(activeStudentAction.rejected, (state, action) => {
+      state.activeStudentloading = false;
+      state.activeStudenterror = action.payload;
+      state.activeStudent = undefined;
+    });
+
+    builder.addCase(inactiveStudentAction.pending, (state, action) => {
+      state.activeStudentloading = true;
+      state.activeStudent = undefined;
+    });
+    builder.addCase(inactiveStudentAction.fulfilled, (state, action) => {
+      state.activeStudent = action?.payload;
+      state.activeStudentloading = false;
+      state.activeStudenterror = undefined;
+    });
+    builder.addCase(inactiveStudentAction.rejected, (state, action) => {
+      state.activeStudentloading = false;
+      state.activeStudenterror = action.payload;
+      state.activeStudent = undefined;
+    });
+
+
     builder.addCase(activeStaffAction.pending, (state, action) => {
       state.allStaffloading = true;
       state.allstaff = undefined;
@@ -927,6 +1060,7 @@ export const {
   setUserMail,
   setRoleCode,
   setUsername,
+  resetschoolinfo
 } = UsersSlices.actions;
 
 export default UsersSlices.reducer;

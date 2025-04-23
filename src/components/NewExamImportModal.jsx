@@ -32,6 +32,8 @@ const NewExamImportModal = (props) => {
   const [NewResultData, setNewData] = useState([]);
   const [selectedInfo, setSelectedInfo] = useState();
   const [selectedInfo1, setSelectedInfo1] = useState();
+  const [selectedInfo2, setSelectedInfo2] = useState();
+
 
   
   const [selectsubject, setselectsubject] = useState('NONE');
@@ -330,7 +332,7 @@ const NewExamImportModal = (props) => {
                         </label>{' '}
                       </div> */}
                       <div className="w-full mt-2  sm:w-2/2">
-                        <SubjectSelect1 setsectionprop={setselectsubject} />
+                        <SubjectSelect1 setsectionprop={setselectsubject} selectinfo={setSelectedInfo2} />
                       </div>
 
                       <div>

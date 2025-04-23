@@ -173,7 +173,7 @@ const Admission = () => {
       feeCredit: feeCredit,
       createdBy: username?.payload,
       preference: repeat.length == 0 ? 0 : pref,
-      scholarship: selectedInfo == undefined ? 0 : selectedInfo[0].amount,
+      scholarship: 0,
       accountbalance: acctbal,
       scholarinfo: selectedInfo,
     };

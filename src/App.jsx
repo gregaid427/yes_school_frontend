@@ -715,7 +715,7 @@ function App() {
           
           <Route element={<RequireAuth allowedRoles={['6']} code={code} />}>
             <Route
-              path="/settings/studentsGuardian"
+              path="/settings/stdguardian"
               element={
                 <>
                   <PageTitle title="Settings" />

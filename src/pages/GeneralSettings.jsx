@@ -44,7 +44,7 @@ const GeneralSettings = () => {
   const [pictureurl, setPictureurl] = useState(null);
   const [pictureurlshow, setPictureurlshow] = useState(null);
   const [classinfo, setclassinfo] = useState();
-
+console.log(userThree)
 
   const [startmonth, setStartMonth] = useState('JANUARY');
   const [sessionoption, setSessionoption] = useState('');
@@ -327,7 +327,7 @@ const GeneralSettings = () => {
                     </label>
                     <div className="relative">
                       <textarea
-                        className="w-full rounded border border-stroke bg-gray py-2  px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border border-stroke bg-gray py-2  px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         name="bio"
                         defaultValue={allschool?.data[0]?.address}
                         rows={2}
@@ -449,7 +449,8 @@ const GeneralSettings = () => {
             <div className="p-2 ">
               <div className="w-full flex justify-center items-center">
                 <img
-                  src={ pictureurl == null ? userThree : pictureurl}
+                alt='No Image'
+                  src={ pictureurl == '' ? userThree : pictureurl}
                   className="h-40"
                 />
               </div>

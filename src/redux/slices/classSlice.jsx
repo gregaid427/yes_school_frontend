@@ -6,11 +6,9 @@ import ErrorToast from '../../components/Toasts/Error';
 import SuccessToast from '../../components/Toasts/Success';
 import WarnToast from '../../components/Toasts/Warning';
 import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+import axiosFile from '../../components/axiosFile';
 
-axios.defaults.headers.common = {
-  Authorization: `Bearer ${localStorage.getItem('token')}`,
-  'Content-Type': 'application/json',
-};
+
 
 export const CreatesClassAction = createAsyncThunk(
   'new/NewClass',
@@ -23,7 +21,7 @@ export const CreatesClassAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/`,
-        payload,
+        payload,axiosFile
       );
       if (data) {
         toast.dismiss(toastId);
@@ -54,7 +52,7 @@ export const CreatesBulkClassAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/student/bulkAdmission`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -94,6 +92,8 @@ export const fetchBulkStudentAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/student/`,
+        axiosFile,payload,
+
       );
 
       if (data) {
@@ -119,6 +119,8 @@ export const fetchAllClassAction = createAsyncThunk(
       // });
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/class/all`,
+        axiosFile,payload,
+
       );
 
       return data;
@@ -142,6 +144,8 @@ export const fetchAllClassNoAction = createAsyncThunk(
       });
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/class/allno`,
+        axiosFile,payload,
+
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -171,7 +175,7 @@ export const fetchAllClassExamAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/allclassexam`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -200,6 +204,8 @@ export const fetchAllSectionAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/class/groupsection`,
+        axiosFile,payload,
+
       );
 
       return data;
@@ -225,7 +231,7 @@ export const deleteSectionByClass = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/single/sectiondelete`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -267,7 +273,7 @@ export const FetchClassWithSectionAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/getclasswithsection`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -296,7 +302,7 @@ export const fetchSingleClassAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/single/`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -325,7 +331,7 @@ export const fetchSectionbyclassAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/sectionclass/`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -354,7 +360,7 @@ export const updateClassAction = createAsyncThunk(
 
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/class/`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -394,7 +400,7 @@ export const updateSectionAction = createAsyncThunk(
 
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/class/section`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -423,7 +429,7 @@ export const createSectionAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/class/section`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -452,7 +458,7 @@ export const deleteAllClassAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/class/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/class/`,axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -494,6 +500,7 @@ export const deleteSingleClassAction = createAsyncThunk(
 
       const { data } = await axios.delete(
         `${import.meta.env.VITE_APP_BASE_URL}/class/single/${payload}`,
+        axiosFile
       );
       if (data?.success == 1) {
         toast.dismiss(toastId);
@@ -534,7 +541,7 @@ export const deleteSectiongroupAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/class/sectiongroup/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/class/sectiongroup/${payload}`,axiosFile
       );
 
       if (data) {
@@ -563,7 +570,7 @@ export const truncateTableAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/student/truncate`,
+        `${import.meta.env.VITE_APP_BASE_URL}/student/truncate`,axiosFile
       );
 
       if (data) {
@@ -608,7 +615,6 @@ const ClassSlices = createSlice({
       state.fetchAllClassExam = null;
     },
     customSectionAction(state,data) {
-      console.log('callledd')
       state.customSection =['NONE',...data.payload] ;
       state.customSection1 =['NONE','All Sections',...data.payload] ;
       state.customSection2 =['All Sections',...data.payload] ;

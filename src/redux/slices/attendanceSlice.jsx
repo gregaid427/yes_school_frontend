@@ -7,11 +7,9 @@ import ErrorToast from '../../components/Toasts/Error';
 import SuccessToast from '../../components/Toasts/Success';
 import WarnToast from '../../components/Toasts/Warning';
 import ErrorAltToast from '../../components/Toasts/ErrorAlt';
+import axiosFile from '../../components/axiosFile';
 
-axios.defaults.headers.common = {
-  Authorization: `Bearer ${localStorage.getItem('token')}`,
-  'Content-Type': 'application/json',
-};
+
 
 export const CreateAttendanceAction = createAsyncThunk(
   'create/createAttendance',
@@ -25,7 +23,7 @@ export const CreateAttendanceAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/createattendance`,
-        payload,
+        payload,axiosFile
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Marked Successfully');
@@ -66,7 +64,7 @@ export const GetTodayRecordAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/gettodayrecord`,
-        payload,
+        payload,axiosFile
       );
 
       if (data?.success == 1 && data?.result?.length == 0) {
@@ -108,7 +106,7 @@ export const GetSesionRecordsAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/sessionrecords`,
-        payload,
+        payload,axiosFile
       );
 
       if (data?.success == 1 && data?.result?.length == 0) {
@@ -150,7 +148,7 @@ export const FetchAttendanceDetailAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/getdetail`,
-        payload,
+        payload,axiosFile
       );
 
       if (data?.success == 1 && data?.result?.length == 0) {
@@ -192,7 +190,7 @@ export const UpdateStatusAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/updatestatus`,
-        payload,
+        payload,axiosFile
       );
 
     if (data?.success == 1) {   toast.dismiss(toastId);
@@ -234,7 +232,7 @@ export const GetRecordByDateAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/attendance/daterecords`,
-        payload,
+        payload,axiosFile
       );
 
       if (data?.success == 1 && data?.result?.length == 0) {

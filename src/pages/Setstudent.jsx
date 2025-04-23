@@ -29,8 +29,10 @@ import {
   deleteSingleStudentAction,
   fetchBulkStudent,
   fetchCustomStudentsClassAction,
+  fetchCustomStudentsClassAction2,
   fetchSingleStudent,
   fetchStudentsClassAction,
+  fetchStudentsClassAction1,
 } from '../redux/slices/studentSlice';
 import Loader from '../common/Loader';
 import StudentModal from '../components/StudentModal';
@@ -40,6 +42,9 @@ import ClassSelect from '../components/ClassSelect';
 import InactiveSVG from '../components/Svgs/Inactive';
 import RemoveSVG from '../components/Svgs/Remove';
 import DeleteModal from '../components/DeleteModal';
+import TableBtn from '../components/Svgs/TableBtn';
+import ActiveSVG from '../components/Svgs/active';
+import { activeStaffAction, activeStudentAction, inactiveStudentAction } from '../redux/slices/usersSlice';
 
 const SetStudent = () => {
   ///////////////////////////////////
@@ -48,8 +53,6 @@ const SetStudent = () => {
   const [visible1, setVisible1] = useState(false);
   const [del, setDel] = useState(false);
   const [userid, setuserid] = useState();
-
-
 
   const [position, setPosition] = useState('top');
 
@@ -79,6 +82,8 @@ const SetStudent = () => {
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
+  const users = useSelector((state) => state?.user);
+
 
   const {
     loading,
@@ -89,10 +94,13 @@ const SetStudent = () => {
     fetchStudentcustomloading,
     fetchcustomloading,
     singleStudent,
+    
     singleStudentloading,
   } = student;
 
   const { fetchAllClassloading, fetchAllClass } = classes;
+  const { activeStudent} = users;
+
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -110,7 +118,7 @@ const SetStudent = () => {
         i++;
       }
       setClasss(arr);
-     // setclazz(arr[0]);
+      // setclazz(arr[0]);
     }
   }, [fetchAllClassloading, fetchcustomloading]);
 
@@ -124,6 +132,14 @@ const SetStudent = () => {
   }, [fetchStudentcustomloading]);
 
   useEffect(() => {
+
+    if (activeStudent?.success == 1) {
+      let data = activeStudent?.data;
+      setdata(data);
+    }
+  }, [activeStudent]);
+
+  useEffect(() => {
     setdata([]);
   }, []);
 
@@ -133,7 +149,7 @@ const SetStudent = () => {
     if (fetchStudent?.success == 1) {
       let data = fetchStudent?.data;
       setdata(data);
-      setVisible1(false)
+      setVisible1(false);
     }
   }, [fetchStudent]);
 
@@ -169,7 +185,7 @@ const SetStudent = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  12% 33% 20% 10% 25%;
+  --data-table-library_grid-template-columns:  12% 33% 24% 10% 21%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -178,15 +194,15 @@ const SetStudent = () => {
       //   //  background-color: #24303F;
 
        `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -212,7 +228,7 @@ const SetStudent = () => {
   const handleEditbtn = (value) => {
     dispatch(fetchSingleStudent(value.student_id));
     navigate('/student/editinfo', {
-      state: { action: 2, value: value},
+      state: { action: 2, value: value },
     });
   };
   const handledeletbtn = () => {
@@ -220,7 +236,7 @@ const SetStudent = () => {
       class: clazz,
       section: sectionzz,
       id: del,
-      userid: userid
+      userid: userid,
     };
     dispatch(deleteSingleStudentAction(data));
   };
@@ -245,6 +261,14 @@ const SetStudent = () => {
   function setModalVisible() {
     setVisible(false);
   }
+  const handleactivebtn = (value) => {
+   dispatch(activeStudentAction({id:value, clazz: clazz}));
+    // dispatch(fetchAllClassAction());
+  };
+  const handleinactivebtn = (value) => {
+    dispatch(inactiveStudentAction({id:value, clazz: clazz}))
+    // dispatch(fetchAllClassAction());
+  };
 
   const csvConfig = mkConfig({
     useKeysAsHeaders: true,
@@ -265,11 +289,11 @@ const SetStudent = () => {
     console.log(data);
     if (sectionzz == 'All Sections') {
       setclazz(clazz);
-      dispatch(fetchStudentsClassAction(data));
+      dispatch(fetchStudentsClassAction1(data));
     }
     if (sectionzz != 'All Sections') {
       setsectionzz(sectionzz);
-      dispatch(fetchCustomStudentsClassAction(data));
+      dispatch(fetchCustomStudentsClassAction2(data));
     }
   }
   const footerContent = (
@@ -340,12 +364,16 @@ const SetStudent = () => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo}/>
+                      <ClassSelect
+                        setsectionprop={setclazz}
+                        clazz={clazz}
+                        selectinfo={setclassinfo}
+                      />
                     </div>
                   </div>
                   <label
                     className="pt-4 block text-sm font-medium text-ash dark:text-white"
-           // style={{ color: '#A9B5B3' }}
+                    // style={{ color: '#A9B5B3' }}
                     onClick={(e) => {
                       handleDownloadPdf();
                     }}
@@ -366,7 +394,7 @@ const SetStudent = () => {
                   </div>
                   <label
                     className="pt-4 block text-sm font-medium text-ash dark:text-white"
-           // style={{ color: '#A9B5B3' }}
+                    // style={{ color: '#A9B5B3' }}
                     onClick={(e) => {
                       handleDownloadCSV();
                     }}
@@ -467,13 +495,13 @@ const SetStudent = () => {
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
-                        <Row key={item.student_id}
-                            item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          >
+                        <Row
+                          key={item.student_id}
+                          item={item}
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                        >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
                           </Cell>
@@ -498,21 +526,38 @@ const SetStudent = () => {
                               {/* <ViewSVG
                                 clickFunction={() => handleviewbtn(item)}
                               /> */}
-                              <EditSVG
+                              {/* <EditSVG
                                 clickFunction={() => handleEditbtn(item)}
-                              />
-
-                              <InactiveSVG
+                              /> */}
+                              {/* <TableBtn
+                                clickFunction={() => handleEditbtn(item)}
+                                text={'Edit'}
+                                color={'bg-[#3C50E0]'}
+                              /> */}
+                              {item.isActive == 'true' ? (
+                                <InactiveSVG
+                                  clickFunction={() =>
+                                    handleinactivebtn(item.userId)
+                                  }
+                                />
+                              ) : (
+                                <ActiveSVG
+                                  clickFunction={() =>
+                                    handleactivebtn(item.userId)
+                                  }
+                                />
+                              )}
+                              {/* <InactiveSVG
                                 clickFunction={() =>
                                   handledeletbtn(item.student_id)
                                 }
-                              />
+                              /> */}
                               <RemoveSVG
-                                clickFunction={() =>{
-                                  setVisible1(true)
-                                  setDel(item.student_id)
-                                  setuserid(item.userId)}
-                                }
+                                clickFunction={() => {
+                                  setVisible1(true);
+                                  setDel(item.student_id);
+                                  setuserid(item.userId);
+                                }}
                               />
                             </div>
                           </Cell>
@@ -585,8 +630,7 @@ const SetStudent = () => {
                       </HeaderRow>
                     </Header>
 
-
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                       {tableList?.map((item) => (
                         <Row
                           key={item.student_id}

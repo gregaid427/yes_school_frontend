@@ -11,7 +11,9 @@ const SessionModal = (props) => {
 
   const [isChecked, setIsChecked] = useState(false);
   const [sectionTitle, setsectionTitle] = useState('');
+  const [activesession, setactivesession] = useState('');
 
+  
   const dispatch = useDispatch();
 
   const clad = useSelector((state) => state?.classes);
@@ -49,11 +51,24 @@ const SessionModal = (props) => {
     // }
   }, [createClassSection]);
 
+  
+  useEffect(() => {
+    dispatch(fetchActivesessionAction());
+
+  }, []);
+
+ 
+
   const user = useSelector((state) => state?.user);
   const { username, userMail} = user;
   const session = useSelector((state) => state?.session);
 
-  const { fetchsession, createsession,updatesession } = session;
+  const { fetchsession, createsession,updatesession,fetchsessionactive } = session;
+  useEffect(() => {
+    if (fetchsessionactive?.success == 1) {
+   setactivesession(fetchsessionactive?.data[0].sessionname)
+    }
+  }, [fetchsessionactive]);
   useEffect(() => {
     if (createsession?.success == 0) {
       toast.error('Error - Section Name Already Exists');
@@ -94,6 +109,7 @@ const SessionModal = (props) => {
     createdby: username?.payload,
     active: isChecked,
     startmonth: startmonth.toUpperCase(),
+    currentsession: activesession == undefined ? ectionTitle.toUpperCase() : activesession
   };
 
   const handlecreateSection = (e) => {
@@ -137,7 +153,7 @@ const SessionModal = (props) => {
                       }}
                     />
                     <div>
-                      {/* <div className="mt-4 flex gap-3 flex-row">
+                      <div className="mt-4 flex gap-3 flex-row">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="checkboxLabelOne"
@@ -173,7 +189,7 @@ const SessionModal = (props) => {
                             </div>
                           </label>
                         </div>
-                      </div> */}
+                      </div>
                       {/* <div style={{ display: !isChecked ? 'none' : 'block' }}> */}{' '}
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"

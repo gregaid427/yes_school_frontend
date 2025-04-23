@@ -2,11 +2,15 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import ErrorAltToast from '../../components/Toasts/ErrorAlt';
 import toast from 'react-hot-toast';
+import axiosFile from '../../components/axiosFile';
 
-axios.defaults.headers.common = {
-  Authorization: `Bearer ${localStorage.getItem('token')}`,
+let axios1 ={ headers: {
+  'Authorization': 'Bearer ddd',
   'Content-Type': 'application/json',
-};
+  'Accept': 'application/json',
+}};
+
+
 
 export const studentStatAction = createAsyncThunk(
   'fetch/stat1',
@@ -19,7 +23,7 @@ export const studentStatAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/1`,
-        payload,
+        axiosFile,payload,
       );
 
       // if (data) {
@@ -48,7 +52,7 @@ export const classStatAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/3`,
-        payload,
+        axiosFile,payload,
       );
 
       // if (data) {
@@ -77,7 +81,7 @@ export const teacherStatAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/2`,
-        payload,
+        axiosFile,payload,
       );
 
       // if (data) {
@@ -106,7 +110,7 @@ export const subjectStatAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/4`,
-        payload,
+        axiosFile,payload,
       );
 
       // if (data) {
@@ -135,7 +139,7 @@ export const parentStatAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/6`,
-        payload,
+        axiosFile,payload,
       );
 
       // if (data) {
@@ -163,7 +167,7 @@ export const chartStatAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/5`,
-        payload,
+        axiosFile,payload,
       );
 
       // if (data) {
@@ -190,9 +194,37 @@ export const chart1StatAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/statistics/7`,
-        payload,
+        axiosFile,payload,
       );
 
+      // if (data) {
+      //   toast.dismiss(toastId);
+      // }
+      return data;
+    } catch (error) {
+      console.log(error);
+      //ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const AppUpdateAction = createAsyncThunk(
+  'fetch/appupdate',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/statistics/10`,
+        axiosFile,payload,
+      );
+console.log(data)
       // if (data) {
       //   toast.dismiss(toastId);
       // }
@@ -287,6 +319,22 @@ const StatisticsSlices = createSlice({
       state.error = action.payload;
       state.parentStat = undefined;
     });
+    
+    builder.addCase(AppUpdateAction.pending, (state, action) => {
+      state.AppUpdateloading = true;
+      state.AppUpdate = false;
+    });
+    builder.addCase(AppUpdateAction.fulfilled, (state, action) => {
+      state.AppUpdate = action?.payload;
+      state.AppUpdateloading = false;
+      state.AppUpdateerror = undefined;
+    });
+    builder.addCase(AppUpdateAction.rejected, (state, action) => {
+      state.AppUpdateloading = false;
+      state.AppUpdateerror = action.payload;
+      state.AppUpdate = undefined;
+    });
+
 
     builder.addCase(chart1StatAction.pending, (state, action) => {
       state.parentStatloading = true;

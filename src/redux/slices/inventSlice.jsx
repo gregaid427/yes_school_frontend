@@ -6,11 +6,8 @@ import SuccessToast from '../../components/Toasts/Success';
 import WarnToast from '../../components/Toasts/Warning';
 import ErrorAltToast from '../../components/Toasts/ErrorAlt';
 import toast from 'react-hot-toast';
+import axiosFile from '../../components/axiosFile';
 
-axios.defaults.headers.common = {
-  Authorization: `Bearer ${localStorage.getItem('token')}`,
-  'Content-Type': 'application/json',
-};
 
 export const CreatesInventoryAction = createAsyncThunk(
   'new/NewInventory',
@@ -22,7 +19,7 @@ export const CreatesInventoryAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -51,7 +48,7 @@ export const CreatesInventoryStockAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/addstock`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -80,7 +77,7 @@ export const CreatesInventoryCartegoryAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/cart`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -109,6 +106,8 @@ export const fetchAllInventoryAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,
+        axiosFile,payload,
+
       );
 
       if (data) {
@@ -135,6 +134,8 @@ export const fetchInventoryStockAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/getstock`,
+        axiosFile,payload,
+
       );
 
       if (data) {
@@ -162,7 +163,7 @@ export const fetchSingleInventoryAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/single/`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -190,7 +191,7 @@ export const fetchInventCartegoryAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/cart`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data) {
@@ -218,7 +219,7 @@ export const updateInventoryAction = createAsyncThunk(
 
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -247,7 +248,7 @@ export const updateInventoryItemAction = createAsyncThunk(
 
       const { data } = await axios.patch(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/item`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1) {
         toast.success('Item Updated Successfully');
@@ -281,7 +282,7 @@ export const updateCartegoryAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/editcartegory`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {
@@ -309,7 +310,7 @@ export const deleteAllInventoryAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/inventory/`,axiosFile
       );
 
       if (data) {
@@ -337,7 +338,7 @@ export const deleteSingleInventoryAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/Inventory/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/Inventory/${payload}`,axiosFile
       );
 
       if (data) {
@@ -365,7 +366,7 @@ export const deleteSingleCartAction = createAsyncThunk(
       });
 
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/Inventory/cartegory/${payload}`,
+        `${import.meta.env.VITE_APP_BASE_URL}/Inventory/cartegory/${payload}`,axiosFile
       );
 
       if (data) {
@@ -394,7 +395,7 @@ export const deleteSingleInventoryStockAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/inventory/stock/delete`,
-        payload,
+        payload,axiosFile
       );
 
       if (data) {

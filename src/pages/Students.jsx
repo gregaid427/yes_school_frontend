@@ -187,7 +187,7 @@ const Student = () => {
      `,
 
       Table: `
-  --data-table-library_grid-template-columns:  12% 35% 23% 10% 20%;
+  --data-table-library_grid-template-columns:  12% 40% 24% 14% 10%;
 `,
     },
   ]);
@@ -490,12 +490,12 @@ const Student = () => {
                                 clickFunction={() => handleEditbtn(item)}
                               />
 
-                              <DeleteSVG
+                              {/* <DeleteSVG
                                 clickFunction={() => {
                                   setid(item);
                                   setVisible(true);
                                 }}
-                              />
+                              /> */}
                             </div>
                           </Cell>
                         </Row>

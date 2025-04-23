@@ -6,11 +6,7 @@ import ErrorToast from '../../components/Toasts/Error';
 import SuccessToast from '../../components/Toasts/Success';
 import WarnToast from '../../components/Toasts/Warning';
 import ErrorAltToast from '../../components/Toasts/ErrorAlt';
-
-axios.defaults.headers.common = {
-  Authorization: `Bearer ${localStorage.getItem('token')}`,
-  'Content-Type': 'application/json',
-};
+import axiosFile from '../../components/axiosFile';
 
 export const CreatesGradeGroupAction = createAsyncThunk(
   'create/GradeGroup',
@@ -24,7 +20,7 @@ export const CreatesGradeGroupAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/gradegroup`,
-        payload,
+        payload,axiosFile
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Created Successfully');
@@ -69,7 +65,7 @@ export const UpdateGradeGroupAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/updategradegroup`,
-        payload,
+        payload,axiosFile
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Updated Successfully');
@@ -114,7 +110,7 @@ export const DeleteCartecoryAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/deleteGroup`,
-        payload,
+        payload,axiosFile
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Deleted Successfully');
@@ -153,7 +149,7 @@ export const CreateExamGroupAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/examgroup`,
-        payload,
+        payload,axiosFile
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Created Successfully');
@@ -193,7 +189,7 @@ export const FetchExamGroupAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/examgroup`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data?.success == 0) {
@@ -229,7 +225,7 @@ export const SubmitUpdatedResultAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/Updateexamresult`,
-        payload,
+        payload,axiosFile
       );
 
     if (data?.success == 1) {   toast.dismiss(toastId);
@@ -270,7 +266,7 @@ export const SubmitResultAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/examresult`,
-        payload,
+        payload,axiosFile
       );
 
     if (data?.success == 1) {   toast.dismiss(toastId);
@@ -314,7 +310,7 @@ export const FetchExamByIdAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/exambyid`,
-        payload,
+        axiosFile,payload,
       );
 
       if (data?.success == 0) {
@@ -351,7 +347,7 @@ export const FetchAllGradeGroupAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/detailgradegroup`,
-        payload,
+        axiosFile,payload,
       );
 
           if (data) {
@@ -382,7 +378,7 @@ export const FetchSingleGradeGroupAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/singlegrade`,
-        payload,
+        payload,axiosFile
       );
 
           if (data) {
@@ -414,7 +410,7 @@ export const FetchGradeGroupAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/gradegroup`,
-        payload,
+        axiosFile,payload,
       );
 
           if (data) {
@@ -444,7 +440,7 @@ export const DeleteGradeGroupAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/deletexamgrade`,
-        payload,
+        payload,axiosFile
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Deleted Successfully');
@@ -485,7 +481,7 @@ export const FetchExamListAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/examlist`,
-        payload,
+        axiosFile,payload,
       );
 
           if (data) {
@@ -516,7 +512,7 @@ export const FetchExamResultByIdAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/getexamresult`,
-        payload,
+        payload,axiosFile
       );
 
       if (data?.success == 0) {
@@ -553,7 +549,7 @@ export const CreateExamAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/newexam`,
-        payload,
+        payload,axiosFile
       );
     if (data?.success == 1) {   toast.dismiss(toastId);
         toast.success('Created Successfully');
@@ -594,7 +590,7 @@ export const FetchexamSubjectAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/examsubject`,
-        payload,
+        payload,axiosFile
       );
       // if (data?.success == 1 && data?.data.length == 0) {
       //   toast.success('No Search Results');
@@ -634,7 +630,7 @@ export const FetchExamCustomAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/searchcustom`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1 && data?.data.length == 0) {
         toast.success('No Search Results');
@@ -674,7 +670,7 @@ export const FetchClassReportAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/generatexlassreport`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1 && data?.data.length == 0) {
         toast.success('No Class Peports Available');
@@ -714,7 +710,7 @@ export const TeacherRemarkAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/setremark`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1 ) {
         toast.success('Remark Recorded Successfully');
@@ -753,7 +749,9 @@ export const fetchExamByCodeAction = createAsyncThunk(
       });
 
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/exam/exambycode`,payload
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/exambycode`,
+        payload,axiosFile
+
       );
 
           if (data) {
@@ -784,7 +782,7 @@ export const FetchSingleReportAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/singlereport`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1 && data?.data.length == 0) {
         toast.success('No Search Results');
@@ -825,7 +823,7 @@ export const GetgradegroupAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/gradegroupbyid`,
-        payload,
+        payload,axiosFile
       );
 
       if (data?.success == 0) {
@@ -862,7 +860,7 @@ export const UpdateExamCartegoryAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/exam/updateexamcartegory`,
-        payload,
+        payload,axiosFile
       );
       if (data?.success == 1 ) {
         toast.success('Updated Successfully');

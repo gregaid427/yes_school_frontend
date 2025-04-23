@@ -320,26 +320,7 @@ const StudentsCartegory = () => {
                       </Header>
 
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                        <Row className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
-                          <Cell className="  ">{'GENERAL (Default)'}</Cell>
-
-                          <Cell>
-                            <div className="gap-2 flex">
-                              {/* <ViewSVG
-                                  clickFunction={() => handleViewbtn(item)}
-                                /> */}
-                              {/* <EditSVG
-                                  clickFunction={() => handleEditbtn('item')}
-                                />
-                                <DeleteSVG
-                                  clickFunction={() =>{ setDel('item')
-
-                                    setVisible1(true)
-                                  }}
-                                /> */}
-                            </div>
-                          </Cell>
-                        </Row>
+                      
 
                         {tableList?.map((item) => (
                           <>
