@@ -4,11 +4,7 @@ import ErrorAltToast from '../../components/Toasts/ErrorAlt';
 import toast from 'react-hot-toast';
 import axiosFile from '../../components/axiosFile';
 
-let axios1 ={ headers: {
-  'Authorization': 'Bearer ddd',
-  'Content-Type': 'application/json',
-  'Accept': 'application/json',
-}};
+
 
 
 

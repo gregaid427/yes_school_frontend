@@ -53,13 +53,15 @@ const BulkAdmission = () => {
 
   const [classname, setclasname] = useState('');
   const [sectionname, setsectionname] = useState('');
+  const [sectionid, setsectionid] = useState(0);
+
 
   const [display, setDisplay] = useState(false);
   const [displaytable, setDisplaytable] = useState(false);
   
   const [tabledata, settabledata] = useState([]);
 
-  const [id, setclassId] = useState('');
+  const [id, setclassId] = useState(0);
   const [filename, setFileName] = useState('');
   const [file, setFile] = useState('');
 
@@ -183,9 +185,12 @@ console.log(data)
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
+    console.log(value)
     setclasname(value.title);
     setsectionname(value.section);
-    setclassId(value.id);
+    setsectionid(value.sectionid);
+
+    setclassId(value.classId);
   };
   const handleEditbtn = (value) => {
     dispatch(
@@ -285,11 +290,12 @@ console.log(tabledata1)
     OTHER_NAMES: '',
     LAST_NAME: '',
     RELIGION: '',
-    GENDER: '',
+    GENDER_M_F: '',
     DATE_OF_BIRTH_DDMMYYYY: '',
+    ARREARS: '',
     GUARDIAN_1_FIRST_NAME: '',
     GUARDIAN_1_LAST_NAME: '',
-    GUARDIAN_1_GENDER: '',
+    GUARDIAN_1_GENDER_M_F: '',
     GUARDIAN_1_RELATION: '',
     GUARDIAN_1_CONTACT1: '',
     GUARDIAN_1_CONTACT2: '',
@@ -352,7 +358,9 @@ console.log(tabledata1)
         STUDENT_PASSWORD: generateString(5).toLocaleLowerCase(),
         EMAIL: v.FIRST_NAME + generateString(3).toLocaleLowerCase(),
         CLASS: classname,
+        CLASSID: id,
         SECTION: sectionname,
+        SECTIONID: sectionid,
         GUARD1_PASSWORD: v.GUARDIAN_1_FIRST_NAME == undefined ? "" : generateString(5),
         GUARD2_PASSWORD: v.GUARDIAN_2_FIRST_NAME == undefined ? "" : generateString(5),
         GUARD1_USERNAME: v.GUARDIAN_1_FIRST_NAME == undefined ? "" : v.GUARDIAN_1_FIRST_NAME + generateString(3).toLocaleLowerCase()  ,
@@ -882,7 +890,7 @@ console.log(tabledata1)
                       handleFileUpload(e);
                     }}
                     type="file"
-                    accept=".xlsx, .xls"
+                    accept=".xlsx, .xls, .csv"
                     className="w-full rounded-md border border-stroke p-1 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
                   />
                 </div>

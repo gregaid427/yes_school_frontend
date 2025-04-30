@@ -948,6 +948,80 @@ export const deleteSingleStdCartAction = createAsyncThunk(
   },
 );
 
+export const GlobalSearchAction = createAsyncThunk(
+  'post/globalsearch',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/globalsearch`,
+      payload,axiosFile
+      );
+
+      if (data?.success == 0) {
+        toast.error('Error Searching');
+      }
+      if (data?.success == 1 && data?.data.length == 0) {
+        toast.success('No Record Found');
+      }
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const GlobalSearchAction1 = createAsyncThunk(
+  'post/globalsearch1',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/globalsearch`,
+      payload,axiosFile
+      );
+
+      if (data?.success == 0) {
+        toast.error('Error Searching');
+      }
+      if (data?.success == 1 && data?.data.length == 0) {
+        toast.success('No Record Found');
+      }
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const FetchgraduatedAction = createAsyncThunk(
   'get/graduated',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -1195,6 +1269,11 @@ const StudentSlices = createSlice({
     resetUdateStudent(state) {
       state.updateStudent = null;
     },
+    
+    updatefechcustom(state,payload) {
+      console.log(payload)
+      state.fetchcustom = payload;
+    },
     resetcreateStudentimage(state) {
       state.studentImage = null;
     },
@@ -1221,6 +1300,12 @@ const StudentSlices = createSlice({
     },
     resetMoveStudent(state) {
       state.MoveStudent = null;
+    },
+    resetGlobalSearch(state) {
+      state.GlobalSearch = null;
+    },
+    resetGlobalSearch1(state) {
+      state.GlobalSearch1 = null;
     },
     
   },
@@ -1308,7 +1393,40 @@ const StudentSlices = createSlice({
       state.DeleteAllDeletedStdloading = undefined;
     });
 
+    
 
+    builder.addCase(GlobalSearchAction.pending, (state, action) => {
+      state.GlobalSearchloading = true;
+      state.GlobalSearch = false;
+    });
+    builder.addCase(GlobalSearchAction.fulfilled, (state, action) => {
+      state.GlobalSearch = action?.payload;
+      state.GlobalSearchloading = false;
+      state.GlobalSearcherror = undefined;
+
+    });
+    builder.addCase(GlobalSearchAction.rejected, (state, action) => {
+      state.GlobalSearcherror = action.payload;
+      state.GlobalSearch = undefined;
+      state.GlobalSearchloading = undefined;
+    });
+
+
+    builder.addCase(GlobalSearchAction1.pending, (state, action) => {
+      state.GlobalSearchloading1 = true;
+      state.GlobalSearch1 = false;
+    });
+    builder.addCase(GlobalSearchAction1.fulfilled, (state, action) => {
+      state.GlobalSearch1 = action?.payload;
+      state.GlobalSearchloading1 = false;
+      state.GlobalSearcherror1 = undefined;
+
+    });
+    builder.addCase(GlobalSearchAction1.rejected, (state, action) => {
+      state.GlobalSearcherror1 = action.payload;
+      state.GlobalSearch1 = undefined;
+      state.GlobalSearchloading1 = undefined;
+    });
 
     builder.addCase(DeletegraduatedAction.pending, (state, action) => {
       state.Deletegraduatedloading = true;
@@ -1779,6 +1897,10 @@ export const {
   resetstdCartDel,
   resetUpdateStdCart,
   resetFetchCustomStudent,
-  resetMoveStudent
+  resetMoveStudent,
+  resetGlobalSearch,
+  resetGlobalSearch1,
+  updatefechcustom
+
 } = StudentSlices.actions;
 export default StudentSlices.reducer;

@@ -134,6 +134,9 @@ import Preference from './pages/Fees/Preference';
 import SetstudentGraduated from './pages/SetstudentGraduated';
 import Setdeletedstudent from './pages/Setdeletedstudent';
 import LoginLog from './pages/settings/LoginLog';
+import SearchPage from './pages/SearchPage';
+import GlobalSearchPage from './pages/GlobalSearch';
+import SearchCollectFee from './pages/Fees/SearchCollectFee';
 
 function App() {
   const navigate = useNavigate();
@@ -145,12 +148,9 @@ function App() {
   // useEffect(() => {
   //   window.scrollTo(0, 0);
   // }, [pathname]);
-
-  useEffect(() => {
-    dispatch(fetchAllClassAction());
-    dispatch(fetchAllSectionAction());
+  dispatch(fetchAllClassAction())
+  dispatch(fetchAllSectionAction())
  
-  }, []);
 
   const {  auth,setAuth } = useAuth();
   // const { setAuth } = useContext(AuthContext);
@@ -218,12 +218,15 @@ function App() {
       setTimeout(() => setLoading(false), 100);
       // if(pathname.includes('auth')) return  navigate('/dashboard');
       // if(pathname.includes('')) return  navigate('/dashboard');
+   
+   
+
+   
     }
     if (fetchuserbyid?.success == 0) {
       setTimeout(() => setLoading(false), 0);
       navigate('/auth/signin');
     }
-
     //  navigate("/student/info")
   }, [fetchuserbyid]);
 
@@ -275,6 +278,18 @@ function App() {
                 <>
                   <PageTitle title="Academics" />
                   <Class />
+                </>
+              }
+            />{' '}
+          </Route>
+          
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/fees/searchcollectfee"
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <SearchCollectFee />
                 </>
               }
             />{' '}
@@ -512,6 +527,18 @@ function App() {
               }
             />{' '}
           </Route>
+          
+          <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
+            <Route
+              path="/student/search"
+              element={
+                <>
+                  <PageTitle title="Student" />
+                  <SearchPage />
+                </>
+              }
+            />{' '}
+          </Route>{' '}
           <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
             <Route
               path="/student/admission"
@@ -579,7 +606,21 @@ function App() {
                 </>
               }
             />{' '}
+            
           </Route>{' '}
+          <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
+            <Route
+              path="/globalsearch"
+              element={
+                <>
+                  <PageTitle title="search" />
+                  <GlobalSearchPage />
+                </>
+              }
+            />{' '}
+            
+          </Route>{' '}
+          
           <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
             <Route
               path="/student/singlestudent"

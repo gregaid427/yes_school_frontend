@@ -17,8 +17,8 @@ const ErrorToast = (text, error) => {
     //     secondary: '#FFFAEE',
     //   },
   });
-
-  if(error?.code == 'ERR_NETWORK') return toast('Check Internet Connectivity', {
+console.log(error)
+  if(error?.code == 'ERR_NETWORK') return toast(error?.message, {
     icon: '⚠️',
     position: 'bottom-right',
   });

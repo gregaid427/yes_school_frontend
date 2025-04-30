@@ -23,7 +23,6 @@ import AppUpdateAlert from '../AppUpdateAlert';
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-
   const statistics = useSelector((state) => state?.statistics);
   const {
     studentStat,

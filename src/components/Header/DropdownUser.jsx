@@ -66,9 +66,9 @@ const DropdownUser = () => {
           <span className="block text-xs">{ userMail?.payload }</span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
+        {/* <span className="h-12 w-12 rounded-full">
           <img src={userThree} alt="User" className='rounded-full' />
-        </span>
+        </span> */}
 
         <svg
           className="hidden fill-current sm:block"

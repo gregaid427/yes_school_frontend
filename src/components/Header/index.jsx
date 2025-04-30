@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DropdownMessage from './DropdownMessage';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
@@ -11,18 +11,22 @@ import {
   fetchAllsessionAction,
 } from '../../redux/slices/sessionSlice';
 import { fetchschoolinfoAction } from '../../redux/slices/usersSlice';
+import { GlobalSearchAction } from '../../redux/slices/studentSlice';
+import ArrowIcon from '../Svgs/arrowicon';
 
 const Header = (props) => {
   const dispatch = useDispatch();
- 
+  const student = useSelector((state) => state?.student);
+  const {
+    GlobalSearch
+  } = student;
   const user = useSelector((state) => state?.user);
   const { allschool } = user;
   const session = useSelector((state) => state?.session);
   const { fetchsessionactive, fetchsession } = session;
   const [sessionz, setsession] = useState(null);
   const [school, setschool] = useState([]);
-  
-
+  const [globalsearch, setGlobalSearch] = useState(null);
 
   useEffect(() => {
     dispatch(fetchschoolinfoAction());
@@ -34,15 +38,27 @@ const Header = (props) => {
       let data = fetchsessionactive?.data[0];
       setsession(data);
     }
-    
   }, [fetchsessionactive]);
+const navigate = useNavigate()
   
+  useEffect(() => {
+    if (GlobalSearch?.success == 1 && GlobalSearch?.data.length != 0) {
+      navigate("/student/search", {
+        state: { value: GlobalSearch},
+      });
+    }
+  }, [GlobalSearch]);
   useEffect(() => {
     if (allschool?.success == 1) {
       let data = allschool?.data;
       setschool(data);
     }
   }, [allschool]);
+
+  function handleGlobalSearch(val){
+    dispatch(GlobalSearchAction({id:val}))
+
+  }
 
   return (
     <header className="sticky top-0 z-999 flex w-full bg-[#f4f4fa] drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
@@ -96,12 +112,29 @@ const Header = (props) => {
           </Link> */}
         </div>
         <span className="float-start block text-sm font-medium text-black dark:text-white">
-          {school[0]?.name ? school[0]?.name : "" }
+          {school[0]?.name ? school[0]?.name : ''}
         </span>
         <span className=" float-start block text-sm font-medium text-black dark:text-white">
           Current Session : {sessionz?.sessionname}
         </span>
-        <div className="hidden sm:block"></div>
+        <div className="  flex row ">
+          <input
+            className="w-full rounded-full required  border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            type="text"
+            name=""
+            id=""
+            placeholder="Search Student"
+            defaultValue=""
+              onChange={(e) => setGlobalSearch(e.target.value)}
+          />
+          <button
+                    className="flex w-3/12 justify-center bg-primary h-auto text-center py-2 align-middle rounded-full ml-1 font-large text-gray hover:bg-opacity-90"
+                    type=""
+                   onClick={(e) => handleGlobalSearch(globalsearch)}
+                  >
+                   <ArrowIcon />
+                   </button>
+        </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
           <ul className="flex items-center gap-2 2xsm:gap-4">

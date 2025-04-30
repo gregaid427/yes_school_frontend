@@ -110,8 +110,8 @@ const Admission = () => {
   const [gsex2, setgsex2] = useState('Male');
   const [gsex1, setgsex1] = useState('Male');
   const [cartegory, setCartegory] = useState('GENERAL');
-  const [gRelation1, setRelation1] = useState('');
-  const [gRelation2, setRelation2] = useState('');
+  const [gRelation1, setRelation1] = useState('Mother');
+  const [gRelation2, setRelation2] = useState('Mother');
   const [religion, setreligion] = useState('Christianity');
   const [dateofbirth, setdateofbirth] = useState('01-01-2020');
   const [acctbal, setacctbal] = useState(0);
@@ -632,7 +632,12 @@ const Admission = () => {
                             >
                               Relation With Student{' '}
                             </label>
-                            <input
+                            <SelectGroupTwo
+                                values={['Mother', 'Father']}
+                                setSelectedOption={(val) => setRelation1(val)}
+                                selectedOption={gRelation1}
+                              />
+                            {/* <input
                               className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                               type="text"
                               name=""
@@ -640,7 +645,7 @@ const Admission = () => {
                               placeholder=""
                               defaultValue=""
                               onChange={(e) => setRelation1(e.target.value)}
-                            />
+                            /> */}
                           </div>
                         </div>
                       </div>
@@ -790,15 +795,12 @@ const Admission = () => {
                             >
                               Relation With Student{' '}
                             </label>
-                            <input
-                              className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                              type="text"
-                              name=""
-                              id=""
-                              placeholder=""
-                              defaultValue=""
-                              onChange={(e) => setRelation2(e.target.value)}
-                            />
+                            <SelectGroupTwo
+                                values={['Mother', 'Father']}
+                                setSelectedOption={(val) => setRelation2(val)}
+                                selectedOption={gRelation2}
+                              />
+                            
                           </div>
                         </div>
                       </div>

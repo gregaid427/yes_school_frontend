@@ -13,6 +13,7 @@ import {
   setUser,
   setUserMail,
   setUsername,
+  setUserToken,
 } from '../../redux/slices/usersSlice';
 // import { toast } from 'react-toastify';
 import toast, { Toaster } from 'react-hot-toast';
@@ -28,8 +29,10 @@ const SignIn = () => {
     dispatch(reset());
     dispatch(resetAllUserData());
   }, []);
-
+  
   const [email, setEmail] = useState('');
+  const [tokentimer, setTokenTimer] = useState('');
+
   const [password, setpassword] = useState('');
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
@@ -37,6 +40,8 @@ const SignIn = () => {
   const { setAuth } = useAuth();
   // const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,6 +70,7 @@ const SignIn = () => {
       let num = (data[0]?.rolecode).split(',').join('');
       //persist data to cookies
       let servertoken = data[0]?.token + '{|-' + data[0]?.userId + '{|-' + num;
+      dispatch(setUserToken(servertoken))
       Cookies.set('VyQHVzZXIuY29tIiwia', servertoken, { expires: 1 });
       //  Cookies.set('smsinfoxyz', dataArray, { expires: 1 });
       dispatch(setUser(data));
@@ -80,8 +86,8 @@ const SignIn = () => {
       dispatch(setRoleCode([num]));
       setpassword('');
       setEmail('');
+     setTokenTimer(true)
 
-      navigate('/dashboard', { replace: true });
     }
 
     if (loginUser == false) {
@@ -96,6 +102,19 @@ const SignIn = () => {
       // toast.error("Incorrect Email or Password", { className: "toast-message1" });
     }
   }, [loginUser]);
+
+
+  useEffect(() => {
+    let myArray = Cookies.get('VyQHVzZXIuY29tIiwia');
+
+  if(myArray){
+    setTimeout(() => (  navigate('/dashboard', { replace: true }))
+    , 1000);
+  }
+   
+  }, [loginUser,tokentimer]);
+
+
 
   return loading ? (
     <Loader />

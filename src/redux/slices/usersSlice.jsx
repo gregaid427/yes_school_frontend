@@ -93,8 +93,8 @@ export const loginUserAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-     //       ErrorToast('Error', error);
-     toast.dismiss();
+      ErrorAltToast('Error', error);
+     //toast.dismiss();
 
       // console.log(error);
       // console.log(error?.response);
@@ -703,6 +703,8 @@ const initialState = {
   UserData: [],
   fetchuserbyid: {},
   loginUser: {},
+  userToken: {},
+
 };
 
 const UsersSlices = createSlice({
@@ -737,6 +739,10 @@ const UsersSlices = createSlice({
     setRoleCode(state, data) {
       state.roleCode = data;
     },
+    setUserToken(state, data) {
+      state.userToken = data;
+    },
+    
 
     resetAllUserData(state) {
       (state.UserData = []), (state.fetchuserbyid = {}), (state.loginUser = {});
@@ -1060,7 +1066,8 @@ export const {
   setUserMail,
   setRoleCode,
   setUsername,
-  resetschoolinfo
+  resetschoolinfo,
+  setUserToken
 } = UsersSlices.actions;
 
 export default UsersSlices.reducer;

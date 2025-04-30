@@ -41,6 +41,7 @@ import CollectFeesModal from '../../components/collectFeesModal';
 import FeesReceiptModal from '../../components/FeesReceiptModal';
 import { fetchfeeCartegoryAction, resetpayfee } from '../../redux/slices/feeSlice';
 import { fetchActivesessionAction } from '../../redux/slices/sessionSlice';
+import GlobalSearchInput from '../../components/GlobalSearchInput';
 
 const CollectFees = () => {
   ///////////////////////////////////
@@ -429,31 +430,17 @@ const CollectFees = () => {
               </div>
 
               <div className={' w-3/12 flex flex-col float-right '}>
-                <div className="flex justify-between align-middle mb-2">
+                <div className="flex justify-between align-middle ">
                   <label
-                    className="mb-3 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
+                    className="mb-1 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor=" "
                   >
-                    Search By{' '}
+                    Search By ID / Firstname / LastName 
                   </label>
-                  <div className="relative  z-20 w-3/5 bg-white dark:bg-form-input">
-                    <SelectGroupTwo
-                      values={['First Name', 'Last Name', 'ID']}
-                      setSelectedOption={(val) => setSearchval(val)}
-                      selectedOption={searchval}
-                    />
-                  </div>
+                 
                 </div>
 
-                <input
-                  className="w-full rounded border border-stroke bg-gray py-2 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  key={1}
-                  type="search"
-                  placeholder={'type here'}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
-                />
+               <GlobalSearchInput globalResult={setdata}/>
                 {/* <button onClick={() => toPDF()}>Download PDF</button> */}
               </div>
             </div>
@@ -579,6 +566,17 @@ const CollectFees = () => {
                   </div>
                 </div>
               </div>
+
+
+              
+
+
+
+
+
+
+
+              
 
               <span>
                 Page:{' '}

@@ -29,6 +29,7 @@ import {
   fetchSingleStudent,
   fetchStudentsClassAccountAction,
   fetchStudentsClassAction,
+  updatefechcustom,
 } from '../../redux/slices/studentSlice';
 import Loader from '../../common/Loader';
 
@@ -55,6 +56,7 @@ import StudentaccountModal from '../../components/studentaccountModal';
 import SessionSelect from '../../components/SessionSelect';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
+import GlobalSearchInput from '../../components/GlobalSearchInput';
 
 const StudentAccount = () => {
   ///////////////////////////////////
@@ -81,6 +83,7 @@ const StudentAccount = () => {
 
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
+  const [changer, setchanger] = useState([]);
   const [classs, setClasss] = useState();
   const [session, setsession] = useState();
   const [clazz, setclazz] = useState();
@@ -129,9 +132,18 @@ const StudentAccount = () => {
 
     if (fetchcustom?.success == 1) {
       let data = fetchcustom?.data;
-      setdata(data);
+     // setdata(data);
+      console.log(fetchcustom)
+      setchanger(data)
+
     }
+
   }, [fetchcustom]);
+  useEffect(() => {
+ // dispatch(updatefechcustom({'success':1,'data':changer}))
+ setdata(changer)
+ //console.log(changer)
+  }, [changer]);
 
   // useEffect(() => {
 
@@ -225,15 +237,15 @@ const StudentAccount = () => {
 
   console.log(nodes);
 
-  data = {
-    nodes: data.nodes.filter((item) =>
-      searchval === 'First Name'
-        ? item.firstName.toLowerCase().includes(search.toLowerCase())
-        : searchval == 'Last Name'
-          ? item.lastName.toLowerCase().includes(search.toLowerCase())
-          : item.student_id.toLowerCase().includes(search.toLowerCase()),
-    ),
-  };
+  // data = {
+  //   nodes: data.nodes.filter((item) =>
+  //     searchval === 'First Name'
+  //       ? item.firstName.toLowerCase().includes(search.toLowerCase())
+  //       : searchval == 'Last Name'
+  //         ? item.lastName.toLowerCase().includes(search.toLowerCase())
+  //         : item.student_id.toLowerCase().includes(search.toLowerCase()),
+  //   ),
+  // };
   const [sessionoption, setSessionoption] = useState('');
 
   function setModalVisible() {
@@ -417,31 +429,17 @@ const StudentAccount = () => {
               </div>
 
               <div className={' w-3/12 flex flex-col float-right '}>
-                <div className="flex justify-between align-middle mb-2">
+                <div className="flex justify-between align-middle ">
                   <label
-                    className="mb-3 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
+                    className="mb-1 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor=" "
                   >
-                    Search By{' '}
+                    Search By ID / Firstname / LastName 
                   </label>
-                  <div className="relative  z-20 w-3/5 bg-white dark:bg-form-input">
-                    <SelectGroupTwo
-                      values={['First Name', 'Last Name', 'ID']}
-                      setSelectedOption={(val) => setSearchval(val)}
-                      selectedOption={searchval}
-                    />
-                  </div>
+                 
                 </div>
 
-                <input
-                  className="w-full rounded border border-stroke bg-gray py-2 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  key={1}
-                  type="search"
-                  placeholder={'type here'}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
-                />
+               <GlobalSearchInput globalResult={setchanger}/>
                 {/* <button onClick={() => toPDF()}>Download PDF</button> */}
               </div>
             </div>
@@ -455,7 +453,7 @@ const StudentAccount = () => {
                     checked={selectedValue === 'option1'}
                     onChange={() => {
                       //   props.setRepeated(props.repeat.filter((element)=>element !== props.stdId))
-                      setdata(fetchcustom?.data);
+                      setdata(changer);
                       handleRadioChange('option1');
                     }}
                   />
@@ -472,7 +470,7 @@ const StudentAccount = () => {
                       // props.setRepeated([props.stdId,...props.repeat])
                       handleRadioChange('option2');
                       setdata(
-                        fetchcustom?.data?.filter(
+                        changer?.filter(
                           (item) => item?.accountbalance > 0,
                         ),
                       );
@@ -491,7 +489,7 @@ const StudentAccount = () => {
                       //props.handleAction()
                       handleRadioChange('option3');
                       setdata(
-                        fetchcustom?.data?.filter(
+                        changer?.filter(
                           (item) => item?.accountbalance == 0,
                         ),
                       );

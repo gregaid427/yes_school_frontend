@@ -207,6 +207,8 @@ const Class = () => {
     setVisible(true);
   };
   const [selectedsection, setselectedsection] = useState([]);
+  const [selectedsection1, setselectedsection1] = useState([]);
+
 
   const user = useSelector((state) => state?.user);
   const { username, userMail} = user;
@@ -221,15 +223,21 @@ const Class = () => {
     if (classTitle == '') {
       toast.error('Error - Class Name Cannot Be Empty');
     } else {
+      console.log(classdata)
+
       dispatch(CreatesClassAction(classdata));
     }
   };
+  console.log(selectedsection)
 
   function updatesection(val) {
-    if (selectedsection.includes(val)) {
-      setselectedsection(selectedsection.filter((element) => element !== val));
+    if (selectedsection1.includes(val)) {
+      setselectedsection1(selectedsection1.filter((element) => element.sectionName !== val.sectionName));
+      setselectedsection(selectedsection.filter((element) => element.sectionName !== val.sectionName));
     } else {
+      setselectedsection1([val, ...selectedsection1]);
       setselectedsection([val, ...selectedsection]);
+
     }
   }
 
@@ -348,7 +356,7 @@ const Class = () => {
                     {fetchSection?.data?.map((item) => (
                       <div key={item.id} className="mb- flex gap-2   sm:flex-row">
                          <ClassCheckbox
-                          updatesection={() => updatesection(item.sectionName)}
+                          updatesection={() => updatesection(item)}
                           item={item}
                         />
                         <div className=" flex  sm:w-full">
