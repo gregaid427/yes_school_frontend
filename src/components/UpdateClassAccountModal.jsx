@@ -241,7 +241,7 @@ const UpdateClassAccountModal = (props) => {
                                     placeholder=""
                                     defaultValue={0}
                                     onChange={(e) => {
-                                      setAmount(e.target.value);
+                                      setAmount(e.target.value.trim());
                                     }}
                                   />
                               </div>
@@ -313,7 +313,7 @@ const UpdateClassAccountModal = (props) => {
                             placeholder=""
                             defaultValue={0}
                             onChange={(e) => {
-                              setAmount(e.target.value);
+                              setAmount(e.target.value.trim());
                             }}
                           />
                         </div> */}

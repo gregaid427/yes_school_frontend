@@ -138,7 +138,7 @@ const GenerateFeeModalStudent = (props) => {
                     id=""
                     placeholder=""
                     onChange={(e) => {
-                      setId(e.target.value);
+                      setId(e.target.value.trim());
                     }}
                   />
                 </div>

@@ -11,7 +11,7 @@ function ExamResultInput(props) {
            // console.log(props.cart[i].feeid)
     
            if (stdid == data[i].student_id) {
-            // item.examScore = e.target.value;
+            // item.examScore = e.target.value.trim();
              console.log(props.resultData[i].examScore)
              let arr = props.resultData
             let bb = arr[i].examScore = 6
@@ -23,7 +23,7 @@ function ExamResultInput(props) {
 
     //  data.map((item) => {
     //   // if (stdid == item.student_id) {
-    //   //  // item.examScore = e.target.value;
+    //   //  // item.examScore = e.target.value.trim();
     //   //   console.log(stdid)
     //   //   //props.setResult()
     //   // }
@@ -70,7 +70,7 @@ function ExamResultInput(props) {
         //key={1}
         type=""
         onChange={(e) => {
-          //  setSearch(e.target.value);
+          //  setSearch(e.target.value.trim());
         }}
       />
       <input
@@ -78,7 +78,7 @@ function ExamResultInput(props) {
         // key={1}
         type=""
         onChange={(e) => {
-          //  setSearch(e.target.value);
+          //  setSearch(e.target.value.trim());
         }}
       />
     </div>

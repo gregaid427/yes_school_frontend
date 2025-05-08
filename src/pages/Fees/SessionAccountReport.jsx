@@ -300,7 +300,7 @@ const SessionAccountReport = () => {
                       id=""
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setClassTitle(e.target.value)}
+                      onChange={(e) => setClassTitle(e.target.value.trim())}
                     />
                   </div>
 
@@ -319,7 +319,7 @@ const SessionAccountReport = () => {
                       id=""
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setClassInstructor(e.target.value)}
+                      onChange={(e) => setClassInstructor(e.target.value.trim())}
                     />
                   </div>
 
@@ -537,7 +537,7 @@ const SessionAccountReport = () => {
                     type="search"
                     placeholder={'type here'}
                     onChange={(e) => {
-                      setSearch(e.target.value);
+                      setSearch(e.target.value.trim());
                     }}
                   />
                   {/* <button onClick={() => toPDF()}>Download PDF</button> */}

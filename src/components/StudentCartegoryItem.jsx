@@ -40,7 +40,7 @@ const StudentCartegoryItem  = (props) => {
 
   const [cartegoryName, setcartegoryName] = useState();
 
-  const [description, setDesription] = useState();
+  const [description, setDesription] = useState('');
 
   const formRef1 = useRef();
 
@@ -91,7 +91,7 @@ const StudentCartegoryItem  = (props) => {
                 id=""
                 placeholder=""
                 defaultValue=""
-                onChange={(e) => setcartegoryName(e.target.value.toUpperCase())}
+                onChange={(e) => setcartegoryName(e.target.value.trim().toUpperCase())}
               />
             </div>
 
@@ -110,7 +110,7 @@ const StudentCartegoryItem  = (props) => {
                   rows={2}
                   placeholder=""
                   defaultValue=""
-                  onChange={(e) => setDesription(e.target.value)}
+                  onChange={(e) => setDesription(e.target.value.trim())}
                 ></textarea>
               </div>
             </div>

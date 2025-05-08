@@ -37,7 +37,7 @@ const GlobalSearchInput = (props) => {
             id=""
             placeholder="Search Student"
             defaultValue=""
-              onChange={(e) => setGlobalSearch(e.target.value)}
+              onChange={(e) => setGlobalSearch(e.target.value.trim())}
           />
           <button
                     className="flex w-3/12 justify-center bg-primary h-auto text-center py-2 align-middle rounded-full ml-1 font-large text-gray hover:bg-opacity-90"

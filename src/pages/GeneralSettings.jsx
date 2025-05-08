@@ -195,7 +195,7 @@ console.log(userThree)
                         defaultValue={allschool?.data[0]?.name}
                         onChange={(e) => {
                           e.preventDefault();
-                          setName(e.target.value);
+                          setName(e.target.value.trim());
                         }}
                       />
                     </div>
@@ -215,7 +215,7 @@ console.log(userThree)
                       placeholder=""
                       onChange={(e) => {
                         e.preventDefault();
-                        setCode(e.target.value);
+                        setCode(e.target.value.trim());
                       }}
                     />
                   </div> */}
@@ -237,7 +237,7 @@ console.log(userThree)
                         placeholder=""
                         onChange={(e) => {
                           e.preventDefault();
-                          setEmail(e.target.value);
+                          setEmail(e.target.value.trim());
                         }}
                       />
                     </div>
@@ -295,7 +295,7 @@ console.log(userThree)
                         placeholder=""
                         onChange={(e) => {
                           e.preventDefault();
-                          setContact1(e.target.value);
+                          setContact1(e.target.value.trim());
                         }}
                       />
                     </div>
@@ -315,7 +315,7 @@ console.log(userThree)
                         defaultValue={allschool?.data[0]?.contact2}
                         onChange={(e) => {
                           e.preventDefault();
-                          setContact2(e.target.value);
+                          setContact2(e.target.value.trim());
                         }}
                       />
                     </div>
@@ -334,7 +334,7 @@ console.log(userThree)
                         placeholder=""
                         onChange={(e) => {
                           e.preventDefault();
-                          setAddress(e.target.value);
+                          setAddress(e.target.value.trim());
                         }}
                       ></textarea>
                     </div>

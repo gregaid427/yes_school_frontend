@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   ResetAllAccountBalanceAction,
   resetGeneratefee,
+  resetUpdatefee,
 } from '../redux/slices/feeSlice';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +17,7 @@ const UpdateAllStudentAccountModal = (props) => {
   const [amount, setAmount] = useState(0);
   const [display, setDisplay] = useState(0);
   const fee = useSelector((state) => state?.fees);
-  const { cartegory, Generatefee, custom } = fee;
+  const { cartegory, Generatefee, custom,ResetAllAccount } = fee;
   let navigate = useNavigate();
   const student = useSelector((state) => state?.student);
   const user = useSelector((state) => state?.user);
@@ -26,6 +27,13 @@ const UpdateAllStudentAccountModal = (props) => {
     dispatch(ResetAllAccountBalanceAction({ amount: amount,createdby: username?.payload, }));
   };
 
+  useEffect(() => {
+    if (ResetAllAccount?.success == 1) {
+      props.close(false);
+      dispatch(resetUpdatefee())
+
+    }
+  }, [ResetAllAccount]);
   useEffect(() => {
     if (Generatefee?.success == 0) {
       toast.error('Error Generating Fee');
@@ -66,7 +74,7 @@ const UpdateAllStudentAccountModal = (props) => {
                     placeholder=""
                     defaultValue={0}
                     onChange={(e) => {
-                      setAmount(e.target.value);
+                      setAmount(e.target.value.trim());
                     }}
                   />
                 </div>

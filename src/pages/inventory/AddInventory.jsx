@@ -316,7 +316,7 @@ const AddInventory = () => {
                     id=""
                     placeholder=""
                     defaultValue=""
-                    onChange={(e) => setItem(e.target.value)}
+                    onChange={(e) => setItem(e.target.value.trim())}
                   />
                 </div>
 
@@ -362,7 +362,7 @@ const AddInventory = () => {
                     id=""
                     placeholder=""
                     defaultValue="0"
-                    onChange={(e) => setQuantity(e.target.value)}
+                    onChange={(e) => setQuantity(e.target.value.trim())}
                   />
                 </div>
                 <div className="w-full mb-3 sm:w-2/2">
@@ -379,7 +379,7 @@ const AddInventory = () => {
                     id=""
                     placeholder=""
                     defaultValue=""
-                    onChange={(e) => setSupName(e.target.value)}
+                    onChange={(e) => setSupName(e.target.value.trim())}
                   />
                 </div>
                 <div className="w-full flex gap-1">
@@ -397,7 +397,7 @@ const AddInventory = () => {
                       id=""
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setSupContact1(e.target.value)}
+                      onChange={(e) => setSupContact1(e.target.value.trim())}
                     />
                   </div>
                   <div className="w-full mb-3 sm:w-1/2">
@@ -414,7 +414,7 @@ const AddInventory = () => {
                       id=""
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setSupContact2(e.target.value)}
+                      onChange={(e) => setSupContact2(e.target.value.trim())}
                     />
                   </div>
                 </div>
@@ -432,7 +432,7 @@ const AddInventory = () => {
                       id="bio"
                       rows={2}
                       placeholder=""
-                      onChange={(e) => setSupInfo(e.target.value)}
+                      onChange={(e) => setSupInfo(e.target.value.trim())}
                     ></textarea>
                   </div>
                 </div>
@@ -451,7 +451,7 @@ const AddInventory = () => {
                       id="bio"
                       rows={2}
                       placeholder=""
-                      onChange={(e) => setDesc(e.target.value)}
+                      onChange={(e) => setDesc(e.target.value.trim())}
                     ></textarea>
                   </div>
                 </div>
@@ -541,7 +541,7 @@ const AddInventory = () => {
                     type="search"
                     placeholder={'type here'}
                     onChange={(e) => {
-                      setSearch(e.target.value);
+                      setSearch(e.target.value.trim());
                     }}
                   />
                   {/* <button onClick={() => toPDF()}>Download PDF</button> */}

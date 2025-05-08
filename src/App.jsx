@@ -78,6 +78,7 @@ import {
   fetchuserbyidAction,
   setRoleCode,
   setUser,
+  setUserId,
   setUserMail,
   setUsername,
 } from './redux/slices/usersSlice';
@@ -137,6 +138,8 @@ import LoginLog from './pages/settings/LoginLog';
 import SearchPage from './pages/SearchPage';
 import GlobalSearchPage from './pages/GlobalSearch';
 import SearchCollectFee from './pages/Fees/SearchCollectFee';
+import FinanceReports from './pages/Fees/FinanceReports';
+import ClassFeeReport from './pages/Fees/ClassFeeReport';
 
 function App() {
   const navigate = useNavigate();
@@ -214,6 +217,8 @@ function App() {
       dispatch(setUsername(data[0].sFirstName + ' ' + data[0].sLastName));
       dispatch(setUserMail(data[0]?.email));
       dispatch(setRoleCode(data[0]?.rolecode));
+      dispatch(setUserId(data[0]?.userId));
+
 
       setTimeout(() => setLoading(false), 100);
       // if(pathname.includes('auth')) return  navigate('/dashboard');
@@ -421,7 +426,7 @@ function App() {
           
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
-              path="/fees/addfeesgroup"
+              path="/settings/feeitems"
               element={
                 <>
                   <PageTitle title="Fees" />
@@ -446,6 +451,29 @@ function App() {
                 <>
                   <PageTitle title="Fees" />
                   <SearchRecords />
+                </>
+              }
+            />{' '}
+          </Route>
+          
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/settings/sessionclassreport"
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <ClassFeeReport />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/settings/reports"
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <FinanceReports />
                 </>
               }
             />{' '}
@@ -947,7 +975,7 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
-              path="/settings/assignfees"
+              path="/settings/assignfee"
               element={
                 <>
                   <PageTitle title="Fees" />

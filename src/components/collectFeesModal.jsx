@@ -14,7 +14,7 @@ import FeeRadio from './FeeRadio';
 
 const CollectFeesModal = (props) => {
   const clad = useSelector((state) => state?.classes);
-//  console.log(props);
+  console.log(props);
   const { fetchAllClassloading, fetchAllClass } = clad;
   const dispatch = useDispatch();
   const inventory = useSelector((state) => state?.inventory);
@@ -67,7 +67,8 @@ const CollectFeesModal = (props) => {
   let receiptid = receiptidGen();
   console.log(receiptid);
   const user = useSelector((state) => state?.user);
-  const { username, userMail } = user;
+  const { username, userMail,userId } = user;
+  console.log(user)
   let data = {
     name: props.stdname,
     id: props.val?.student_id,
@@ -82,9 +83,11 @@ const CollectFeesModal = (props) => {
     receiptid: receiptid,
     infotype: props.infotype,
     session : props.session,
+    sessionid : props.sessionid,
     activeaccount : props.activeaccount,
-
-    cartegory : props.cartegory
+    staffid : userId?.payload,
+    classid : props.val?.classid,
+    cartegory : props.cartegory,
   };
   const handleSubmit = (e) => {
     if (amount < 1) {
@@ -242,7 +245,7 @@ const CollectFeesModal = (props) => {
                     id=""
                     placeholder=""
                     defaultValue=""
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={(e) => setAmount(e.target.value.trim())}
                   />
                 </div>
 

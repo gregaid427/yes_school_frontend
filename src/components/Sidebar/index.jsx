@@ -664,18 +664,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Session  Records
                             </NavLink>
                           </li> */}
-                          <li>
-                            <NavLink
-                              to="/fees/addfeesgroup"
-                              className={({ isActive }) =>
-                                'group relative flex items-center  gap-2.5 rounded-md px-1 font-small text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Fees Items
-                            </NavLink>
-                          </li>
-
+                          
                           <li>
                             <NavLink
                               to="/fees/Assignfees"

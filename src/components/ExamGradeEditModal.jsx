@@ -330,15 +330,15 @@ const { username, userMail} = user;
                             placeholder=""
                             defaultValue={props?.info?.[0]?.gradetitle}
                             onChange={(e) => {
-                              setName(e.target.value)
+                              setName(e.target.value.trim())
                               // for (let i = 0; i < newArray.length; i++) {
                               //  let val = newArray[i]
-                              //   val['gradetitle'] = e.target.value;
+                              //   val['gradetitle'] = e.target.value.trim();
                               // }
                               // let val = props?.info
                               // console.log(val)
-                           //   obj['title'] = e.target.value;
-                              //setName(e.target.value);
+                           //   obj['title'] = e.target.value.trim();
+                              //setName(e.target.value.trim());
                               // setData(newArray);
                             }}
                           />
@@ -360,12 +360,12 @@ const { username, userMail} = user;
                               placeholder=""
                               defaultValue={props?.info?.[0]?.classworkpercent}
                               onChange={(e) => {
-                                setclassScore(e.target.value)
+                                setclassScore(e.target.value.trim())
 
                                 // for (let i = 0; i < newArray.length; i++) {
-                                //   newArray[i].classworkpercent = e.target.value;
+                                //   newArray[i].classworkpercent = e.target.value.trim();
                                 // }
-                               // obj['class'] = e.target.value;
+                               // obj['class'] = e.target.value.trim();
                                 //setData(newArray);
                               }}
                             />
@@ -385,11 +385,11 @@ const { username, userMail} = user;
                               placeholder=""
                               defaultValue={props?.info?.[0]?.exampercent}
                               onChange={(e) => {
-                                setExamScore(e.target.value)
+                                setExamScore(e.target.value.trim())
                                 // for (let i = 0; i < newArray.length; i++) {
-                                //   newArray[i].exampercent = e.target.value;
+                                //   newArray[i].exampercent = e.target.value.trim();
                                 // }
-                               // obj['exam'] = e.target.value;
+                               // obj['exam'] = e.target.value.trim();
                               }}
                             />
                           </div>
@@ -408,12 +408,12 @@ const { username, userMail} = user;
                               placeholder=""
                               defaultValue={props?.info?.[0]?.otherscorepercent}
                               onChange={(e) => {
-                                setOtherScore(e.target.value)
+                                setOtherScore(e.target.value.trim())
                                 // for (let i = 0; i < newArray.length; i++) {
                                 //   newArray[i].otherscorepercent =
-                                //     e.target.value;
+                                //     e.target.value.trim();
                                 // }
-                               // obj['other'] = e.target.value;
+                               // obj['other'] = e.target.value.trim();
                               }}
                             />
                           </div>
@@ -435,11 +435,11 @@ const { username, userMail} = user;
                               defaultValue={props?.info?.[0]?.notes}
                               onChange={(e) => {
                                 // for (let i = 0; i < newArray.length; i++) {
-                                //   newArray[i].notes = e.target.value;
+                                //   newArray[i].notes = e.target.value.trim();
                                 // }
-                                // setDesc(e.target.value);
+                                // setDesc(e.target.value.trim());
                                 // setData(newArray);
-                                setDesc(e.target.value)
+                                setDesc(e.target.value.trim())
 
                               }}
                             ></textarea>
@@ -497,7 +497,7 @@ const { username, userMail} = user;
                               placeholder=""
                               defaultValue={props?.info?.[index].minscore}
                               onChange={(e) => {
-                                newArray[index].minscore = e.target.value;
+                                newArray[index].minscore = e.target.value.trim();
                                 // setData(newArray);
                                 console.log(newArray);
                               }}
@@ -518,7 +518,7 @@ const { username, userMail} = user;
                               placeholder=""
                               defaultValue={props?.info?.[index].maxscore}
                               onChange={(e) => {
-                                newArray[index].maxscore = e.target.value;
+                                newArray[index].maxscore = e.target.value.trim();
                                 // setData(newArray);
                                 console.log(newArray);
                               }}
@@ -539,7 +539,7 @@ const { username, userMail} = user;
                               placeholder=""
                               defaultValue={props?.info?.[index].grades}
                               onChange={(e) => {
-                                newArray[index].grades = e.target.value;
+                                newArray[index].grades = e.target.value.trim();
                                 //   setData(newArray);
                                 console.log(newArray);
                               }}
@@ -560,7 +560,7 @@ const { username, userMail} = user;
                               placeholder=""
                               defaultValue={props?.info?.[index].scoreremarks}
                               onChange={(e) => {
-                                newArray[index].scoreremarks = e.target.value;
+                                newArray[index].scoreremarks = e.target.value.trim();
                                 // setData(newArray);
                                 console.log(newArray);
                               }}
@@ -583,7 +583,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[1].minscore}
-                            onChange={(e) => setMin2(e.target.value)}
+                            onChange={(e) => setMin2(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -600,7 +600,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[1].maxscore}
-                            onChange={(e) => setMax2(e.target.value)}
+                            onChange={(e) => setMax2(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -617,7 +617,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[1].grades}
-                            onChange={(e) => setGrade2(e.target.value)}
+                            onChange={(e) => setGrade2(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-3/6">
@@ -634,7 +634,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[1].scoreremarks}
-                            onChange={(e) => setRemark2(e.target.value)}
+                            onChange={(e) => setRemark2(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -653,7 +653,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[2].minscore}
-                            onChange={(e) => setMin3(e.target.value)}
+                            onChange={(e) => setMin3(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -670,7 +670,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[2].maxscore}
-                            onChange={(e) => setMax3(e.target.value)}
+                            onChange={(e) => setMax3(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -687,7 +687,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[2].grades}
-                            onChange={(e) => setGrade3(e.target.value)}
+                            onChange={(e) => setGrade3(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-3/6">
@@ -704,7 +704,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[2].scoreremarks}
-                            onChange={(e) => setRemark3(e.target.value)}
+                            onChange={(e) => setRemark3(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -723,7 +723,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[3].minscore}
-                            onChange={(e) => setMin4(e.target.value)}
+                            onChange={(e) => setMin4(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -740,7 +740,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[3].maxscore}
-                            onChange={(e) => setMax4(e.target.value)}
+                            onChange={(e) => setMax4(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -757,7 +757,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[3].grades}
-                            onChange={(e) => setGrade4(e.target.value)}
+                            onChange={(e) => setGrade4(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-3/6">
@@ -774,7 +774,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[3].scoreremarks}
-                            onChange={(e) => setRemark4(e.target.value)}
+                            onChange={(e) => setRemark4(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -793,7 +793,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[4].minscore}
-                            onChange={(e) => setMin5(e.target.value)}
+                            onChange={(e) => setMin5(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -810,7 +810,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[4].maxscore}
-                            onChange={(e) => setMax5(e.target.value)}
+                            onChange={(e) => setMax5(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -827,7 +827,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[4].maxscore}
-                            onChange={(e) => setGrade5(e.target.value)}
+                            onChange={(e) => setGrade5(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-3/6">
@@ -844,7 +844,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[4].scoreremarks}
-                            onChange={(e) => setRemark5(e.target.value)}
+                            onChange={(e) => setRemark5(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -864,7 +864,7 @@ const { username, userMail} = user;
                             placeholder=""
                              defaultValue={props?.info?.[5].minscore}
                             onChange={(e) => {
-                              setMin6(e.target.value);
+                              setMin6(e.target.value.trim());
                               setDisplay7(true);
                             }}
                           />
@@ -883,7 +883,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[5].maxscore}
-                            onChange={(e) => setMax6(e.target.value)}
+                            onChange={(e) => setMax6(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -900,7 +900,7 @@ const { username, userMail} = user;
                             id=""
                             placeholder=""
                              defaultValue={props?.info?.[5].grades}
-                            onChange={(e) => setGrade6(e.target.value)}
+                            onChange={(e) => setGrade6(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-3/6">
@@ -918,7 +918,7 @@ const { username, userMail} = user;
                             placeholder=""
                              defaultValue={props?.info?.[5].scoreremarks}
                             onChange={(e) => {
-                              setRemark6(e.target.value);
+                              setRemark6(e.target.value.trim());
                             }}
                           />
                         </div>
@@ -945,7 +945,7 @@ const { username, userMail} = user;
                               placeholder=""
                                defaultValue={props?.info?.[6].minscore}
                               onChange={(e) => {
-                                setMin7(e.target.value);
+                                setMin7(e.target.value.trim());
                                 setDisplay8(true);
                               }}
                             />
@@ -964,7 +964,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[6].maxscore}
-                              onChange={(e) => setMax7(e.target.value)}
+                              onChange={(e) => setMax7(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/6">
@@ -981,7 +981,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[6].grades}
-                              onChange={(e) => setGrade7(e.target.value)}
+                              onChange={(e) => setGrade7(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-3/6">
@@ -998,7 +998,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[6].scoreremarks}
-                              onChange={(e) => setRemark7(e.target.value)}
+                              onChange={(e) => setRemark7(e.target.value.trim())}
                             />
                           </div>
                         </div>
@@ -1022,7 +1022,7 @@ const { username, userMail} = user;
                               placeholder=""
                                defaultValue={props?.info?.[7].minscore}
                               onChange={(e) => {
-                                setMin8(e.target.value);
+                                setMin8(e.target.value.trim());
                                 setDisplay9(true);
                               }}
                             />
@@ -1041,7 +1041,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[7].maxscore}
-                              onChange={(e) => setMax8(e.target.value)}
+                              onChange={(e) => setMax8(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/6">
@@ -1058,7 +1058,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[7].grades}
-                              onChange={(e) => setGrade8(e.target.value)}
+                              onChange={(e) => setGrade8(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-3/6">
@@ -1075,7 +1075,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[7].scoreremarks}
-                              onChange={(e) => setRemark8(e.target.value)}
+                              onChange={(e) => setRemark8(e.target.value.trim())}
                             />
                           </div>
                         </div>
@@ -1099,7 +1099,7 @@ const { username, userMail} = user;
                               placeholder=""
                                defaultValue={props?.info?.[8].minscore}
                               onChange={(e) => {
-                                setMin9(e.target.value);
+                                setMin9(e.target.value.trim());
 
                                 setDisplay10(true);
                               }}
@@ -1119,7 +1119,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[8].maxscore}
-                              onChange={(e) => setMax9(e.target.value)}
+                              onChange={(e) => setMax9(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/6">
@@ -1136,7 +1136,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[8].grades}
-                              onChange={(e) => setGrade9(e.target.value)}
+                              onChange={(e) => setGrade9(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-3/6">
@@ -1153,7 +1153,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[8].scoreremarks}
-                              onChange={(e) => setRemark9(e.target.value)}
+                              onChange={(e) => setRemark9(e.target.value.trim())}
                             />
                           </div>
                         </div>
@@ -1176,7 +1176,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[9].minscore}
-                              onChange={(e) => setMin10(e.target.value)}
+                              onChange={(e) => setMin10(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/6">
@@ -1193,7 +1193,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[9].maxscore}
-                              onChange={(e) => setMax10(e.target.value)}
+                              onChange={(e) => setMax10(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/6">
@@ -1210,7 +1210,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[9].grades}
-                              onChange={(e) => setGrade10(e.target.value)}
+                              onChange={(e) => setGrade10(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-3/6">
@@ -1227,7 +1227,7 @@ const { username, userMail} = user;
                               id=""
                               placeholder=""
                                defaultValue={props?.info?.[9].scoreremarks}
-                              onChange={(e) => setRemark10(e.target.value)}
+                              onChange={(e) => setRemark10(e.target.value.trim())}
                             />
                           </div>
                         </div>

@@ -434,7 +434,7 @@ const { username, userMail} = user;
                                         var newData = FinalResult.map((el) => {
                                           if (el.student_id == item.student_id)
                                             return Object.assign({}, el, {
-                                              examscore: e.target.value,
+                                              examscore: e.target.value.trim(),
                                             });
                                           return el;
                                         });
@@ -452,7 +452,7 @@ const { username, userMail} = user;
                                         var newData = FinalResult.map((el) => {
                                           if (el.student_id == item.student_id)
                                             return Object.assign({}, el, {
-                                              classworkscore: e.target.value,
+                                              classworkscore: e.target.value.trim(),
                                             });
                                           return el;
                                         });
@@ -469,7 +469,7 @@ const { username, userMail} = user;
                                         var newData = FinalResult.map((el) => {
                                           if (el.student_id == item.student_id)
                                             return Object.assign({}, el, {
-                                              othersscore: e.target.value,
+                                              othersscore: e.target.value.trim(),
                                             });
                                           return el;
                                         });

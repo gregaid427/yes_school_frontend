@@ -97,7 +97,7 @@ const handleSubmit=(e)=>{
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setcartegoryName(e.target.value.toUpperCase())}
+                        onChange={(e) => setcartegoryName(e.target.value.trim().toUpperCase())}
 
                       />
                     </div>
@@ -119,7 +119,7 @@ const handleSubmit=(e)=>{
                           rows={2}
                           placeholder=""
                           defaultValue=""
-                          onChange={(e) => setNote(e.target.value)}
+                          onChange={(e) => setNote(e.target.value.trim())}
 
                         ></textarea>
                       </div>

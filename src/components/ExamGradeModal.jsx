@@ -195,7 +195,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setName(e.target.value)}
+                            onChange={(e) => setName(e.target.value.trim())}
                           />
                         </div>
 
@@ -215,7 +215,7 @@ const ExamGradeModal = (props) => {
                               placeholder=""
                               defaultValue={0}
                               onChange={(e) =>
-                                setclassScore(parseFloat(e.target.value))
+                                setclassScore(parseFloat(e.target.value.trim()))
                               }
                             />
                           </div>
@@ -234,7 +234,7 @@ const ExamGradeModal = (props) => {
                               placeholder=""
                               defaultValue={0}
                               onChange={(e) =>
-                                setExamScore(parseFloat(e.target.value))
+                                setExamScore(parseFloat(e.target.value.trim()))
                               }
                             />
                           </div>
@@ -253,7 +253,7 @@ const ExamGradeModal = (props) => {
                               placeholder=""
                               defaultValue={0}
                               onChange={(e) =>
-                                setOtherScore(parseFloat(e.target.value))
+                                setOtherScore(parseFloat(e.target.value.trim()))
                               }
                             />
                           </div>
@@ -273,7 +273,7 @@ const ExamGradeModal = (props) => {
                               id="bio"
                               rows={2}
                               placeholder=""
-                              onChange={(e) => setDesc(e.target.value)}
+                              onChange={(e) => setDesc(e.target.value.trim())}
                             ></textarea>
                           </div>
                         </div>
@@ -327,7 +327,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setMin1(e.target.value)}
+                            onChange={(e) => setMin1(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -344,7 +344,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setMax1(e.target.value)}
+                            onChange={(e) => setMax1(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -361,7 +361,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setGrade1(e.target.value)}
+                            onChange={(e) => setGrade1(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-3/6">
@@ -378,7 +378,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setRemark1(e.target.value)}
+                            onChange={(e) => setRemark1(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -397,7 +397,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setMin2(e.target.value)}
+                            onChange={(e) => setMin2(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -414,7 +414,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setMax2(e.target.value)}
+                            onChange={(e) => setMax2(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -431,7 +431,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setGrade2(e.target.value)}
+                            onChange={(e) => setGrade2(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-3/6">
@@ -448,7 +448,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setRemark2(e.target.value)}
+                            onChange={(e) => setRemark2(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -467,7 +467,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setMin3(e.target.value)}
+                            onChange={(e) => setMin3(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -484,7 +484,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setMax3(e.target.value)}
+                            onChange={(e) => setMax3(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -501,7 +501,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setGrade3(e.target.value)}
+                            onChange={(e) => setGrade3(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-3/6">
@@ -518,7 +518,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setRemark3(e.target.value)}
+                            onChange={(e) => setRemark3(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -537,7 +537,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setMin4(e.target.value)}
+                            onChange={(e) => setMin4(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -554,7 +554,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setMax4(e.target.value)}
+                            onChange={(e) => setMax4(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -571,7 +571,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setGrade4(e.target.value)}
+                            onChange={(e) => setGrade4(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-3/6">
@@ -588,7 +588,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setRemark4(e.target.value)}
+                            onChange={(e) => setRemark4(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -607,7 +607,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setMin5(e.target.value)}
+                            onChange={(e) => setMin5(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -624,7 +624,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setMax5(e.target.value)}
+                            onChange={(e) => setMax5(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -641,7 +641,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setGrade5(e.target.value)}
+                            onChange={(e) => setGrade5(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-3/6">
@@ -658,7 +658,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setRemark5(e.target.value)}
+                            onChange={(e) => setRemark5(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -678,7 +678,7 @@ const ExamGradeModal = (props) => {
                             placeholder=""
                             defaultValue=""
                             onChange={(e) => {
-                              setMin6(e.target.value);
+                              setMin6(e.target.value.trim());
                               setDisplay7(true);
                             }}
                           />
@@ -697,7 +697,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setMax6(e.target.value)}
+                            onChange={(e) => setMax6(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-1/6">
@@ -714,7 +714,7 @@ const ExamGradeModal = (props) => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setGrade6(e.target.value)}
+                            onChange={(e) => setGrade6(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full mb-2 sm:w-3/6">
@@ -732,7 +732,7 @@ const ExamGradeModal = (props) => {
                             placeholder=""
                             defaultValue=""
                             onChange={(e) => {
-                              setRemark6(e.target.value);
+                              setRemark6(e.target.value.trim());
                             }}
                           />
                         </div>
@@ -759,7 +759,7 @@ const ExamGradeModal = (props) => {
                               placeholder=""
                               defaultValue=""
                               onChange={(e) => {
-                                setMin7(e.target.value);
+                                setMin7(e.target.value.trim());
                                 setDisplay8(true);
                               }}
                             />
@@ -778,7 +778,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setMax7(e.target.value)}
+                              onChange={(e) => setMax7(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/6">
@@ -795,7 +795,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setGrade7(e.target.value)}
+                              onChange={(e) => setGrade7(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-3/6">
@@ -812,7 +812,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setRemark7(e.target.value)}
+                              onChange={(e) => setRemark7(e.target.value.trim())}
                             />
                           </div>
                         </div>
@@ -836,7 +836,7 @@ const ExamGradeModal = (props) => {
                               placeholder=""
                               defaultValue=""
                               onChange={(e) => {
-                                setMin8(e.target.value);
+                                setMin8(e.target.value.trim());
                                 setDisplay9(true);
                               }}
                             />
@@ -855,7 +855,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setMax8(e.target.value)}
+                              onChange={(e) => setMax8(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/6">
@@ -872,7 +872,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setGrade8(e.target.value)}
+                              onChange={(e) => setGrade8(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-3/6">
@@ -889,7 +889,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setRemark8(e.target.value)}
+                              onChange={(e) => setRemark8(e.target.value.trim())}
                             />
                           </div>
                         </div>
@@ -913,7 +913,7 @@ const ExamGradeModal = (props) => {
                               placeholder=""
                               defaultValue=""
                               onChange={(e) => {
-                                setMin9(e.target.value);
+                                setMin9(e.target.value.trim());
 
                                 setDisplay10(true);
                               }}
@@ -933,7 +933,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setMax9(e.target.value)}
+                              onChange={(e) => setMax9(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/6">
@@ -950,7 +950,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setGrade9(e.target.value)}
+                              onChange={(e) => setGrade9(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-3/6">
@@ -967,7 +967,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setRemark9(e.target.value)}
+                              onChange={(e) => setRemark9(e.target.value.trim())}
                             />
                           </div>
                         </div>
@@ -990,7 +990,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setMin10(e.target.value)}
+                              onChange={(e) => setMin10(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/6">
@@ -1007,7 +1007,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setMax10(e.target.value)}
+                              onChange={(e) => setMax10(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-1/6">
@@ -1024,7 +1024,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setGrade10(e.target.value)}
+                              onChange={(e) => setGrade10(e.target.value.trim())}
                             />
                           </div>
                           <div className="w-full mb-2 sm:w-3/6">
@@ -1041,7 +1041,7 @@ const ExamGradeModal = (props) => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setRemark10(e.target.value)}
+                              onChange={(e) => setRemark10(e.target.value.trim())}
                             />
                           </div>
                         </div>
@@ -1177,7 +1177,7 @@ const ExamGradeModal = (props) => {
                             id="bio"
                             rows={2}
                             placeholder=""
-                            onChange={(e) => setDesc(e.target.value)}
+                            onChange={(e) => setDesc(e.target.value.trim())}
                           ></textarea>
                         </div>
                       </div>
@@ -1248,7 +1248,7 @@ const ExamGradeModal = (props) => {
                                   placeholder=""
                                   defaultValue="0"
                                   onChange={(e) => {
-                                    obj[item.name] = parseInt(e.target.value);
+                                    obj[item.name] = parseInt(e.target.value.trim());
                                   }}
                                 />
                               </div>

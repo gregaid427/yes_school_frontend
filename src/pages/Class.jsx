@@ -21,7 +21,6 @@ import { mkConfig, generateCsv, download } from 'export-to-csv';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-
 import toast from 'react-hot-toast';
 import {
   CreatesClassAction,
@@ -38,10 +37,15 @@ import SectionModal from '../components/SectionModal';
 import { Dialog } from 'primereact/dialog';
 import DeleteModal from '../components/DeleteModal';
 import Loader from '../common/Loader';
+import SectionClassModal from '../components/SectionClassModal';
+import TableBtn from '../components/Svgs/TableBtn';
+import ClassListModal from '../components/ClassList';
 
 const Class = () => {
   const [pagesval, setpagesval] = useState(30);
   const [change, setChange] = useState();
+  const [info, setInfo] = useState(null);
+  const [vall, setval] = useState(null);
 
   const [loader, setLoader] = useState(true);
 
@@ -49,12 +53,16 @@ const Class = () => {
   const [classInstructor, setClassInstructor] = useState('');
 
   const [sections, setsections] = useState([]);
+  const [oldsession, setoldsession] = useState();
 
   const [nodes, setdata] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
+  const [visible2, setVisible2] = useState(false);
+  const [visible3, setVisible3] = useState(false);
   const clad = useSelector((state) => state?.classes);
 
   const {
@@ -65,23 +73,24 @@ const Class = () => {
     fetchAllClass,
     CreateClasses,
     CreateClassesloading,
-    ClassWithSection
+    ClassWithSection,
+    resetdeleteclass,
   } = clad;
 
   useEffect(() => {
-     dispatch(fetchAllClassAction());
-   // dispatch(fetchAllClassNoAction());
+    dispatch(fetchAllClassAction());
+    // dispatch(fetchAllClassNoAction());
   }, []);
   useEffect(() => {
     if (fetchSection?.success == 1) {
       let data = fetchSection?.data;
       setsections(data);
+      setInfo(data);
+      setoldsession(data);
     }
-  }, [change,fetchAllClassloading, CreateClassesloading]);
-
+  }, [change, fetchAllClassloading, CreateClassesloading]);
 
   useEffect(() => {
-   
     if (CreateClasses?.success == 0) {
       toast.error('Error - Class Name Already Exists');
       dispatch(resetcreateClass());
@@ -100,9 +109,11 @@ const Class = () => {
     if (fetchAllClass?.success == 1) {
       let data = fetchAllClass?.data;
       setdata(data);
-      setVisible1(false)
+      setInfo(data);
+      setVisible1(false);
+      setoldsession(data);
     }
-  }, [fetchAllClass ]);
+  }, [fetchAllClass, resetdeleteclass]);
 
   let data = { nodes };
 
@@ -127,17 +138,17 @@ const Class = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  60%  40%;
+      --data-table-library_grid-template-columns:  50%  50%;
     `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -172,35 +183,44 @@ const Class = () => {
       state: { action: 1, value: value },
     });
   };
-  const handleEditbtn = (value) => {
-  
-
-  
-  };
+  const handleEditbtn = (value) => {};
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
-   
     if (ClassWithSection?.success == 1) {
-      navigate('/academics/class/editclass', {
-        state: { action: 2, value: ClassWithSection?.data },
-      });
-      dispatch(resetgetclass())
+      setoldsession(ClassWithSection?.data);
+
+      if (vall == 1) {
+        setVisible2(true);
+        dispatch(resetgetclass());
+      }
+      if (vall == 2) {
+        navigate('/academics/class/editclass', {
+          state: { action: 2, value: ClassWithSection?.data },
+        });
+        dispatch(resetgetclass());
+      }
+      
+      if (vall == 3) {
+        setVisible3(true);
+        dispatch(resetgetclass());
+      }
     }
     //   // setTimeout(() => toast.success('New Student Added Successfully'), 900);
     //  if(singleStudent?.data == undefined )
     //  navigate("/student/info")
   }, [ClassWithSection]);
-
+  console.log(info);
 
   const [del, setDel] = useState();
+  const [name, setname] = useState('');
+
   const handledeletbtn = () => {
     dispatch(deleteSingleClassAction(del));
     // dispatch(fetchAllClassAction());
   };
-  const [visible, setVisible] = useState(false);
-  const [visible1, setVisible1] = useState(false);
+
   const [position, setPosition] = useState('center');
   const show = (position) => {
     setPosition(position);
@@ -209,35 +229,41 @@ const Class = () => {
   const [selectedsection, setselectedsection] = useState([]);
   const [selectedsection1, setselectedsection1] = useState([]);
 
-
   const user = useSelector((state) => state?.user);
-  const { username, userMail} = user;
+  const { username, userMail } = user;
 
   const classdata = {
     title: classTitle.toUpperCase(),
     createdBy: username?.payload,
     instructor: classInstructor,
-    sections: selectedsection
+    sections: selectedsection,
   };
   const handlecreateClass = () => {
     if (classTitle == '') {
       toast.error('Error - Class Name Cannot Be Empty');
     } else {
-      console.log(classdata)
+      console.log(classdata);
 
       dispatch(CreatesClassAction(classdata));
     }
   };
-  console.log(selectedsection)
+  console.log(selectedsection);
 
   function updatesection(val) {
     if (selectedsection1.includes(val)) {
-      setselectedsection1(selectedsection1.filter((element) => element.sectionName !== val.sectionName));
-      setselectedsection(selectedsection.filter((element) => element.sectionName !== val.sectionName));
+      setselectedsection1(
+        selectedsection1.filter(
+          (element) => element.sectionName !== val.sectionName,
+        ),
+      );
+      setselectedsection(
+        selectedsection.filter(
+          (element) => element.sectionName !== val.sectionName,
+        ),
+      );
     } else {
       setselectedsection1([val, ...selectedsection1]);
       setselectedsection([val, ...selectedsection]);
-
     }
   }
 
@@ -263,7 +289,6 @@ const Class = () => {
     <Loader />
   ) : (
     <DefaultLayout>
-      
       <Dialog
         visible={visible}
         position={'top'}
@@ -273,7 +298,11 @@ const Class = () => {
           setVisible(false);
         }}
       >
-        <SectionModal close={setVisible} changeval={change} change={setChange} />
+        <SectionModal
+          close={setVisible}
+          changeval={change}
+          change={setChange}
+        />
       </Dialog>
       <Dialog
         visible={visible1}
@@ -288,113 +317,146 @@ const Class = () => {
       >
         <DeleteModal delete={handledeletbtn} close={setVisible1} />
       </Dialog>
+      <Dialog
+        visible={visible2}
+        position={'top'}
+        style={{ height: 'auto', width: '30%' }}
+        onHide={() => {
+          if (!visible2) return;
+          setVisible2(false);
+        }}
+      >
+        <SectionClassModal
+          close={setVisible2}
+          changeval={change}
+          data={info}
+          change={setChange}
+          sett={setval}
+          old={oldsession}
+        />
+      </Dialog>
+      <Dialog
+        visible={visible3}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible3) return;
+          setVisible2(false);
+        }}
+      >
+        <ClassListModal
+          close={setVisible3}
+          changeval={change}
+          name={name}
+          change={setChange}
+          sett={setval}
+          old={oldsession}
+          del={del}
+        />
+      </Dialog>
       <div className={'flex row gap-3  w-full'}>
         <div className="grid w-4/12  gap-8">
-          
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Add New Class
-                </h3>
-              </div>
-              <div className="py-3 px-3">
-                <form action="#">
-                  <div className="w-full mb-2 sm:w-2/2">
-                    <label
-                      className="mb-1 block text-sm font-small text-black dark:text-white"
-                      htmlFor=""
-                    >
-                      Class Name
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Add New Class
+              </h3>
+            </div>
+            <div className="py-3 px-3">
+              <form action="#">
+                <div className="w-full mb-2 sm:w-2/2">
+                  <label
+                    className="mb-1 block text-sm font-small text-black dark:text-white"
+                    htmlFor=""
+                  >
+                    Class Name
+                  </label>
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    type="text"
+                    name=""
+                    id=""
+                    placeholder=""
+                    defaultValue=""
+                    onChange={(e) => setClassTitle(e.target.value.trim())}
+                  />
+                </div>
+
+                <div className="w-full sm:w-2/2">
+                  <label
+                    className="mb-1 block text-sm font-medium text-black dark:text-white"
+                    htmlFor="phoneNumber"
+                  >
+                    Class Instructor{' '}
+                    <span className="small-font">(optional)</span>
+                  </label>
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    type="text"
+                    name=""
+                    id=""
+                    placeholder=""
+                    defaultValue=""
+                    onChange={(e) => setClassInstructor(e.target.value.trim())}
+                  />
+                </div>
+
+                <div className="pb-2 mt-2">
+                  <div className="flex my-5 justify-between align-middle">
+                    <label className=" block text-sm py-1 align-middle font-medium text-black dark:text-white">
+                      Class Sections
                     </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder=""
-                      defaultValue=""
-                      onChange={(e) => setClassTitle(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="w-full sm:w-2/2">
-                    <label
-                      className="mb-1 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="phoneNumber"
-                    >
-                      Class Instructor{' '}
-                      <span className="small-font">(optional)</span>
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder=""
-                      defaultValue=""
-                      onChange={(e) => setClassInstructor(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="pb-2 mt-2">
-                    <div className="flex my-5 justify-between align-middle">
-                      <label className=" block text-sm py-1 align-middle font-medium text-black dark:text-white">
-                        Class Sections
-                      </label>
-                      <button
-                        className="flex w-6/12 justify-center rounded-sm  bg-primary py-1  px-1 font-[6px] text-muted hover:bg-opacity-90"
-                        type=""
-                        onClick={(e) => {
-                          e.preventDefault()
-                          // handlecreateClass();
-                          show('top-right');
-                        }}
-                      >
-                        Create New Section
-                      </button>
-                    </div>
-                    {fetchSection?.data?.map((item) => (
-                      <div key={item.id} className="mb- flex gap-2   sm:flex-row">
-                         <ClassCheckbox
-                          updatesection={() => updatesection(item)}
-                          item={item}
-                        />
-                        <div className=" flex  sm:w-full">
-                          <label
-                            className="mb-1 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="checkboxLabelOne"
-                          >
-                            {item.sectionName}{' '}
-                          </label>
-                        </div>
-
-                       
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex justify-end mt-53gap-4.5">
                     <button
-                      className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      className="flex w-5/12 justify-center rounded-2xl  bg-primary py-1   font-[6px]  hover:bg-opacity-90"
                       type=""
                       onClick={(e) => {
                         e.preventDefault();
-                        handlecreateClass();
+                        // handlecreateClass();
+                        show('top-right');
                       }}
                     >
-                      Save
-                    </button>
-                    <button
-                      className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="reset"
-                    >
-                      Reset
+                      Add Section
                     </button>
                   </div>
-                </form>
-              </div>
+                  {fetchSection?.data?.map((item) => (
+                    <div key={item.id} className="mb- flex gap-2   sm:flex-row">
+                      <ClassCheckbox
+                        updatesection={() => updatesection(item)}
+                        item={item}
+                      />
+                      <div className=" flex  sm:w-full">
+                        <label
+                          className="mb-1 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="checkboxLabelOne"
+                        >
+                          {item.sectionName}{' '}
+                        </label>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-end mt-53gap-4.5">
+                  <button
+                    className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                    type=""
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlecreateClass();
+                    }}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    type="reset"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </form>
             </div>
-          
+          </div>
         </div>
         <div className="w-8/12  flex-col">
           <div
@@ -421,7 +483,7 @@ const Class = () => {
                   <div className="sm:w-2/5 ">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-             // style={{ color: '#A9B5B3' }}
+                      // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadPdf();
                       }}
@@ -433,7 +495,7 @@ const Class = () => {
                   <div className="w-full sm:w-2/5">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-             // style={{ color: '#A9B5B3' }}
+                      // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadCSV();
                       }}
@@ -459,7 +521,7 @@ const Class = () => {
                     type="search"
                     placeholder={'type here'}
                     onChange={(e) => {
-                      setSearch(e.target.value);
+                      setSearch(e.target.value.trim());
                     }}
                   />
                   {/* <button onClick={() => toPDF()}>Download PDF</button> */}
@@ -487,48 +549,64 @@ const Class = () => {
                           <HeaderCell>Class</HeaderCell>
                           {/* <HeaderCell>Section</HeaderCell> */}
 
-
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
                       </Header>
 
-  
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList?.map((item) => (
-                          <Row key={item.id}
+                          <Row
+                            key={item.id}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          
                           >
                             <Cell className="  ">{item.title}</Cell>
 
                             {/* <Cell className="  ">{item.section ? item.section : '-'}</Cell> */}
 
-
                             <Cell>
                               <div className="gap-2 flex">
-                                <ViewSVG
-                                  clickFunction={() => handleViewbtn(item)}
-                                />
                                 <EditSVG
-                                  clickFunction={() =>{  
-                                   //')
-                                    dispatch(
-                                    FetchClassWithSectionAction({
-                                     
-                                      title: item.title,
-                                    }),
-                                  )}}
-                                />
+                                  clickFunction={() => {
+                                    //')
+                                    setval(2);
 
+                                    dispatch(
+                                      FetchClassWithSectionAction({
+                                        title: item.title,
+                                      }),
+                                    );
+                                  }}
+                                />
+                                <TableBtn
+                                  clickFunction={() => {
+                                    setInfo(item);
+                                    setval(1);
+
+                                    dispatch(
+                                      FetchClassWithSectionAction({
+                                        title: item.title,
+                                      }),
+                                    );
+                                  }}
+                                  text={'Add Section'}
+                                  color={'bg-primary'}
+                                />
                                 <DeleteSVG
-                                  clickFunction={() =>{
-                                    setDel(item.classId)
-                                    setVisible1(true)
+                                  clickFunction={() => {
+                                    setInfo(3);
+                                    setval(3);
+
+                                    setname(item.title)
+                                    dispatch(
+                                      FetchClassWithSectionAction({
+                                        title: item.title,
+                                      }),
+                                    );
+                                    setDel(item.classId);
+                                    //setVisible3(true);
                                     //handledeletbtn(item.classId)
-                                  }
-                                   
-                                  }
+                                  }}
                                 />
                               </div>
                             </Cell>
@@ -599,7 +677,6 @@ const Class = () => {
                         </HeaderRow>
                       </Header>
 
-  
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList?.map((item) => (
                           <Row

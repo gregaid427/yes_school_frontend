@@ -90,7 +90,7 @@ const { username, userMail} = user;
                     id=""
                     placeholder=""
                     defaultValue=""
-                    onChange={(e) => setSubjectName(e.target.value)}
+                    onChange={(e) => setSubjectName(e.target.value.trim())}
                   />
                 </div>
 

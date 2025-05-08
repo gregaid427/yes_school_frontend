@@ -142,7 +142,7 @@ const EditInventoryitem = () => {
                       id=""
                       placeholder=""
                       defaultValue={info.itemName}
-                      onChange={(e) => setItem(e.target.value)}
+                      onChange={(e) => setItem(e.target.value.trim())}
                     />
                   </div>
 
@@ -188,7 +188,7 @@ const EditInventoryitem = () => {
                       id=""
                       placeholder=""
                       defaultValue={info.quantity}
-                      onChange={(e) => setQuantity(e.target.value)}
+                      onChange={(e) => setQuantity(e.target.value.trim())}
                     />
                   </div>
                   <div className="w-full mb-2 sm:w-2/2">
@@ -205,7 +205,7 @@ const EditInventoryitem = () => {
                       id=""
                       placeholder=""
                       defaultValue={info.supplier}
-                      onChange={(e) => setSupName(e.target.value)}
+                      onChange={(e) => setSupName(e.target.value.trim())}
                     />
                   </div>
                   <div className="w-full flex gap-1">
@@ -223,7 +223,7 @@ const EditInventoryitem = () => {
                         id=""
                         placeholder=""
                         defaultValue={info.supplierContact1}
-                        onChange={(e) => setSupContact1(e.target.value)}
+                        onChange={(e) => setSupContact1(e.target.value.trim())}
                       />
                     </div>
                     <div className="w-full mb-2 sm:w-1/2">
@@ -240,7 +240,7 @@ const EditInventoryitem = () => {
                         id=""
                         placeholder=""
                         defaultValue={info.supplierContact2}
-                        onChange={(e) => setSupContact2(e.target.value)}
+                        onChange={(e) => setSupContact2(e.target.value.trim())}
                       />
                     </div>
                   </div>
@@ -258,7 +258,7 @@ const EditInventoryitem = () => {
                         id="bio"
                         rows={2}
                         defaultValue={info.SupplierInfo}
-                        onChange={(e) => setSupInfo(e.target.value)}
+                        onChange={(e) => setSupInfo(e.target.value.trim())}
                       ></textarea>
                     </div>
                   </div>
@@ -277,7 +277,7 @@ const EditInventoryitem = () => {
                         id="bio"
                         rows={2}
                         defaultValue={info.description}
-                        onChange={(e) => setDesc(e.target.value)}
+                        onChange={(e) => setDesc(e.target.value.trim())}
                       ></textarea>
                     </div>
                   </div>

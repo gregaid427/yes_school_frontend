@@ -106,7 +106,7 @@ const EditInventoryCartegory = (props) => {
                       id=""
                       placeholder=""
                       defaultValue={props.info.cartegoryname}
-                      onChange={(e) => setcartegoryName(e.target.value)}
+                      onChange={(e) => setcartegoryName(e.target.value.trim())}
                     />
                   </div>
                 </div>
@@ -126,7 +126,7 @@ const EditInventoryCartegory = (props) => {
                       rows={2}
                       placeholder=""
                       defaultValue={props.info.notes}
-                      onChange={(e) => setNotes(e.target.value)}
+                      onChange={(e) => setNotes(e.target.value.trim())}
                     ></textarea>
                   </div>
                 </div>

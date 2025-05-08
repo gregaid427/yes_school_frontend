@@ -29,6 +29,7 @@ import {
   fetchSingleStudent,
   fetchStudentsClassAccountAction,
   fetchStudentsClassAction,
+  resetFetchCustom,
   updatefechcustom,
 } from '../../redux/slices/studentSlice';
 import Loader from '../../common/Loader';
@@ -135,6 +136,7 @@ const StudentAccount = () => {
      // setdata(data);
       console.log(fetchcustom)
       setchanger(data)
+      dispatch(resetFetchCustom())
 
     }
 

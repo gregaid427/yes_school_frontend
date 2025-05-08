@@ -162,7 +162,7 @@ const RemarksExamModal = (props) => {
                             rows={5}
                             placeholder=""
                             // defaultValue={data?.gAddress}
-                            onChange={(e) => setDetail(e.target.value)}
+                            onChange={(e) => setDetail(e.target.value.trim())}
                           ></textarea>
                         </div>
 

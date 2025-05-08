@@ -250,7 +250,7 @@ const ManageHistoryModal = (props) => {
                         id=""
                         placeholder=""
                         onChange={(e) => {
-                          setAmount(e.target.value);
+                          setAmount(e.target.value.trim());
                         }}
                       />
                     </div>

@@ -418,7 +418,7 @@ const MarkAttendance = () => {
                   format="DD-MM-YYYY"
                   placeholder=""
                   defaultValue={today}
-                  onChange={(e) => setDate(e.target.value)}
+                  onChange={(e) => setDate(e.target.value.trim())}
                 />
                 {/* <button onClick={() => toPDF()}>Download PDF</button> */}
               </div>

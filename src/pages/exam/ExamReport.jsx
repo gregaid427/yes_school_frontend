@@ -259,7 +259,7 @@ const ExamReport = () => {
                   type="search"
                   placeholder={'type here'}
                   onChange={(e) => {
-                    setSearch(e.target.value);
+                    setSearch(e.target.value.trim());
                   }}
                 />
                 {/* <button onClick={() => toPDF()}>Download PDF</button> */}

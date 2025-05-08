@@ -29,7 +29,7 @@ const ClassCheckbox = (props) => {
             }`}
           >
             <span
-              className={`h-2.5 w-2.5 rounded-sm ${isChecked1 && 'bg-primary'}`}
+              className={`h-2.5 w-2.5 mt-1 rounded-sm ${isChecked1 && 'bg-primary'}`}
             ></span>
           </div>
         </div>

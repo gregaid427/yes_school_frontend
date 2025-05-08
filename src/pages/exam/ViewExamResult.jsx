@@ -161,15 +161,15 @@ const ViewExamResult = (props) => {
   const [search, setSearch] = useState('');
   const [searchval, setSearchval] = useState('First Name');
 
-  data = {
-    nodes: data.nodes.filter((item) =>
-      searchval === 'First Name'
-        ? item.firstName.toLowerCase().includes(search.toLowerCase())
-        : searchval == 'Last Name'
-          ? item.lastName.toLowerCase().includes(search.toLowerCase())
-          : item.student_id.toLowerCase().includes(search.toLowerCase()),
-    ),
-  };
+  // data = {
+  //   nodes: data.nodes.filter((item) =>
+  //     searchval === 'First Name'
+  //       ? item.firstName.toLowerCase().includes(search.toLowerCase())
+  //       : searchval == 'Last Name'
+  //         ? item.lastName.toLowerCase().includes(search.toLowerCase())
+  //         : item.student_id.toLowerCase().includes(search.toLowerCase()),
+  //   ),
+  // };
 
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();

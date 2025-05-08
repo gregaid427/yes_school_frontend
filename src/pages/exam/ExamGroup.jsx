@@ -255,7 +255,7 @@ const ExamGroup = () => {
                       id=""
                       placeholder="END OF TERM EXamination"
                       defaultValue=""
-                      onChange={(e) => setname(e.target.value)}
+                      onChange={(e) => setname(e.target.value.trim())}
                     />
                   </div>
                   {/* <div className="w-full mb-4 sm:w-2/2">
@@ -364,7 +364,7 @@ const ExamGroup = () => {
                     type="search"
                     placeholder={'type here'}
                     onChange={(e) => {
-                      setSearch(e.target.value);
+                      setSearch(e.target.value.trim());
                     }}
                   />
                   {/* <button onClick={() => toPDF()}>Download PDF</button> */}

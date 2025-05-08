@@ -534,7 +534,7 @@ const AssignFeesSettings = () => {
                   >
                     <div className="w-full overflow-x-auto flex justify-between">
                       <div className="  flex justify-between  ">
-                        <h3 className="font-bold text-sm text-black py-1 dark:text-white">
+                        <h3 className="font-bold text-lg text-black py-1 dark:text-white">
                           {item[0][0]?.class}
                         </h3>
                       </div>
@@ -551,7 +551,7 @@ const AssignFeesSettings = () => {
 
                           }}
                         >
-                          Assign Fee Cartegory  
+                          Assign Fee for  {item[0][0]?.class}
                         </button>
                         <button
                           className="flex  float-end rounded bg-danger py-1 px-2 font-medium text-sm  text-gray hover:bg-opacity-90"
@@ -585,7 +585,7 @@ const AssignFeesSettings = () => {
                                   }
                                 >
                                   <div className="flex justify-between">
-                                    <label className=" flex   text-sm font-bold text-ash dark:text-white">
+                                    <label className=" flex   text-sm  text-ash dark:text-white">
                                       <div
                                         className={`mr-1 flex h-4 w-4 items-center justify-center rounded border ${
                                           true &&
@@ -619,8 +619,8 @@ const AssignFeesSettings = () => {
                                       subitem?.map((item, index) => (
                                         <div className="flex" key={index}>
                                           <div className="flex w-full  justify-between mr-2">
-                                            <label className=" flex gap-1  text-sm font-small text-ash dark:text-white">
-                                              - {item?.feename}
+                                            <label className=" flex gap-1  text-xs font-small text-ash dark:text-white">
+                                            ⬜️ {item?.feename}
                                             </label>
                                             <label className=" flex gap-1  text-sm font-small text-ash dark:text-white">
                                               {item?.amount}

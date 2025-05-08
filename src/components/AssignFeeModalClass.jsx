@@ -77,7 +77,7 @@ console.log(props)
                                   id=""
                                   placeholder=""
                                   defaultValue={props.data?.amount}
-                                  onChange={(e)=>setamount(e.target.value)}
+                                  onChange={(e)=>setamount(e.target.value.trim())}
                                  
                                 />
                               </div>

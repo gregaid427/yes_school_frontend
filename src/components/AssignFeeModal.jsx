@@ -407,7 +407,7 @@ const AssignFeeModal = (props) => {
                             id="bio"
                             rows={2}
                             placeholder=""
-                            onChange={(e) => setDesc(e.target.value)}
+                            onChange={(e) => setDesc(e.target.value.trim())}
                           ></textarea>
                         </div>
                       </div>
@@ -478,7 +478,7 @@ const AssignFeeModal = (props) => {
                                   placeholder=""
                                   defaultValue="0"
                                   onChange={(e) => {
-                                    obj[item.name] = parseInt(e.target.value);
+                                    obj[item.name] = parseInt(e.target.value.trim());
                                   }}
                                 />
                               </div>

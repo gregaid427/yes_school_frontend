@@ -41,6 +41,37 @@ export const CreatesClassAction = createAsyncThunk(
     }
   },
 );
+export const AddClassSection = createAsyncThunk(
+  'new/addsectionclass',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/class/addClassSection`,
+        payload,axiosFile
+      );
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const CreatesBulkClassAction = createAsyncThunk(
   'new/NewBulkClass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -642,7 +673,23 @@ const ClassSlices = createSlice({
       state.ClassWithSectionerror = action.payload;
       state.ClassWithSection = undefined;
     });
-
+    
+    builder.addCase(AddClassSection.pending, (state, action) => {
+      state.CreateClassesloading = true;
+      state.CreateClasses = false;
+      state.fetchAllClass = null;
+    });
+    builder.addCase(AddClassSection.fulfilled, (state, action) => {
+      state.CreateClasses = action?.payload;
+      state.fetchAllClass = action?.payload;
+      state.CreateClassesloading = false;
+      state.error = undefined;
+    });
+    builder.addCase(AddClassSection.rejected, (state, action) => {
+      state.CreateClassesloading = false;
+      state.error = action.payload;
+      state.CreateClasses = undefined;
+    });
     builder.addCase(CreatesClassAction.pending, (state, action) => {
       state.CreateClassesloading = true;
       state.CreateClasses = false;
@@ -756,6 +803,7 @@ const ClassSlices = createSlice({
     builder.addCase(deleteSectionByClass.pending, (state, action) => {
       state.deletesectionbyclassloading = true;
       state.deletesectionbyclass = false;
+      
     });
     builder.addCase(deleteSectionByClass.fulfilled, (state, action) => {
       state.deletesectionbyclass = action?.payload;

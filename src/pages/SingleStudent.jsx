@@ -209,7 +209,7 @@ const SingleStudent = () => {
                         id=""
                         placeholder=""
                         defaultValue={data[0]?.firstName}
-                        onChange={(e) => setStudentfirstName(e.target.value)}
+                        onChange={(e) => setStudentfirstName(e.target.value.trim())}
                       />
                     </div>
                     <div className="w-full sm:w-2/2">
@@ -226,7 +226,7 @@ const SingleStudent = () => {
                         id=""
                         placeholder=""
                         defaultValue={data[0]?.lastName}
-                        onChange={(e) => setStudentlastName(e.target.value)}
+                        onChange={(e) => setStudentlastName(e.target.value.trim())}
                       />
                     </div>
                   </div>
@@ -246,7 +246,7 @@ const SingleStudent = () => {
                         id=""
                         placeholder=""
                         defaultValue={data[0]?.otherName}
-                        onChange={(e) => setStudentotherName(e.target.value)}
+                        onChange={(e) => setStudentotherName(e.target.value.trim())}
                       />
                     </div>
                     <div className="w-full sm:w-2/4 flex gap-5">
@@ -302,8 +302,8 @@ const SingleStudent = () => {
                         defaultValue={data[0]?.dateofbirth}
                         type="date"
                         onChange={(e) => {
-                          setdateofbirth(e.target.value);
-                          console.log(e.target.value);
+                          setdateofbirth(e.target.value.trim());
+                          console.log(e.target.value.trim());
                         }}
                       />
                     </div>
@@ -490,7 +490,7 @@ const SingleStudent = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.g1fname}
-                            onChange={(e) => setgfName1(e.target.value)}
+                            onChange={(e) => setgfName1(e.target.value.trim())}
                           />
                         </div>
 
@@ -508,7 +508,7 @@ const SingleStudent = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.g1lastname}
-                            onChange={(e) => setglName1(e.target.value)}
+                            onChange={(e) => setglName1(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -528,7 +528,7 @@ const SingleStudent = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.g1email}
-                            onChange={(e) => setemail1(e.target.value)}
+                            onChange={(e) => setemail1(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full sm:w-2/4 flex gap-1">
@@ -563,7 +563,7 @@ const SingleStudent = () => {
                               id=""
                               placeholder=""
                               defaultValue={data[0]?.g1relation}
-                              onChange={(e) => setRelation1(e.target.value)}
+                              onChange={(e) => setRelation1(e.target.value.trim())}
                             />
                           </div>
                         </div>
@@ -585,7 +585,7 @@ const SingleStudent = () => {
                             placeholder=""
                             defaultValue={data[0]?.g1address}
                             // defaultValue={data?.gAddress}
-                            onChange={(e) => setgAddress1(e.target.value)}
+                            onChange={(e) => setgAddress1(e.target.value.trim())}
                           ></textarea>
                         </div>
                       </div>
@@ -611,7 +611,7 @@ const SingleStudent = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.g2fname}
-                            onChange={(e) => setgfName1(e.target.value)}
+                            onChange={(e) => setgfName1(e.target.value.trim())}
                           />
                         </div>
 
@@ -629,7 +629,7 @@ const SingleStudent = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.g2lastname}
-                            onChange={(e) => setglName1(e.target.value)}
+                            onChange={(e) => setglName1(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -649,7 +649,7 @@ const SingleStudent = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.g2email}
-                            onChange={(e) => setemail1(e.target.value)}
+                            onChange={(e) => setemail1(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full sm:w-2/4 flex gap-1">
@@ -684,7 +684,7 @@ const SingleStudent = () => {
                               id=""
                               placeholder=""
                               defaultValue={data[0]?.g2relation}
-                              onChange={(e) => setRelation1(e.target.value)}
+                              onChange={(e) => setRelation1(e.target.value.trim())}
                             />
                           </div>
                         </div>
@@ -706,7 +706,7 @@ const SingleStudent = () => {
                             placeholder=""
                             defaultValue={data[0]?.g2address}
                             // defaultValue={data?.gAddress}
-                            onChange={(e) => setgAddress1(e.target.value)}
+                            onChange={(e) => setgAddress1(e.target.value.trim())}
                           ></textarea>
                         </div>
                       </div>
@@ -761,7 +761,7 @@ const SingleStudent = () => {
                         id=""
                         placeholder=""
                         defaultValue={data[0]?.accountBalance}
-                        onChange={(e) => setFeeArrears(e.target.value)}
+                        onChange={(e) => setFeeArrears(e.target.value.trim())}
                       />
                     </div>
 
@@ -781,7 +781,7 @@ const SingleStudent = () => {
                         defaultValue={
                           (data[0]?.accountBalance) > -1 ? 'Credit' : 'Owing'
                         }
-                        onChange={(e) => setFeeCredit(e.target.value)}
+                        onChange={(e) => setFeeCredit(e.target.value.trim())}
                       />
                     </div>
                   </div>

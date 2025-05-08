@@ -168,6 +168,7 @@ const AppUpdateAlert = (props) => {
     createdby: username?.payload,
     active: true,
     startmonth: startmonth.toUpperCase(),
+    financeaccount: true
   };
 
   const handlecreateSection = (e) => {
@@ -278,7 +279,7 @@ const AppUpdateAlert = (props) => {
                       defaultValue={allschool?.data[0]?.name}
                       onChange={(e) => {
                         e.preventDefault();
-                        setName(e.target.value);
+                        setName(e.target.value.trim());
                       }}
                     />
                   </div>
@@ -298,7 +299,7 @@ const AppUpdateAlert = (props) => {
                       placeholder=""
                       onChange={(e) => {
                         e.preventDefault();
-                        setCode(e.target.value);
+                        setCode(e.target.value.trim());
                       }}
                     />
                   </div> */}
@@ -320,7 +321,7 @@ const AppUpdateAlert = (props) => {
                       placeholder=""
                       onChange={(e) => {
                         e.preventDefault();
-                        setEmail(e.target.value);
+                        setEmail(e.target.value.trim());
                       }}
                     />
                   </div>
@@ -378,7 +379,7 @@ const AppUpdateAlert = (props) => {
                       placeholder=""
                       onChange={(e) => {
                         e.preventDefault();
-                        setContact1(e.target.value);
+                        setContact1(e.target.value.trim());
                       }}
                     />
                   </div>
@@ -398,7 +399,7 @@ const AppUpdateAlert = (props) => {
                       defaultValue={allschool?.data[0]?.contact2}
                       onChange={(e) => {
                         e.preventDefault();
-                        setContact2(e.target.value);
+                        setContact2(e.target.value.trim());
                       }}
                     />
                   </div>
@@ -417,7 +418,7 @@ const AppUpdateAlert = (props) => {
                       placeholder=""
                       onChange={(e) => {
                         e.preventDefault();
-                        setAddress(e.target.value);
+                        setAddress(e.target.value.trim());
                       }}
                     ></textarea>
                   </div>
@@ -472,7 +473,7 @@ const AppUpdateAlert = (props) => {
                         defaultValue=""
                         onChange={(e) => {
                           e.preventDefault();
-                          setsectionTitle(e.target.value);
+                          setsectionTitle(e.target.value.trim());
                         }}
                       />
                       <div>
@@ -599,7 +600,7 @@ const AppUpdateAlert = (props) => {
                   placeholder="General"
                   defaultValue=""
                   onChange={(e) =>
-                    setcartegoryName(e.target.value.toUpperCase())
+                    setcartegoryName(e.target.value.trim().toUpperCase())
                   }
                 />
               </div>
@@ -620,7 +621,7 @@ const AppUpdateAlert = (props) => {
                     rows={2}
                     placeholder=""
                     defaultValue=""
-                    onChange={(e) => setDesription(e.target.value)}
+                    onChange={(e) => setDesription(e.target.value.trim())}
                   ></textarea>
                 </div>
               </div>

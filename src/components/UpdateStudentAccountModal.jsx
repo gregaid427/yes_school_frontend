@@ -149,7 +149,7 @@ const UpdateStudentAccountModal = (props) => {
                         placeholder=""
                         defaultValue={props?.info?.accountbalance}
                         onChange={(e) => {
-                          setAmount(e.target.value);
+                          setAmount(e.target.value.trim());
                         }}
                       />
                     </div>
@@ -168,7 +168,7 @@ const UpdateStudentAccountModal = (props) => {
                         defaultValue={props?.info?.arrears}
                         placeholder=""
                         onChange={(e) => {
-                          setArrears(e.target.value);
+                          setArrears(e.target.value.trim());
                         }}
                       />
                     </div> */}

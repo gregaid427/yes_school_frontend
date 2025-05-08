@@ -134,7 +134,7 @@ const handleSubmit = (e) =>  {
                         id=""
                       placeholder=""
                         defaultValue=""
-                        onChange={ (e)  => setfirstName(e.target.value)  }
+                        onChange={ (e)  => setfirstName(e.target.value.trim())  }
                       />
                     </div>
 
@@ -152,7 +152,7 @@ const handleSubmit = (e) =>  {
                         id=""
                       placeholder=""
                         defaultValue=""
-                        onChange={ (e)  => setlastName(e.target.value)  }
+                        onChange={ (e)  => setlastName(e.target.value.trim())  }
                       />
                     </div>
                   </div>
@@ -172,7 +172,7 @@ const handleSubmit = (e) =>  {
                         id=""
                       placeholder=""
                         defaultValue=""
-                        onChange={ (e)  => setotherName(e.target.value)  }
+                        onChange={ (e)  => setotherName(e.target.value.trim())  }
                       />
                     </div>
                     <div className="w-full sm:w-2/4 flex gap-5">
@@ -231,8 +231,8 @@ const handleSubmit = (e) =>  {
                           
                           onChange={
                             (e) => {
-                              setdateofbirth(e.target.value)
-                              console.log(e.target.value)
+                              setdateofbirth(e.target.value.trim())
+                              console.log(e.target.value.trim())
                           }}
                          
                         />
@@ -299,7 +299,7 @@ const handleSubmit = (e) =>  {
                         id=""
                       placeholder=""
                         defaultValue=""
-                        // onChange={ (e)  => set(e.target.value)  }
+                        // onChange={ (e)  => set(e.target.value.trim())  }
                         
                       />
                     </div>
@@ -318,7 +318,7 @@ const handleSubmit = (e) =>  {
                         id=""
                       placeholder=""
                         defaultValue=""
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
                   </div>
@@ -338,7 +338,7 @@ const handleSubmit = (e) =>  {
                         id=""
                       placeholder=""
                         defaultValue=""
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
                     <div className="w-full sm:w-2/4 flex gap-5">
@@ -378,7 +378,7 @@ const handleSubmit = (e) =>  {
                         id=""
                       placeholder=""
                         defaultValue=""
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
 
@@ -396,7 +396,7 @@ const handleSubmit = (e) =>  {
                         id=""
                       placeholder=""
                         defaultValue=""
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
                   </div>
@@ -416,7 +416,7 @@ const handleSubmit = (e) =>  {
                         id=""
                       placeholder=""
                         defaultValue=""
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
 
@@ -434,7 +434,7 @@ const handleSubmit = (e) =>  {
                         id=""
                       placeholder=""
                         defaultValue=""
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
                   </div>
@@ -471,7 +471,7 @@ const handleSubmit = (e) =>  {
                         rows={2}
                       placeholder=""
                         defaultValue=""
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       ></textarea>
                     </div>
                   </div>
@@ -491,7 +491,7 @@ const handleSubmit = (e) =>  {
                         rows={2}
                       placeholder=""
                         defaultValue=""
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       ></textarea>
                     </div>
                   </div>

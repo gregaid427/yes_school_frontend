@@ -30,7 +30,7 @@ const StudentCartegorySelect = (props) => {
   useEffect(() => {
     if (fetchstdCartegory?.success == 1) {
       let i = 0;
-      let arr = ['GENERAL'];
+      let arr = [];
       let select = [];
 
       while (i < fetchstdCartegory?.data.length) {

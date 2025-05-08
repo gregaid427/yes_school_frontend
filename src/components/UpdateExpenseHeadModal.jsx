@@ -98,7 +98,7 @@ const ExpenseHeadModal = (props) => {
                       id=""
                       placeholder=""
                       defaultValue={props.info?.expensehead}
-                      onChange={(e) => setcartegoryName(e.target.value)}
+                      onChange={(e) => setcartegoryName(e.target.value.trim())}
                     />
                   </div>
                 </div>
@@ -118,7 +118,7 @@ const ExpenseHeadModal = (props) => {
                       rows={2}
                       placeholder=""
                       defaultValue={props.info?.notes}
-                      onChange={(e) => setNotes(e.target.value)}
+                      onChange={(e) => setNotes(e.target.value.trim())}
                     ></textarea>
                   </div>
                 </div>

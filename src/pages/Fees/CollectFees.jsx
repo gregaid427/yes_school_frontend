@@ -29,6 +29,7 @@ import {
   fetchSingleStudent,
   fetchStudentsClassAccountAction,
   fetchStudentsClassAction,
+  resetFetchCustom,
 } from '../../redux/slices/studentSlice';
 import Loader from '../../common/Loader';
 
@@ -71,6 +72,8 @@ const CollectFees = () => {
   const [classs, setClasss] = useState();
   
   const [session, setsession] = useState();
+  const [sessionid, setsessionid] = useState();
+
   const [activeaccount, setactiveaccount] = useState();
 
   const [clazz, setclazz] = useState();
@@ -98,6 +101,8 @@ const CollectFees = () => {
     if (fetchsessionactive?.success == 1) {
       let data = fetchsessionactive?.data[0];
       setsession(data?.sessionname); 
+      setsessionid(data?.sessioncode); 
+
       setactiveaccount(data?.activeaccountid);
    //   console.log('sessionz');
     }
@@ -127,6 +132,7 @@ const CollectFees = () => {
       setinfo(info)
       setdata(data);
       console.log(info)
+      dispatch(resetFetchCustom())
 
     }
 
@@ -218,7 +224,7 @@ const CollectFees = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  15% 33% 15% 10% 17%  10%;
+  --data-table-library_grid-template-columns:  15% 30% 16% 14% 13%  12%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -348,7 +354,7 @@ const CollectFees = () => {
           setVisible(false);
         }}
       >
-        <CollectFeesModal close={setVisible} stdname={name} val={propp} activeaccount={activeaccount} infotype={sectionzz} session={session}/>
+        <CollectFeesModal close={setVisible} stdname={name} val={propp} activeaccount={activeaccount} infotype={sectionzz} session={session} sessionid={sessionid}/>
       </Dialog>
       <Dialog
         resizable={false}
@@ -466,7 +472,7 @@ const CollectFees = () => {
                         <HeaderCell className="">ID</HeaderCell>
                         <HeaderCell>Name</HeaderCell>
                         <HeaderCell>Class</HeaderCell>
-                        <HeaderCell>Section</HeaderCell>
+                        <HeaderCell>Cartegory</HeaderCell>
 
                         <HeaderCell>Acct Balance</HeaderCell>
 
@@ -495,7 +501,7 @@ const CollectFees = () => {
                             <span>{item.class}</span>
                           </Cell>
                           <Cell className="  ">
-                            <span>{item.section}</span>
+                            <span>{item.cartegory}</span>
                           </Cell>
                           <Cell className="flex   justify-between  ">
                             <span className="">

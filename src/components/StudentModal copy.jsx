@@ -81,7 +81,7 @@ function joinName(fn,on,ln){
                   name=""
                   id=""
                   defaultValue={studentName}
-                //   onChange={(e) => setotherName(e.target.value)}
+                //   onChange={(e) => setotherName(e.target.value.trim())}
                 />
               </div>
               <div className="w-full sm:w-2/4 flex gap-5">
@@ -137,8 +137,8 @@ function joinName(fn,on,ln){
                   defaultValue={dateofbirth}
                   type="text"
                 //   onChange={(e) => {
-                //     setdateofbirth(e.target.value);
-                //     console.log(e.target.value);
+                //     setdateofbirth(e.target.value.trim());
+                //     console.log(e.target.value.trim());
                 //   }}
                 />
               </div>
@@ -193,7 +193,7 @@ function joinName(fn,on,ln){
                   name=""
                   id=""
                   defaultValue={guardianName}
-                  // onChange={ (e)  => setuser(e.target.value)  }
+                  // onChange={ (e)  => setuser(e.target.value.trim())  }
                 />
               </div>
               <div className="w-full sm:w-2/4 flex gap-5">
@@ -226,7 +226,7 @@ function joinName(fn,on,ln){
                     id=""
                     placeholder=""
                     defaultValue={data?.gRelation}
-                    // onChange={ (e)  => setuser(e.target.value)  }
+                    // onChange={ (e)  => setuser(e.target.value.trim())  }
                   />
                 </div>
               </div>
@@ -247,7 +247,7 @@ function joinName(fn,on,ln){
                   id=""
                   placeholder=""
                   Value={data?.gContact1}
-                  // onChange={ (e)  => setuser(e.target.value)  }
+                  // onChange={ (e)  => setuser(e.target.value.trim())  }
                 />
               </div>
 
@@ -265,7 +265,7 @@ function joinName(fn,on,ln){
                   id=""
                   placeholder=""
                   defaultValue={data?.gContact2}
-                  // onChange={ (e)  => setuser(e.target.value)  }
+                  // onChange={ (e)  => setuser(e.target.value.trim())  }
                 />
               </div>
 
@@ -283,7 +283,7 @@ function joinName(fn,on,ln){
                   id=""
                   placeholder=""
                   defaultValue={data?.gEmail}
-                  // onChange={ (e)  => setuser(e.target.value)  }
+                  // onChange={ (e)  => setuser(e.target.value.trim())  }
                 />
               </div>
             </div>
@@ -321,7 +321,7 @@ function joinName(fn,on,ln){
                     rows={2}
                     placeholder=""
                     defaultValue={data?.gAddress}
-                    // onChange={ (e)  => setuser(e.target.value)  }
+                    // onChange={ (e)  => setuser(e.target.value.trim())  }
                   ></textarea>
                 </div>
               </div>
@@ -341,7 +341,7 @@ function joinName(fn,on,ln){
                     rows={2}
                     placeholder=""
                     defaultValue={data?.gAddressLandmark}
-                    // onChange={ (e)  => setuser(e.target.value)  }
+                    // onChange={ (e)  => setuser(e.target.value.trim())  }
                   ></textarea>
                 </div>
               </div>

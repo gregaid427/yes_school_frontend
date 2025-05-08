@@ -164,7 +164,7 @@ console.log(props)
                                   placeholder=""
                                   defaultValue="0"
                                   onChange={(e) => {
-                                    obj[item.name] = parseInt(e.target.value);
+                                    obj[item.name] = parseInt(e.target.value.trim());
                                   }}
                                 />
                               </div>

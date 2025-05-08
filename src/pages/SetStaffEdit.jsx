@@ -260,7 +260,7 @@ const { username, userMail} = user;
                         id=""
                         placeholder=""
                         defaultValue={value?.sFirstName}
-                        onChange={(e) => setFname(e.target.value)}
+                        onChange={(e) => setFname(e.target.value.trim())}
                       />
                     </div>
 
@@ -279,7 +279,7 @@ const { username, userMail} = user;
                         id=""
                         placeholder=""
                         defaultValue={value?.sLastName}
-                        onChange={(e) => setLname(e.target.value)}
+                        onChange={(e) => setLname(e.target.value.trim())}
                       />
                     </div>
                     <div className="flex row gap-1 mb-4 ">
@@ -299,7 +299,7 @@ const { username, userMail} = user;
                           id=""
                           placeholder=""
                           defaultValue={value?.contact1}
-                          onChange={(e) => setContact1(e.target.value)}
+                          onChange={(e) => setContact1(e.target.value.trim())}
                         />
                       </div>
                       <div className="w-full sm:w-2/2">
@@ -317,7 +317,7 @@ const { username, userMail} = user;
                           id=""
                           placeholder=""
                           defaultValue={value?.contact2}
-                          onChange={(e) => setContact2(e.target.value)}
+                          onChange={(e) => setContact2(e.target.value.trim())}
                         />
                       </div>
                     </div>
@@ -354,7 +354,7 @@ const { username, userMail} = user;
                           id=""
                           placeholder=""
                           defaultValue={value?.role}
-                          onChange={(e) => setRole(e.target.value)}
+                          onChange={(e) => setRole(e.target.value.trim())}
                         />
                       </div>
                     </div>
@@ -372,7 +372,7 @@ const { username, userMail} = user;
                         id=""
                         placeholder=""
                         defaultValue={value?.sEmail}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value.trim())}
                       />
                     </div>
 
@@ -393,7 +393,7 @@ const { username, userMail} = user;
                         id=""
                         placeholder=""
                         // defaultValue={value?.sEmail}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value.trim())}
                       />
                     </div>
 
@@ -436,7 +436,7 @@ const { username, userMail} = user;
                         rows={2}
                         placeholder=""
                         defaultValue={value?.address}
-                        onChange={(e) => setAddress(e.target.value)}
+                        onChange={(e) => setAddress(e.target.value.trim())}
                       ></textarea>
                     </div>
                     <div className="w-full mb-4 sm:w-2/2">
@@ -453,7 +453,7 @@ const { username, userMail} = user;
                         rows={2}
                         placeholder=""
                         defaultValue={value?.info}
-                        onChange={(e) => setInfo(e.target.value)}
+                        onChange={(e) => setInfo(e.target.value.trim())}
                       ></textarea>
                     </div>
 

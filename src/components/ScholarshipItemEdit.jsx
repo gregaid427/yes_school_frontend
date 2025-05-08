@@ -120,7 +120,7 @@ const ScholarshipItemEdit = (props) => {
                 id=""
                 placeholder=""
                 defaultValue={props.info?.title}
-                onChange={(e) => setcartegoryName(e.target.value.toUpperCase())}
+                onChange={(e) => setcartegoryName(e.target.value.trim().toUpperCase())}
               />
             </div>
             <div>
@@ -234,7 +234,7 @@ const ScholarshipItemEdit = (props) => {
                         id=""
                         placeholder=""
                         defaultValue={props.info?.amount}
-                        onChange={(e) => setAmount(e.target.value)}
+                        onChange={(e) => setAmount(e.target.value.trim())}
                       />
                     </div>
                   </div>
@@ -253,7 +253,7 @@ const ScholarshipItemEdit = (props) => {
                         id=""
                         placeholder=""
                         defaultValue={props.info?.percent}
-                        onChange={(e) => setPercent(e.target.value)}
+                        onChange={(e) => setPercent(e.target.value.trim())}
                       />
                     </div>
                     <div className="w-full mb-3 mt-4 sm:w-2/2">

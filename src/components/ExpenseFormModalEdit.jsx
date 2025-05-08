@@ -105,7 +105,7 @@ const ExpenseFormModalEdit = (props) => {
                         id=""
                         placeholder=""
                         defaultValue={props?.info.name}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setName(e.target.value.trim())}
                       />
                     </div>
                     </div>
@@ -125,7 +125,7 @@ const ExpenseFormModalEdit = (props) => {
                         id=""
                         placeholder=""
                         defaultValue={props?.info.invoice}
-                        onChange={(e) => setInvoice(e.target.value)}
+                        onChange={(e) => setInvoice(e.target.value.trim())}
                       />
                     </div>
                     <div className="w-full mb-3 sm:w-2/2">
@@ -163,7 +163,7 @@ const ExpenseFormModalEdit = (props) => {
                           id=""
                           placeholder=""
                           defaultValue={props?.info.amount}
-                          onChange={(e) => setAmount(e.target.value)}
+                          onChange={(e) => setAmount(e.target.value.trim())}
                         />
                       </div>
                       <div className="w-full mb-3 sm:w-1/2">
@@ -180,7 +180,7 @@ const ExpenseFormModalEdit = (props) => {
                         id=""
                         placeholder=""
                         defaultValue={props?.info.date}
-                        onChange={(e) => setDate(e.target.value)}
+                        onChange={(e) => setDate(e.target.value.trim())}
                       />
                       </div>
                     </div>
@@ -199,7 +199,7 @@ const ExpenseFormModalEdit = (props) => {
                           id="bio"
                           rows={2}
                           placeholder={props?.info.description}
-                          onChange={(e) => setDesc(e.target.value)}
+                          onChange={(e) => setDesc(e.target.value.trim())}
                         ></textarea>
                       </div>
                     </div>

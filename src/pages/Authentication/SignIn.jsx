@@ -291,7 +291,7 @@ const SignIn = () => {
                   <div className="relative">
                     <input
                       required
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => setEmail(e.target.value.trim())}
                       type="text"
                       placeholder="username or email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none "
@@ -324,7 +324,7 @@ const SignIn = () => {
                   <div className="relative">
                     <input
                       required
-                      onChange={(e) => setpassword(e.target.value)}
+                      onChange={(e) => setpassword(e.target.value.trim())}
                       type="password"
                       placeholder="Password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none "

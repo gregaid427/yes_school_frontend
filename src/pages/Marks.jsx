@@ -306,7 +306,7 @@ const Marks = () => {
                     type="search"
                     placeholder={'type here'}
                     onChange={(e) => {
-                      setSearch(e.target.value);
+                      setSearch(e.target.value.trim());
                     }}
                   />
                   {/* <button onClick={() => toPDF()}>Download PDF</button> */}
@@ -503,7 +503,7 @@ const Marks = () => {
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setName(e.target.value.trim())}
                       />
                     </div>
                     <label
@@ -528,7 +528,7 @@ const Marks = () => {
                           id=""
                           placeholder=""
                           defaultValue=""
-                          onChange={(e) => setInvoice(e.target.value)}
+                          onChange={(e) => setInvoice(e.target.value.trim())}
                         />
                       </div>
                       <div className="w-full mb-3 sm:w-2/2">
@@ -545,7 +545,7 @@ const Marks = () => {
                           id=""
                           placeholder=""
                           defaultValue=""
-                          onChange={(e) => setInvoice(e.target.value)}
+                          onChange={(e) => setInvoice(e.target.value.trim())}
                         />
                       </div>
                     </div>
@@ -564,7 +564,7 @@ const Marks = () => {
                           id="bio"
                           rows={2}
                           placeholder=""
-                          onChange={(e) => setDesc(e.target.value)}
+                          onChange={(e) => setDesc(e.target.value.trim())}
                         ></textarea>
                       </div>
                     </div>

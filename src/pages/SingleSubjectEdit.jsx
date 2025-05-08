@@ -139,7 +139,7 @@ const SingleSubjectEdit = () => {
                         id=""
                         placeholder=""
                         defaultValue={info.subjectname}
-                        onChange={(e) => setclasstitle(e.target.value)}
+                        onChange={(e) => setclasstitle(e.target.value.trim())}
                       />
                     </div>
                    

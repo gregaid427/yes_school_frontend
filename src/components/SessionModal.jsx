@@ -149,7 +149,7 @@ const SessionModal = (props) => {
                       defaultValue=""
                       onChange={(e) => {
                         e.preventDefault();
-                        setsectionTitle(e.target.value);
+                        setsectionTitle(e.target.value.trim());
                       }}
                     />
                     <div>

@@ -95,7 +95,7 @@ const GenerateFeeResponseModal = (props) => {
                     type=""
                     onClick={(e) => {
                       e.preventDefault();
-                      navigate('/fees/Assignfees')
+                      navigate('/settings/assignfee')
                     }}
                   >
                     Assign Fee

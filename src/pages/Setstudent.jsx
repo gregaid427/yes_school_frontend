@@ -33,6 +33,7 @@ import {
   fetchSingleStudent,
   fetchStudentsClassAction,
   fetchStudentsClassAction1,
+  resetFetchCustom,
 } from '../redux/slices/studentSlice';
 import Loader from '../common/Loader';
 import StudentModal from '../components/StudentModal';
@@ -109,6 +110,8 @@ const SetStudent = () => {
     if (fetchcustom?.success == 1) {
       let data = fetchcustom?.data;
       setdata(data);
+      dispatch(resetFetchCustom())
+
     }
 
     if (fetchAllClass?.success == 1) {

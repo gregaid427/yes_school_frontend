@@ -152,7 +152,7 @@ console.log(info)
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={(e) => setfirstName(e.target.value)}
+                        onChange={(e) => setfirstName(e.target.value.trim())}
                         placeholder=""
                         defaultValue=""
                       />
@@ -168,7 +168,7 @@ console.log(info)
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={(e) => setlastName(e.target.value)}
+                        onChange={(e) => setlastName(e.target.value.trim())}
                         placeholder=""
                         defaultValue=""
                       />
@@ -186,7 +186,7 @@ console.log(info)
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={(e) => setotherName(e.target.value)}
+                        onChange={(e) => setotherName(e.target.value.trim())}
                         placeholder=""
                         defaultValue=""
                       />
@@ -238,7 +238,7 @@ console.log(info)
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={(e) => setcontact1(e.target.value)}
+                        onChange={(e) => setcontact1(e.target.value.trim())}
                         placeholder=""
                         defaultValue=""
                       />
@@ -254,7 +254,7 @@ console.log(info)
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={(e) => setcontact2(e.target.value)}
+                        onChange={(e) => setcontact2(e.target.value.trim())}
                         placeholder=""
                         defaultValue=""
                       />
@@ -277,7 +277,7 @@ console.log(info)
                         id="emailAddress"
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setemail(e.target.value)}
+                        onChange={(e) => setemail(e.target.value.trim())}
                       />
                     </div>
                   </div>
@@ -293,7 +293,7 @@ console.log(info)
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2  px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={(e) => setpassword(e.target.value)}
+                        onChange={(e) => setpassword(e.target.value.trim())}
                         placeholder=""
                         defaultValue=""
                       />
@@ -311,7 +311,7 @@ console.log(info)
                       <input
                         className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        onChange={(e) => setRelation(e.target.value)}
+                        onChange={(e) => setRelation(e.target.value.trim())}
                         placeholder=""
                         defaultValue=""
                       />
@@ -346,7 +346,7 @@ console.log(info)
                         name="bio"
                         id="bio"
                         rows={2}
-                        onChange={(e) => setaddress(e.target.value)}
+                        onChange={(e) => setaddress(e.target.value.trim())}
                         placeholder=""
                         defaultValue=""
                       ></textarea>

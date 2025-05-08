@@ -27,12 +27,14 @@ import {
   deleteSinglefeeAction,
   deleteSingleFeeCartAction,
   fetchfeeCartegoryAction,
+  resetcreatecart,
 } from '../../redux/slices/feeSlice';
 import FeesCartegoryItem from '../../components/FeesCartegoryItem';
 import { deleteSingleCartAction } from '../../redux/slices/inventSlice';
 import { Dialog } from 'primereact/dialog';
 import EditFeesCartegoryItem from '../../components/EditFeesCartegoryItem';
 import DeleteModal from '../../components/DeleteModal';
+import FeeItemRearrangeModal from '../../components/FeeItemRearrangeModal';
 
 const FeesGroup = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -54,7 +56,7 @@ const FeesGroup = () => {
   const dispatch = useDispatch();
 
   const fee = useSelector((state) => state?.fees);
-  const { cartegory } = fee;
+  const { cartegory,Createfeecart } = fee;
 
   useEffect(() => {
     dispatch(fetchfeeCartegoryAction());
@@ -79,8 +81,18 @@ const FeesGroup = () => {
     if (cartegory?.success == 1) {
       let data = cartegory?.data;
       setdata(data);
-      setVisible1(false)
+      setVisible1(false);
+      setVisible10(false)
+      dispatch(resetcreatecart())
     }
+    // if (Createfeecart?.success == 1) {
+    //   let data = Createfeecart?.data;
+    //   setdata(data);
+     
+    //   setVisible10(false)
+    //   dispatch(resetcreatecart())
+    // }
+    
     // if (loading == false) {
     //   dispatch(fetchBulkStudent());
     // }
@@ -114,15 +126,15 @@ const FeesGroup = () => {
       //   //  background-color: #24303F;
 
       `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -137,13 +149,7 @@ const FeesGroup = () => {
   function onPaginationChange(action, state) {}
 
   const [search, setSearch] = useState('');
-  console.log(data);
-  data = {
-    nodes: data.nodes.filter((item) =>
-      item.name.toLowerCase().includes(search.toLowerCase()),
-    ),
-  };
-
+ 
   function onPaginationChange(action, state) {}
 
   const handleViewbtn = (value) => {
@@ -162,8 +168,6 @@ const FeesGroup = () => {
     dispatch(deleteSingleFeeCartAction(data));
   };
 
- 
-
   const handleDownloadPdf = async () => {
     const doc = new jsPDF();
 
@@ -176,13 +180,18 @@ const FeesGroup = () => {
     useKeysAsHeaders: true,
     filename: `All-Subject-List`,
   });
-
+  data = {
+    nodes: data.nodes.filter((item) =>
+      item.name.toLowerCase().includes(search.toLowerCase()),
+ ) }
   const handleDownloadCSV = async () => {
     const csv = generateCsv(csvConfig)(nodes);
     download(csvConfig)(csv);
   };
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
+  const [visible10, setVisible10] = useState(false);
+
   const [del, setDel] = useState(false);
 
   return loader ? (
@@ -204,7 +213,6 @@ const FeesGroup = () => {
       >
         <EditFeesCartegoryItem close={setVisible} data={val} />
       </Dialog>
-
       <Dialog
         visible={visible1}
         position={'top'}
@@ -217,6 +225,19 @@ const FeesGroup = () => {
         resizable={false}
       >
         <DeleteModal delete={handledeletebtn} close={setVisible1} />
+      </Dialog>
+      <Dialog
+        visible={visible10}
+        position={'top'}
+        style={{ height: 'auto', width: '40%' }}
+        onHide={() => {
+          if (!visible10) return;
+          setVisible1(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <FeeItemRearrangeModal data={nodes} close={setVisible10} />
       </Dialog>
       <div className={'flex gap-2  w-full'}>
         <div className="w-4/12">
@@ -247,7 +268,7 @@ const FeesGroup = () => {
                   <div className="sm:w-2/5 ">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-             // style={{ color: '#A9B5B3' }}
+                      // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadPdf();
                       }}
@@ -259,7 +280,7 @@ const FeesGroup = () => {
                   <div className="w-full sm:w-2/5">
                     <label
                       className="pt-2 block text-sm font-medium text-ash dark:text-white"
-             // style={{ color: '#A9B5B3' }}
+                      // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadCSV();
                       }}
@@ -285,12 +306,21 @@ const FeesGroup = () => {
                     type="search"
                     placeholder={'type here'}
                     onChange={(e) => {
-                      setSearch(e.target.value);
+                      setSearch(e.target.value.trim());
                     }}
                   />
                   {/* <button onClick={() => toPDF()}>Download PDF</button> */}
                 </div>
               </div>
+              <button
+                className="flex w-3/12 justify-center rounded bg-primary py-1 px-3 font-medium text-gray hover:bg-opacity-90"
+                type=""
+                onClick={(e) => {
+                setVisible10(true)
+                }}
+              >
+                Reorder Items
+              </button>
             </div>
           </div>
           <div
@@ -316,13 +346,12 @@ const FeesGroup = () => {
                         </HeaderRow>
                       </Header>
 
-  
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList?.map((item) => (
-                          <Row key={item.id}
+                          <Row
+                            key={item.id}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          
                           >
                             <Cell className="  ">{item.name}</Cell>
 
@@ -335,9 +364,10 @@ const FeesGroup = () => {
                                   clickFunction={() => handleEditbtn(item)}
                                 />
                                 <DeleteSVG
-                                  clickFunction={() =>{ setDel(item)
+                                  clickFunction={() => {
+                                    setDel(item);
 
-                                    setVisible1(true)
+                                    setVisible1(true);
                                   }}
                                 />
                               </div>
@@ -410,7 +440,6 @@ const FeesGroup = () => {
                         </HeaderRow>
                       </Header>
 
-  
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
                         {tableList?.map((item) => (
                           <Row

@@ -291,7 +291,7 @@ const Admission = () => {
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setStudentfirstName(e.target.value)}
+                        onChange={(e) => setStudentfirstName(e.target.value.trim())}
                       />
                     </div>
 
@@ -309,7 +309,7 @@ const Admission = () => {
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setStudentlastName(e.target.value)}
+                        onChange={(e) => setStudentlastName(e.target.value.trim())}
                       />
                     </div>
                   </div>
@@ -329,7 +329,7 @@ const Admission = () => {
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setStudentotherName(e.target.value)}
+                        onChange={(e) => setStudentotherName(e.target.value.trim())}
                       />
                     </div>
                     <div className="w-full sm:w-2/4 flex gap-5">
@@ -386,7 +386,7 @@ const Admission = () => {
                         defaultValue={dateofbirth}
                         type="date"
                         onChange={(e) => {
-                          setdateofbirth(e.target.value);
+                          setdateofbirth(e.target.value.trim());
                         }}
                       />
                     </div>
@@ -475,7 +475,7 @@ const Admission = () => {
                           id=""
                           placeholder=""
                           defaultValue="0"
-                          onChange={(e) => setacctbal(e.target.value)}
+                          onChange={(e) => setacctbal(e.target.value.trim())}
                         />
                       </div>
                     </div>
@@ -566,7 +566,7 @@ const Admission = () => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setgfName1(e.target.value)}
+                            onChange={(e) => setgfName1(e.target.value.trim())}
                           />
                         </div>
 
@@ -584,7 +584,7 @@ const Admission = () => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setglName1(e.target.value)}
+                            onChange={(e) => setglName1(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -604,28 +604,28 @@ const Admission = () => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setemail1(e.target.value)}
+                            onChange={(e) => setemail1(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full sm:w-2/4 flex gap-1">
-                          <div className="w-full sm:w-1/3">
+                          {/* <div className="w-full sm:w-1/3">
                             <label
                               className="mb-3 block text-sm font-medium text-black dark:text-white"
                               htmlFor=""
                             >
                               Sex
-                            </label>
+                            </label> */}
 
-                            <div className="relative z-20 bg-white dark:bg-form-input">
+                            {/* <div className="relative z-20 bg-white dark:bg-form-input">
                               <SelectGroupTwo
                                 values={['Male', 'Female']}
                                 setSelectedOption={(val) => setgsex1(val)}
                                 selectedOption={gsex1}
                               />
-                            </div>
-                          </div>
+                            </div> */}
+                          {/* </div> */}
 
-                          <div className="w-full sm:w-2/3">
+                          <div className="w-full sm:w-full">
                             <label
                               className="mb-3 block text-sm font-medium text-black dark:text-white"
                               htmlFor=""
@@ -633,7 +633,7 @@ const Admission = () => {
                               Relation With Student{' '}
                             </label>
                             <SelectGroupTwo
-                                values={['Mother', 'Father']}
+                                values={['Mother', 'Father','Guardian']}
                                 setSelectedOption={(val) => setRelation1(val)}
                                 selectedOption={gRelation1}
                               />
@@ -644,7 +644,7 @@ const Admission = () => {
                               id=""
                               placeholder=""
                               defaultValue=""
-                              onChange={(e) => setRelation1(e.target.value)}
+                              onChange={(e) => setRelation1(e.target.value.trim())}
                             /> */}
                           </div>
                         </div>
@@ -665,7 +665,7 @@ const Admission = () => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setgcontact1(e.target.value)}
+                            onChange={(e) => setgcontact1(e.target.value.trim())}
                           />
                         </div>
 
@@ -683,7 +683,7 @@ const Admission = () => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setgcontact2(e.target.value)}
+                            onChange={(e) => setgcontact2(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -703,7 +703,7 @@ const Admission = () => {
                             rows={2}
                             placeholder=""
                             // defaultValue={data?.gAddress}
-                            onChange={(e) => setgAddress1(e.target.value)}
+                            onChange={(e) => setgAddress1(e.target.value.trim())}
                           ></textarea>
                         </div>
                       </div>
@@ -729,7 +729,7 @@ const Admission = () => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setgfName2(e.target.value)}
+                            onChange={(e) => setgfName2(e.target.value.trim())}
                           />
                         </div>
 
@@ -747,12 +747,12 @@ const Admission = () => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setglName2(e.target.value)}
+                            onChange={(e) => setglName2(e.target.value.trim())}
                           />
                         </div>
                       </div>
 
-                      <div className=" flex flex-col gap-3 sm:flex-row">
+                      <div className=" flex flex-col gap-3 mb-6 sm:flex-row">
                         <div className="w-full sm:w-2/4">
                           <label
                             className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -767,11 +767,11 @@ const Admission = () => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setemail2(e.target.value)}
+                            onChange={(e) => setemail2(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full sm:w-2/4 flex gap-1">
-                          <div className="w-full sm:w-1/3">
+                          {/* <div className="w-full sm:w-1/3">
                             <label
                               className="mb-3 block text-sm font-medium text-black dark:text-white"
                               htmlFor=""
@@ -786,9 +786,9 @@ const Admission = () => {
                                 selectedOption={gsex2}
                               />
                             </div>
-                          </div>
+                          </div> */}
 
-                          <div className="w-full sm:w-2/3">
+                          <div className="w-full sm:w-full">
                             <label
                               className="mb-3 block text-sm font-medium text-black dark:text-white"
                               htmlFor=""
@@ -820,7 +820,7 @@ const Admission = () => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setgcontact3(e.target.value)}
+                            onChange={(e) => setgcontact3(e.target.value.trim())}
                           />
                         </div>
 
@@ -838,7 +838,7 @@ const Admission = () => {
                             id=""
                             placeholder=""
                             defaultValue=""
-                            onChange={(e) => setgcontact4(e.target.value)}
+                            onChange={(e) => setgcontact4(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -858,7 +858,7 @@ const Admission = () => {
                             rows={2}
                             placeholder=""
                             // defaultValue={data?.gAddress}
-                            onChange={(e) => setgAddress2(e.target.value)}
+                            onChange={(e) => setgAddress2(e.target.value.trim())}
                           ></textarea>
                         </div>
                       </div>
@@ -918,7 +918,7 @@ const Admission = () => {
                         id=""
                         placeholder=""
                         defaultValue="0"
-                        onChange={(e) => setFeeArrears(e.target.value)}
+                        onChange={(e) => setFeeArrears(e.target.value.trim())}
                       />
                     </div>
 
@@ -936,7 +936,7 @@ const Admission = () => {
                         id=""
                         placeholder=""
                         defaultValue="0"
-                        onChange={(e) => setFeeCredit(e.target.value)}
+                        onChange={(e) => setFeeCredit(e.target.value.trim())}
                       />
                     </div>
                   </div>

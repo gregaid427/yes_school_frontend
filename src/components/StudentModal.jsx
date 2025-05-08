@@ -84,7 +84,7 @@ const StudentModal = (props) => {
                       name=""
                       id=""
                       defaultValue={studentName}
-                      //   onChange={(e) => setotherName(e.target.value)}
+                      //   onChange={(e) => setotherName(e.target.value.trim())}
                     />
                   </div>
                   <div className="w-full sm:w-1/4">
@@ -101,7 +101,7 @@ const StudentModal = (props) => {
                         name=""
                         id=""
                         defaultValue={data?.student_id}
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
                   </div>
@@ -121,7 +121,7 @@ const StudentModal = (props) => {
                       name=""
                       id=""
                       defaultValue={data?.dateofbirth}
-                      // onChange={ (e)  => setuser(e.target.value)  }
+                      // onChange={ (e)  => setuser(e.target.value.trim())  }
                     />
                   </div>
                   <div className="w-full sm:w-1/4">
@@ -138,7 +138,7 @@ const StudentModal = (props) => {
                       name=""
                       id=""
                       defaultValue={data?.gender}
-                      // onChange={ (e)  => setuser(e.target.value)  }
+                      // onChange={ (e)  => setuser(e.target.value.trim())  }
                     />
                   </div>
                   <div className="w-full sm:w-1/4 flex flex-col ">
@@ -155,7 +155,7 @@ const StudentModal = (props) => {
                         name=""
                         id=""
                         defaultValue={data?.class}
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
                   </div>
@@ -173,7 +173,7 @@ const StudentModal = (props) => {
                         name=""
                         id=""
                         defaultValue={data?.section}
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
                   </div>
@@ -238,7 +238,7 @@ const StudentModal = (props) => {
                   name=""
                   id=""
                   defaultValue={guardianName}
-                  // onChange={ (e)  => setuser(e.target.value)  }
+                  // onChange={ (e)  => setuser(e.target.value.trim())  }
                 />
               </div>
               <div className="w-full sm:w-[44%] gap-3 flex ">
@@ -257,7 +257,7 @@ const StudentModal = (props) => {
                       id=""
                       placeholder=""
                       defaultValue={data?.gSex}
-                      // onChange={ (e)  => setuser(e.target.value)  }
+                      // onChange={ (e)  => setuser(e.target.value.trim())  }
                     />
                   </div>
                 </div>
@@ -275,7 +275,7 @@ const StudentModal = (props) => {
                     id=""
                     placeholder=""
                     defaultValue={data?.gRelation}
-                    // onChange={ (e)  => setuser(e.target.value)  }
+                    // onChange={ (e)  => setuser(e.target.value.trim())  }
                   />
                 </div>
               </div>
@@ -298,7 +298,7 @@ const StudentModal = (props) => {
                       id=""
                       placeholder=""
                       defaultValue={data?.gContact1}
-                      // onChange={ (e)  => setuser(e.target.value)  }
+                      // onChange={ (e)  => setuser(e.target.value.trim())  }
                     />
                   </div>
 
@@ -316,7 +316,7 @@ const StudentModal = (props) => {
                       id=""
                       placeholder=""
                       defaultValue={data?.gContact2}
-                      // onChange={ (e)  => setuser(e.target.value)  }
+                      // onChange={ (e)  => setuser(e.target.value.trim())  }
                     />
                   </div>
                 </div>
@@ -335,7 +335,7 @@ const StudentModal = (props) => {
                       id=""
                       placeholder=""
                       defaultValue={data?.gEmail}
-                      // onChange={ (e)  => setuser(e.target.value)  }
+                      // onChange={ (e)  => setuser(e.target.value.trim())  }
                     />
                   </div>
                 </div>
@@ -356,7 +356,7 @@ const StudentModal = (props) => {
                       rows={4}
                       placeholder=""
                       defaultValue={data?.gAddress}
-                      // onChange={ (e)  => setuser(e.target.value)  }
+                      // onChange={ (e)  => setuser(e.target.value.trim())  }
                     ></textarea>
                   </div>
                 </div>
@@ -380,7 +380,7 @@ const StudentModal = (props) => {
                     name=""
                     id=""
                     defaultValue={guardianName2}
-                    // onChange={ (e)  => setuser(e.target.value)  }
+                    // onChange={ (e)  => setuser(e.target.value.trim())  }
                   />
                 </div>
                 <div className="w-full sm:w-[44%] gap-3 flex ">
@@ -399,7 +399,7 @@ const StudentModal = (props) => {
                         id=""
                         placeholder=""
                         defaultValue={data1?.gSex}
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
                   </div>
@@ -417,7 +417,7 @@ const StudentModal = (props) => {
                       id=""
                       placeholder=""
                       defaultValue={data1?.gRelation}
-                      // onChange={ (e)  => setuser(e.target.value)  }
+                      // onChange={ (e)  => setuser(e.target.value.trim())  }
                     />
                   </div>
                 </div>
@@ -440,7 +440,7 @@ const StudentModal = (props) => {
                         id=""
                         placeholder=""
                         defaultValue={data1?.gContact1}
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
 
@@ -458,7 +458,7 @@ const StudentModal = (props) => {
                         id=""
                         placeholder=""
                         defaultValue={data1?.gContact2}
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
                   </div>
@@ -477,7 +477,7 @@ const StudentModal = (props) => {
                         id=""
                         placeholder=""
                         defaultValue={data1?.gEmail}
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       />
                     </div>
                   </div>
@@ -498,7 +498,7 @@ const StudentModal = (props) => {
                         rows={4}
                         placeholder=""
                         defaultValue={data1?.gAddress}
-                        // onChange={ (e)  => setuser(e.target.value)  }
+                        // onChange={ (e)  => setuser(e.target.value.trim())  }
                       ></textarea>
                     </div>
                   </div>

@@ -135,6 +135,7 @@ const NewExamsModal = (props) => {
       dispatch(resetcreateexam());
     }
   }, [createexam]);
+  const [selectedInfo2, setSelectedInfo2] = useState();
 
   return (
     <div className="w-full">
@@ -234,7 +235,7 @@ const NewExamsModal = (props) => {
                         </label>{' '}
                       </div> */}
 
-                      <SubjectSelect1 setsectionprop={setselectsubject} />
+                      <SubjectSelect1 setsectionprop={setselectsubject} selectinfo={setSelectedInfo2} />
 
                       <div></div>
                     </div>
@@ -282,3 +283,12 @@ const NewExamsModal = (props) => {
 };
 
 export default NewExamsModal;
+
+
+
+
+
+
+
+
+

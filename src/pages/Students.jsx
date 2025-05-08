@@ -31,6 +31,7 @@ import {
   fetchCustomStudentsClassAction,
   fetchSingleStudent,
   fetchStudentsClassAction,
+  resetFetchCustom,
 } from '../redux/slices/studentSlice';
 import Loader from '../common/Loader';
 import StudentModal from '../components/StudentModal';
@@ -108,6 +109,8 @@ const Student = () => {
         });
         setCSVTemplate(absent);
       }
+      dispatch(resetFetchCustom())
+
     }
 
     // if (fetchAllClass?.success == 1) {
@@ -131,7 +134,10 @@ const Student = () => {
     }
   }, [fetchStudentcustom]);
 
+  useEffect(() => {
+    setdata();
 
+  }, []);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);

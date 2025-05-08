@@ -30,7 +30,7 @@ const EditFeesCartegoryItem = (props) => {
     }
   }, [UpdateFeeCart]);
 
-  const [cartegoryName, setcartegoryName] = useState(props.data?.title);
+  const [cartegoryName, setcartegoryName] = useState(props.data?.name);
 
   const [description, setDesription] = useState(props.data?.description);
 
@@ -54,7 +54,7 @@ const { username, userMail} = user;
     if (cartegoryName == '') {
       toast.error('Error - Name Cannot Be Empty');
     } else {
-      dispatch(UpdateStdCartAction(data));
+      dispatch(UpdateFeeCartAction(data));
     }
   };
 
@@ -85,8 +85,8 @@ const { username, userMail} = user;
                 name=""
                 id=""
                 placeholder=""
-                defaultValue={props.data?.title}
-                onChange={(e) => setcartegoryName(e.target.value)}
+                defaultValue={props.data?.name}
+                onChange={(e) => setcartegoryName(e.target.value.trim())}
               />
             </div>
 
@@ -105,7 +105,7 @@ const { username, userMail} = user;
                   rows={2}
                   placeholder=""
                   defaultValue={props.data?.description}
-                  onChange={(e) => setDesription(e.target.value)}
+                  onChange={(e) => setDesription(e.target.value.trim())}
                 ></textarea>
               </div>
             </div>

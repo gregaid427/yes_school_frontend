@@ -48,7 +48,7 @@ console.log(props)
                   id=""
                   // placeholder="END OF TERM EXamination"
                   defaultValue={props?.val.grouptitle}
-                  onChange={(e) => setname(e.target.value)}
+                  onChange={(e) => setname(e.target.value.trim())}
                 />
               </div>
 

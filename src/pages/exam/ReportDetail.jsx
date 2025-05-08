@@ -215,6 +215,8 @@ const ExamReportDetail = () => {
   };
 
   function onPaginationChange(action, state) {}
+  
+  const [grp, setexamgroupoption] = useState();
 
   const [visible, setVisible] = useState(false);
   const [visible4, setVisible4] = useState(false);
@@ -362,7 +364,7 @@ const ExamReportDetail = () => {
                   </label>
 
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                  <ExamGroupSelect setsectionprop={setexamgroupoption} selectinfo={setSelectedInfo} />
+                  <ExamGroupSelect setsectionprop={setclazz} selectinfo={setSelectedInfo} />
                   </div>
                 </div>
               </div>
@@ -427,7 +429,7 @@ const ExamReportDetail = () => {
                 type="search"
                 placeholder={'type here'}
                 onChange={(e) => {
-                  setSearch(e.target.value);
+                  setSearch(e.target.value.trim());
                 }}
               />
               {/* <button onClick={() => toPDF()}>Download PDF</button> */}

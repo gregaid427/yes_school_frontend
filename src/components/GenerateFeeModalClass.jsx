@@ -281,7 +281,7 @@ const GenerateFeeModalClass = (props) => {
                             id="bio"
                             rows={2}
                             placeholder=""
-                            onChange={(e) => setDesc(e.target.value)}
+                            onChange={(e) => setDesc(e.target.value.trim())}
                           ></textarea>
                         </div>
                       </div>

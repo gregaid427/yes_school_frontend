@@ -5,41 +5,34 @@ import {
   CreatesfeeCartegoryAction,
   fetchfeeCartegoryAction,
   resetcreatefee,
+  resetUpdateFeeCart,
+  UpdateFeeCartAction,
 } from '../redux/slices/feeSlice';
+import { UpdateStdCartAction } from '../redux/slices/studentSlice';
 
-const FeesCartegoryItem = (props) => {
+const EditStudentCart = (props) => {
+  console.log(props)
   const dispatch = useDispatch();
   const fees = useSelector((state) => state?.fees);
 
-  const { Createfeecart } = fees;
+  const { Createfeecart, UpdateFeeCart } = fees;
   useEffect(() => {
-    if (Createfeecart?.success == 0) {
+    if (UpdateFeeCart?.success == 0) {
       //    dispatch(resetcreatecart())
       // dispatch(fetchAllClassAction())
+      console.log(UpdateFeeCart)
     }
-    if (Createfeecart?.success == 1) {
-      dispatch(fetchfeeCartegoryAction());
-      resetFormStates();
-      setcartegoryName('');
-      dispatch(resetcreatefee());
+    if (UpdateFeeCart?.success == 1) {
+      dispatch(resetUpdateFeeCart());
       props.close(false);
+
+      // }
     }
+  }, [UpdateFeeCart]);
 
-    // if (fetchAllClass?.success == 1) {
-    //   let i = 0;
-    //   let arr = [];
-    //   while (i < clad?.fetchAllClass?.data.length) {
-    //     arr.push(clad?.fetchAllClass?.data[i].title);
-    //     i++;
-    //   }
+  const [cartegoryName, setcartegoryName] = useState(props.data?.title);
 
-    //   setClasss(arr);
-    // }
-  }, [Createfeecart]);
-
-  const [cartegoryName, setcartegoryName] = useState();
-
-  const [description, setDesription] = useState('');
+  const [description, setDesription] = useState(props.data?.description);
 
   const formRef1 = useRef();
 
@@ -48,9 +41,12 @@ const FeesCartegoryItem = (props) => {
     formRef1.current.reset();
   }
   const user = useSelector((state) => state?.user);
-  const { username, userMail} = user;
+const { username, userMail} = user;
+
   let data = {
-    name: cartegoryName,
+    name: cartegoryName?.toUpperCase(),
+    id: props.data?.id,
+
     createdby: username?.payload,
     description: description,
   };
@@ -58,7 +54,7 @@ const FeesCartegoryItem = (props) => {
     if (cartegoryName == '') {
       toast.error('Error - Name Cannot Be Empty');
     } else {
-      dispatch(CreatesfeeCartegoryAction(data));
+      dispatch(UpdateStdCartAction(data));
     }
   };
 
@@ -71,7 +67,7 @@ const FeesCartegoryItem = (props) => {
       >
         <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
           <h3 className="font-medium text-black dark:text-white">
-            Add Fee Item
+            Update Fee Cartegory
           </h3>
         </div>
         <div className="p-5">
@@ -89,8 +85,8 @@ const FeesCartegoryItem = (props) => {
                 name=""
                 id=""
                 placeholder=""
-                defaultValue=""
-                onChange={(e) => setcartegoryName(e.target.value.trim().toUpperCase())}
+                defaultValue={props.data?.title}
+                onChange={(e) => setcartegoryName(e.target.value)}
               />
             </div>
 
@@ -108,8 +104,8 @@ const FeesCartegoryItem = (props) => {
                   id="bio"
                   rows={2}
                   placeholder=""
-                  defaultValue=""
-                  onChange={(e) => setDesription(e.target.value.trim())}
+                  defaultValue={props.data?.description}
+                  onChange={(e) => setDesription(e.target.value)}
                 ></textarea>
               </div>
             </div>
@@ -143,4 +139,10 @@ const FeesCartegoryItem = (props) => {
   );
 };
 
-export default FeesCartegoryItem;
+export default EditStudentCart;
+
+
+
+
+
+

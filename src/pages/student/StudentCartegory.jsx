@@ -38,6 +38,7 @@ import {
   deleteSingleStdCartAction,
   fetchstdCartegoryAction,
 } from '../../redux/slices/studentSlice';
+import EditStudentCart from '../../components/EditStudentCart';
 
 const StudentsCartegory = () => {
   const [pagesval, setpagesval] = useState(30);
@@ -205,8 +206,9 @@ const StudentsCartegory = () => {
           if (!visible) return;
           setVisible(false);
         }}
+        
       >
-        <EditFeesCartegoryItem close={setVisible} data={val} />
+        <EditStudentCart close={setVisible} data={val} />
       </Dialog>
       <Dialog
         visible={visible1}
@@ -288,7 +290,7 @@ const StudentsCartegory = () => {
                     type="search"
                     placeholder={'type here'}
                     onChange={(e) => {
-                      setSearch(e.target.value);
+                      setSearch(e.target.value.trim());
                     }}
                   />
                   {/* <button onClick={() => toPDF()}>Download PDF</button> */}

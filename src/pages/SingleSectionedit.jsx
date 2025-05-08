@@ -1,7 +1,6 @@
 import DefaultLayout from '../layout/DefaultLayout';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-;
 import { toast } from 'react-hot-toast';
 
 import {
@@ -13,12 +12,11 @@ import {
   resetdeleteclass,
   updateClassAction,
   updateSectionAction,
-  fetchAllSectionAction
+  fetchAllSectionAction,
 } from '../redux/slices/classSlice';
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Loader from '../common/Loader';
-
 
 const SingleSectionEdit = () => {
   const [PageAction, setPageAction] = useState();
@@ -35,7 +33,7 @@ const SingleSectionEdit = () => {
     deletesectionbyclass,
     sectionbyclass,
     updatesingleclass,
-    updateSection
+    updateSection,
   } = clad;
 
   const [data, setData] = useState();
@@ -60,8 +58,6 @@ const SingleSectionEdit = () => {
     //  navigate("/student/info")
   }, []);
 
-
- 
   useEffect(() => {
     if (deletesectionbyclass?.success == 1) {
       toast.success('Section Deleted Successfully');
@@ -71,11 +67,10 @@ const SingleSectionEdit = () => {
     if (deletesectionbyclass?.success == 0) {
       toast.error('Error Deleting Section');
       dispatch(resetdeleteclass());
-
     }
     //  navigate("/student/info")
   }, [deletesectionbyclass]);
- 
+
   useEffect(() => {
     if (updateSection?.success == 1) {
       toast.success('Section Data Updated Successfully');
@@ -87,49 +82,41 @@ const SingleSectionEdit = () => {
       toast.error('Error Updating Section Data');
       dispatch(fetchAllSectionAction());
       dispatch(resetUpdateSection());
-
-
     }
     //  navigate("/student/info")
   }, [updateSection]);
- 
+
   useEffect(() => {
     if (singleclass?.success == 1) {
       setData(singleclass);
       setSectionData(singleclass?.data);
       setclassid(singleclass?.data[0].classId);
-      setclasstitle(singleclass?.data[0].title)
-      setinstructorName(singleclass?.data[0].instructor)
+      setclasstitle(singleclass?.data[0].title);
+      setinstructorName(singleclass?.data[0].instructor);
       dispatch(resetUdateClass());
     }
     if (singleclass?.success == 0) {
       toast.error('Error Loadng Data');
       dispatch(resetUdateClass());
-
     }
     //  navigate("/student/info")
   }, [singleclass]);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (classtitle == '') return toast.error('Please Fill Out Required Fields');
 
     const data = {
       id: sectionId,
-      sectionName: classtitle,
-    
-
+      sectionName: classtitle.toUpperCase(),
     };
-console.log(data)
+    console.log(data);
     dispatch(updateSectionAction(data));
   };
 
-  
   const handlesectionDelete = (position, value) => {
     dispatch(deleteSectionByClass(value));
   };
-
-
 
   function handleBackButton() {
     navigate('/academics/section');
@@ -165,33 +152,33 @@ console.log(data)
                         id=""
                         placeholder=""
                         defaultValue={sectionName}
-                        onChange={(e) => setclasstitle(e.target.value)}
+                        onChange={(e) => setclasstitle(e.target.value.trim())}
                       />
                     </div>
-                   
                   </div>
-             
-                <div >  
-                  <div  className="flex mt-10 justify-end gap-4.5">
-                    <button
-                      className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type=""
-                      onClick={(e) => handleBackButton()}
-                    >
-                      Back
-                    </button>
-                    <button
-                      className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type=""
-                      onClick={(e) =>{    e.preventDefault()
-                       handleSubmit(e)}}
-                    >
-                      Save{' '}
-                    </button>
-                  </div>
+
+                  <div>
+                    <div className="flex mt-10 justify-end gap-4.5">
+                      <button
+                        className="flex w-full justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                        type=""
+                        onClick={(e) => handleBackButton()}
+                      >
+                        Back
+                      </button>
+                      <button
+                        className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSubmit(e);
+                        }}
+                      >
+                        Save{' '}
+                      </button>
+                    </div>
                   </div>
                 </form>
-        
               </div>
             </div>
           </div>

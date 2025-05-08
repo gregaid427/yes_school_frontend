@@ -449,7 +449,7 @@ const { username, userMail} = user;
                                       //   var newData = FinalResult.map((el) => {
                                       //     if (el.student_id == item.student_id)
                                       //       return Object.assign({}, el, {
-                                      //         examScore: e.target.value,
+                                      //         examScore: e.target.value.trim(),
                                       //       });
                                       //     return el;
                                       //   });
@@ -468,7 +468,7 @@ const { username, userMail} = user;
                                       //   var newData = FinalResult.map((el) => {
                                       //     if (el.student_id == item.student_id)
                                       //       return Object.assign({}, el, {
-                                      //         classWorkScore: e.target.value,
+                                      //         classWorkScore: e.target.value.trim(),
                                       //       });
                                       //     return el;
                                       //   });
@@ -486,7 +486,7 @@ const { username, userMail} = user;
                                       //   var newData = FinalResult.map((el) => {
                                       //     if (el.student_id == item.student_id)
                                       //       return Object.assign({}, el, {
-                                      //         othersScore: e.target.value,
+                                      //         othersScore: e.target.value.trim(),
                                       //       });
                                       //     return el;
                                       //   });

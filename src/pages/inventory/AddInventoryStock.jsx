@@ -394,7 +394,7 @@ const AddInventoryStock = () => {
                     id=""
                     placeholder=""
                     defaultValue="0"
-                    onChange={(e) => setQuantity(e.target.value)}
+                    onChange={(e) => setQuantity(e.target.value.trim())}
                   />
                 </div>
                 <div className="w-full mb-3 sm:w-2/2">
@@ -426,7 +426,7 @@ const AddInventoryStock = () => {
                       id=""
                       placeholder=""
                       defaultValue="0.00"
-                      onChange={(e) => setPrice(e.target.value)}
+                      onChange={(e) => setPrice(e.target.value.trim())}
                     />
                   </div>
                   <div className="w-full mb-3 sm:w-1/2">
@@ -443,7 +443,7 @@ const AddInventoryStock = () => {
                       id=""
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setDate(e.target.value)}
+                      onChange={(e) => setDate(e.target.value.trim())}
                     />
                   </div>
                 </div>
@@ -478,7 +478,7 @@ const AddInventoryStock = () => {
                       id="bio"
                       rows={2}
                       placeholder=""
-                      onChange={(e) => setDesc(e.target.value)}
+                      onChange={(e) => setDesc(e.target.value.trim())}
                     ></textarea>
                   </div>
                 </div>
@@ -569,7 +569,7 @@ const AddInventoryStock = () => {
                     type="search"
                     placeholder={'type here'}
                     onChange={(e) => {
-                      setSearch(e.target.value);
+                      setSearch(e.target.value.trim());
                     }}
                   />
                   {/* <button onClick={() => toPDF()}>Download PDF</button> */}

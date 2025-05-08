@@ -95,7 +95,7 @@ const SectionModal = (props) => {
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setsectionTitle(e.target.value)}
+                        onChange={(e) => setsectionTitle(e.target.value.trim())}
                       />
                     </div>
 

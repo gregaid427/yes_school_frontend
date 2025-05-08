@@ -14,6 +14,9 @@ import {
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Loader from '../common/Loader';
+import { Dialog } from 'primereact/dialog';
+import SectionModal from '../components/SectionModal';
+import SectionClassModal from '../components/SectionClassModal';
 
 const SingleClassEdit = () => {
   const [PageAction, setPageAction] = useState();
@@ -43,8 +46,19 @@ const SingleClassEdit = () => {
   const [sectiondata, setSectionData] = useState([
     { title: null, instructor: null },
   ]);
-  const [classIdd, setclassid] = useState(value.classId);
+  const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
+  const [position, setPosition] = useState('center');
+  const [change, setChange] = useState();
+  const [info, setinfo] = useState();
 
+  
+  const show = (position) => {
+    setPosition(position);
+    setVisible(true);
+  };
+  const [classIdd, setclassid] = useState(value.classId);
+console.log(value)
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
     setSectionData(value);
@@ -61,7 +75,7 @@ const SingleClassEdit = () => {
 
   useEffect(() => {
     if (deletesectionbyclass?.success == 1) {
-      toast.success('Section Deleted Successfully');
+    //  toast.success('Section Deleted Successfully');
       let data = deletesectionbyclass?.data;
       setSectionData(data);
       // dispatch(fetchSectionbyclassAction({ classId: classIdd }));
@@ -103,7 +117,9 @@ const { username, userMail} = user;
 
     const data = {
       classId: classIdd,
-      title: classtitle,
+      prevclass: value[0]?.title,
+
+      title: classtitle.toUpperCase(),
       instructor: instructor,
       updatedBy: username?.payload,
     };
@@ -118,6 +134,8 @@ const { username, userMail} = user;
   return loader ? (
     <Loader />
   ) : (
+    <>
+     
     <DefaultLayout>
       <div className="mx-auto w-full">
         <div className="flex flex-row w-full  gap-0" style={{}}>
@@ -145,7 +163,7 @@ const { username, userMail} = user;
                         id=""
                         placeholder=""
                         defaultValue={sectiondata[0]?.title}
-                        onChange={(e) => setclasstitle(e.target.value)}
+                        onChange={(e) => setclasstitle(e.target.value.trim())}
                       />
                     </div>
                     <div className="w-full sm:w-2/2">
@@ -162,7 +180,7 @@ const { username, userMail} = user;
                         id=""
                         placeholder=""
                         defaultValue={sectiondata[0]?.instructor}
-                        onChange={(e) => setinstructorName(e.target.value)}
+                        onChange={(e) => setinstructorName(e.target.value.trim())}
                       />
                     </div>
                   </div>
@@ -185,9 +203,9 @@ const { username, userMail} = user;
 
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full gap-5.5 sm:w-2/2">
-                      <div className="flex gap-5.5 ">
+                      <div className="flex gap-5.5 mb-5 justify-between">
                         <label
-                          className="mb-3 block sm:w-1/2 text-sm font-medium text-black dark:text-white"
+                          className="mb-3 block  text-sm font-medium align-middle text-black dark:text-white"
                           htmlFor=""
                         >
                           Sections{' '}
@@ -195,23 +213,19 @@ const { username, userMail} = user;
                             {/* ( Not Editable ) */}
                           </span>
                         </label>
-                        <label
-                          className="mb-3 block text-sm sm:w-1/2 font-medium text-black dark:text-white"
-                          htmlFor=""
-                        ></label>
+                        
                       </div>
                       <div className="flex  flex-col">
-                        <div className={value.length != 0 ? '' : 'hidden'}>
+                        {/* <div className={sectiondata.length  2 ? '' : 'hidden'}>
                           <label
                             className="mb-3 block sm:w-1/2 text-sm font-medium text-black dark:text-white"
                             htmlFor=""
                           >
                             No Sections Created for Class{' '}
                             <span className="muted font-thin">
-                              {/* ( Not Editable ) */}
                             </span>
                           </label>
-                        </div>
+                        </div> */}
                         {sectiondata?.map((item) => (
                           <div
                             key={item.section}
@@ -235,12 +249,18 @@ const { username, userMail} = user;
                               onClick={(e) => {
                                 e.preventDefault();
                                 // console.log(sectiondata.indexOf(item))
-                                dispatch(
-                                  deleteSectionByClass({
-                                    section: item.section,
-                                    title: item.title,
-                                  }),
-                                );
+                              if(sectiondata.length == 1){
+                                                    toast.error('Delete Entire Class Instead');
+                          
+                                                  }else{
+                                                    dispatch(
+                                                      deleteSectionByClass({
+                                                        id:item.id,
+                                                        section: item.section,
+                                                        title: item.title,
+                                                      }),
+                                                    );
+                                                  }
                               }}
                             >
                               Delete{' '}
@@ -280,6 +300,8 @@ const { username, userMail} = user;
         {/* Fees Management info */}
       </div>
     </DefaultLayout>
+    </>
+
   );
 };
 

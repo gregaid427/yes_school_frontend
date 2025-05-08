@@ -734,7 +734,10 @@ const UsersSlices = createSlice({
       state.username = data;
     },
     setUserMail(state, data) {
-      state.userMail = data;
+      state.userId = data;
+    },
+    setUserId(state, data) {
+      state.userId = data;
     },
     setRoleCode(state, data) {
       state.roleCode = data;
@@ -1064,6 +1067,7 @@ export const {
   resetallstaff,
   resetAllUserData,
   setUserMail,
+  setUserId,
   setRoleCode,
   setUsername,
   resetschoolinfo,

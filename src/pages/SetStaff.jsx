@@ -285,7 +285,7 @@ console.log(codes)
                       id=""
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setFname(e.target.value)}
+                      onChange={(e) => setFname(e.target.value.trim())}
                     />
                   </div>
 
@@ -304,7 +304,7 @@ console.log(codes)
                       id=""
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setLname(e.target.value)}
+                      onChange={(e) => setLname(e.target.value.trim())}
                     />
                   </div>
                   <div className="flex row gap-1 mb-4 ">
@@ -324,7 +324,7 @@ console.log(codes)
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setContact1(e.target.value)}
+                        onChange={(e) => setContact1(e.target.value.trim())}
                       />
                     </div>
                     <div className="w-full sm:w-2/2">
@@ -342,7 +342,7 @@ console.log(codes)
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setContact2(e.target.value)}
+                        onChange={(e) => setContact2(e.target.value.trim())}
                       />
                     </div>
                   </div>
@@ -379,7 +379,7 @@ console.log(codes)
                         id=""
                         placeholder=""
                         defaultValue=""
-                        onChange={(e) => setRole(e.target.value)}
+                        onChange={(e) => setRole(e.target.value.trim())}
                       />
                     </div>
                   </div>
@@ -398,7 +398,7 @@ console.log(codes)
                       required
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => setEmail(e.target.value.trim())}
                     />
                   </div>
 
@@ -417,7 +417,7 @@ console.log(codes)
                       required
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => setPassword(e.target.value.trim())}
                     />
                   </div>
 
@@ -435,7 +435,7 @@ console.log(codes)
                       rows={2}
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setAddress(e.target.value)}
+                      onChange={(e) => setAddress(e.target.value.trim())}
                     ></textarea>
                   </div>
                   <div className="w-full mb-4 sm:w-2/2">
@@ -452,7 +452,7 @@ console.log(codes)
                       rows={2}
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setInfo(e.target.value)}
+                      onChange={(e) => setInfo(e.target.value.trim())}
                     ></textarea>
                   </div>
 
@@ -785,7 +785,7 @@ console.log(codes)
                     type="search"
                     placeholder={'type here'}
                     onChange={(e) => {
-                      setSearch(e.target.value);
+                      setSearch(e.target.value.trim());
                     }}
                   />
                   {/* <button onClick={() => toPDF()}>Download PDF</button> */}

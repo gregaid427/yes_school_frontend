@@ -322,7 +322,7 @@ const SearchCollectFee = (props) => {
                       id=""
                       placeholder=""
                       defaultValue=""
-                      onChange={(e) => setAmount(e.target.value)}
+                      onChange={(e) => setAmount(e.target.value.trim())}
                     />
                   </div>
 

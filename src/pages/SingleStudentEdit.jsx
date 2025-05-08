@@ -339,7 +339,7 @@ const fetchUserdatEdit = () => {
                       id=""
                       placeholder=""
                       defaultValue={value.firstName}
-                      onChange={(e) => setStudentfirstName(e.target.value)}
+                      onChange={(e) => setStudentfirstName(e.target.value.trim())}
                     />
                   </div>
                   <div className="w-full sm:w-2/2">
@@ -356,7 +356,7 @@ const fetchUserdatEdit = () => {
                       id=""
                       placeholder=""
                       defaultValue={value.lastName}
-                      onChange={(e) => setStudentlastName(e.target.value)}
+                      onChange={(e) => setStudentlastName(e.target.value.trim())}
                     />
                   </div>
                 </div>
@@ -376,7 +376,7 @@ const fetchUserdatEdit = () => {
                       id=""
                       placeholder=""
                       defaultValue={value.otherName}
-                      onChange={(e) => setStudentotherName(e.target.value)}
+                      onChange={(e) => setStudentotherName(e.target.value.trim())}
                     />
                   </div>
                   <div className="w-full sm:w-2/4 flex gap-5">
@@ -437,8 +437,8 @@ const fetchUserdatEdit = () => {
                       defaultValue={value.dateofbirth}
                       type="date"
                       onChange={(e) => {
-                        setdateofbirth(e.target.value);
-                        console.log(e.target.value);
+                        setdateofbirth(e.target.value.trim());
+                        console.log(e.target.value.trim());
                       }}
                     />
                   </div>
@@ -628,7 +628,7 @@ const fetchUserdatEdit = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.gFirstName}
-                            onChange={(e) => setgfName1(e.target.value)}
+                            onChange={(e) => setgfName1(e.target.value.trim())}
                           />
                         </div>
 
@@ -646,7 +646,7 @@ const fetchUserdatEdit = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.gLastName}
-                            onChange={(e) => setglName1(e.target.value)}
+                            onChange={(e) => setglName1(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -666,7 +666,7 @@ const fetchUserdatEdit = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.gEmail}
-                            onChange={(e) => setemail1(e.target.value)}
+                            onChange={(e) => setemail1(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full sm:w-2/4 flex gap-1">
@@ -701,7 +701,7 @@ const fetchUserdatEdit = () => {
                               id=""
                               placeholder=""
                               defaultValue={data[0]?.gRelation}
-                              onChange={(e) => setRelation1(e.target.value)}
+                              onChange={(e) => setRelation1(e.target.value.trim())}
                             />
                           </div>
                         </div>
@@ -722,7 +722,7 @@ const fetchUserdatEdit = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.gContact1}
-                            onChange={(e) => setgcontact1(e.target.value)}
+                            onChange={(e) => setgcontact1(e.target.value.trim())}
                           />
                         </div>
 
@@ -740,7 +740,7 @@ const fetchUserdatEdit = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.gContact2}
-                            onChange={(e) => setgcontact2(e.target.value)}
+                            onChange={(e) => setgcontact2(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -760,7 +760,7 @@ const fetchUserdatEdit = () => {
                             placeholder=""
                             defaultValue={data[0]?.gAddress}
                             // defaultValue={data?.gAddress}
-                            onChange={(e) => setgAddress1(e.target.value)}
+                            onChange={(e) => setgAddress1(e.target.value.trim())}
                           ></textarea>
                         </div>
                       </div>
@@ -824,7 +824,7 @@ const fetchUserdatEdit = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[1]?.gFirstName}
-                            onChange={(e) => setgfName2(e.target.value)}
+                            onChange={(e) => setgfName2(e.target.value.trim())}
                           />
                         </div>
 
@@ -842,7 +842,7 @@ const fetchUserdatEdit = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[1]?.gLastName}
-                            onChange={(e) => setglName2(e.target.value)}
+                            onChange={(e) => setglName2(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -862,7 +862,7 @@ const fetchUserdatEdit = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[1]?.gEmail}
-                            onChange={(e) => setemail2(e.target.value)}
+                            onChange={(e) => setemail2(e.target.value.trim())}
                           />
                         </div>
                         <div className="w-full sm:w-2/4 flex gap-1">
@@ -897,7 +897,7 @@ const fetchUserdatEdit = () => {
                               id=""
                               placeholder=""
                               defaultValue={data[1]?.gRelation}
-                              onChange={(e) => setRelation2(e.target.value)}
+                              onChange={(e) => setRelation2(e.target.value.trim())}
                             />
                           </div>
                         </div>
@@ -918,7 +918,7 @@ const fetchUserdatEdit = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[1]?.gContact1}
-                            onChange={(e) => setgcontact3(e.target.value)}
+                            onChange={(e) => setgcontact3(e.target.value.trim())}
                           />
                         </div>
 
@@ -936,7 +936,7 @@ const fetchUserdatEdit = () => {
                             id=""
                             placeholder=""
                             defaultValue={data[1]?.gContact2}
-                            onChange={(e) => setgcontact4(e.target.value)}
+                            onChange={(e) => setgcontact4(e.target.value.trim())}
                           />
                         </div>
                       </div>
@@ -957,7 +957,7 @@ const fetchUserdatEdit = () => {
                             placeholder=""
                             defaultValue={data[1]?.gAddress}
                             // defaultValue={data?.gAddress}
-                            onChange={(e) => setgAddress2(e.target.value)}
+                            onChange={(e) => setgAddress2(e.target.value.trim())}
                           ></textarea>
                         </div>
                       </div>

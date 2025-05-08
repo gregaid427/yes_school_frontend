@@ -546,7 +546,7 @@ export const CreatesfeeCartegoryAction = createAsyncThunk(
         toast.success('Fee Cartegory Added Successfully');
       }
       if (data?.success == 0) {
-        toast.error('Error Adding Fee Cartegory');
+        toast.error(data?.message);
       }
 
       if (data) {
@@ -639,6 +639,36 @@ export const UpdateScholarshipAction = createAsyncThunk(
   },
 );
 
+export const totalfeebyclassreport = createAsyncThunk(
+  'fetch/feereportsclass',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/totalfeebyclassreport`,
+        payload,axiosFile
+
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const fetchAllfeeAction = createAsyncThunk(
   'fetch/Allfee',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -652,6 +682,66 @@ export const fetchAllfeeAction = createAsyncThunk(
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/fee/`,
         axiosFile,payload,
+
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const fetchRepoertAction = createAsyncThunk(
+  'fetch/reports',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/reports`,
+        payload,axiosFile
+
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const fetchRepoert1Action = createAsyncThunk(
+  'fetch/reportsdefault',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/defaultreports`,
+        payload,axiosFile
 
       );
 
@@ -1417,7 +1507,7 @@ export const deleteSingleFeeCartAction = createAsyncThunk(
       });
 
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/fee/cartegorydel`,
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/cartitemdel`,
         payload,axiosFile
       );
 
@@ -1984,6 +2074,46 @@ export const FetchAcountUpdateAction = createAsyncThunk(
     }
   },
 );
+
+export const ReorderFeeItemsAction = createAsyncThunk(
+  'fee/reorderitems',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/reoderitems`,
+        payload,axiosFile
+
+      );
+      if (data.success == 1) {
+        toast.success('Reorder Successful');
+      }
+     
+      if (data?.success == 0) {
+        toast.error(data.message);
+      }
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const FetchSessionAcountAction = createAsyncThunk(
   'fee/fetchaccountclosure',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -2039,6 +2169,8 @@ const FeeSlices = createSlice({
     },
     resetUpdatefee(state) {
       state.updateCartegory = null;
+      state.ResetAllAccount = null;
+
     },
     resetdeletefee(state) {
       state.deleteSinglefee = null;
@@ -2088,6 +2220,40 @@ const FeeSlices = createSlice({
     },
   },
   extraReducers: (builder) => {
+
+    
+    builder.addCase(fetchRepoertAction.pending, (state, action) => {
+      state.fetchRepoertActionloading = true;
+      state.fetchRepoert = false;
+    });
+    builder.addCase(fetchRepoertAction.fulfilled, (state, action) => {
+      state.fetchRepoert = action?.payload;
+      state.fetchRepoertActionloading = false;
+      state.fetchRepoerterror = undefined;
+    });
+    builder.addCase(fetchRepoertAction.rejected, (state, action) => {
+      state.fetchRepoertActionloading = false;
+      state.fetchRepoerterror = action.payload;
+      state.fetchRepoert = undefined;
+    });
+
+    builder.addCase(fetchRepoert1Action.pending, (state, action) => {
+      state.fetchRepoertActionloading = true;
+      state.fetchRepoert = false;
+    });
+    builder.addCase(fetchRepoert1Action.fulfilled, (state, action) => {
+      state.fetchRepoert = action?.payload;
+      state.fetchRepoertActionloading = false;
+      state.fetchRepoerterror = undefined;
+    });
+
+    builder.addCase(fetchRepoert1Action.rejected, (state, action) => {
+      state.fetchRepoertActionloading = false;
+      state.fetchRepoerterror = action.payload;
+      state.fetchRepoert = undefined;
+    });
+
+
     builder.addCase(CloseSessionAcountAction.pending, (state, action) => {
       state.CloseSessionAcountloading = true;
       state.CloseSessionAcount = false;
@@ -2330,6 +2496,27 @@ const FeeSlices = createSlice({
       state.FetchTotalFeeloading = true;
       state.FetchTotalFee = undefined;
       state.FetchTotalFeeerror = action.payload;
+    });
+    
+    builder.addCase(ReorderFeeItemsAction.pending, (state, action) => {
+      state.ReorderFeeItemsloading = true;
+      state.ReorderFeeItems = false;
+      state.cartegory = false;
+
+    });
+    builder.addCase(ReorderFeeItemsAction.fulfilled, (state, action) => {
+      state.ReorderFeeItemsloading = false;
+      state.ReorderFeeItems = action?.payload;
+      state.ReorderFeeItemserror = undefined;
+      state.cartegory = action?.payload;
+
+    });
+    builder.addCase(ReorderFeeItemsAction.rejected, (state, action) => {
+      state.ReorderFeeItemsloading = true;
+      state.ReorderFeeItems = undefined;
+      state.ReorderFeeItemsderror = action.payload;
+      state.cartegory = undefined;
+
     });
 
     builder.addCase(fetchAllAssignRecordAction.pending, (state, action) => {
@@ -2825,6 +3012,22 @@ const FeeSlices = createSlice({
       state.fetchfeeStock = undefined;
       state.fetchfeeStockloading = undefined;
     });
+    
+    
+    builder.addCase(totalfeebyclassreport.pending, (state, action) => {
+      state.totalfeebyclassloading = true;
+      state.totalfeebyclass = false;
+    });
+    builder.addCase(totalfeebyclassreport.fulfilled, (state, action) => {
+      state.totalfeebyclass = action?.payload;
+      state.totalfeebyclassloading = false;
+      state.totalfeebyclasserror = undefined;
+    });
+    builder.addCase(totalfeebyclassreport.rejected, (state, action) => {
+      state.totalfeebyclasserror = action.payload;
+      state.totalfeebyclass = undefined;
+      state.totalfeebyclassloading = undefined;
+    });
 
     builder.addCase(fetchAllfeeAction.pending, (state, action) => {
       state.fetchAllfeeloading = true;
@@ -2897,20 +3100,20 @@ const FeeSlices = createSlice({
     builder.addCase(deleteSingleFeeCartAction.pending, (state, action) => {
       state.deleteSingleCartloading = true;
       state.deleteSinglefee = false;
-      // state.cartegory = false;
+       state.cartegory = false;
     });
 
     builder.addCase(deleteSingleFeeCartAction.fulfilled, (state, action) => {
       state.deleteSinglefee = action?.payload;
       state.deleteSingleCartloading = false;
       state.error = undefined;
-      // state.cartegory = action?.payload;
+       state.cartegory = action?.payload;
     });
     builder.addCase(deleteSingleFeeCartAction.rejected, (state, action) => {
       state.error = action.payload;
       state.deleteSinglefee = undefined;
       state.deleteSingleCartloading = undefined;
-      // state.cartegory = undefined;
+       state.cartegory = undefined;
     });
 
     builder.addCase(PayFeeAction.pending, (state, action) => {
@@ -3084,6 +3287,7 @@ export const {
   resetGetFeeRecord,
   resetClearlog,
   resetGetSessionFeeRecord
+  
 } = FeeSlices.actions;
 
 export default FeeSlices.reducer;

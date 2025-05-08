@@ -77,7 +77,7 @@ const Subject = () => {
 
   useEffect(() => {
     if (CreateSubject?.success == 0) {
-      toast.error('Error - Adding New Subject');
+      toast.error(CreateSubject?.message);
       dispatch(resetcreatesubject());
     }
     if (CreateSubject?.success == 1) {
@@ -247,7 +247,7 @@ const Subject = () => {
                   id=""
                   placeholder=""
                   defaultValue=""
-                  onChange={(e) => setSubjectName(e.target.value)}
+                  onChange={(e) => setSubjectName(e.target.value.trim())}
                 />
               </div>
 
@@ -423,7 +423,7 @@ const Subject = () => {
                     type="search"
                     placeholder={'type here'}
                     onChange={(e) => {
-                      setSearch(e.target.value);
+                      setSearch(e.target.value.trim());
                     }}
                   />
                   {/* <button onClick={() => toPDF()}>Download PDF</button> */}
