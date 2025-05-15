@@ -77,7 +77,7 @@ const ExamReportModal = (props) => {
     // formRef.current.reset();
     formRef1.current.reset();
   }
-console.log(props)
+  console.log(props);
   return (
     <div className="w-full">
       <div className="grid  gap-8">
@@ -199,7 +199,9 @@ console.log(props)
                           <p className="text-sm  ">Class / Section :</p>
                           <p className="text-sm  ">
                             {props.std?.class}
-                            {props.std?.section == 'NONE' ? '' : '/' + val?.section}
+                            {props.std?.section == 'NONE'
+                              ? ''
+                              : '/' + val?.section}
                           </p>
                         </div>
                         {/* <div className="w-4/12 text-right text-sm">
@@ -217,9 +219,9 @@ console.log(props)
                       >
                         <thead className="w-full border border-stroke  dark:border-strokedark">
                           <tr className="w-full text-start  ">
-                            <th className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 font-semibold w-2/12">
+                            {/* <th className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 font-semibold w-2/12">
                               Exam iD
-                            </th>
+                            </th> */}
                             <th
                               scope="col"
                               className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 font-semibold w-5/12"
@@ -230,7 +232,20 @@ console.log(props)
                               scope="col"
                               className="text-sm  text-start border  border-stroke  dark:border-strokedark p-1 font-semibold w-1/12"
                             >
-                              Mark (100%)
+                              Class Score (
+                              {examinfo?.result?.[0].classworkpercent}%)
+                            </th>{' '}
+                            <th
+                              scope="col"
+                              className="text-sm  text-start border  border-stroke  dark:border-strokedark p-1 font-semibold w-1/12"
+                            >
+                              Exam Score ({examinfo?.result?.[0].exampercent}%)
+                            </th>{' '}
+                            <th
+                              scope="col"
+                              className="text-sm  text-start border  border-stroke  dark:border-strokedark p-1 font-semibold w-1/12"
+                            >
+                              Total Score (100%)
                             </th>
                             <th
                               scope="col"
@@ -249,12 +264,18 @@ console.log(props)
                         <tbody className="w-full border  text-start  border-stroke  dark:border-strokedark">
                           {examinfo?.result?.map((item, index) => (
                             <tr key={index} className=" ">
-                              <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1  w-1/12">
+                              {/* <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1  w-1/12">
                                 {item.examid}
-                              </td>
+                              </td> */}
                               <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-5/12">
                                 {item.subject}
                               </td>
+                              <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-2/12">
+                                {item.classworkscore} {' %'}
+                              </td>{' '}
+                              <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-2/12">
+                                {item.examscore} {' %'}
+                              </td>{' '}
                               <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-2/12">
                                 {item.totalscore} {' %'}
                               </td>
@@ -269,85 +290,24 @@ console.log(props)
                               </td>
                             </tr>
                           ))}
+                          <div className="flex justify-between">
+                            <p>
+                              <span className="text-sm">
+                                Class Rank :{' '}
+                                {examinfo?.result[0]?.overallposition} of{' '}
+                                {examinfo?.result[0]?.classize}{' '}
+                              </span>
+                            </p>
+                            <p>
+                              <span className="text-sm">
+                                Total Score {examinfo?.result[0]?.overallscore}{' '}
+                                of {examinfo?.result?.length * 100}
+                              </span>
+                            </p>
+                          </div>
                         </tbody>
-                        {}
-                        {/* <thead className="w-full  ">
-
-                        {cart?.map((item, index) => (
-                          <tr className="w-full  ">
-                            {' '}
-                            <th className="text-sm float-start  font-light w-4/12">
-                              {index + 1}
-                            </th>
-                            <th className="text-sm text font-light w-4/12">
-                              {item?.feename}{' '}
-                            </th>
-                            <th className="text-sm font-light w-4/12">
-                              {val?.preference?.includes(item?.feename)
-                                ? 0
-                                : item?.amount}
-                            </th>
-                          </tr>
-                          
-                        ))}
-                                  <tr className="w-full  ">
-                            {' '}
-                            <th className="text-sm float-start  font-light w-4/12">
-                              {'-'}
-                            </th>
-                            <th className="text-sm uppercase text font-light w-4/12">
-                            Previous Session Arrears 
-                            </th>
-                            <th className="text-sm font-light w-4/12">
-                            {response?.arrears}
-                            </th>
-                          </tr>           
-
-                      </thead> */}
-                        <div className="w-full flex"> </div>
-
-                        <tr className="w-full  border-stroke  dark:border-strokedark ">
-                          {' '}
-                          <th className="text-sm  font-light w-1/12"></th>
-                          <th className="text-sm text-right font-light w-6/12">
-                            Class Rank :
-                          </th>
-                          <th className="text-sm font-light w-full">
-                            {examinfo?.result[0]?.overallposition} of{' '}
-                            {examinfo?.result[0]?.classize}
-                          </th>
-                        </tr>
-                        <thead className="w-full   ">
-                          <tr className="w-full border-t border-stroke  dark:border-strokedark ">
-                            {' '}
-                            <th className="text-sm  font-light w-1/12"></th>
-                            <th className="text-sm text-right font-bold  w-6/12">
-                              ..............
-                            </th>
-                            <th className="text-sm font-bold  w-4/12"></th>
-                          </tr>
-                        </thead>
                       </table>
                     </div>
-
-                    {/* <div className="border-l font-thin px-3 text-sm flex float-end flex-col w-5/12 border-stroke  dark:border-strokedark">
-                    <div className="flex w-full justify-between float-end">
-                     <p>Amount Paid </p>  {response?.amountpaid}
-                    </div> */}
-                    {/* <div className="flex float-end">
-                       Arrears : {eval(val?.feepayable - response?.balbeforepayment)}
-                    </div> */}
-                    {/* <div className="flex w-full justify-between float-end">
-                     <p>Previous Session Arrears  </p> {response?.arrears}
-                    </div> */}
-                    {/* <div className="flex w-full justify-between float-end">
-                     <p>Balance Before Payment </p> {response?.balbeforepayment}
-                    </div>
-
-                    <div className="flex w-full justify-between font-bold float-end">
-                     <p>Current Balance </p>  {response?.balanceafterpayment}
-                    </div>
-                  </div> */}
                   </div>
                   <div style={{ pageBreakAfter: 'always' }}>
                     <div className="text-sm mt-6  w-full">

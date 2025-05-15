@@ -25,7 +25,7 @@ const ClassReportModal = (props) => {
   const { CreateInventorycart } = inventory;
   const user = useSelector((state) => state?.user);
   const { allschool } = user;
-  const [examinfo, setexaminfo] = useState([]);
+  const [examinfo1, setexaminfo1] = useState([]);
   const [result, setresult] = useState([]);
   const [val, setVal] = useState();
   const navigate = useNavigate();
@@ -41,11 +41,12 @@ const ClassReportModal = (props) => {
       console.log(result);
 
       setresult(result);
-      setexaminfo(examinfo);
+      setexaminfo1(examinfo);
 
       setVal(val);
     }
   }, []);
+  console.log(examinfo1);
   useEffect(() => {
     if (allschool?.success == 0) {
       //toast.error('Error - Adding Item Cartegory ');
@@ -87,7 +88,7 @@ const ClassReportModal = (props) => {
     }
   }, [fetchsessionactive]);
 
-  console.log(result)
+  console.log(result);
   return (
     <DefaultLayout>
       <div className="w-full">
@@ -125,12 +126,11 @@ const ClassReportModal = (props) => {
                 onClick={(e) => {
                   e.preventDefault();
 
-                  
                   // navigate("/exam/report", {
                   //   state: { action: 2, value: val},
                   // });
-                  navigate("/exam/reportdetail", {
-                    state: { action: 2, value: val},
+                  navigate('/exam/reportdetail', {
+                    state: { action: 2, value: val },
                   });
                 }}
               >
@@ -157,249 +157,196 @@ const ClassReportModal = (props) => {
         >
           {result?.map((value, index) => (
             <div className="w-full py-4">
-                <div className="col-span-12">
-                  <div className="rounded-sm text-black dark:text-white   bg-white shadow-default  dark:dark:bg-form-input">
-                    <div className=" flex justify-between  py-3 px-10">
-                      <div
-                        key={index}
-                        className="w-full flex flex-col   py-10"
-                        style={{ pageBreakAfter: 'always' }}
-                      >
-                        <div className="w-full ">
-                          <div className="flex border-b justify-between pb-2 border-stroke  dark:border-strokedark">
-                            <img
-                              src={pictureurl == null ? userThree : pictureurl}
-                              className=" float-end mb-2 h-25 mr-2"
-                            />
-                            <div className="border-l pl-2 border-stroke  dark:border-strokedark w-full ">
+              <div className="col-span-12">
+                <div className="rounded-sm text-black dark:text-white   bg-white shadow-default  dark:dark:bg-form-input">
+                  <div className=" flex justify-between  py-3 px-10">
+                    <div
+                      key={index}
+                      className="w-full flex flex-col   py-10"
+                      style={{ pageBreakAfter: 'always' }}
+                    >
+                      <div className="w-full ">
+                        <div className="flex border-b justify-between pb-2 border-stroke  dark:border-strokedark">
+                          <img
+                            src={pictureurl == null ? userThree : pictureurl}
+                            className=" float-end mb-2 h-25 mr-2"
+                          />
+                          <div className="border-l pl-2 border-stroke  dark:border-strokedark w-full ">
+                            <p>
+                              <span className="text-xl">
+                                {allschool?.data[0]?.name}
+                              </span>
+                            </p>
+                            <p>
+                              <span className="text-sm">
+                                {allschool?.data[0]?.address}
+                              </span>
+                            </p>
+                            <p>
+                              <span className="text-sm ">
+                                {allschool?.data[0]?.contact1}
+                                {allschool?.data[0]?.contact2 ? '/' : ''}
+                                {allschool?.data[0]?.contact2}
+                              </span>
+                            </p>
+                            <p>
+                              <span className="flex text-sm align-bottom">
+                                Session : {sessionz?.sessionname}
+                              </span>
+                            </p>
+                            {/* <p>Accra, Ghana</p>   */}
+                          </div>
+                        </div>
+                        <div className="flex border-b justify-between  border-stroke  dark:border-strokedark">
+                          <div className="w-full py-3 justify-between">
+                            <div className="w-full flex gap-1">
+                              <p className="text-sm  ">Exam :</p>
+                              <p className="text-sm  ">
+                                {examinfo1?.examgroup} - {examinfo1?.session}
+                              </p>
+                            </div>
+
+                            <div className="w-4/12 text-sm">
+                              <p>Student id : {result[index][0]?.student_id}</p>
+
                               <p>
-                                <span className="text-xl">
-                                  {allschool?.data[0]?.name}
+                                Name :
+                                {value[0]?.firstName +
+                                  ' ' +
+                                  value[0]?.otherName +
+                                  ' ' +
+                                  value[0]?.lastName}
+                              </p>
+
+                              <p></p>
+                            </div>
+                            <div className="w-full flex gap-1">
+                              <p className="text-sm  ">Class / Section :</p>
+                              <p className="text-sm  ">
+                                {val?.title}
+                                {val?.section == 'NONE' || val?.section == null
+                                  ? ''
+                                  : '/' + val?.section}
+                              </p>
+                            </div>
+                            {/* <div className="w-4/12 text-right text-sm">
+                        <p>{date}</p>
+                        <p>Receipt No : {response?.receiptid}</p>
+                      </div> */}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex border border-stroke  dark:border-strokedark ">
+                        <div className="flex border-b  w-full border-stroke  dark:border-strokedark">
+                          <table
+                            className="w-full  "
+                            style={{ tableLayout: 'fixed', width: '100%' }}
+                          >
+                            <thead className="w-full border border-stroke  dark:border-strokedark">
+                              <tr className="w-full text-start  ">
+                                {/* <th className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 font-semibold w-2/12">
+                              Exam iD
+                            </th> */}
+                                <th
+                                  scope="col"
+                                  className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 font-semibold w-5/12"
+                                >
+                                  Subject
+                                </th>
+                                <th
+                                  scope="col"
+                                  className="text-sm  text-start border  border-stroke  dark:border-strokedark p-1 font-semibold w-1/12"
+                                >
+                                  Class Score (
+                                  {result?.[0]?.[0]?.classworkpercent}%)
+                                </th>{' '}
+                                <th
+                                  scope="col"
+                                  className="text-sm  text-start border  border-stroke  dark:border-strokedark p-1 font-semibold w-1/12"
+                                >
+                                  Exam Score ({result?.[0]?.[0]?.exampercent}%)
+                                </th>{' '}
+                                <th
+                                  scope="col"
+                                  className="text-sm  text-start border  border-stroke  dark:border-strokedark p-1 font-semibold w-1/12"
+                                >
+                                  Total Score (100%)
+                                </th>
+                                <th
+                                  scope="col"
+                                  className="text-sm  text-start font-semibold border border-stroke  dark:border-strokedark p-1 w-3/12"
+                                >
+                                  Remarks
+                                </th>
+                                <th
+                                  scope="col"
+                                  className="text-sm font-semibold  text-start border border-stroke  dark:border-strokedark p-1 w-1/12"
+                                >
+                                  Position
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody className="w-full border  text-start  border-stroke  dark:border-strokedark">
+                              {value?.map((item, index) => (
+                                <tr className=" ">
+                                  {/* <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1  w-1/12">
+                                    {item.examid} 
+                                    </td> */}
+                                  <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-5/12">
+                                    {item.subject}
+                                  </td>
+                                  <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-2/12">
+                                    {item.classworkscore} {' %'}
+                                  </td>
+                                  <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-3/12">
+                                    {item.examscore}
+                                  </td>
+                                  <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-2/12">
+                                    {item.totalscore} {' %'}
+                                  </td>
+                                  <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-3/12">
+                                    {item.examremark}
+                                  </td>
+                                  <td className="text-sm font-semibold border border-stroke  dark:border-strokedark p-1 w-1/12">
+                                    {item.position}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                            <div className="flex justify-between">
+                              <p>
+                                <span className="text-sm">
+                                  Class Rank : {value[0]?.overallposition} of{' '}
+                                  {value[0]?.classize}{' '}
                                 </span>
                               </p>
                               <p>
                                 <span className="text-sm">
-                                  {allschool?.data[0]?.address}
+                                  Total Score {value[0]?.overallscore} of{' '}
+                                  {value.length * 100} 
                                 </span>
                               </p>
-                              <p>
-                                <span className="text-sm ">
-                                  {allschool?.data[0]?.contact1}
-                                  {allschool?.data[0]?.contact2 ? '/' : ''}
-                                  {allschool?.data[0]?.contact2}
-                                </span>
-                              </p>
-                              <p>
-                                <span className="flex text-sm align-bottom">
-                                  Session : {sessionz?.sessionname}
-                                </span>
-                              </p>
-                              {/* <p>Accra, Ghana</p>   */}
                             </div>
-                          </div>
-                          <div className="flex border-b justify-between  border-stroke  dark:border-strokedark">
-                            <div className="w-full py-3 justify-between">
-                              <div className="w-full flex gap-1">
-                                <p className="text-sm  ">Exam :</p>
-                                <p className="text-sm  ">
-                                  {examinfo?.examgroup} - {examinfo?.session}
-                                </p>
-                              </div>
 
-                              <div className="w-4/12 text-sm">
-                                <p>
-                                  Student id :{' '}
-                                  {result[index][0]?.student_id}
-                                </p>
-
-                                <p>
-                                  Name :
-                                  {value[0]?.firstName +
-                                    ' ' +
-                                    value[0]?.otherName +
-                                    ' ' +
-                                    value[0]?.lastName}
-                                </p>
-
-                                <p></p>
-                              </div>
-                              <div className="w-full flex gap-1">
-                                <p className="text-sm  ">Class / Section :</p>
-                                <p className="text-sm  ">
-                                  {val?.title}
-                                  {val?.section == 'NONE' ||
-                                  val?.section == null
-                                    ? ''
-                                    : '/' + val?.section}
-                                </p>
-                              </div>
-                              {/* <div className="w-4/12 text-right text-sm">
-                        <p>{date}</p>
-                        <p>Receipt No : {response?.receiptid}</p>
-                      </div> */}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex border border-stroke  dark:border-strokedark ">
-                          <div className="flex border-b  w-full border-stroke  dark:border-strokedark">
-                            <table
-                              className="w-full  "
-                              style={{ tableLayout: 'fixed', width: '100%' }}
-                            >
-                              <thead className="w-full border border-stroke  dark:border-strokedark">
-                                <tr className="w-full text-start  ">
-                                  <th className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 font-semibold w-2/12">
-                                    Exam iD
-                                  </th>
-                                  <th
-                                    scope="col"
-                                    className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 font-semibold w-5/12"
-                                  >
-                                    Subject
-                                  </th>
-                                  <th
-                                    scope="col"
-                                    className="text-sm  text-start border  border-stroke  dark:border-strokedark p-1 font-semibold w-1/12"
-                                  >
-                                    Mark (100%)
-                                  </th>
-                                  <th
-                                    scope="col"
-                                    className="text-sm  text-start font-semibold border border-stroke  dark:border-strokedark p-1 w-3/12"
-                                  >
-                                    Remarks
-                                  </th>
-                                  <th
-                                    scope="col"
-                                    className="text-sm font-semibold  text-start border border-stroke  dark:border-strokedark p-1 w-1/12"
-                                  >
-                                    Position
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody className="w-full border  text-start  border-stroke  dark:border-strokedark">
-                                {value?.map((item, index) => (
-                                  <tr className=" ">
-                                    <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1  w-1/12">
-                                    {item.examid} 
-                                    </td>
-                                    <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-5/12">
-                                    {item.subject}
-                                    </td>
-                                    <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-2/12">
-                                      {item.totalscore} {' %'}
-                                    </td>
-                                    <td className="text-sm  text-start border border-stroke  dark:border-strokedark p-1 w-3/12">
-                                      {item.examremark}
-                                    </td>
-                                    <td className="text-sm font-semibold border border-stroke  dark:border-strokedark p-1 w-1/12">
-                                      {item.position}
-                                    </td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                              {}
-                              {/* <thead className="w-full  ">
-
-                        {cart?.map((item, index) => (
-                          <tr className="w-full  ">
-                            
-                            <th className="text-sm float-start  font-light w-4/12">
-                              {index + 1}
-                            </th>
-                            <th className="text-sm text font-light w-4/12">
-                              {item?.feename}
-                            </th>
-                            <th className="text-sm font-light w-4/12">
-                              {val?.preference?.includes(item?.feename)
-                                ? 0
-                                : item?.amount}
-                            </th>
-                          </tr>
                           
-                        ))}
-                                  <tr className="w-full  ">
-                            
-                            <th className="text-sm float-start  font-light w-4/12">
-                              {'-'}
-                            </th>
-                            <th className="text-sm uppercase text font-light w-4/12">
-                            Previous Session Arrears 
-                            </th>
-                            <th className="text-sm font-light w-4/12">
-                            {response?.arrears}
-                            </th>
-                          </tr>           
-
-                      </thead> */}
-                              <div className="w-full flex"> </div>
-
-                              <thead
-                                className={
-                                  val?.scholarship < 1 ? 'hidden' : 'w-full'
-                                }
-                              >
-                                <tr className="w-full  border-stroke  dark:border-strokedark ">
-                                  <th className="text-sm  font-light w-1/12"></th>
-                                  <th className="text-sm text-right font-light w-6/12">
-                                    Class Rank :
-                                  </th>
-                                  <th className="text-sm font-light w-full">
-                                    {value[0]?.overallposition} of{' '}
-                                    {value[0]?.classize}
-                                  </th>
-                                </tr>
-                              </thead>
-                              {/* <thead className="w-full   ">
-                          <tr className="w-full border-t border-stroke  dark:border-strokedark ">
-                            
-                            <th className="text-sm  font-light w-1/12"></th>
-                            <th className="text-sm text-right font-bold  w-6/12">
-                              ..............
-                            </th>
-                            <th className="text-sm font-bold  w-4/12"></th>
-                          </tr>
-                        </thead> */}
-                            </table>
-                          </div>
-
-                          {/* <div className="border-l font-thin px-3 text-sm flex float-end flex-col w-5/12 border-stroke  dark:border-strokedark">
-                    <div className="flex w-full justify-between float-end">
-                     <p>Amount Paid </p>  {response?.amountpaid}
-                    </div> */}
-                          {/* <div className="flex float-end">
-                       Arrears : {eval(val?.feepayable - response?.balbeforepayment)}
-                    </div> */}
-                          {/* <div className="flex w-full justify-between float-end">
-                     <p>Previous Session Arrears  </p> {response?.arrears}
-                    </div> */}
-                          {/* <div className="flex w-full justify-between float-end">
-                     <p>Balance Before Payment </p> {response?.balbeforepayment}
-                    </div>
-
-                    <div className="flex w-full justify-between font-bold float-end">
-                     <p>Current Balance </p>  {response?.balanceafterpayment}
-                    </div>
-                  </div> */}
+                         
+                          </table>
                         </div>
-                        <div>
-                          <div className="text-sm mt-6  w-full mb-5">
-                            <p className=" ">Teacher's Remark</p>
-                            <p className="">
-                              {' '}
-                              {value[0].teacherreamark}{' '}
-                            </p>
 
-                            {/* <p className="text-center w-4/12 ">
-                        {response?.collectedby}
-                      </p> */}
-                          </div>
+                      </div>
+                      <div>
+                        <div className="text-sm mt-6  w-full mb-5">
+                          <p className=" ">Teacher's Remark</p>
+                          <p className=""> {value[0].teacherreamark} </p>
+
+                         
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
           ))}
         </Print>
       </div>

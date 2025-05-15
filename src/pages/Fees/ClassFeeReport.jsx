@@ -159,7 +159,7 @@ const ClassFeeReport = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  40% 15% 15% 15% 15% ;
+  --data-table-library_grid-template-columns:  35% 13% 13% 13% 13% 13% ;
 `,
       BaseCell: `
         font-size: 14px;
@@ -233,11 +233,13 @@ const ClassFeeReport = () => {
                         <HeaderCell>Name</HeaderCell> */}
                         <HeaderCell>Class</HeaderCell>
 
-                        <HeaderCell>Total Session Fees</HeaderCell>
+                        <HeaderCell> Arrears</HeaderCell>
+                        <HeaderCell> Fees Payable</HeaderCell>
 
-                        <HeaderCell>Session Paid Fees</HeaderCell>
-                        <HeaderCell>Current Balance</HeaderCell>
-                        <HeaderCell>Past Session Arrears</HeaderCell>
+                        <HeaderCell> Paid Fees</HeaderCell>
+                        <HeaderCell> Balance</HeaderCell>
+                        <HeaderCell> Discount</HeaderCell>
+
                       </HeaderRow>
                     </Header>
 
@@ -261,13 +263,17 @@ const ClassFeeReport = () => {
                                 {item.class} ({item.section})
                               </span>{' '}
                             </Cell>
-
+                            <Cell>{item.arrears}</Cell>
+                           
                             <Cell>{item.payable}</Cell>
+                           
                             <Cell>{item.paid}</Cell>
                             <Cell>
-                              {Math.abs(eval(item.payable - item.paid))}
+                              {Math.abs(eval(item.arrears + item.payable - item.paid))}
                             </Cell>
-                            <Cell>{item.arrears}</Cell>
+                            <Cell>
+                              {Math.abs(eval(item.scholar + item.pref ))}
+                            </Cell>
                           </Row>
                         </>
                       ))}
@@ -295,6 +301,9 @@ const ClassFeeReport = () => {
                           )}
                         </Cell>
                         <Cell>: {session.totalarears}</Cell>
+                        <Cell>
+                              {Math.abs(eval(session.shol + session.prefamount ))}
+                            </Cell>
                       </Row>
                     </Body>
                   </>

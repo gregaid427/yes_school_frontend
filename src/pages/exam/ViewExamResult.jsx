@@ -126,7 +126,7 @@ const ViewExamResult = (props) => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  10% 33%  10%  17% 8% 6% 10% 6%;
+  --data-table-library_grid-template-columns:  10% 33%  13%  14% 8% 6% 10% 6%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -176,7 +176,7 @@ const ViewExamResult = (props) => {
 
     autoTable(doc, { html: '#my-table' });
 
-    doc.save(`${value?.title} : ${value?.section}  `);
+    doc.save(`${value?.class} : ${value?.section}  `);
   };
   function setModalVisible() {
     setVisible(false);
@@ -184,7 +184,7 @@ const ViewExamResult = (props) => {
 
   const csvConfig = mkConfig({
     useKeysAsHeaders: true,
-    filename: `${value?.title} : ${value?.section == null ? '' : value?.section} `,
+    filename: `${value?.class} : ${value?.section == null ? '' : value?.section} `,
   });
 
   const handleDownloadCSV = async () => {
@@ -216,51 +216,77 @@ const ViewExamResult = (props) => {
                 Examination Result
               </h3>
               <div className="border-b border-stroke py-4 px-7 flex dark:border-strokedark">
+      
+
                 <div className="w-1/2">
-                  <h3 className="text-sm text-black dark:text-white">
-                    Class/Section :{' '}
-                    <span className="font-medium">
-                      {' '}
-                      {`${value?.title == undefined ? value?.class : value?.title } ${' '} ${' '} ${value?.section == null  ? '' :(  (value?.section == "-"? ' ' : "/"+value?.section ))}`}
-                    </span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
-                    Subject:{' '}
-                    <span className="font-medium ml-1">
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
+                      Class/Section {' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className=" font-medium">
+                        
+                        {`${value?.class} ${' '}  ${value?.section == null ? '' : value?.section == '-' ? ' ' : '/' + value?.section}`}
+                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
+                      Subject{' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">
                       {`${chosensubject}`}{' '}
-                    </span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
+                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black  w-3/12 dark:text-white">
                     Recorded By :{' '}
-                    <span className="font-medium ml-1">{`${createdby}`} </span>
-                  </h3>
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">
+                      {`${createdby}`}                       </span>
+                    </h3>
+                  </div>
                 </div>
-                <div className="w-1/2  border-l pl-2  border-stroke ">
-                  <h3 className="text-sm  text-black dark:text-white">
+
+
+
+                <div className="w-1/2">
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
                     Exam Group:{' '}
-                    <span className="font-medium ml-1">{`${examgroup}`}</span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className=" font-medium">
+                        
+                      {`${examgroup}`}                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
                     Session :{' '}
-                    <span className="font-medium ml-1">{`${session}`} </span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">
+                      {`${session}`}
+                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black  w-3/12 dark:text-white">
                     Recorded At :{' '}
-                    <span className="font-medium ml-1">{`${createdat.slice(0,25)}`} </span>
-                  </h3>
-                  {/* <h3 className="text-sm  text-black dark:text-white">
-                    Created By:{' '}
-                    <span className="font-medium ml-1">
-                      {`${value?.createdby}`}{' '}
-                    </span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
-                    Date Created:{' '}
-                    <span className="font-medium ml-1">
-                      {`${value?.createdat}`}{' '}
-                    </span>
-                  </h3> */}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">
+                      {`${createdat.slice(0,25)}`}                      </span>
+                    </h3>
+                  </div>
                 </div>
+
+
+              
               </div>
               <div className=" flex px-7 py-2 w-7/12 gap-3">
                   <div className="sm:w-2/5 ">
@@ -318,9 +344,8 @@ const ViewExamResult = (props) => {
                               {' '}
                               <div className="flex gap-1">
                                 {' '}
-                                <div className="w-4/12">Exam</div>
-                                <div className="w-4/12">Class</div>{' '}
-                                <div className="w-4/12">Other</div>
+                                <div className="w-6/12">Exam</div>
+                                <div className="w-6/12">Class</div>{' '}
                               </div>
                             </HeaderCell>
                             <HeaderCell>Total %</HeaderCell>
@@ -359,18 +384,18 @@ const ViewExamResult = (props) => {
 
                               <Cell>
                                 <div className="flex row gap-1 w-full">
-                                  <div className="w-4/12 ml-1">
+                                  <div className="w-6/12 ml-1">
                                     {' '}
                                     <span>{item.examscore == undefined ? 'n/a' : item.examscore}</span>
                                   </div>
-                                  <div className="w-4/12 ml-1">
+                                  <div className="w-6/12 ml-1">
                                     {' '}
-                                    <span>{item.classworkscore == undefined ? 'n/a' : item.examscore}</span>
+                                    <span>{item.classworkscore == undefined ? 'n/a' : item.classworkscore}</span>
                                   </div>
-                                  <div className="w-4/12 ml-1">
+                                  {/* <div className="w-6/12 ml-1">
                                     {' '}
                                     <span>{item.othersscore == undefined ? 'n/a' : item.examscore}</span>
-                                  </div>
+                                  </div> */}
                                 </div>
                               </Cell>
                               <Cell className="  ">

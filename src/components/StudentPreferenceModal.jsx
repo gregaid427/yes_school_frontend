@@ -42,7 +42,7 @@ const StudentPreferenceModal = (props) => {
     }
 
     if (Preferences?.success == 1) {
-      handleGetClassData(props)
+     // handleGetClassData(props)
       dispatch(resetpreference());
       props.close(false);
     }

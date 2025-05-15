@@ -109,7 +109,7 @@ const Finance = () => {
     SessionAcctReport,
     ClearLog,
     AllAssignLog,
-    ResetAllAccount
+    ResetAllAccount,
   } = fee;
 
   const [pagesval, setpagesval] = useState(30);
@@ -157,7 +157,6 @@ const Finance = () => {
   const [visible25, setVisible25] = useState(false);
   const [visible26, setVisible26] = useState(false);
   const [visible27, setVisible27] = useState(false);
-
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -272,14 +271,12 @@ const Finance = () => {
   useEffect(() => {
     dispatch(fetchfeeCartegoryAction());
   }, []);
-  
 
   useEffect(() => {
     if (Generatefee?.success == 1) {
       setVisible(false);
       setVisible5(false);
       setVisible8(false);
-
 
       dispatch(resetGeneratefee());
     }
@@ -408,8 +405,7 @@ const Finance = () => {
     if (AssignfeeGroup?.success == 1) {
       setVisible4(false);
     }
-    
-  }, [AssignfeeGroup ]);
+  }, [AssignfeeGroup]);
 
   useEffect(() => {
     if (CloseSessionAcount?.success == 1) {
@@ -761,7 +757,7 @@ const Finance = () => {
         <StudentAccountUpdateModal close={setVisible27} />
       </Dialog>
 
-      <div className="flex w-full gap-4">
+      <div className="flex w-full gap-10">
         <div className="w-6/12">
           <div className="grid grid-cols-1 gap-2 md:grid-cols-1  ">
             <div className="w-full flex-col">
@@ -1013,7 +1009,7 @@ const Finance = () => {
                     Assign Fee Options :
                   </label>
                   <div className=" flex flex-col gap-2">
-                  <div className="flex justify-between ">
+                    <div className="flex justify-between ">
                       <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                         <div
                           className={` flex h-5 w-5 items-center justify-center rounded border ${
@@ -1030,14 +1026,35 @@ const Finance = () => {
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                             navigate('/settings/feeitems')                        }}
+                          navigate('/settings/feeitems');
+                        }}
                       >
                         Select
                       </button>
                     </div>
-                  
-                  
-                
+                    <div className="flex justify-between ">
+                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                        <div
+                          className={` flex h-5 w-5 items-center justify-center rounded border ${
+                            true && 'border-primary bg-gray dark:bg-transparent'
+                          }`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                          ></span>
+                        </div>{' '}
+                        Assign Fee For Classes
+                      </label>
+                      <button
+                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                        type=""
+                        onClick={() => {
+                          navigate('/settings/assignfee');
+                        }}
+                      >
+                        Select
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1150,7 +1167,7 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                         Students Scholarship List
+                        Students Scholarship List
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
@@ -1175,7 +1192,7 @@ const Finance = () => {
                 <div className="w-full overflow-x-auto">
                   <div className="w-full  flex justify-between  ">
                     <h3 className="font-medium text-black py-3 dark:text-white">
-                       Fee Preference
+                      Fee Preference
                     </h3>
                   </div>
                 </div>
@@ -1207,7 +1224,7 @@ const Finance = () => {
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          navigate("/settings/preference");
+                          navigate('/settings/preference');
                         }}
                       >
                         Select
@@ -1227,30 +1244,26 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                         Students Preference List
+                        Students Preference List
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          navigate("/settings/preferencelist");
+                          navigate('/settings/preferencelist');
                         }}
                       >
                         Select
                       </button>
-                      </div>
-                      </div>
-
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-        
           </div>
         </div>
         <div className="w-6/12">
           <div className="grid grid-cols-1 gap-2 md:grid-cols-1  ">
-          
-           
             <div className="w-full flex-col">
               <div
                 className={
@@ -1356,21 +1369,19 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                         Student Account Update Log
+                        Student Account Update Log
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          dispatch(FetchAcountUpdateAction())
+                          dispatch(FetchAcountUpdateAction());
                           setVisible27(true);
                         }}
                       >
                         Select
                       </button>
                     </div>
-                
-                  
                   </div>
                 </div>
               </div>
@@ -1399,7 +1410,7 @@ const Finance = () => {
                     Generate Reports Options:
                   </label>
                   <div className=" flex flex-col gap-2">
-                  <div className="flex justify-between ">
+                    <div className="flex justify-between ">
                       <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                         <div
                           className={` flex h-5 w-5 items-center justify-center rounded border ${
@@ -1416,8 +1427,8 @@ const Finance = () => {
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                             navigate("/settings/reports")     
-                         }}
+                          navigate('/settings/reports');
+                        }}
                       >
                         Select
                       </button>
@@ -1433,41 +1444,19 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                       Session  Fee By Class  Report
+                        Session Fee By Class Report
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                             navigate("/settings/sessionclassreport")     
-                         }}
+                          navigate('/settings/sessionclassreport');
+                        }}
                       >
                         Select
                       </button>
                     </div>
-                  <div className="flex justify-between ">
-                      <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
-                        <div
-                          className={` flex h-5 w-5 items-center justify-center rounded border ${
-                            true && 'border-primary bg-gray dark:bg-transparent'
-                          }`}
-                        >
-                          <span
-                            className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
-                          ></span>
-                        </div>{' '}
-                        Assign Fee For Classes
-                      </label>
-                      <button
-                        className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-                        type=""
-                        onClick={() => {
-                             navigate('/settings/assignfee')                        }}
-                      >
-                        Select
-                      </button>
-                    </div>
-                  
+                 
                     <div className="flex justify-between">
                       <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                         <div
@@ -1479,13 +1468,13 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>
-                        Current Session Fee Report
+                        Fee Item Total Fee Report
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          navigate("/fees/records");
+                          navigate("/settings/reportstotal");
                         }}
                       >
                         Select
@@ -1565,7 +1554,7 @@ const Finance = () => {
                     Finance Log Options:
                   </label>
                   <div className=" flex flex-col gap-2">
-                  <div className="flex justify-between">
+                    <div className="flex justify-between">
                       <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                         <div
                           className={` flex h-5 w-5 items-center justify-center rounded border ${
@@ -1582,7 +1571,7 @@ const Finance = () => {
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                         navigate('/settings/managefee')
+                          navigate('/settings/managefee');
                         }}
                       >
                         Select
@@ -1671,13 +1660,13 @@ const Finance = () => {
                             className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
                           ></span>
                         </div>{' '}
-                         Student Account Update Log
+                        Student Account Update Log
                       </label>
                       <button
                         className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
                         type=""
                         onClick={() => {
-                          dispatch(FetchAcountUpdateAction())
+                          dispatch(FetchAcountUpdateAction());
                           setVisible27(true);
                         }}
                       >
@@ -1713,7 +1702,6 @@ const Finance = () => {
               </div>
             </div>
 
-          
             <div className="w-full flex-col">
               <div
                 className={
@@ -1761,7 +1749,6 @@ const Finance = () => {
                         Select
                       </button>
                     </div>
-                    
                   </div>
                 </div>
               </div>

@@ -140,6 +140,11 @@ import GlobalSearchPage from './pages/GlobalSearch';
 import SearchCollectFee from './pages/Fees/SearchCollectFee';
 import FinanceReports from './pages/Fees/FinanceReports';
 import ClassFeeReport from './pages/Fees/ClassFeeReport';
+import ClassFeeReportTotal from './pages/Fees/ClassFeeReportTotal';
+import Examsettings from './pages/exam/Examsettings';
+import SingleTrack from './pages/exam/SingleTrack';
+import SearchStudentsModalExam from './pages/SearchStudentsModalExam';
+import ExamGradeAlt from './pages/exam/ExamGradeAlt';
 
 function App() {
   const navigate = useNavigate();
@@ -321,6 +326,8 @@ function App() {
               }
             />{' '}
           </Route>
+          
+         
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/settings/preferencelist"
@@ -328,6 +335,61 @@ function App() {
                 <>
                   <PageTitle title="Fees" />
                   <PreferenceList />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/settings/std"
+              element={
+                <>
+                  <PageTitle title="Exam" />
+                  <SearchStudentsModalExam />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/exam/searchstd"
+              element={
+                <>
+                  <PageTitle title="Exam" />
+                  <SearchStudentsModalExam />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/settings/singletrack"
+              element={
+                <>
+                  <PageTitle title="Examination" />
+                  <SingleTrack />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/examination/singletrack"
+              element={
+                <>
+                  <PageTitle title="Examination" />
+                  <SingleTrack />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/settings/Examination"
+              element={
+                <>
+                  <PageTitle title="Examination" />
+                  <Examsettings />
                 </>
               }
             />{' '}
@@ -474,6 +536,17 @@ function App() {
                 <>
                   <PageTitle title="Fees" />
                   <FinanceReports />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/settings/reportstotal"
+              element={
+                <>
+                  <PageTitle title="Fees" />
+                  <ClassFeeReportTotal />
                 </>
               }
             />{' '}
@@ -1313,6 +1386,18 @@ function App() {
               }
             />{' '}
           </Route>
+          <Route element={<RequireAuth allowedRoles={['2']} code={code} />}>
+            <Route
+              path="/settings/exmgrading"
+              element={
+                <>
+                  <PageTitle title="Exam" />
+                  <ExamGradeAlt />
+                </>
+              }
+            />{' '}
+                      </Route>
+
           <Route element={<RequireAuth allowedRoles={['6']} />}>
             <Route
               path="/settings/users"

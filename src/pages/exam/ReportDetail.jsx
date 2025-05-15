@@ -85,6 +85,7 @@ const ExamReportDetail = () => {
   // }, []);
 
   useEffect(() => {
+    
     dispatch(FetchExamGroupAction());
   }, []);
 
@@ -238,6 +239,8 @@ const ExamReportDetail = () => {
   };
   function handleGetData() {
   //  setBtn(true);
+  dispatch(fetchStudentsClassAction(val));
+
     dispatch(FetchExamCustomAction(mydata));
   }
 
@@ -294,7 +297,8 @@ const ExamReportDetail = () => {
         class: value?.title,
         section: value?.section == '-' ? null : value?.section,
       };
-      dispatch(fetchStudentsClassAction(data));
+      setVal(data)
+     // dispatch(fetchStudentsClassAction(data));
     }
   }, [location?.state]);
 

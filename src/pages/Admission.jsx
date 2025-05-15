@@ -221,11 +221,11 @@ const Admission = () => {
       toast.error('Error : Unable to Add Student ');
     }
   }, [CreateStudent]);
-
+console.log(clazz)
   function handleNextButton() {
     if (firstName == '' || lastName == '')
-      return toast.error('Please Fill Out Required Fields');
-    if (clazz == '-') return toast.error('Select Class');
+      return toast.error('Please Fill Out Name Fields');
+    if (clazz == undefined) return toast.error('Select Class');
 
     setButonState(buttonState + 1);
   }
@@ -282,7 +282,7 @@ const Admission = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="fullName"
                       >
-                        First Name
+                        First Name*
                       </label>
                       <input
                         className="w-full required rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -300,7 +300,7 @@ const Admission = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="phoneNumber"
                       >
-                        Last Name
+                        Last Name*
                       </label>
                       <input
                         className="w-full required rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -374,7 +374,7 @@ const Admission = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="fullName"
                       >
-                        Date of Birth{' '}
+                        Date of Birth*{' '}
                         <span className="text-xm font-thin">(mm/dd/yyyy)</span>
                       </label>
 
@@ -397,7 +397,7 @@ const Admission = () => {
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="fullName"
                         >
-                          Class
+                          Class*
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
                           <ClassSelect
@@ -412,7 +412,7 @@ const Admission = () => {
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="phoneNumber"
                         >
-                          Section{' '}
+                          Section*{' '}
                         </label>
                         <div className="relative z-20 bg-white dark:bg-form-input">
                           <SectionSelect2
@@ -557,7 +557,7 @@ const Admission = () => {
                             className="mb-3 block text-sm font-medium text-black dark:text-white"
                             htmlFor="fullName"
                           >
-                            First Name
+                            First Name*
                           </label>
                           <input
                             className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -575,7 +575,7 @@ const Admission = () => {
                             className="mb-3 block text-sm font-medium text-black dark:text-white"
                             htmlFor="phoneNumber"
                           >
-                            Last Name
+                            Last Name*
                           </label>
                           <input
                             className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -656,7 +656,7 @@ const Admission = () => {
                             className="mb-3 block text-sm font-medium text-black dark:text-white"
                             htmlFor="fullName"
                           >
-                            Contact 1
+                            Contact 1*
                           </label>
                           <input
                             className="w-full rounded border border-stroke bg-gray py-2 px-2.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -693,7 +693,7 @@ const Admission = () => {
                           className=" block text-sm font-medium text-black dark:text-white"
                           htmlFor="Username"
                         >
-                          Home Address
+                          Home Address*
                         </label>
                         <div className="relative">
                           <textarea

@@ -26,6 +26,7 @@ import TableBtn from '../../components/Svgs/TableBtn';
 import { Dialog } from 'primereact/dialog';
 
 import {
+  DeleteExamAction,
   FetchExamCustomAction,
   FetchExamGroupAction,
   FetchExamListAction,
@@ -42,6 +43,7 @@ import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import ExamGroupSelect from '../../components/ExamGroupSelect';
 import ExamResultChoiceModal from '../../components/ExamResultChoiceModal';
 import NewExamsModal from '../../components/NewExamsModal';
+import DeleteModal from '../../components/DeleteModal';
 
 const ExamList = () => {
   const formRef1 = useRef();
@@ -52,7 +54,7 @@ const ExamList = () => {
   }
 
   const exam = useSelector((state) => state?.exam);
-  const { FetchExamList, Createexam, FetchExamCustom } = exam;
+  const { FetchExamList, Createexam, FetchExamCustom,DeleteExam } = exam;
   const [selectedInfo, setSelectedInfo] = useState();
   const [selectedInfo1, setSelectedInfo1] = useState();
 
@@ -63,6 +65,8 @@ const ExamList = () => {
   const [nodes, setdata] = useState([]);
   const [datacart, setdatacart] = useState([]);
   const [val, setVal1] = useState([]);
+  const [info, setinfo] = useState();
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -75,6 +79,12 @@ const ExamList = () => {
     dispatch(FetchExamGroupAction());
   }, []);
 
+  useEffect(() => {
+    if (DeleteExam?.success == 1) {
+
+    dispatch(FetchExamListAction());
+    }
+  }, [DeleteExam]);
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
@@ -120,7 +130,7 @@ const ExamList = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:   25% 38% 20% 17%;
+      --data-table-library_grid-template-columns:   25% 32% 20% 23%;
     `,
     //       Row: `
 //   &:nth-of-type(odd) {
@@ -159,9 +169,14 @@ const ExamList = () => {
   const [visible, setVisible] = useState(false);
   const [visible4, setVisible4] = useState(false);
   const [classes, setClass] = useState();
-
   const [visible6, setvisible6] = useState(false);
+
+  const [visible3, setvisible3] = useState(false);
   const [position, setPosition] = useState('center');
+
+   const handledeletebtn = () => {
+     dispatch(DeleteExamAction(info));
+    };
 
   const mydata = {
     session: sectionzz,
@@ -224,6 +239,19 @@ const ExamList = () => {
       >
         <NewExamsModal close={setvisible6} val={val} newsubject={setVisible4} />
       </Dialog>
+       <Dialog
+              visible={visible3}
+              position={'top'}
+              style={{ height: 'auto', width: '40%' }}
+              onHide={() => {
+                if (!visible3) return;
+                setvisible3(false);
+              }}
+              draggable={false}
+              resizable={false}
+            >
+              <DeleteModal delete={handledeletebtn} close={setvisible3} />
+            </Dialog>
 
       <div className=" flex-col">
         <div
@@ -419,6 +447,18 @@ const ExamList = () => {
                                   }}
                                   text={'Update'}
                                   color={'bg-primary'}
+                                />
+                                 <TableBtn
+                                  clickFunction={() => {
+                                    setvisible3(true);
+                                
+                                    setinfo(item);
+
+
+
+                                  }}
+                                  text={'Delete'}
+                                  color={'bg-danger'}
                                 />
                               {/* <ViewSVG
                                 clickFunction={() => item.amount == null ?"" : handleViewbtn(item.title)}

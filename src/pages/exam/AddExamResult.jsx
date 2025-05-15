@@ -72,11 +72,9 @@ const AddExamResult = (props) => {
   const exam = useSelector((state) => state?.exam);
   const { FetchExamResult, SingleGradegroup, ExamResultArray, submitResult } =
     exam;
-    const [classData, setClassData] = useState([]);
-    const [classData1, setClassData1] = useState([]);
-    const [check, setCheck] = useState(true);
-
- 
+  const [classData, setClassData] = useState([]);
+  const [classData1, setClassData1] = useState([]);
+  const [check, setCheck] = useState(true);
 
   useEffect(() => {
     if (location?.state == null) {
@@ -123,8 +121,6 @@ const AddExamResult = (props) => {
   const { fetchAllClassExam } = clad;
 
   useEffect(() => {
-
-
     if (fetchAllClassExam?.success == 1) {
       let data = fetchAllClassExam?.data;
       console.log(data);
@@ -171,7 +167,7 @@ const AddExamResult = (props) => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  15% 35% 10% 10%  30%;
+  --data-table-library_grid-template-columns:  15% 35% 17% 13%  20%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -229,7 +225,7 @@ const AddExamResult = (props) => {
   function getRandomNumber(max, min) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-const { username, userMail} = user;
+  const { username, userMail } = user;
 
   let random = getRandomNumber(10000, 1000);
   let examinationid = value.subjects?.slice(0, 3) + random;
@@ -249,7 +245,7 @@ const { username, userMail} = user;
     section: value?.section == null ? '-' : value?.section,
     createdby: username?.payload,
     classsize: nodes.length,
-    chosengrade:value?.chosengrade
+    chosengrade: value?.chosengrade,
   };
   function handleSubmitResult() {
     //when no student
@@ -286,8 +282,8 @@ const { username, userMail} = user;
     <DefaultLayout>
       <Dialog
         visible={visible}
-        position={'top'}
-        style={{ height: 'auto', width: '75%', margin: '50px 0 0 125px' }}
+        position={'top-right'}
+        style={{ height: 'auto', width: '80%', margin: '50px 20px 0 125px' }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
@@ -320,45 +316,72 @@ const { username, userMail} = user;
               </h3>
               <div className="border-b border-stroke py-4 px-7 flex dark:border-strokedark">
                 <div className="w-1/2">
-                  <h3 className="text-sm text-black dark:text-white">
-                    Class/Section :{' '}
-                    <span className="font-medium">
-                      {' '}
-                      {`${value?.class} ${' '}  ${value?.section == null ? '' : value?.section == '-' ? ' ' : '/' + value?.section}`}
-                    </span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
-                    Subject:{' '}
-                    <span className="font-medium ml-1">
-                      {`${value?.subjects}`}{' '}
-                    </span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
-                    Chosen Grading:{' '}
-                    <span className="font-medium ml-1">
-                      {value?.chosengrade}
-                    </span>
-                  </h3>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
+                      Class/Section {' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className=" font-medium">
+                        
+                        {`${value?.class} ${' '}  ${value?.section == null ? '' : value?.section == '-' ? ' ' : '/' + value?.section}`}
+                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
+                      Subject{' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">
+                        {`${value?.subjects}`}{' '}
+                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black  w-3/12 dark:text-white">
+                      Chosen Grading{' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">
+                        {value?.chosengrade}
+                      </span>
+                    </h3>
+                  </div>
                 </div>
-                <div className="w-1/2  border-l pl-2  border-stroke ">
-                  <h3 className="text-sm  text-black dark:text-white">
-                    Exam Group:{' '}
-                    <span className="font-medium ml-1">{`${value?.examgroup}`}</span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
+                <div className="w-1/2">
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
+                    Exam Group {' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className=" font-medium">
+                        
+                      {`${value?.examgroup}`}                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
                     Session:{' '}
-                    <span className="font-medium ml-1">
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">
                       {`${value?.session}`}{' '}
-                    </span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
+                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black  w-3/12 dark:text-white">
                     Mark Distribution:{' '}
-                    <span className="font-medium ml-1">
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">
                       Exam({value?.examgrade}%) : Class({value?.classgrade}
-                      %) : Other({value?.othergrade}%)
-                    </span>
-                  </h3>
+                        %)    
+                                         </span>
+                    </h3>
+                  </div>
                 </div>
+             
               </div>
               <div className={nodes.length == 0 ? 'hidden' : ''}>
                 <div className="px-7 flex gap-4 justify-between  mb-4">
@@ -443,9 +466,9 @@ const { username, userMail} = user;
                                 {' '}
                                 <div className="flex gap-1">
                                   {' '}
-                                  <div className="w-4/12">Exam</div>
-                                  <div className="w-4/12">Class</div>{' '}
-                                  <div className="w4/12">Other</div>
+                                  <div className="w-6/12">Exam</div>
+                                  <div className="w-6/12">Class</div>{' '}
+                                  {/* <div className="w4/12">Other</div> */}
                                 </div>
                               </HeaderCell>
                               {/* <HeaderCell>Class({gradingchoice[3]}%)</HeaderCell>
@@ -480,7 +503,7 @@ const { username, userMail} = user;
                                 <Cell>
                                   <div className="flex row gap-1 w-full">
                                     <input
-                                      className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                      className="w-6/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       //  key={1}
                                       type="number"
                                       onChange={(e) => {
@@ -497,14 +520,15 @@ const { username, userMail} = user;
                                     />
 
                                     <input
-                                      className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                      className="w-6/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       //key={1}
                                       type="number"
                                       onChange={(e) => {
                                         var newData = FinalResult.map((el) => {
                                           if (el.student_id == item.student_id)
                                             return Object.assign({}, el, {
-                                              classWorkScore: e.target.value.trim(),
+                                              classWorkScore:
+                                                e.target.value.trim(),
                                             });
                                           return el;
                                         });
@@ -512,7 +536,7 @@ const { username, userMail} = user;
                                         dispatch(setExamResult(newData));
                                       }}
                                     />
-                                    <input
+                                    {/* <input
                                       className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       // key={1}
                                       type="number"
@@ -527,7 +551,7 @@ const { username, userMail} = user;
                                         setFinalResult(newData);
                                         dispatch(setExamResult(newData));
                                       }}
-                                    />
+                                    /> */}
                                   </div>
                                 </Cell>
                               </Row>

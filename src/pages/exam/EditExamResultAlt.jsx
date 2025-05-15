@@ -32,7 +32,10 @@ import {
 } from '../../redux/slices/examSlice';
 import ExamResultAlert from '../../components/ExamResultAlert';
 import ExamResultModal from '../../components/ExamResultModal';
-import { fetchAllClassExamAction, resetfetchAllClassExam } from '../../redux/slices/classSlice';
+import {
+  fetchAllClassExamAction,
+  resetfetchAllClassExam,
+} from '../../redux/slices/classSlice';
 import { fetchStudentsCustomAction } from '../../redux/slices/studentSlice';
 
 const EditExamResultAlt = (props) => {
@@ -94,14 +97,6 @@ const EditExamResultAlt = (props) => {
       );
     }
   }, [value]);
- 
-  
-
-
-
-
-
-
 
   useEffect(() => {
     if (fetchAllClassExam?.success == 1) {
@@ -109,7 +104,7 @@ const EditExamResultAlt = (props) => {
       console.log(data);
       if (data.length != 0) {
         setResponse(data);
-      //  setVisible1(true);
+        //  setVisible1(true);
         //setdata([])
 
         dispatch(resetfetchAllClassExam());
@@ -129,15 +124,8 @@ const EditExamResultAlt = (props) => {
       console.log(value?.gradingtype);
 
       dispatch(FetchSingleGradeGroupAction({ title: value?.chosengrade }));
-
-
     }
   }, []);
-
-
- 
-
-
 
   useEffect(() => {
     if (fetchExamByCode?.success == 1) {
@@ -147,7 +135,7 @@ const EditExamResultAlt = (props) => {
         setdata(data);
         dispatch(setExamResult(data));
         // dispatch(resetfetchAllClassExam());
-        dispatch(resetfetchExambyCode())
+        dispatch(resetfetchExambyCode());
       } else {
         // navigate(-1);
       }
@@ -157,7 +145,7 @@ const EditExamResultAlt = (props) => {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
-  
+
   const [response, setResponse] = useState([]);
 
   const [Arrays, setArray] = useState([]);
@@ -184,7 +172,7 @@ const EditExamResultAlt = (props) => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  15% 35% 10% 10%  30%;
+  --data-table-library_grid-template-columns:  15% 35% 16% 14%  20%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -229,7 +217,7 @@ const EditExamResultAlt = (props) => {
   function getRandomNumber(max, min) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-const { username, userMail} = user;
+  const { username, userMail } = user;
   let random = getRandomNumber(10000, 1000);
   let examinationid = value.subjects?.slice(0, 3) + random;
   let resultdata = {
@@ -282,8 +270,6 @@ const { username, userMail} = user;
     }
   }, [value]);
 
-
-
   useEffect(() => {
     if (submitResult?.success == 1) {
       let data = submitResult?.data;
@@ -304,9 +290,9 @@ const { username, userMail} = user;
 
   useEffect(() => {
     if (SingleGradegroup?.success == 1) {
-      console.log('i have grading')
+      console.log('i have grading');
       let data = SingleGradegroup?.data;
-      console.log(data)
+      console.log(data);
       setSingleGrade(data);
     }
   }, [SingleGradegroup]);
@@ -344,48 +330,72 @@ const { username, userMail} = user;
           <div className="mb-4">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <h3 className="font-medium pt-2  px-7 text-black dark:text-white">
-                Add Examination Result
+                Update Examination Result
               </h3>
               <div className="border-b border-stroke py-4 px-7 flex dark:border-strokedark">
                 <div className="w-1/2">
-                  <h3 className="text-sm text-black dark:text-white">
-                    Class/Section :{' '}
-                    <span className="font-medium">
-                      {' '}
-                      {`${value?.class} ${' '}  ${value?.section == null ? '' : value?.section == '-' ? ' ' : '/' + value?.section}`}
-                    </span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
-                    Subject:{' '}
-                    <span className="font-medium ml-1">
-                      {`${value?.subject}`}{' '}
-                    </span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
-                    Chosen Grading:{' '}
-                    <span className="font-medium ml-1">
-                      {value?.chosengrade}
-                    </span>
-                  </h3>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
+                      Class/Section{' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className=" font-medium">
+                        {`${value?.class} ${' '}  ${value?.section == null ? '' : value?.section == '-' ? ' ' : '/' + value?.section}`}
+                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
+                      Subject{' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">
+                        {`${value?.subject}`}{' '}
+                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black  w-3/12 dark:text-white">
+                      Chosen Grading{' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">{value?.chosengrade}</span>
+                    </h3>
+                  </div>
                 </div>
-                <div className="w-1/2  border-l pl-2  border-stroke ">
-                  <h3 className="text-sm  text-black dark:text-white">
-                    Exam Group:{' '}
-                    <span className="font-medium ml-1">{`${value?.examgroup}`}</span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
-                    Session:{' '}
-                    <span className="font-medium ml-1">
-                      {`${value?.session}`}{' '}
-                    </span>
-                  </h3>
-                  <h3 className="text-sm  text-black dark:text-white">
-                    Mark Distribution:{' '}
-                    <span className="font-medium ml-1">
-                      Exam({singleGrade[0]?.exampercent}%) : Class({singleGrade[0]?.classworkpercent}
-                      %) : Other({singleGrade[0]?.otherscorepercent}%)
-                    </span>
-                  </h3>
+                <div className="w-1/2">
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
+                      Exam Group{' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className=" font-medium">
+                        {`${value?.examgroup}`}{' '}
+                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black w-3/12 dark:text-white">
+                      Session:{' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">
+                        {`${value?.session}`}{' '}
+                      </span>
+                    </h3>
+                  </div>
+                  <div className="flex ">
+                    <h3 className="text-sm  text-black  w-3/12 dark:text-white">
+                      Mark Distribution:{' '}
+                    </h3>
+                    <h3 className="text-sm  text-black   dark:text-white">
+                      <span className="font-medium ">
+                        Exam({singleGrade[0]?.exampercent}%) : Class(
+                        {singleGrade[0]?.classworkpercent}
+                        %)
+                      </span>
+                    </h3>
+                  </div>
                 </div>
               </div>
               <div className={nodes?.length == 0 ? 'hidden' : ''}>
@@ -446,9 +456,8 @@ const { username, userMail} = user;
                                 {' '}
                                 <div className="flex gap-1">
                                   {' '}
-                                  <div className="w-4/12">Exam</div>
-                                  <div className="w-4/12">Class</div>{' '}
-                                  <div className="w4/12">Other</div>
+                                  <div className="w-6/12">Exam (raw)</div>
+                                  <div className="w-6/12">Class (raw)</div>{' '}
                                 </div>
                               </HeaderCell>
                               {/* <HeaderCell>Class({gradingchoice[3]}%)</HeaderCell>
@@ -487,15 +496,23 @@ const { username, userMail} = user;
                                 <Cell>
                                   <div className="flex row gap-1 w-full">
                                     <input
-                                      className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                      className="w-6/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       //  key={1}
                                       type="number"
-                                      defaultValue={item?.examscore}
+                                      defaultValue={item?.rawexamscore}
                                       onChange={(e) => {
+                                        let final =
+                                          e.target.value == 0
+                                            ? 0
+                                            : e.target.value *
+                                              (singleGrade[0]?.exampercent /
+                                                100);
+
                                         var newData = FinalResult.map((el) => {
                                           if (el.student_id == item.student_id)
                                             return Object.assign({}, el, {
-                                              examscore: e.target.value.trim(),
+                                              examscore: final,
+                                              rawexamscore: e.target.value,
                                             });
                                           return el;
                                         });
@@ -505,32 +522,24 @@ const { username, userMail} = user;
                                     />
 
                                     <input
-                                      className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                      className="w-6/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                                       //key={1}
                                       type="number"
-                                      defaultValue={item?.classworkscore}
+                                      defaultValue={item?.rawclassscore}
                                       onChange={(e) => {
+                                        let final =
+                                          e.target.value == 0
+                                            ? 0
+                                            : e.target.value *
+                                              (singleGrade[0]
+                                                ?.classworkpercent /
+                                                100);
+                                        console.log(final);
                                         var newData = FinalResult.map((el) => {
                                           if (el.student_id == item.student_id)
                                             return Object.assign({}, el, {
-                                              classworkscore: e.target.value.trim(),
-                                            });
-                                          return el;
-                                        });
-                                        setFinalResult(newData);
-                                        dispatch(setExamResult(newData));
-                                      }}
-                                    />
-                                    <input
-                                      className="w-4/12 rounded border border-stroke bg-gray px-1 mx-1 my-2 py-1 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                      // key={1}
-                                      type="number"
-                                      defaultValue={item?.othersscore}
-                                      onChange={(e) => {
-                                        var newData = FinalResult.map((el) => {
-                                          if (el.student_id == item.student_id)
-                                            return Object.assign({}, el, {
-                                              othersscore: e.target.value.trim(),
+                                              classworkscore: final,
+                                              rawclassscore: e.target.value,
                                             });
                                           return el;
                                         });

@@ -50,7 +50,7 @@ const NewExam = () => {
   }
 
   const [pagesval, setpagesval] = useState(30);
-  const [classs, setClasss] = useState([]);
+  const [btn, setbtn] = useState(false);
 
   const [loader, setLoader] = useState(true);
 
@@ -185,7 +185,7 @@ const NewExam = () => {
 console.log(val1)
   useEffect(() => {
     console.log('fetch custom empty')
-    if (fetchcustomstudent?.success == 1 && fetchcustomstudent?.data.length !=0 ) {
+    if (fetchcustomstudent?.success == 1 && fetchcustomstudent?.data.length !=0 && btn == true) {
       let data = fetchcustomstudent?.data;
       const csvConfig = mkConfig({
         useKeysAsHeaders: true,
@@ -194,6 +194,7 @@ console.log(val1)
       const csv = generateCsv(csvConfig)(data);
       download(csvConfig)(csv);
       dispatch(resetFetchCustomStudent());
+      setbtn(false)
     }
   }, [fetchcustomstudent]);
 
@@ -434,6 +435,7 @@ console.log(val1)
                                 <TableBtn
                                   clickFunction={() => {
                                     // setVisible3(true);
+                                    setbtn(true)
                                     setVal1(item);
                                     handlegetclasslist(item);
                                   }}

@@ -273,25 +273,7 @@ const PreferenceList = () => {
     dispatch(fetchUserdataAction({ role: 'student', id: value.student_id }));
     navigate('/student/editinfo', { state: { action: 2, value: value } });
   };
-  const handledeletbtn = (value) => {
-    let data = {
-      class: clazz,
-      section: sectionzz,
-      id: value,
-    };
-    dispatch(deleteSingleStudentAction(data));
-  };
-
-  data = {
-    nodes: data.nodes.filter((item) =>
-      searchval === 'First Name'
-        ? item.firstName.toLowerCase().includes(search.toLowerCase())
-        : searchval == 'Last Name'
-          ? item.lastName.toLowerCase().includes(search.toLowerCase())
-          : item.student_id.toLowerCase().includes(search.toLowerCase()),
-    ),
-  };
-
+ 
   function setModalVisible() {
     setVisible(false);
   }

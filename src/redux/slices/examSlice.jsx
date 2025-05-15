@@ -578,6 +578,46 @@ export const CreateExamAction = createAsyncThunk(
   },
 );
 
+export const FetchStdtPerformanceAction = createAsyncThunk(
+  'get/stdperformance',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/stdperformance`,
+        payload,axiosFile
+      );
+      // if (data?.success == 1 && data?.data.length == 0) {
+      //   toast.success('No Search Results');
+      // }
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const FetchexamSubjectAction = createAsyncThunk(
   'get/examsubject',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -638,6 +678,49 @@ export const FetchExamCustomAction = createAsyncThunk(
 
       if (data?.success == 0) {
         toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const DeleteExamAction = createAsyncThunk(
+  'delete/deleteexam',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/deleteexam`,
+        payload,axiosFile
+      );
+     
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+      if (data?.success == 1) {
+        toast.success('Deleted Successfully');
 
         // toast.error(data.message);
       }
@@ -934,6 +1017,11 @@ const ExamSlices = createSlice({
       state.ExamGradeResult = data;
 
     },
+    
+    resetFetchStdtPerformance(state,data) {
+      state.FetchStdtPerformance = null;
+
+    },
     resetfetchExambyCode(state,data) {
       state.fetchExamByCode = null;
 
@@ -1091,6 +1179,21 @@ const ExamSlices = createSlice({
       state.SingleReporterror = action.payload;
       state.SingleReport = undefined;
     });
+    
+    builder.addCase(FetchStdtPerformanceAction.pending, (state, action) => {
+      state.FetchStdtPerformanceloading = true;
+      state.FetchStdtPerformance = false;
+    });
+    builder.addCase(FetchStdtPerformanceAction.fulfilled, (state, action) => {
+      state.FetchStdtPerformance = action?.payload;
+      state.FetchStdtPerformanceloading = false;
+      state.FetchStdtPerformanceerror = undefined;
+    });
+    builder.addCase(FetchStdtPerformanceAction.rejected, (state, action) => {
+      state.FetchStdtPerformanceloading = false;
+      state.FetchStdtPerformanceerror = action.payload;
+      state.FetchStdtPerformance = undefined;
+    });
 
     builder.addCase(FetchexamSubjectAction.pending, (state, action) => {
       state.FetchexamSubjectloading = true;
@@ -1201,6 +1304,21 @@ const ExamSlices = createSlice({
       state.fetchGradegrouploading = false;
       state.fetchGradegrouperror = action.payload;
       state.fetchGradegroup = undefined;
+    });
+    
+    builder.addCase(DeleteExamAction.pending, (state, action) => {
+      state.DeleteExamloading = true;
+      state.DeleteExam = false;
+    });
+    builder.addCase(DeleteExamAction.fulfilled, (state, action) => {
+      state.DeleteExam = action?.payload;
+      state.DeleteExamloading = false;
+      state.DeleteExamerror = undefined;
+    });
+    builder.addCase(DeleteExamAction.rejected, (state, action) => {
+      state.DeleteExaloading = false;
+      state.DeleteExaerror = action.payload;
+      state.DeleteExa = undefined;
     });
 
     builder.addCase(FetchExamCustomAction.pending, (state, action) => {
@@ -1319,6 +1437,7 @@ export const {
   setExamResult,
   resetsubmitresult,
   ResetTeacherRemark,
+  resetFetchStdtPerformance,
   resetExamCart,
   resetcreateGetGradeGroup,
   ExamResultGrade,

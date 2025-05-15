@@ -56,9 +56,8 @@ import {
 } from '../../redux/slices/examSlice';
 import ExamGradeEditModal from '../../components/ExamGradeEditModal';
 import DeleteModal from '../../components/DeleteModal';
-import ExamGradeEditModalAlt from '../../components/ExamGradeEditModalAlt';
 
-const ExamGrade = () => {
+const ExamGradeAlt = () => {
   const formRef1 = useRef();
   function resetFormStates() {
     // formRef.current.reset();
@@ -237,7 +236,7 @@ const ExamGrade = () => {
           setVisible1(false);
         }}
       >
-        <ExamGradeEditModalAlt close={setVisible1} info={classs} />
+        <ExamGradeEditModal close={setVisible1} info={classs} />
       </Dialog>
       <Dialog
         visible={visible2}
@@ -272,7 +271,7 @@ const ExamGrade = () => {
           }
         >
           <div className="w-full  flex gap-7">
-            {/* <div className=" flex w-9/12 justify-between gap-4">
+            <div className=" flex w-9/12 justify-between gap-4">
               <div className=" ">
                 <button
                   className="flex  justify-center rounded bg-primary py-2 px-5 font-medium text-gray hover:bg-opacity-90"
@@ -284,8 +283,28 @@ const ExamGrade = () => {
                   Add Grading Group
                 </button>
               </div>
-            </div> */}
-          
+            </div>
+            <div className={' w-3/12 flex flex-col '}>
+              <div className="flex justify-between align-middle ">
+                <label
+                  className=" w-2/2  block text-sm font-medium text-black dark:text-white"
+                  htmlFor=" "
+                >
+                  Search Class{' '}
+                </label>
+              </div>
+
+              <input
+                className="w-full rounded border border-stroke bg-gray py-2 px-1.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                key={1}
+                type="search"
+                placeholder={'type here'}
+                onChange={(e) => {
+                  setSearch(e.target.value.trim());
+                }}
+              />
+              {/* <button onClick={() => toPDF()}>Download PDF</button> */}
+            </div>
           </div>
         </div>
         <div
@@ -343,20 +362,20 @@ const ExamGrade = () => {
                                 clickFunction={() => {
                                   handleViewbtn(item);
                                 }}
-                                text={' View '}
+                                text={' View/Edit '}
                                 color={'bg-primary'}
                               />
                               {/* <ViewSVG
                                 clickFunction={() => item.amount == null ?"" : handleViewbtn(item.title)}
                               /> */}
 
-                              {/* <DeleteSVG
+                              <DeleteSVG
                                 clickFunction={() => {
                                   setDel(item?.gradecode);
 
                                   setVisible2(true);
                                 }}
-                              /> */}
+                              />
                             </div>
                           </Cell>
                         </Row>
@@ -454,4 +473,4 @@ const ExamGrade = () => {
   );
 };
 
-export default ExamGrade;
+export default ExamGradeAlt;

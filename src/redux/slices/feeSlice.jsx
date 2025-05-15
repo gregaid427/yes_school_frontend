@@ -639,6 +639,36 @@ export const UpdateScholarshipAction = createAsyncThunk(
   },
 );
 
+export const totalfeereportAction = createAsyncThunk(
+  'fetch/feereports',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/fee/totalfeereport`,
+        payload,axiosFile
+
+      );
+
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const totalfeebyclassreport = createAsyncThunk(
   'fetch/feereportsclass',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -3027,6 +3057,21 @@ const FeeSlices = createSlice({
       state.totalfeebyclasserror = action.payload;
       state.totalfeebyclass = undefined;
       state.totalfeebyclassloading = undefined;
+    });
+
+    builder.addCase(totalfeereportAction.pending, (state, action) => {
+      state.totalfeereportloading = true;
+      state.totalfeereport = false;
+    });
+    builder.addCase(totalfeereportAction.fulfilled, (state, action) => {
+      state.totalfeereport = action?.payload;
+      state.totalfeereportloading = false;
+      state.totalfeereporterror = undefined;
+    });
+    builder.addCase(totalfeereportAction.rejected, (state, action) => {
+      state.totalfeereporterror = action.payload;
+      state.totalfeereport = undefined;
+      state.totalfeereportloading = undefined;
     });
 
     builder.addCase(fetchAllfeeAction.pending, (state, action) => {

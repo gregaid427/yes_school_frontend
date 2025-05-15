@@ -345,7 +345,7 @@ const { username, userMail} = user;
                         </div>
 
                         <div className="flex row gap-1">
-                          <div className="w-full mb-1 sm:w-1/3">
+                          <div className="w-full mb-1 sm:w-1/2">
                             <label
                               className="mb-1 block text-sm font-medium text-black dark:text-white"
                               htmlFor=""
@@ -370,7 +370,7 @@ const { username, userMail} = user;
                               }}
                             />
                           </div>
-                          <div className="w-full mb-2 sm:w-1/3">
+                          <div className="w-full mb-2 sm:w-1/2">
                             <label
                               className="mb-1 block text-sm font-medium text-black dark:text-white"
                               htmlFor=""
@@ -393,7 +393,7 @@ const { username, userMail} = user;
                               }}
                             />
                           </div>
-                          <div className="w-full mb-2 sm:w-1/3">
+                          {/* <div className="w-full mb-2 sm:w-1/3">
                             <label
                               className="mb-1 block text-sm font-medium text-black dark:text-white"
                               htmlFor=""
@@ -416,7 +416,7 @@ const { username, userMail} = user;
                                // obj['other'] = e.target.value.trim();
                               }}
                             />
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="mb-5.5">

@@ -55,7 +55,10 @@ const Preference = () => {
     setVisible(true);
   };
 
+  useEffect(() => {
+    setdata();
 
+  }, []);
   const [loader, setLoader] = useState(true);
 
   const [searchval, setSearchval] = useState('First Name');

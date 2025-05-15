@@ -203,9 +203,9 @@ const ExamResultModal = (props) => {
                             {' '}
                             <div className="flex gap-1">
                               {' '}
-                              <div className="w-4/12">Exam</div>
-                              <div className="w-4/12">Class</div>{' '}
-                              <div className="w-4/12">Other</div>
+                              <div className="w-6/12">Exam</div>
+                              <div className="w-6/12">Class</div>{' '}
+                              {/* <div className="w-4/12">Other</div> */}
                             </div>
                           </HeaderCell>
                           <HeaderCell>Total %</HeaderCell>
@@ -240,18 +240,18 @@ const ExamResultModal = (props) => {
 
                             <Cell>
                               <div className="flex row gap-1 w-full">
-                                <div className="w-4/12 ml-1">
+                                <div className="w-6/12 ml-1">
                                   {' '}
                                   <span>{item.examscore}</span>
                                 </div>
-                                <div className="w-4/12 ml-1">
+                                <div className="w-6/12 ml-1">
                                   {' '}
                                   <span>{item.classworkscore}</span>
                                 </div>
-                                <div className="w-4/12 ml-1">
+                                {/* <div className="w-4/12 ml-1">
                                   {' '}
                                   <span>{item.othersscore}</span>
-                                </div>
+                                </div> */}
                               </div>
                             </Cell>
                             <Cell className="  ">

@@ -131,6 +131,7 @@ let payable = eval(props.val?.feepayable - amount)
     feepayable: payable,
 
   };
+  const [selectedinfo, setSelectedInfo] = useState(false);
 
   const handleSubmit = (e) => {
     if (chosen == 'None') {
@@ -222,7 +223,7 @@ let payable = eval(props.val?.feepayable - amount)
                     Select Scholarship
                   </label>
                   <div className="w-full">
-                    <ScholarshipSelect setsectionprop={setchosen} />
+                    <ScholarshipSelect setsectionprop={setchosen} selectinfo={setSelectedInfo}/>
                   </div>
                 </div>
                 <div className={!scholarr ? 'hidden' : ''}>

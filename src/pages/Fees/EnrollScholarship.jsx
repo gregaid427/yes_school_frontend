@@ -70,6 +70,8 @@ const EnrollScholarship = () => {
 
   const [searcher, setSearcher] = useState('firstName');
   const [isChecked2, setIsChecked2] = useState(false);
+  const [selectedinfo, setSelectedInfo] = useState(false);
+
 
   const [age, setAge] = useState('');
   const [nodes, setdata] = useState([]);
