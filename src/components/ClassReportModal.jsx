@@ -14,6 +14,7 @@ import userThree from '../images/user/user-03.png';
 import jsPDF from 'jspdf';
 import { useLocation, useNavigate } from 'react-router-dom';
 import DefaultLayout from '../layout/DefaultLayout';
+import { resetclassreport } from '../redux/slices/examSlice';
 
 const ClassReportModal = (props) => {
   const ref = useRef({ openPrintDialog: () => Promise });
@@ -87,6 +88,7 @@ const ClassReportModal = (props) => {
       console.log('sessionz');
     }
   }, [fetchsessionactive]);
+  dispatch(resetclassreport());
 
   console.log(result);
   return (
@@ -129,7 +131,7 @@ const ClassReportModal = (props) => {
                   // navigate("/exam/report", {
                   //   state: { action: 2, value: val},
                   // });
-                  navigate('/exam/reportdetail', {
+                  navigate(-1, {
                     state: { action: 2, value: val },
                   });
                 }}

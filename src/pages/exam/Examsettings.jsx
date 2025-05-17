@@ -37,10 +37,16 @@ import { Dialog } from 'primereact/dialog';
 import NewExamsModal from '../../components/NewExamsModal';
 import NewSubjectModal from '../../components/NewSubjectModal';
 import { fetchSubjectAction } from '../../redux/slices/subjectSlice';
-import { FetchExamGroupAction, resetFetchStdtPerformance } from '../../redux/slices/examSlice';
+import {
+  FetchAllReportAction,
+  FetchExamGroupAction,
+  resetFetchStdtPerformance,
+} from '../../redux/slices/examSlice';
 import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import ExamResultChoiceModal from '../../components/ExamResultChoiceModal';
 import SearchStudentsModalExam from '../SearchStudentsModalExam';
+import GenerateExmReportModal from '../../components/GenerateExmReportModal';
+import GenerateExmReportModalAlt from '../../components/GenerateExmReportModalAlt';
 
 const Examsettings = () => {
   const formRef1 = useRef();
@@ -83,7 +89,6 @@ const Examsettings = () => {
   const exam = useSelector((state) => state?.exam);
   const { FetchStdtPerformance } = exam;
 
-
   const { fetchAllClassNo } = clad;
   const [visible, setVisible] = useState(false);
 
@@ -93,9 +98,6 @@ const Examsettings = () => {
     // dispatch(fetchAllClass());
     dispatch(fetchAllClassNoAction());
   }, []);
-
-  
- 
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
@@ -131,15 +133,15 @@ const Examsettings = () => {
       Table: `
       --data-table-library_grid-template-columns:  50% 40%  10%;
     `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -172,6 +174,8 @@ const Examsettings = () => {
   };
 
   const [visible4, setVisible4] = useState(false);
+  const [visible5, setVisible5] = useState(false);
+
   const [visible3, setVisible3] = useState(false);
   useEffect(() => {
     dispatch(fetchSubjectAction());
@@ -179,12 +183,11 @@ const Examsettings = () => {
     dispatch(fetchAllsessionAction());
   }, []);
 
-
   return loader ? (
     <Loader />
   ) : (
     <DefaultLayout>
-        <Dialog
+      <Dialog
         visible={visible}
         position={'top'}
         style={{ height: 'auto', width: '60%' }}
@@ -208,14 +211,25 @@ const Examsettings = () => {
       </Dialog>
       <Dialog
         visible={visible4}
-        position={'top-right'}
-        style={{ height: 'auto', width: '25%' }}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
         onHide={() => {
           if (!visible4) return;
           setVisible4(false);
         }}
       >
-        <NewSubjectModal close={setVisible4} />
+        <GenerateExmReportModal close={setVisible4} />
+      </Dialog>
+      <Dialog
+        visible={visible5}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible5) return;
+          setVisible5(false);
+        }}
+      >
+        <GenerateExmReportModalAlt close={setVisible5} />
       </Dialog>
       <div className={'flex row gap-2  w-full'}>
         <div className={display ? 'hidden' : 'w-full  flex-col'}>
@@ -223,89 +237,90 @@ const Examsettings = () => {
             className={
               'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
             }
-          >
-        
-          </div>
-        
+          ></div>
+
           <div className="w-6/12">
-                  <div className="grid grid-cols-1 gap-2 md:grid-cols-1  ">
-                  <div className="w-full flex-col">
-                      <div
-                        className={
-                          'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
-                        }
-                      >
-                        <div className="w-full overflow-x-auto">
-                          <div className="w-full  flex justify-between  ">
-                            <h3 className="font-medium text-black py-3 dark:text-white">
-                              Exam Management 
-                            </h3>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className={
-                          'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
-                        }
-                      >
-                        <div className="w-full">
-                          <label className="  text-sm font-medium text-ash dark:text-white">
-                          Exam  Management Options
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-1  ">
+              <div className="w-full flex-col">
+                <div
+                  className={
+                    'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
+                  }
+                >
+                  <div className="w-full overflow-x-auto">
+                    <div className="w-full  flex justify-between  ">
+                      <h3 className="font-medium text-black py-3 dark:text-white">
+                        Exam Reports
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className={
+                    'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+                  }
+                >
+                  <div className="w-full">
+                    <label className="  text-sm font-medium text-ash dark:text-white">
+                      Exam Report Options
+                    </label>
+
+                    <div className=" flex flex-col gap-2">
+                     
+                      <div className="flex justify-between ">
+                        <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                          <div
+                            className={` flex h-5 w-5 items-center justify-center rounded border ${
+                              true &&
+                              'border-primary bg-gray dark:bg-transparent'
+                            }`}
+                          >
+                            <span
+                              className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                            ></span>
+                          </div>{' '}
+                          Generate Report For Class
                           </label>
-        
-                          <div className=" flex flex-col gap-2">
-                            <div className="flex justify-between ">
-                              <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
-                                <div
-                                  className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                    true && 'border-primary bg-gray dark:bg-transparent'
-                                  }`}
-                                >
-                                  <span
-                                    className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
-                                  ></span>
-                                </div>{' '}
-                                Add Exam Cartegory
-                                </label>
-                              <button
-                                className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-                                type=""
-                                onClick={() => {
-                                 // setVisible(true);
-                                 navigate("/exam/examgroup")
-                              //    dispatch(fetchfeeAssignGroupRecordAction());
-                                }}
-                              >
-                                Select
-                              </button>
-                            </div>
-                            <div className="flex justify-between ">
-                              <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
-                                <div
-                                  className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                    true && 'border-primary bg-gray dark:bg-transparent'
-                                  }`}
-                                >
-                                  <span
-                                    className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
-                                  ></span>
-                                </div>{' '}
-                                Add Marks Grading
-                                </label>
-                              <button
-                                className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-                                type=""
-                                onClick={() => {
-                                 // setVisible(true);
-                                 navigate('/settings/exmgrading')
-                              //    dispatch(fetchfeeAssignGroupRecordAction());
-                                }}
-                              >
-                                Select
-                              </button>
-                            </div>
-        
-                            {/* <div className="flex justify-between">
+                        <button
+                          className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                          type=""
+                          onClick={() => {
+                             setVisible4(true);
+                         //   navigate('/exam/examgroup');
+                          }}
+                        >
+                          Select
+                        </button>
+                      </div>
+                      <div className="flex justify-between ">
+                        <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                          <div
+                            className={` flex h-5 w-5 items-center justify-center rounded border ${
+                              true &&
+                              'border-primary bg-gray dark:bg-transparent'
+                            }`}
+                          >
+                            <span
+                              className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                            ></span>
+                          </div>{' '}
+                          Generate Report For All Student
+                          </label>
+                        <button
+                          className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                          type=""
+                          onClick={() => {
+                             setVisible5(true);
+                            // navigate('/exam/examgroup');
+                            // dispatch(FetchAllReportAction());
+                          }}
+                        >
+                          Select
+                        </button>
+                      </div>
+                   
+
+                      {/* <div className="flex justify-between">
                               <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                                 <div
                                   className={` flex h-5 w-5 items-center justify-center rounded border ${
@@ -353,63 +368,89 @@ const Examsettings = () => {
                                 Select
                               </button>
                             </div> */}
-                          </div>
-                        </div>
-                        
-                      </div>
                     </div>
-                    <div className="w-full flex-col">
-                      <div
-                        className={
-                          'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
-                        }
-                      >
-                        <div className="w-full overflow-x-auto">
-                          <div className="w-full  flex justify-between  ">
-                            <h3 className="font-medium text-black py-3 dark:text-white">
-                              Student Performance Tracking
-                            </h3>
-                          </div>
-                        </div>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full flex-col">
+                <div
+                  className={
+                    'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
+                  }
+                >
+                  <div className="w-full overflow-x-auto">
+                    <div className="w-full  flex justify-between  ">
+                      <h3 className="font-medium text-black py-3 dark:text-white">
+                        Exam Management
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className={
+                    'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+                  }
+                >
+                  <div className="w-full">
+                    <label className="  text-sm font-medium text-ash dark:text-white">
+                      Exam Management Options
+                    </label>
+
+                    <div className=" flex flex-col gap-2">
+                      <div className="flex justify-between ">
+                        <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                          <div
+                            className={` flex h-5 w-5 items-center justify-center rounded border ${
+                              true &&
+                              'border-primary bg-gray dark:bg-transparent'
+                            }`}
+                          >
+                            <span
+                              className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                            ></span>
+                          </div>{' '}
+                          Add Exam Cartegory
+                        </label>
+                        <button
+                          className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                          type=""
+                          onClick={() => {
+                            // setVisible(true);
+                            navigate('/exam/examgroup');
+                            //    dispatch(fetchfeeAssignGroupRecordAction());
+                          }}
+                        >
+                          Select
+                        </button>
                       </div>
-                      <div
-                        className={
-                          'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
-                        }
-                      >
-                        <div className="w-full">
-                          <label className="  text-sm font-medium text-ash dark:text-white">
-                            Performance Tracking Options
-                          </label>
-        
-                          <div className=" flex flex-col gap-2">
-                            <div className="flex justify-between ">
-                              <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
-                                <div
-                                  className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                    true && 'border-primary bg-gray dark:bg-transparent'
-                                  }`}
-                                >
-                                  <span
-                                    className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
-                                  ></span>
-                                </div>{' '}
-                                Single Student Performance Track
-                                </label>
-                              <button
-                                className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
-                                type=""
-                                onClick={() => {
-                                 // setVisible(true);
-                                 navigate("/settings/std")
-                              //    dispatch(fetchfeeAssignGroupRecordAction());
-                                }}
-                              >
-                                Select
-                              </button>
-                            </div>
-        
-                            {/* <div className="flex justify-between">
+                      <div className="flex justify-between ">
+                        <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                          <div
+                            className={` flex h-5 w-5 items-center justify-center rounded border ${
+                              true &&
+                              'border-primary bg-gray dark:bg-transparent'
+                            }`}
+                          >
+                            <span
+                              className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                            ></span>
+                          </div>{' '}
+                          Add Marks Grading
+                        </label>
+                        <button
+                          className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                          type=""
+                          onClick={() => {
+                            // setVisible(true);
+                            navigate('/settings/exmgrading');
+                            //    dispatch(fetchfeeAssignGroupRecordAction());
+                          }}
+                        >
+                          Select
+                        </button>
+                      </div>
+
+                      {/* <div className="flex justify-between">
                               <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                                 <div
                                   className={` flex h-5 w-5 items-center justify-center rounded border ${
@@ -457,12 +498,115 @@ const Examsettings = () => {
                                 Select
                               </button>
                             </div> */}
-                          </div>
-                        </div>
-                        
-                      </div>
                     </div>
-                    {/* <div className="w-full flex-col">
+                  </div>
+                </div>
+              </div>
+              <div className="w-full flex-col">
+                <div
+                  className={
+                    'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
+                  }
+                >
+                  <div className="w-full overflow-x-auto">
+                    <div className="w-full  flex justify-between  ">
+                      <h3 className="font-medium text-black py-3 dark:text-white">
+                        Student Performance Tracking
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className={
+                    'rounded-sm border border-stroke bg-white px-5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+                  }
+                >
+                  <div className="w-full">
+                    <label className="  text-sm font-medium text-ash dark:text-white">
+                      Performance Tracking Options
+                    </label>
+
+                    <div className=" flex flex-col gap-2">
+                      <div className="flex justify-between ">
+                        <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                          <div
+                            className={` flex h-5 w-5 items-center justify-center rounded border ${
+                              true &&
+                              'border-primary bg-gray dark:bg-transparent'
+                            }`}
+                          >
+                            <span
+                              className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                            ></span>
+                          </div>{' '}
+                          Single Student Performance Track
+                        </label>
+                        <button
+                          className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                          type=""
+                          onClick={() => {
+                            // setVisible(true);
+                            navigate('/settings/std');
+                            //    dispatch(fetchfeeAssignGroupRecordAction());
+                          }}
+                        >
+                          Select
+                        </button>
+                      </div>
+
+                      {/* <div className="flex justify-between">
+                              <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                                <div
+                                  className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                    true && 'border-primary bg-gray dark:bg-transparent'
+                                  }`}
+                                >
+                                  <span
+                                    className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                                  ></span>
+                                </div>{' '}
+                                View Current Opened Account
+                              </label>
+                              <button
+                                className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                                type=""
+                                onClick={() => {
+                                  setVisible21(true);
+                                  dispatch(CurrentAccountDetailAction());
+                                }}
+                              >
+                                Select
+                              </button>
+                            </div>
+                            <div className="flex justify-between">
+                              <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                                <div
+                                  className={` flex h-5 w-5 items-center justify-center rounded border ${
+                                    true && 'border-primary bg-gray dark:bg-transparent'
+                                  }`}
+                                >
+                                  <span
+                                    className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                                  ></span>
+                                </div>{' '}
+                                Account Closure Log
+                              </label>
+                              <button
+                                className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                                type=""
+                                onClick={() => {
+                                  setVisible23(true);
+                                  dispatch(FetchSessionAcountAction());
+                                }}
+                              >
+                                Select
+                              </button>
+                            </div> */}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* <div className="w-full flex-col">
                       <div
                         className={
                           'rounded-sm border max-w-full border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 '
@@ -860,8 +1004,8 @@ const Examsettings = () => {
                         </div>
                       </div>
                     </div> */}
-                  </div>
-                </div>
+            </div>
+          </div>
         </div>
       </div>
     </DefaultLayout>

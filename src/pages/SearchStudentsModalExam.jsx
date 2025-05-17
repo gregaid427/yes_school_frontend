@@ -299,7 +299,7 @@ const SearchStudentsModalExam = (props) => {
       <Dialog
         visible={visible9}
         position={'top-right'}
-        style={{ height: 'auto', width: '80%' }}
+        style={{ height: 'auto', width: '80%',marginTop: '65px' }}
         onHide={() => {
           if (!visible9) return;
           setVisible9(false);

@@ -115,7 +115,7 @@ const navigate = useNavigate()
           {school[0]?.name ? school[0]?.name : ''}
         </span>
         <span className=" float-start block text-sm font-medium text-black dark:text-white">
-          Current Session : {sessionz?.sessionname}
+           Session : {sessionz?.sessionname}
         </span>
         <div className="  flex row ">
           <input

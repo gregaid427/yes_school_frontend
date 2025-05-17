@@ -145,6 +145,7 @@ import Examsettings from './pages/exam/Examsettings';
 import SingleTrack from './pages/exam/SingleTrack';
 import SearchStudentsModalExam from './pages/SearchStudentsModalExam';
 import ExamGradeAlt from './pages/exam/ExamGradeAlt';
+import ExamRemarks from './pages/exam/ExamRemarks';
 
 function App() {
   const navigate = useNavigate();
@@ -1131,6 +1132,17 @@ function App() {
                 <>
                   <PageTitle title="Exam" />
                   <ClassReportModal />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['2']} code={code} />}>
+            <Route
+              path="/exam/remarks"
+              element={
+                <>
+                  <PageTitle title="Exam" />
+                  <ExamRemarks />
                 </>
               }
             />{' '}

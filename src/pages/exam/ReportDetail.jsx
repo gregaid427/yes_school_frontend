@@ -47,7 +47,7 @@ import ExamGroupSelect from '../../components/ExamGroupSelect';
 import ExamResultChoiceModal from '../../components/ExamResultChoiceModal';
 import NewExamsModal from '../../components/NewExamsModal';
 import ViewSVG from '../../components/Svgs/View';
-import { fetchStudentsClassAction } from '../../redux/slices/studentSlice';
+import { fetchCustomStudentsClassAction2, fetchStudentsClassAction, resetFetchCustom } from '../../redux/slices/studentSlice';
 import toast from 'react-hot-toast';
 import ExamReportModal from '../../components/SingleExamReport';
 import ClassReportModal from '../../components/ClassReportModal';
@@ -55,7 +55,9 @@ import RemarksExamModal from '../../components/RemarksExamModal';
 
 const ExamReportDetail = () => {
   
-
+  // useEffect(() => {
+  //   setdata([]);
+  // }, []);
   const exam = useSelector((state) => state?.exam);
   const { SingleReport, ClassReport, FetchExamCustom } = exam;
 
@@ -104,7 +106,6 @@ const ExamReportDetail = () => {
           state: {  action: 1, val: info, examinfo: examinfo, result: data},
         });
       setClassdata(data);
-      dispatch(resetclassreport());
     }
   }, [ClassReport]);
 
@@ -138,13 +139,13 @@ const ExamReportDetail = () => {
     if (fetchcustom?.success == 1) {
       let data = fetchcustom?.data;
       setdata(data);
+      dispatch(resetFetchCustom())
+
     }
   }, [fetchcustom]);
 
 
-  useEffect(() => {
-    setdata([]);
-  }, []);
+ 
 
   let data = { nodes };
 
@@ -239,7 +240,7 @@ const ExamReportDetail = () => {
   };
   function handleGetData() {
   //  setBtn(true);
-  dispatch(fetchStudentsClassAction(val));
+  dispatch(fetchCustomStudentsClassAction2(val));
 
     dispatch(FetchExamCustomAction(mydata));
   }
@@ -269,7 +270,7 @@ const ExamReportDetail = () => {
     dispatch(FetchSingleReportAction(data));
   }
   function handleGetClassreport() {
-    
+    if (clazz == 'None') return toast.error('Select Exam Group')
     let data = {
       classcode: info?.classId,
       clazz: info?.title,
@@ -439,7 +440,7 @@ const ExamReportDetail = () => {
               {/* <button onClick={() => toPDF()}>Download PDF</button> */}
             </div>
           </div>
-          <div className={display == true ? '' : 'hidden'}>
+          {/* <div className={FetchExamCustom?.data?.length > 0 && nodes.length > 0 ? '' : 'hidden'}>
             <button
               className="flex  justify-center rounded bg-primary py-1 px-3 font-medium text-gray hover:bg-opacity-90"
               type=""
@@ -449,9 +450,9 @@ const ExamReportDetail = () => {
                 //  await ref.current.openPrintDialog();
               }}
             >
-              Generate Class Report
+              View / Print Class Report
             </button>
-          </div>
+          </div> */}
         </div>
         <div
           className={
@@ -460,7 +461,6 @@ const ExamReportDetail = () => {
         >
           <div className="flex gap-3  flex-col">
             <div className="px-2">
-              <div className={display == true ? '' : 'hidden'}>
                 <Table
                   data={data}
                   pagination={pagination}
@@ -614,7 +614,6 @@ const ExamReportDetail = () => {
             </div>
           </div>
         </div>{' '}
-      </div>
     </DefaultLayout>
   );
 };

@@ -1349,7 +1349,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Search Result
                             </NavLink>
                           </li>
-
+                          
                           <li>
                             <NavLink
                               to="/exam/report"
@@ -1359,6 +1359,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               }
                             >
                               Exam Reports
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/exam/remarks"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                               Instructor Remarks
                             </NavLink>
                           </li>
                           

@@ -29,7 +29,7 @@ const fetchUserdatEdit = () => {
 
   const location = useLocation();
   const { action, value, clas, section } = location?.state;
-
+console.log(value)
   const [isChecked, setIsChecked] = useState(false);
 
   const dispatch = useDispatch();
@@ -78,6 +78,7 @@ const fetchUserdatEdit = () => {
   const [buttonState, setButonState] = useState(1);
 
   const [clazz, setclazz] = useState();
+  console.log(clazz)
   const [sectionzz, setsectionzz] = useState();
   const [feeArrears, setFeeArrears] = useState(0.0);
   const [feeCredit, setFeeCredit] = useState(0.0);
@@ -88,7 +89,7 @@ const fetchUserdatEdit = () => {
   const [link, setimagelink] = useState();
   const [g1id, setg1id] = useState();
   const [g2id, setg2id] = useState();
-
+console.log(classs)
   const [picturename, setPicturename] = useState();
 
   const [pictureurl, setPictureurl] = useState('');
@@ -250,34 +251,13 @@ const fetchUserdatEdit = () => {
       fetchUserdat?.info1 == [] ? setInfo1([]) : setInfo1(fetchUserdat?.info1);
       fetchUserdat?.info2 == [] ? setInfo2([]) : setInfo2(fetchUserdat?.info2);
 
-      if (fetchSection?.success == 1) {
-        let arrr = [value.section];
-        let i = 0;
-        while (i < clad?.fetchSection?.data.length) {
-          arrr.push(clad?.fetchSection?.data[i]?.sectionName);
-          i++;
-        }
-
-        setsections(arrr);
-        setsectionzz(arrr[0]);
-
-        if (fetchAllClass?.success == 1) {
-          let i = 0;
-          let arr = [value.class];
-          while (i < clad?.fetchAllClass?.data.length) {
-            arr.push(clad?.fetchAllClass?.data[i].title);
-            i++;
-          }
-
-          setClasss(arr);
-        }
-      }
+     
     }
     if (fetchUserdat?.success == 0) {
       toast.error('Unable To load Student Data');
       navigate(-1);
     }
-  }, [fetchUserdat]);
+  }, [fetchUserdat,fetchAllClass]);
 
   const [sections, setsections] = useState([]);
   const [visible2, setVisible2] = useState(false);
@@ -286,6 +266,33 @@ const fetchUserdatEdit = () => {
     return Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
   }
   let customfile = hashgenerator() + picturename;
+
+
+  useEffect(() => {
+    if (fetchSection?.success == 1) {
+      let arrr = [value.section];
+      let i = 0;
+      while (i < clad?.fetchSection?.data.length) {
+        arrr.push(clad?.fetchSection?.data[i]?.sectionName);
+        i++;
+      }
+  
+      setsections(arrr);
+      setsectionzz(arrr[0]);
+  
+    
+    }
+    if (fetchAllClass?.success == 1) {
+      let i = 0;
+      let arr = [value.class];
+      while (i < clad?.fetchAllClass?.data.length) {
+        arr.push(clad?.fetchAllClass?.data[i].title);
+        i++;
+      }
+  console.log(arr)
+      setClasss(arr);
+    }
+  }, [fetchAllClass,fetchSection]);
   useEffect(() => {
     console.log(location?.state)
     if (location?.state == null) {

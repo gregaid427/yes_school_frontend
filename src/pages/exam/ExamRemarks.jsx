@@ -42,7 +42,7 @@ import { fetchAllsessionAction } from '../../redux/slices/sessionSlice';
 import ExamResultChoiceModal from '../../components/ExamResultChoiceModal';
 import ExamReportChoiceModal from '../../components/ExamReportChoiceModal';
 
-const ExamReport = () => {
+const ExamRemarks = () => {
   const formRef1 = useRef();
   function resetFormStates() {
     // formRef.current.reset();
@@ -121,7 +121,7 @@ const ExamReport = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:  75%   25%;
+      --data-table-library_grid-template-columns:  80%   20%;
     `,
     //       Row: `
 //   &:nth-of-type(odd) {
@@ -235,14 +235,14 @@ const ExamReport = () => {
             <div className="max-w-full overflow-x-auto">
               <div className="w-full  flex justify-between  ">
                 <h3 className="font-medium text-black py-3 dark:text-white">
-                  Exam Reports
+                  Report Remarks
                 </h3>
               </div>
             </div>
           </div>
           <div
             className={
-              'rounded-sm border border-stroke bg-white px-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
+              'rounded-sm border border-stroke bg-white px-5 pt-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 pb-5 '
             }
           >
             <div className="w-full justify-between  flex ">
@@ -261,7 +261,7 @@ const ExamReport = () => {
               </div> */}
               <div></div>
 
-              <div className={' w-5/12 flex flex-col float-end mt-3 '}>
+              <div className={' w-5/12 flex flex-col float-end '}>
                 <div className="flex justify-between align-middle  ">
                   <label
                     className=" w-2/2  block text-sm font-medium text-black dark:text-white"
@@ -301,7 +301,7 @@ const ExamReport = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
-                          <HeaderCell>Class / Section</HeaderCell>
+                          <HeaderCell>Class</HeaderCell>
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
@@ -315,8 +315,8 @@ const ExamReport = () => {
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
                           
                           >
-                            <Cell className="  ">{item.title}{" "} {item.section ? ("(" +item.section +")" ) : ''}</Cell>
-                           
+                                                      <Cell className="  ">{item.title}{" "} {item.section ? ("(" +item.section +")" ) : ''}</Cell>
+
                             <Cell className="  ">
                               {/* {item.section ? item.section : '-'} */}
                             {/* <Cell className="  ">
@@ -343,17 +343,19 @@ const ExamReport = () => {
 
                           
                               <div className="gap-2 flex">
-                                <TableBtn
+                              
+                                 <TableBtn
                                   clickFunction={() => {
                                  console.log('itemmmmmmmmmm')
                                  console.log(item)
-                                 setVal1(item)
-                                setVisible6(true)
+
+                                    navigate("/exam/reportdetail", {
+                                      state: { action: 1, value: item},
+                                    });
                                   }}
-                                  text={'Get Report'}
+                                  text={'Add Remarks'}
                                   color={'bg-primary'}
                                 />
-                                
                                 {/* <TableBtn
                                   clickFunction={() => {
                                     setVisible3(true);
@@ -461,4 +463,4 @@ const ExamReport = () => {
   );
 };
 
-export default ExamReport;
+export default ExamRemarks;
