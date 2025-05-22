@@ -240,7 +240,7 @@ const LoginLog = () => {
                     <>
                       <Header>
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex  ">
-                          <HeaderCell>Userid</HeaderCell>
+                          <HeaderCell>#</HeaderCell>
                           <HeaderCell>Username</HeaderCell>
                           <HeaderCell>Role</HeaderCell>
                           <HeaderCell>Login DateTime</HeaderCell>
@@ -260,7 +260,7 @@ const LoginLog = () => {
                               {item.firstName + ' ' + item.lastName}
                             </Cell>
 
-                            <Cell className="  ">{item.role}</Cell>
+                            <Cell className="  ">{item.role == null ? '-' : item.role}</Cell>
                             <Cell className="  ">{item.date}</Cell>
 
                             {/* <ViewSVG

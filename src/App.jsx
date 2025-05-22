@@ -37,7 +37,6 @@ import Section from './pages/section';
 import Subject from './pages/Subject';
 import GeneralSettings from './pages/GeneralSettings';
 import Session from './pages/session';
-import StudentCartegory from './pages/StudentCartegory';
 
 import RequireAuth from './RequireAuth';
 import Layout from './pages/Layout';
@@ -146,6 +145,7 @@ import SingleTrack from './pages/exam/SingleTrack';
 import SearchStudentsModalExam from './pages/SearchStudentsModalExam';
 import ExamGradeAlt from './pages/exam/ExamGradeAlt';
 import ExamRemarks from './pages/exam/ExamRemarks';
+import Backup from './pages/Backup';
 
 function App() {
   const navigate = useNavigate();
@@ -340,7 +340,20 @@ function App() {
               }
             />{' '}
           </Route>
+          
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
+              path="/settings/backup"
+              element={
+                <>
+                  <PageTitle title="Data Backup" />
+                  <Backup />
+                </>
+              }
+            />{' '}
+                      </Route>
+
+            <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/settings/std"
               element={
@@ -734,17 +747,7 @@ function App() {
               }
             />{' '}
           </Route>{' '}
-          <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
-            <Route
-              path="/student/cartegory"
-              element={
-                <>
-                  <PageTitle title="Student" />
-                  <StudentCartegory />
-                </>
-              }
-            />{' '}
-          </Route>{' '}
+        
           <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
             <Route
               path="/student/details"
@@ -762,7 +765,7 @@ function App() {
               element={
                 <>
                   <PageTitle title="Inventory" />
-                  <StudentCartegory />
+                  {/* <StudentCartegory /> */}
                 </>
               }
             />{' '}

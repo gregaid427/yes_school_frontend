@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   CreatestudentImageAction,
   UpdatestudentAction,
+  fetchstdCartegoryAction,
   resetUdateStudent,
 } from '../redux/slices/studentSlice';
 import { toast } from 'react-hot-toast';
@@ -22,6 +23,7 @@ import StudentCredential from './Studentscredential';
 import Loader from '../common/Loader';
 import { Dialog } from 'primereact/dialog';
 import AssignFeeModalPartial from '../components/AssignFeeModalPartial';
+import StudentCartegorySelect from '../components/StudentCartegorySelect';
 // import { useHistory } from 'react-router-dom';
 
 const fetchUserdatEdit = () => {
@@ -29,12 +31,15 @@ const fetchUserdatEdit = () => {
 
   const location = useLocation();
   const { action, value, clas, section } = location?.state;
-console.log(value)
+  console.log(value);
   const [isChecked, setIsChecked] = useState(false);
+  const [cartegory, setCartegory] = useState('');
+    const [cart, setCart] = useState('');
+
 
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
-  const { fetchUserdatloading, updateStudent } = student;
+  const { fetchUserdatloading, updateStudent,fetchstdCartegory } = student;
 
   const [sect, setSect] = useState('');
   const [classss, setClas] = useState('');
@@ -76,9 +81,10 @@ console.log(value)
   const [dateofbirth, setdateofbirth] = useState('01-01-2020');
   const [createdBy, setcreatedBy] = useState('');
   const [buttonState, setButonState] = useState(1);
+  const [selectedInfo5, setSelectedInfo5] = useState();
 
   const [clazz, setclazz] = useState();
-  console.log(clazz)
+  console.log(clazz);
   const [sectionzz, setsectionzz] = useState();
   const [feeArrears, setFeeArrears] = useState(0.0);
   const [feeCredit, setFeeCredit] = useState(0.0);
@@ -89,7 +95,7 @@ console.log(value)
   const [link, setimagelink] = useState();
   const [g1id, setg1id] = useState();
   const [g2id, setg2id] = useState();
-console.log(classs)
+  console.log(classs);
   const [picturename, setPicturename] = useState();
 
   const [pictureurl, setPictureurl] = useState('');
@@ -97,6 +103,10 @@ console.log(classs)
   const pic = location.state.pic;
   const files = location.state.file;
   const captureimage = location.state.captureimage;
+
+  useEffect(() => {
+    dispatch(fetchstdCartegoryAction());
+  }, []);
 
   useEffect(() => {
     if (captureimage == 1) {
@@ -146,6 +156,7 @@ console.log(classs)
       firstName: firstName,
       lastName: lastName,
       otherName: otherName,
+      cartegory: cart,
 
       gender: gender,
       classes: clazz,
@@ -221,6 +232,8 @@ console.log(classs)
       setg2id(fetchUserdat?.data[1]?.userId);
 
       setStudentfirstName(value.firstName);
+       setCart(value.cartegory);
+
       setStudentlastName(value.lastName);
       setStudentotherName(value.otherName);
       setGender(value.gender);
@@ -250,14 +263,12 @@ console.log(classs)
       fetchUserdat?.info == [] ? setInfo([]) : setInfo(fetchUserdat?.info);
       fetchUserdat?.info1 == [] ? setInfo1([]) : setInfo1(fetchUserdat?.info1);
       fetchUserdat?.info2 == [] ? setInfo2([]) : setInfo2(fetchUserdat?.info2);
-
-     
     }
     if (fetchUserdat?.success == 0) {
       toast.error('Unable To load Student Data');
       navigate(-1);
     }
-  }, [fetchUserdat,fetchAllClass]);
+  }, [fetchUserdat, fetchAllClass]);
 
   const [sections, setsections] = useState([]);
   const [visible2, setVisible2] = useState(false);
@@ -267,7 +278,6 @@ console.log(classs)
   }
   let customfile = hashgenerator() + picturename;
 
-
   useEffect(() => {
     if (fetchSection?.success == 1) {
       let arrr = [value.section];
@@ -276,11 +286,9 @@ console.log(classs)
         arrr.push(clad?.fetchSection?.data[i]?.sectionName);
         i++;
       }
-  
+
       setsections(arrr);
       setsectionzz(arrr[0]);
-  
-    
     }
     if (fetchAllClass?.success == 1) {
       let i = 0;
@@ -289,12 +297,22 @@ console.log(classs)
         arr.push(clad?.fetchAllClass?.data[i].title);
         i++;
       }
-  console.log(arr)
+      console.log(arr);
       setClasss(arr);
     }
-  }, [fetchAllClass,fetchSection]);
+     if (fetchstdCartegory?.success == 1) {
+      let i = 0;
+      let arr = [value.cartegory];
+      while (i < fetchstdCartegory?.data.length) {
+        arr.push(fetchstdCartegory?.data[i].title);
+        i++;
+      }
+      console.log(arr);
+      setCartegory(arr);
+    }
+  }, [fetchAllClass, fetchSection,fetchstdCartegory]);
   useEffect(() => {
-    console.log(location?.state)
+    console.log(location?.state);
     if (location?.state == null) {
       //return navigate(-1);
     } else {
@@ -310,6 +328,9 @@ console.log(classs)
       // dispatch(fetchStudentsClassAction(data));
     }
   }, [location?.state]);
+  // useEffect(() => {
+ 
+  // }, [cart,clazz,sectionzz]);
 
   function handleBackButton(clas, sect) {
     console.log(sect);
@@ -325,7 +346,7 @@ console.log(classs)
         <div className="w-4/6  ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-7 flex justify-between dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
+              <h3 className="font-medium text-black underline dark:text-white">
                 Student Personal Information
               </h3>
             </div>
@@ -346,7 +367,9 @@ console.log(classs)
                       id=""
                       placeholder=""
                       defaultValue={value.firstName}
-                      onChange={(e) => setStudentfirstName(e.target.value.trim())}
+                      onChange={(e) =>
+                        setStudentfirstName(e.target.value.trim())
+                      }
                     />
                   </div>
                   <div className="w-full sm:w-2/2">
@@ -363,7 +386,9 @@ console.log(classs)
                       id=""
                       placeholder=""
                       defaultValue={value.lastName}
-                      onChange={(e) => setStudentlastName(e.target.value.trim())}
+                      onChange={(e) =>
+                        setStudentlastName(e.target.value.trim())
+                      }
                     />
                   </div>
                 </div>
@@ -383,7 +408,9 @@ console.log(classs)
                       id=""
                       placeholder=""
                       defaultValue={value.otherName}
-                      onChange={(e) => setStudentotherName(e.target.value.trim())}
+                      onChange={(e) =>
+                        setStudentotherName(e.target.value.trim())
+                      }
                     />
                   </div>
                   <div className="w-full sm:w-2/4 flex gap-5">
@@ -487,6 +514,23 @@ console.log(classs)
                   </div>
                 </div>
 
+                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                  <div className="w-full sm:w-2/4">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="fullName"
+                    >
+                      Student Cartegory{' '}
+                    </label>
+
+                       <SelectGroupTwo
+                          values={cartegory}
+                          setSelectedOption={(val) => setCart(val)}
+                          selectedOption={cart}
+                        />
+                  </div>
+
+                </div>
                 <div className="">
                   <h3 className="font-medium text-black dark:text-white">
                     Login Credentials
@@ -611,7 +655,7 @@ console.log(classs)
         <div className="w-full ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
+              <h3 className="font-medium text-black underline dark:text-white">
                 Student's Guardian/Parent Information
               </h3>
             </div>
@@ -708,7 +752,9 @@ console.log(classs)
                               id=""
                               placeholder=""
                               defaultValue={data[0]?.gRelation}
-                              onChange={(e) => setRelation1(e.target.value.trim())}
+                              onChange={(e) =>
+                                setRelation1(e.target.value.trim())
+                              }
                             />
                           </div>
                         </div>
@@ -729,7 +775,9 @@ console.log(classs)
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.gContact1}
-                            onChange={(e) => setgcontact1(e.target.value.trim())}
+                            onChange={(e) =>
+                              setgcontact1(e.target.value.trim())
+                            }
                           />
                         </div>
 
@@ -747,7 +795,9 @@ console.log(classs)
                             id=""
                             placeholder=""
                             defaultValue={data[0]?.gContact2}
-                            onChange={(e) => setgcontact2(e.target.value.trim())}
+                            onChange={(e) =>
+                              setgcontact2(e.target.value.trim())
+                            }
                           />
                         </div>
                       </div>
@@ -767,7 +817,9 @@ console.log(classs)
                             placeholder=""
                             defaultValue={data[0]?.gAddress}
                             // defaultValue={data?.gAddress}
-                            onChange={(e) => setgAddress1(e.target.value.trim())}
+                            onChange={(e) =>
+                              setgAddress1(e.target.value.trim())
+                            }
                           ></textarea>
                         </div>
                       </div>
@@ -814,6 +866,11 @@ console.log(classs)
 
               <div className={!data[1] ? 'hidden' : ''}>
                 <div className=" w-full">
+                  <div className="border-b mb-2 border-stroke py-4 px-7 dark:border-strokedark">
+                    <h3 className="font-medium text-black underline dark:text-white">
+                      Student's Guardian/Parent Information
+                    </h3>
+                  </div>
                   <div className="px-7">
                     <form>
                       <div className="mb-5.5 flex flex-col gap-3 sm:flex-row">
@@ -904,7 +961,9 @@ console.log(classs)
                               id=""
                               placeholder=""
                               defaultValue={data[1]?.gRelation}
-                              onChange={(e) => setRelation2(e.target.value.trim())}
+                              onChange={(e) =>
+                                setRelation2(e.target.value.trim())
+                              }
                             />
                           </div>
                         </div>
@@ -925,7 +984,9 @@ console.log(classs)
                             id=""
                             placeholder=""
                             defaultValue={data[1]?.gContact1}
-                            onChange={(e) => setgcontact3(e.target.value.trim())}
+                            onChange={(e) =>
+                              setgcontact3(e.target.value.trim())
+                            }
                           />
                         </div>
 
@@ -943,7 +1004,9 @@ console.log(classs)
                             id=""
                             placeholder=""
                             defaultValue={data[1]?.gContact2}
-                            onChange={(e) => setgcontact4(e.target.value.trim())}
+                            onChange={(e) =>
+                              setgcontact4(e.target.value.trim())
+                            }
                           />
                         </div>
                       </div>
@@ -964,7 +1027,9 @@ console.log(classs)
                             placeholder=""
                             defaultValue={data[1]?.gAddress}
                             // defaultValue={data?.gAddress}
-                            onChange={(e) => setgAddress2(e.target.value.trim())}
+                            onChange={(e) =>
+                              setgAddress2(e.target.value.trim())
+                            }
                           ></textarea>
                         </div>
                       </div>

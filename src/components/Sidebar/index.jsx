@@ -1662,6 +1662,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Examination
                             </NavLink>
                           </li>
+                          <li>
+                            <NavLink
+                              to="/settings/backup"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Data Backup
+                            </NavLink>
+                          </li>
                         </ul>
                       </div>
 

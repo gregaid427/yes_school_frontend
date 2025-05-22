@@ -129,6 +129,158 @@ export const updatesessionAction = createAsyncThunk(
     }
   },
 );
+
+export const GetBackupFile = createAsyncThunk(
+  'session/getbackupfile',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/session/filebackup`,
+        payload,axiosFile
+      );
+      // if (data?.success == 1 ) {
+      //   toast.success('Backup Successfully');
+      // }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+            ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const GetBackupAction = createAsyncThunk(
+  'session/getbackup',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/session/backup`,
+        payload,axiosFile
+      );
+      // if (data?.success == 1 ) {
+      //   toast.success('Backup Successfully');
+      // }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+            ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const deleteAllBackupAction = createAsyncThunk(
+  'session/deletebackup',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/session/backupdelete`,
+        payload,axiosFile
+      );
+      if (data?.success == 1 ) {
+        toast.success('Deleted Successfully');
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+            ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const updateBackupAction = createAsyncThunk(
+  'session/updatebackup',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/session/updatebackup`,
+        payload,axiosFile
+      );
+      if (data?.success == 1 ) {
+        toast.success('Updated Successfully');
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+            ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const createBackupAction = createAsyncThunk(
+  'session/backup',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/session/backup`,
+        payload,axiosFile
+      );
+      if (data?.success == 1 ) {
+        toast.success('Backup Successfully');
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+            ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const updatesessionStatusAction = createAsyncThunk(
   'session/Updatestatus',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -229,8 +381,12 @@ const SessionSlices = createSlice({
     resetdeletesession(state) {
       state.deletesessionById = null;
     },
+    resetcreateBackup(state) {
+      state.createBackup = null;
+    },
   },
   extraReducers: (builder) => {
+    
     builder.addCase(updatesessionAction.pending, (state, action) => {
       state.updatesessionloading = true;
       state.updatesession = false;
@@ -247,6 +403,72 @@ const SessionSlices = createSlice({
       state.updatesession = undefined;
       state.updatesessionloading = undefined;
       state.fetchsession = undefined;
+    });
+    
+
+
+ builder.addCase(deleteAllBackupAction.pending, (state, action) => {
+      state.createBackuploading = true;
+      state.createBackup = false;
+    });
+    builder.addCase(deleteAllBackupAction.fulfilled, (state, action) => {
+      state.createBackup = action?.payload;
+      state.createBackuploading = false;
+      state.createBackuperror = undefined;
+   
+    });
+    builder.addCase(deleteAllBackupAction.rejected, (state, action) => {
+      state.createBackuperror = action.payload;
+      state.createBackup = undefined;
+      state.createBackuploading = undefined;
+    });
+
+     builder.addCase(GetBackupFile.pending, (state, action) => {
+      state.GetBackupFileloading = true;
+      state.GetBackupFile = false;
+    });
+    builder.addCase(GetBackupFile.fulfilled, (state, action) => {
+      state.GetBackupFile = action?.payload;
+      state.GetBackupFileloading = false;
+      state.GetBackupFileerror = undefined;
+   
+    });
+    builder.addCase(GetBackupFile.rejected, (state, action) => {
+      state.GetBackupFileerror = action.payload;
+      state.GetBackupFile = undefined;
+      state.GetBackupFileloading = undefined;
+    });
+
+    builder.addCase(GetBackupAction.pending, (state, action) => {
+      state.GetBackuploading = true;
+      state.GetBackup = false;
+
+    });
+    builder.addCase(GetBackupAction.fulfilled, (state, action) => {
+      state.GetBackup = action?.payload;
+      state.GetBackuploading = false;
+      state.GetBackuploadingerror = undefined;
+   
+    });
+    builder.addCase(GetBackupAction.rejected, (state, action) => {
+      state.GetBackuploadingerror = action.payload;
+      state.GetBackup = undefined;
+      state.GetBackuploading = undefined;
+    });
+     builder.addCase(createBackupAction.pending, (state, action) => {
+      state.createBackuploading = true;
+      state.createBackup = false;
+    });
+    builder.addCase(createBackupAction.fulfilled, (state, action) => {
+      state.createBackup = action?.payload;
+      state.createBackuploading = false;
+      state.createBackuperror = undefined;
+   
+    });
+    builder.addCase(createBackupAction.rejected, (state, action) => {
+      state.createBackuperror = action.payload;
+      state.createBackup = undefined;
+      state.createBackuploading = undefined;
     });
 
     builder.addCase(updatesessionStatusAction.pending, (state, action) => {
@@ -267,6 +489,7 @@ const SessionSlices = createSlice({
       state.fetchsession = undefined;
     });
 
+    
     builder.addCase(deletesessionByIdAction.pending, (state, action) => {
       state.deletesessionByIdloading = true;
       state.deletesessionById = false;
@@ -351,6 +574,6 @@ const SessionSlices = createSlice({
   },
 });
 
-export const { resetUpdatesession, resetcreatesession } = SessionSlices.actions;
+export const { resetUpdatesession, resetcreatesession,resetcreateBackup } = SessionSlices.actions;
 
 export default SessionSlices.reducer;
