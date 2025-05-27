@@ -88,10 +88,10 @@ const SingleSubjectEdit = () => {
     if (classtitle == '') return toast.error('Please Fill Out Required Fields');
     const data = {
       id: info.id,
-      subjectname: classtitle,
+      subjectname: classtitle.toUpperCase(),
       type: isChecked1 == true ? 'Theory' : 'Practical',
-      createdby: username?.payload
-
+      createdby: username?.payload,
+      formersubject: info.subjectname
     
 
     };

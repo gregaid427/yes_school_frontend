@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { createsessionAction, fetchActivesessionAction, resetcreatesession, resetUpdatesession } from '../redux/slices/sessionSlice';
+import { createsessionAction, fetchActivesessionAction, resetcreatesession, resetUpdatesession, updatesessionAction } from '../redux/slices/sessionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { createSectionAction, resetcreatesection } from '../redux/slices/classSlice';
 import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
 
-const SessionModal = (props) => {
+const SessionEditModal = (props) => {
   const [startmonth, setStartMonth] = useState('January');
 
   const [isChecked, setIsChecked] = useState(false);
@@ -65,8 +65,11 @@ const SessionModal = (props) => {
 
   const { fetchsession, createsession,updatesession,fetchsessionactive } = session;
   useEffect(() => {
-    if (fetchsessionactive?.success == 1) {
-   setactivesession(fetchsessionactive?.data[0].sessionname)
+     if (fetchsessionactive?.success == 1 && fetchsessionactive?.data.length == 0) {
+  // setactivesession(fetchsessionactive?.data[0]?.sessionname)
+    }
+    if (fetchsessionactive?.success == 1 && fetchsessionactive?.data.length != 0) {
+   setactivesession(fetchsessionactive?.data[0]?.sessionname)
     }
   }, [fetchsessionactive]);
   useEffect(() => {
@@ -105,18 +108,17 @@ const SessionModal = (props) => {
 
 
   const classdata = {
-    sessionname: sectionTitle.toUpperCase(),
+    session: sectionTitle.toUpperCase(),
     createdby: username?.payload,
-    active: isChecked,
-    startmonth: startmonth.toUpperCase(),
-    currentsession: activesession == undefined ? ectionTitle.toUpperCase() : activesession
-  };
+    prevclass: props.info?.sessionname,
+    id: props.info?.id
+    };
 
   const handlecreateSection = (e) => {
     if (sectionTitle == '') {
       toast.error('Error - Section Name Cannot Be Empty');
     } else {
-      dispatch(createsessionAction(classdata));
+      dispatch(updatesessionAction(classdata));
     }
   };
  
@@ -128,7 +130,7 @@ const SessionModal = (props) => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-3 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Add New Academic Session
+                  Edit Academic Session
                 </h3>
               </div>
               <div className="p-7">
@@ -146,78 +148,13 @@ const SessionModal = (props) => {
                       name=""
                       id=""
                       placeholder=""
-                      defaultValue=""
+                      defaultValue={props.info?.sessionname}
                       onChange={(e) => {
                         e.preventDefault();
                         setsectionTitle(e.target.value.trim());
                       }}
                     />
-                    <div>
-                      <div className="mt-4 flex gap-3 flex-row">
-                        <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="checkboxLabelOne"
-                        >
-                          {'Current Session'}
-                        </label>
-{/* 
-                        <div className="flex justify-start sm:w-2/4">
-                          <label
-                            htmlFor={'type'}
-                            className="flex cursor-pointer select-none "
-                          >
-                            <div className="relative ">
-                              <input
-                                title={'type'}
-                                type="checkbox"
-                                id={'type'}
-                                className="sr-only"
-                                onChange={() => {
-                                  setIsChecked(!isChecked);
-                                }}
-                              />
-                              <div
-                                className={` flex h-5 w-5 items-center justify-center rounded border ${
-                                  isChecked &&
-                                  'border-primary bg-gray dark:bg-transparent'
-                                }`}
-                              >
-                                <span
-                                  className={`h-2.5 w-2.5 rounded-sm ${isChecked && 'bg-primary'}`}
-                                ></span>
-                              </div>
-                            </div>
-                          </label>
-                        </div> */}
-                      </div>
-                      {/* <div style={{ display: !isChecked ? 'none' : 'block' }}> */}{' '}
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="fullName"
-                      >
-                        Session Start Month
-                      </label>
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                        <SelectGroupTwo
-                          values={[
-                            'January',
-                            'February',
-                            'March',
-                            'April',
-                            'May',
-                            'June',
-                            'July',
-                            'August',
-                            'September',
-                            'October',
-                            'November',
-                            'December',
-                          ]}
-                          setSelectedOption={setStartMonth}
-                          selectedOption={startmonth}
-                        />
-                      </div>
-                    </div>
+              
                     {/* </div> */}
                   </div>
 
@@ -237,7 +174,7 @@ const SessionModal = (props) => {
                       className="flex w-6/12 justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="reset"
                       onClick={(e) => {
-                        props.openModal(false)
+                        props.close(false)
 
                
                       }}
@@ -254,4 +191,4 @@ const SessionModal = (props) => {
   );
 };
 
-export default SessionModal;
+export default SessionEditModal;

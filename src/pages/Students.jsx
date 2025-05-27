@@ -30,6 +30,7 @@ import {
   fetchBulkStudent,
   fetchCustomStudentsClassAction,
   fetchSingleStudent,
+  fetchstdCartegoryAction,
   fetchStudentsClassAction,
   resetFetchCustom,
 } from '../redux/slices/studentSlice';
@@ -48,7 +49,9 @@ import GlobalSearchInput from '../components/GlobalSearchInput';
 const Student = () => {
   ///////////////////////////////////
   const location = useLocation();
-
+useEffect(() => {
+    dispatch(fetchstdCartegoryAction());
+  }, []);
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState('top');
 
@@ -149,7 +152,7 @@ const Student = () => {
 
   useEffect(() => {
     setdata([]);
-    dispatch(fetchAllClassAction())
+ //   dispatch(fetchAllClassAction())
   }, []);
 
   useEffect(() => {
@@ -196,7 +199,7 @@ const Student = () => {
      `,
 
       Table: `
-  --data-table-library_grid-template-columns:  12% 40% 24% 14% 10%;
+  --data-table-library_grid-template-columns:  12% 38% 20% 20% 10%;
 `,
     },
   ]);
@@ -452,12 +455,12 @@ const Student = () => {
                       </HeaderRow>
                     </Header>
 
-                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                       {tableList?.map((item) => (
                         <Row
                           key={item.student_id}
                           item={item}
-                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] "
                         >
                           <Cell className="  ">
                             <span>{item.student_id}</span>
@@ -562,12 +565,12 @@ const Student = () => {
                       </HeaderRow>
                     </Header>
 
-                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                       {tableList?.map((item) => (
                         <Row
                           key={item.student_id}
                           item={item}
-                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                          className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] "
                         >
                           <Cell className="  ">
                             <span>{item.student_id}</span>

@@ -153,12 +153,19 @@ function App() {
   const [code, setCode] = useState([1]);
   // const { pathname } = useLocation();
   const dispatch = useDispatch();
+  const clad = useSelector((state) => state?.classes);
 
+  const {
+
+    fetchAllClass,
+    fetchSection
+  } = clad;
   // useEffect(() => {
   //   window.scrollTo(0, 0);
   // }, [pathname]);
-  dispatch(fetchAllClassAction())
-  dispatch(fetchAllSectionAction())
+  if(fetchAllClass?.success == undefined) dispatch(fetchAllClassAction())
+
+ if(fetchSection?.success == undefined)  dispatch(fetchAllSectionAction())
  
 
   const {  auth,setAuth } = useAuth();

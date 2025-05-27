@@ -46,7 +46,7 @@ const { username, userMail} = user;
   let data = {
     name: cartegoryName?.toUpperCase(),
     id: props.data?.id,
-
+formertitle: props.data?.name,
     createdby: username?.payload,
     description: description,
   };

@@ -41,11 +41,14 @@ import DeleteModal from '../components/DeleteModal';
 import SessionModal from '../components/SessionModal';
 import SessionSelect1 from '../components/SessionSelect1';
 import ActiveSVG1 from '../components/Svgs/active1';
+import SessionEditModal from '../components/SessionEditModal';
 
 const Session = () => {
   const [visible, setVisible] = useState(false);
   const [visible4, setVisible4] = useState(false);
   const [visible5, setVisible5] = useState(false);
+    const [visible7, setVisible7] = useState(false);
+
 
   const [del, setDel] = useState({});
 
@@ -263,6 +266,34 @@ const Session = () => {
       >
         <SessionModal  close={setVisible5} openModal={setVisible5}/>
       </Dialog>
+       <Dialog
+        visible={visible5}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible5) return;
+          setVisible5(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <SessionModal  close={setVisible5} openModal={setVisible5}/>
+      </Dialog>
+    
+       <Dialog
+        visible={visible7}
+        position={'top'}
+        style={{ height: 'auto', width: '35%' }}
+        onHide={() => {
+          if (!visible7) return;
+          setVisible7(false);
+        }}
+        draggable={false}
+        resizable={false}
+      >
+        <SessionEditModal  close={setVisible7} info={del}/>
+      </Dialog>
+    
       <Dialog
         visible={visible4}
         position={'top'}
@@ -463,11 +494,11 @@ const Session = () => {
                       </Header>
 
   
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                         {tableList?.map((item) => (
                           <Row key={item.id}
                             item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] "
                           
                           >
                             <Cell className="  ">{item.sessionname}</Cell>
@@ -480,7 +511,10 @@ const Session = () => {
                             <Cell>
                               <div className="gap-2 flex">
                                 <EditSVG
-                                  clickFunction={() => handleEditbtn(item)}
+                                  clickFunction={() => {setDel(item)
+                                    setVisible7(true)
+                                  }
+                                }
                                 />
 
                                 <DeleteSVG
@@ -558,7 +592,7 @@ const Session = () => {
                       </Header>
 
   
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                         {tableList?.map((item) => (
                           <Row
                             key={item.id}

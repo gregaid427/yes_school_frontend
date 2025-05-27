@@ -8,6 +8,7 @@ import {
   FetchClassReportAction,
   FetchClassReportAction1,
   FetchexamSubjectAction,
+  resetClassReport1,
   resetcreateexam,
 } from '../redux/slices/examSlice';
 import SectionSelect1 from './SectionsSelect1';
@@ -103,6 +104,7 @@ const ExamReportChoiceModal = (props) => {
           return toast.error('No Results Available');
         }
         // setVisible4(true);
+        dispatch(resetClassReport1())
         if (classdata)
           navigate('/exam/classreport', {
             state: {  action: 1, val: props?.info, examinfo: examinfo, result: data},

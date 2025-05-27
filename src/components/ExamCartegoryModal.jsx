@@ -12,6 +12,8 @@ const ExamCartegoryModal = (props) => {
     const data = {
       id: props?.val?.id,
       title: name.toUpperCase(),
+     formertitle: props?.val.grouptitle,
+
     };
 
     dispatch(UpdateExamCartegoryAction(data));

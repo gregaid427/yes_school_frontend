@@ -33,7 +33,7 @@ const fetchUserdatEdit = () => {
   const { action, value, clas, section } = location?.state;
   console.log(value);
   const [isChecked, setIsChecked] = useState(false);
-  const [cartegory, setCartegory] = useState('');
+  const [cartegory, setCartegory] = useState([]);
     const [cart, setCart] = useState('');
 
 
@@ -104,9 +104,7 @@ const fetchUserdatEdit = () => {
   const files = location.state.file;
   const captureimage = location.state.captureimage;
 
-  useEffect(() => {
-    dispatch(fetchstdCartegoryAction());
-  }, []);
+  
 
   useEffect(() => {
     if (captureimage == 1) {

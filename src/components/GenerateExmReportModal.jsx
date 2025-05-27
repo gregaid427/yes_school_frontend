@@ -19,6 +19,8 @@ import TableBtn from './Svgs/TableBtn';
 import SubjectSelect1 from './SubjectSelect1';
 import SessionSelect from './SessionSelect';
 import ClassSelect from './ClassSelect';
+import SectionSelect2 from './SectionsSelect2';
+import SectionSelect3 from './SectionsSelect3';
 
 const GenerateExmReportModal = (props) => {
   console.log(props);
@@ -78,6 +80,7 @@ console.log(selectedInfo)
       section: sectionzz,
       session: sessionz,
       examgroup: examgroupoption,
+      classExamId: selectedInfo[0]?.classexamid
     };
     dispatch(FetchClassReportAction(data));
   }
@@ -140,7 +143,7 @@ console.log(selectedInfo)
                       Section
                     </label>{' '}
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <SectionSelect1 setsectionprop={setsectionzz} selectinfo={setSelectedInfo1}  />
+                      <SectionSelect2 setsectionprop={setsectionzz} selectinfo={setSelectedInfo1}  />
                     </div>
                   </div>
                   {/* <div className="w-full mt-2  sm:w-2/2">

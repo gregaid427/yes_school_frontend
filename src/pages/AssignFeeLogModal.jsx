@@ -226,7 +226,7 @@ setVisible9(true)
               >
                 {(tableList) => (
                   <>
-                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                       <Row className="dark:border-strokedark Uppercase dark:bg-boxdark text-lg  text-black  border-stroke bg-white dark:text-white flex ">
                         <Cell className="  ">
                           <span>#</span>

@@ -58,7 +58,7 @@ const NewExamsModal = (props) => {
   useEffect(() => {
     dispatch(fetchSubjectAction());
   }, []);
-
+console.log(props)
   let grady =
     chosen[0]?.gradeid +
     '-' +
@@ -84,10 +84,9 @@ const NewExamsModal = (props) => {
       examgrade: chosen[0]?.exampercent,
       classgrade: chosen[0]?.classworkpercent,
       othergrade: chosen[0]?.otherscorepercent,
-      classcode: props.val?.classId,
+      classexamid: props.val?.classexamid,
     };
 
-    console.log(data);
     navigate('/exam/addresult', {
       state: { action: 1, value: data },
     });

@@ -794,7 +794,7 @@ export const FetchClassReportAction = createAsyncThunk(
       });
 
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/exam/generatexlassreport`,
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/genrateclassreport`,
         payload,axiosFile
       );
     
@@ -1144,6 +1144,9 @@ const ExamSlices = createSlice({
     },
     ResetGenerateAllReport(state,data) {
       state.GenerateAllReport = null;
+    },
+    resetClassReport1(state,data) {
+      state.ClassReport1 = null;
 
     },
     ResetClassReport(state,data) {
@@ -1621,7 +1624,8 @@ export const {
   resetcreateGetGradeGroup,
   ExamResultGrade,
   ResetClassReport,ResetGenerateAllReport,ResetClassReport1,
-  resetfetchExambyCode
+  resetfetchExambyCode,
+  resetClassReport1
 } = ExamSlices.actions;
 
 export default ExamSlices.reducer;

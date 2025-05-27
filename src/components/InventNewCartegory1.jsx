@@ -43,8 +43,8 @@ const InventNewCartegory1 = (props) => {
       }, [CreateInventorycart]);
 
 
-    const [cartegoryName, setcartegoryName] = useState();
-    const [note, setNote] = useState();
+    const [cartegoryName, setcartegoryName] = useState('');
+    const [note, setNote] = useState('');
    
    
     const formRef1 = useRef();

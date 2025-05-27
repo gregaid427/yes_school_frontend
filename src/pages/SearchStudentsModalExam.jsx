@@ -398,7 +398,7 @@ const SearchStudentsModalExam = (props) => {
               >
                 {(tableList) => (
                   <>
-                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                     <Header>
                       <HeaderRow className="dark:bg-meta-4 border-stroke bg-white dark:text-white flex ">
                         <HeaderCell className="">ID</HeaderCell>
@@ -416,7 +416,7 @@ const SearchStudentsModalExam = (props) => {
                           <Row
                             key={item.student_id}
                             item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] "
                           >
                             <Cell className="  ">
                               <span>{item.student_id}</span>

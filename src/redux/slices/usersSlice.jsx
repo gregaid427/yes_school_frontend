@@ -668,7 +668,7 @@ export const SchoollogoAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/logoschool`,
-        payload,axiosFile,
+        payload,
         {
           headers: {
             'Content-type': 'multipart/form-data',

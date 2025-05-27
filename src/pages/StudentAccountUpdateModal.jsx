@@ -214,7 +214,7 @@ const StudentAccountUpdateModal = (props) => {
               >
                 {(tableList) => (
                   <>
-                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                    <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                       <Row
                         key={1}
                         className="dark:border-strokedark Uppercase dark:bg-boxdark font-bold  text-black  border-stroke bg-white dark:text-white flex "

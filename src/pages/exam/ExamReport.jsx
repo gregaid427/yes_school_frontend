@@ -123,15 +123,15 @@ const ExamReport = () => {
       Table: `
       --data-table-library_grid-template-columns:  75%   25%;
     `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -175,8 +175,6 @@ const ExamReport = () => {
 
   const [classdata, setClassdata] = useState([]);
 
- 
-
   return loader ? (
     <Loader />
   ) : (
@@ -201,7 +199,7 @@ const ExamReport = () => {
           setVisible3(false);
         }}
       >
-        <ExamResultChoiceModal close={setVisible6} value={val1} />
+        <ExamResultChoiceModal close={setVisible3} value={val1} />
       </Dialog>
       <Dialog
         visible={visible6}
@@ -307,19 +305,21 @@ const ExamReport = () => {
                         </HeaderRow>
                       </Header>
 
-  
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                         {tableList?.map((item) => (
-                          <Row key={item.id}
+                          <Row
+                            key={item.id}
                             item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
-                          
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] "
                           >
-                            <Cell className="  ">{item.title}{" "} {item.section ? ("(" +item.section +")" ) : ''}</Cell>
-                           
+                            <Cell className="  ">
+                              {item.title}{' '}
+                              {item.section ? '(' + item.section + ')' : ''}
+                            </Cell>
+
                             <Cell className="  ">
                               {/* {item.section ? item.section : '-'} */}
-                            {/* <Cell className="  ">
+                              {/* <Cell className="  ">
                               {item?.val == (item?.section == null ? '-' : item?.section)? (
                                 <TableBtn
                                   clickFunction={() => {
@@ -341,19 +341,18 @@ const ExamReport = () => {
                               )}
                             </Cell> */}
 
-                          
                               <div className="gap-2 flex">
                                 <TableBtn
                                   clickFunction={() => {
-                                 console.log('itemmmmmmmmmm')
-                                 console.log(item)
-                                 setVal1(item)
-                                setVisible6(true)
+                                    console.log('itemmmmmmmmmm');
+                                    console.log(item);
+                                    setVal1(item);
+                                    setVisible6(true);
                                   }}
                                   text={'Get Report'}
                                   color={'bg-primary'}
                                 />
-                                
+
                                 {/* <TableBtn
                                   clickFunction={() => {
                                     setVisible3(true);
@@ -431,8 +430,7 @@ const ExamReport = () => {
                         </HeaderRow>
                       </Header>
 
-  
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                         {tableList?.map((item) => (
                           <Row
                             key={item.id}

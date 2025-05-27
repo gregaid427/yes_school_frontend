@@ -109,6 +109,7 @@ const SingleSectionEdit = () => {
     const data = {
       id: sectionId,
       sectionName: classtitle.toUpperCase(),
+      prevclass: sectionName
     };
     console.log(data);
     dispatch(updateSectionAction(data));

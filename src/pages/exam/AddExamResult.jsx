@@ -226,7 +226,7 @@ const AddExamResult = (props) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   const { username, userMail } = user;
-
+console.log(value)
   let random = getRandomNumber(10000, 1000);
   let examinationid = value.subjects?.slice(0, 3) + random;
   let resultdata = {
@@ -241,7 +241,7 @@ const AddExamResult = (props) => {
     otherpercent: value?.othergrade,
     gradeArray: singleGrade,
     classes: value?.class,
-    classcode: value?.classcode,
+    classexamid: value?.classexamid,
     section: value?.section == null ? '-' : value?.section,
     createdby: username?.payload,
     classsize: nodes.length,
@@ -476,12 +476,12 @@ const AddExamResult = (props) => {
                             </HeaderRow>
                           </Header>
 
-                          <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                          <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                             {tableList?.map((item, index) => (
                               <Row
                                 key={item.student_id}
                                 item={item}
-                                className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                                className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] "
                               >
                                 <Cell className="  ">
                                   <span>{item.student_id}</span>
@@ -608,7 +608,7 @@ const AddExamResult = (props) => {
                           </HeaderRow>
                         </Header>
 
-                        <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                        <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                           {tableList?.map((item) => (
                             <Row
                               key={item.student_id}

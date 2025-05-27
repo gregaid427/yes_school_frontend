@@ -340,6 +340,7 @@ export const createsessionAction = createAsyncThunk(
   },
 );
 
+
 export const truncateTableAction = createAsyncThunk(
   'delete/allrecords',
   async ({ rejectWithValue, getState, dispatch }) => {

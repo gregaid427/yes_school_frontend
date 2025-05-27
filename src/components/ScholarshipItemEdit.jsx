@@ -78,7 +78,7 @@ const ScholarshipItemEdit = (props) => {
     if (feecartegory == 'FEE PAYABLE' && type == 'Percentage') {
       return toast.error('Error - Please Set Percentage');
     }
-    if ((percent < 1 || percent < '')  && type == 'Percentage' && isChecked1 == true) {
+    if ((percent < 1 || percent == '')  && type == 'Percentage' && isChecked1 == true) {
       return toast.error('Error - Please Set Percentsge ');
     }
     if (amount < 1 && type == 'Fixed Value' && isChecked1 == false) {
@@ -150,7 +150,7 @@ const ScholarshipItemEdit = (props) => {
                                   onChange={() => {
                                     setIsChecked1(false);
                                     settype('Fixed Value');
-                                    setPercent(null)
+                                    setPercent(0)
                                   }}
                                 />
                                 <div

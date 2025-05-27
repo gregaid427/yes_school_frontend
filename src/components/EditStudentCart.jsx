@@ -46,9 +46,9 @@ const { username, userMail} = user;
   let data = {
     name: cartegoryName?.toUpperCase(),
     id: props.data?.id,
-
+formertitle: props.data?.title,
     createdby: username?.payload,
-    description: description,
+    description: description == undefined ? " ": description,
   };
   const handleSubmit = (e) => {
     if (cartegoryName == '') {

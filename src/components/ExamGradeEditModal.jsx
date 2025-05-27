@@ -248,6 +248,7 @@ const { username, userMail} = user;
       const data = {
         code: props?.info[0]?.gradecode,
         title:name,
+        formertitle: props?.info?.[0]?.gradetitle,
         classscore: classScore,
         examScore: examScore,
         otherScore: otherScore,

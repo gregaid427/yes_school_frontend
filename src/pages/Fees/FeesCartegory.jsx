@@ -346,12 +346,12 @@ const FeesGroup = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                         {tableList?.map((item) => (
                           <Row
                             key={item.id}
                             item={item}
-                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex "
+                            className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] "
                           >
                             <Cell className="  ">{item.name}</Cell>
 
@@ -440,7 +440,7 @@ const FeesGroup = () => {
                         </HeaderRow>
                       </Header>
 
-                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex ">
+                      <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                         {tableList?.map((item) => (
                           <Row
                             key={item.id}

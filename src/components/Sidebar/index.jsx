@@ -383,17 +383,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               Class
                             </NavLink>
                           </li>
-                          <li>
-                            <NavLink
-                              to="/academics/subjects"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Subjects
-                            </NavLink>
-                          </li>
+                         
                           <li>
                             <NavLink
                               to="/academics/section"
@@ -403,6 +393,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               }
                             >
                               Sections
+                            </NavLink>
+                          </li>
+                           <li>
+                            <NavLink
+                              to="/academics/subjects"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-1 CreateInventorycart text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Subjects
                             </NavLink>
                           </li>
                           <li>
@@ -673,7 +674,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Assign Fees
+                              Assigned Fees List
                             </NavLink>
                           </li>
 
@@ -1381,7 +1382,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Marks Grade
+                              Marks Grade List
                             </NavLink>
                           </li>
                           <li>
