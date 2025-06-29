@@ -292,6 +292,7 @@ const Examsettings = () => {
                           Select
                         </button>
                       </div>
+                      
                       <div className="flex justify-between ">
                         <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                           <div
@@ -319,7 +320,32 @@ const Examsettings = () => {
                         </button>
                       </div>
                    
-
+  <div className="flex justify-between ">
+                        <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
+                          <div
+                            className={` flex h-5 w-5 items-center justify-center rounded border ${
+                              true &&
+                              'border-primary bg-gray dark:bg-transparent'
+                            }`}
+                          >
+                            <span
+                              className={`h-2.5 w-2.5 rounded-sm ${true && 'bg-primary'}`}
+                            ></span>
+                          </div>{' '}
+                          Add Report Remarks Cartegory
+                          </label>
+                        <button
+                          className="flex  float-end rounded bg-primary py-1 px-2 font-medium text-gray hover:bg-opacity-90"
+                          type=""
+                          onClick={() => {
+                             //setVisible5(true);
+                             navigate("/settings/remarksgroup");
+                            // dispatch(FetchAllReportAction());
+                          }}
+                        >
+                          Select
+                        </button>
+                      </div>
                       {/* <div className="flex justify-between">
                               <label className="pt-2 flex gap-2  text-sm font-medium text-ash dark:text-white">
                                 <div

@@ -122,7 +122,7 @@ const Subject = () => {
     }
   `,
       Table: `
-  --data-table-library_grid-template-columns:  55% 20% 25%;
+  --data-table-library_grid-template-columns:  75%  25%;
 `,
       BaseCell: `
         font-size: 15px;
@@ -251,7 +251,7 @@ const Subject = () => {
                 />
               </div>
 
-              <div className=" mt-3">
+              {/* <div className=" mt-3">
                 <div className="flex mt-5 mb-2 justify-between align-middle">
                   <label className=" block text-sm align-middle font-medium text-black dark:text-white">
                     Subject Type :
@@ -340,7 +340,7 @@ const Subject = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex justify-end  gap-4.5">
                 <button
@@ -384,7 +384,7 @@ const Subject = () => {
                 <div className=" flex w-7/12 gap-3">
                   <div className="sm:w-2/5 ">
                     <label
-                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                      className="pt-2 block text-sm font-medium text-ash cursor-pointer dark:text-white"
              // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadPdf();
@@ -396,7 +396,7 @@ const Subject = () => {
 
                   <div className="w-full sm:w-2/5">
                     <label
-                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                      className="pt-2 block text-sm font-medium text-ash cursor-pointer dark:text-white"
              // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadCSV();
@@ -450,7 +450,7 @@ const Subject = () => {
                         <HeaderRow className="dark:bg-meta-4 dark:text-white flex ">
                           <HeaderCell>Subject</HeaderCell>
 
-                          <HeaderCell>Type</HeaderCell>
+                          {/* <HeaderCell>Type</HeaderCell> */}
 
                           <HeaderCell>Actions</HeaderCell>
                         </HeaderRow>
@@ -465,7 +465,7 @@ const Subject = () => {
                           >
                             <Cell className="  ">{item.subjectname}</Cell>
 
-                            <Cell className="  ">{item.type}</Cell>
+                            {/* <Cell className="  ">{item.type}</Cell> */}
 
                             <Cell>
                               <div className="gap-2 flex">

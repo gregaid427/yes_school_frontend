@@ -17,9 +17,7 @@ import ArrowIcon from '../Svgs/arrowicon';
 const Header = (props) => {
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
-  const {
-    GlobalSearch
-  } = student;
+  const { GlobalSearch } = student;
   const user = useSelector((state) => state?.user);
   const { allschool } = user;
   const session = useSelector((state) => state?.session);
@@ -27,24 +25,23 @@ const Header = (props) => {
   const [sessionz, setsession] = useState(null);
   const [school, setschool] = useState([]);
   const [globalsearch, setGlobalSearch] = useState(null);
-
   useEffect(() => {
-    dispatch(fetchschoolinfoAction());
-    dispatch(fetchActivesessionAction());
-  }, []);
+    if (allschool?.success == undefined) dispatch(fetchschoolinfoAction());
+        if (fetchsessionactive?.success == undefined) dispatch(fetchActivesessionAction());
 
+  }, []);
   useEffect(() => {
     if (fetchsessionactive?.success == 1) {
       let data = fetchsessionactive?.data[0];
       setsession(data);
     }
   }, [fetchsessionactive]);
-const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (GlobalSearch?.success == 1 && GlobalSearch?.data.length != 0) {
-      navigate("/student/search", {
-        state: { value: GlobalSearch},
+      navigate('/student/search', {
+        state: { value: GlobalSearch },
       });
     }
   }, [GlobalSearch]);
@@ -55,9 +52,8 @@ const navigate = useNavigate()
     }
   }, [allschool]);
 
-  function handleGlobalSearch(val){
-    dispatch(GlobalSearchAction({id:val}))
-
+  function handleGlobalSearch(val) {
+    dispatch(GlobalSearchAction({ id: val }));
   }
 
   return (
@@ -115,7 +111,7 @@ const navigate = useNavigate()
           {school[0]?.name ? school[0]?.name : ''}
         </span>
         <span className=" float-start block text-sm font-medium text-black dark:text-white">
-           Session : {sessionz?.sessionname}
+          Session : {sessionz?.sessionname}
         </span>
         <div className="  flex row ">
           <input
@@ -125,15 +121,15 @@ const navigate = useNavigate()
             id=""
             placeholder="Search Student"
             defaultValue=""
-              onChange={(e) => setGlobalSearch(e.target.value.trim())}
+            onChange={(e) => setGlobalSearch(e.target.value.trim())}
           />
           <button
-                    className="flex w-3/12 justify-center bg-primary h-auto text-center py-2 align-middle rounded-full ml-1 font-large text-gray hover:bg-opacity-90"
-                    type=""
-                   onClick={(e) => handleGlobalSearch(globalsearch)}
-                  >
-                   <ArrowIcon />
-                   </button>
+            className="flex w-3/12 justify-center bg-primary h-auto text-center py-2 align-middle rounded-full ml-1 font-large text-gray hover:bg-opacity-90"
+            type=""
+            onClick={(e) => handleGlobalSearch(globalsearch)}
+          >
+            <ArrowIcon />
+          </button>
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">

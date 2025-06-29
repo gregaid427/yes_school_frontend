@@ -299,6 +299,38 @@ export const fetchStudentsClassAccountAction = createAsyncThunk(
   },
 );
 
+export const FetchDetailAction = createAsyncThunk(
+  'fetch/FetchDetailAction',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      // const toastId = toast.loading('Loading...', {
+      //   position: 'bottom-right',
+      // });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/student/getdetails`,
+        payload,axiosFile
+      );
+      // toast.loading('Empty Class List');
+      if (data?.success == 1) {
+      //  toast.dismiss(toastId);
+        toast.dismiss();
+      }
+   
+      if (data) {
+       // toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorAltToast('⚠️ Error', error);
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const fetchCustomStudentsClassAction = createAsyncThunk(
   'fetch/studentClassCustom',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -1286,6 +1318,9 @@ const StudentSlices = createSlice({
     resetFetchCustom(state) {
       state.fetchcustom = null;
     },
+    resetFetchDetail(state) {
+      state.FetchDetail = null;
+    },
     resetFetchCustomStudent(state) {
       state.fetchcustomstudent = null;
     },
@@ -1699,6 +1734,28 @@ const StudentSlices = createSlice({
       },
     );
 
+
+  builder.addCase(FetchDetailAction.pending, (state, action) => {
+      state.FetchDetailloading = true;
+      state.FetchDetail = false;
+    });
+    builder.addCase(
+      FetchDetailAction.fulfilled,
+      (state, action) => {
+        state.FetchDetail = action?.payload;
+        state.FetchDetailloading = false;
+        state.FetchDetailerror = undefined;
+      },
+    );
+    builder.addCase(
+      FetchDetailAction.rejected,
+      (state, action) => {
+        state.FetchDetailerror = action.payload;
+        state.FetchDetail = undefined;
+        state.FetchDetailloading = undefined;
+      },
+    );
+
     builder.addCase(fetchCustomStudentsClassAction.pending, (state, action) => {
       state.fetchcustomloading = true;
       state.fetchcustom = false;
@@ -1893,6 +1950,7 @@ export const {
   resetPromote,
   resetSinglestudent,
   resetFetchCustom,
+  resetFetchDetail,
   resetcreatestdcart,
   resetstdCartDel,
   resetUpdateStdCart,

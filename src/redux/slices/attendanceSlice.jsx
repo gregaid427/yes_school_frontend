@@ -235,13 +235,13 @@ export const GetRecordByDateAction = createAsyncThunk(
         payload,axiosFile
       );
 
-      if (data?.success == 1 && data?.result?.length == 0) {
-        toast.error('No Records Available');
+      if (data?.success == 1 && data?.data?.length == 0) {
+        toast.success('No Records Available');
 
         // toast.error(data.message);
       }
-      if (data?.success == 0 && data?.result?.length == 0) {
-        toast.error('No Records Available');
+      if (data?.success == 0 && data?.data?.length == 0) {
+        toast.success('No Records Available');
 
         // toast.error(data.message);
       }

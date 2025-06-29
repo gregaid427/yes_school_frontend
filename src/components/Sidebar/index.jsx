@@ -62,7 +62,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     <aside
       ref={sidebar}
       style={{ width: 230 }}
-      className={`absolute left-0 top-0 z-9999 flex h-screen  flex-col overflow-y-hidden bg-[#3C39AB] duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-9999 flex h-screen  flex-col overflow-y-hidden  duration-300 ease-linear bg-boxdark lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
@@ -114,9 +114,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                       <li>
                         <NavLink
                           to="/dashboard"
-                          className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                          className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                             pathname.includes('dashboard') &&
-                            'bg-[#504DB4] dark:bg-meta-4'
+                            ' dark:bg-meta-4'
                           }`}
                         >
                           <svg
@@ -171,9 +171,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                           pathname === '/student' &&
-                          'bg-[#504DB4] dark:bg-meta-4'
+                          ' dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -286,9 +286,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                           pathname === '/academics' &&
-                          'bg-[#504DB4] dark:bg-meta-4'
+                          ' dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -435,9 +435,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                           pathname === '/inventory' &&
-                          'bg-[#504DB4] dark:bg-meta-4'
+                          ' dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -563,8 +563,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
-                          pathname === '/fees' && 'bg-[#504DB4] dark:bg-meta-4'
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
+                          pathname === '/fees' && ' dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -767,9 +767,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <li>
                 <NavLink
                   to="/inventory/additem"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                     pathname.includes('inventory') &&
-                   'bg-[#504DB4] dark:bg-meta-4'
+                   ' dark:bg-meta-4'
                   }`}
                 >
                   <svg
@@ -810,9 +810,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <li>
                 <NavLink
                   to="/students"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                     pathname.includes('students') &&
-                   'bg-[#504DB4] dark:bg-meta-4'
+                   ' dark:bg-meta-4'
                   }`}
                 >
                   <svg
@@ -847,10 +847,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                           (pathname === '/expense' ||
                             pathname.includes('expense')) &&
-                          'bg-[#504DB4] dark:bg-meta-4'
+                          ' dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -961,10 +961,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                           (pathname === '/attendance' ||
                             pathname.includes('attendance')) &&
-                          'bg-[#504DB4] dark:bg-meta-4'
+                          ' dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -1062,9 +1062,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <li>
                 <NavLink
                   to="/calendar"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                     pathname.includes('calendar') &&
-                   'bg-[#504DB4] dark:bg-meta-4'
+                   ' dark:bg-meta-4'
                   }`}
                 >
                   <svg
@@ -1089,8 +1089,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <li>
                 <NavLink
                   to="/profile"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
-                    pathname.includes('profile') &&'bg-[#504DB4] dark:bg-meta-4'
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
+                    pathname.includes('profile') &&' dark:bg-meta-4'
                   }`}
                 >
                   <svg
@@ -1123,8 +1123,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <li>
                 <NavLink
                   to="/tables"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
-                    pathname.includes('tables') &&'bg-[#504DB4] dark:bg-meta-4'
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
+                    pathname.includes('tables') &&' dark:bg-meta-4'
                   }`}
                 >
                   <svg
@@ -1161,9 +1161,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <li>
                 <NavLink
                   to="/settings"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                     pathname.includes('settings') &&
-                   'bg-[#504DB4] dark:bg-meta-4'
+                   ' dark:bg-meta-4'
                   }`}
                 >
                   <svg
@@ -1206,8 +1206,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <li>
                 <NavLink
                   to="/chart"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
-                    pathname.includes('chart') &&'bg-[#504DB4] dark:bg-meta-4'
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
+                    pathname.includes('chart') &&' dark:bg-meta-4'
                   }`}
                 >
                   <svg
@@ -1260,9 +1260,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                           (pathname === '/exam' || pathname.includes('exam')) &&
-                          'bg-[#504DB4] dark:bg-meta-4'
+                          ' dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -1413,10 +1413,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                           (pathname === '/onlineexam' ||
                             pathname.includes('onlineexam')) &&
-                         'bg-[#504DB4] dark:bg-meta-4'
+                         ' dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -1541,10 +1541,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#504DB4] dark:hover:bg-meta-4 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover: dark:hover:bg-meta-4 ${
                           (pathname === '/settings' ||
                             pathname.includes('settings')) &&
-                          'bg-[#504DB4] dark:bg-meta-4'
+                          ' dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();

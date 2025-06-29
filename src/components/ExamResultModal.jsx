@@ -143,7 +143,7 @@ const ExamResultModal = (props) => {
             <div className=" flex  gap-1">
               <div className="sm:w-2/5 ">
                 <label
-                  className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                  className="pt-2 block text-sm cursor-pointer font-medium text-ash dark:text-white"
          // style={{ color: '#A9B5B3' }}
                   onClick={(e) => {
                     handleDownloadPdf();
@@ -155,7 +155,7 @@ const ExamResultModal = (props) => {
 
               <div className="w-full sm:w-2/5">
                 <label
-                  className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                  className="pt-2 block text-sm cursor-pointer font-medium text-ash dark:text-white"
          // style={{ color: '#A9B5B3' }}
                   onClick={(e) => {
                     handleDownloadCSV();

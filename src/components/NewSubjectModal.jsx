@@ -94,7 +94,7 @@ const { username, userMail} = user;
                   />
                 </div>
 
-                <div className=" mt-3">
+                {/* <div className=" mt-3">
                   <div className="flex mt-5 mb-2 justify-between align-middle">
                     <label className=" block text-sm align-middle font-medium text-black dark:text-white">
                       Subject Type :
@@ -142,7 +142,7 @@ const { username, userMail} = user;
                       </div>
                     </div>
 
-                    <div className="mb-2 flex   sm:w-1/2">
+                    {/* <div className="mb-2 flex   sm:w-1/2">
                       <div className=" flex  sm:w-full">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -181,9 +181,9 @@ const { username, userMail} = user;
                           </div>
                         </label>
                       </div>
-                    </div>
+                    </div> 
                   </div>
-                </div>
+                </div> */}
 
                 <div className="flex justify-end  gap-4.5">
                   <button

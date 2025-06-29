@@ -31,6 +31,7 @@ import {
   FetchExamGroupAction,
   FetchExamListAction,
   FetchSingleReportAction,
+  GetExamRemarksAction,
   resetclassreport,
   resetcreateexam,
   resetsinglereport,
@@ -52,6 +53,7 @@ import toast from 'react-hot-toast';
 import ExamReportModal from '../../components/SingleExamReport';
 import ClassReportModal from '../../components/ClassReportModal';
 import RemarksExamModal from '../../components/RemarksExamModal';
+import RemarksExamModal1 from '../../components/RemarksExamModal1';
 
 const ExamReportDetail = () => {
   
@@ -59,7 +61,7 @@ const ExamReportDetail = () => {
   //   setdata([]);
   // }, []);
   const exam = useSelector((state) => state?.exam);
-  const { SingleReport, ClassReport, FetchExamCustom } = exam;
+  const { SingleReport, ClassReport, FetchExamCustom ,GetExamRemark} = exam;
 
   const student = useSelector((state) => state?.student);
   const { fetchcustom } = student;
@@ -69,6 +71,8 @@ const ExamReportDetail = () => {
   const [pagesval, setpagesval] = useState(30);
 
   const [loader, setLoader] = useState(false);
+    const [propval, setpropval] = useState([]);
+
 
   const [nodes, setdata] = useState([]);
   const [singledata, setsingledata] = useState([]);
@@ -170,7 +174,7 @@ const ExamReportDetail = () => {
 
       `,
       Table: `
-      --data-table-library_grid-template-columns:   20% 55% 25% ;
+      --data-table-library_grid-template-columns:   20% 45% 35% ;
     `,
       //       Row: `
       //   &:nth-of-type(odd) {
@@ -225,6 +229,10 @@ const ExamReportDetail = () => {
   const [classes, setClass] = useState();
 
   const [visible5, setVisible5] = useState(false);
+    const [visible6, setVisible6] = useState(false);
+        const [visible7, setVisible7] = useState(false);
+
+
 
   const [display, setDisplay] = useState(false);
 
@@ -280,11 +288,28 @@ const ExamReportDetail = () => {
     };
     dispatch(FetchClassReportAction(data));
   }
-
+  useEffect(() => {
+    dispatch(GetExamRemarksAction());
+  }, []);
   useEffect(() => {
     dispatch(fetchAllsessionAction());
   }, []);
   console.log(location?.state?.value);
+
+    useEffect(() => {
+    if (GetExamRemark?.success == 1) {
+      let data = GetExamRemark?.data;
+      let myArr = ['-']
+
+        for(const val of data){
+          myArr.push(val.text)
+          console.log(val)
+        }
+      setpropval(myArr);
+      console.log(myArr)
+    }
+  }, [GetExamRemark]);
+
 
   useEffect(() => {
     if (location?.state == null) {
@@ -307,6 +332,8 @@ const ExamReportDetail = () => {
     <Loader />
   ) : (
     <DefaultLayout>
+      
+      
      <Dialog
         visible={visible4}
         position={'top'}
@@ -334,6 +361,23 @@ const ExamReportDetail = () => {
           result={classdata}
         />
       </Dialog>
+  <Dialog
+        visible={visible6}
+        position={'top-right'}
+        style={{ height: 'auto', width: '80%' }}
+        onHide={() => {
+          if (!visible6) return;
+          setVisible6(false);
+        }}
+      >
+      <RemarksExamModal1
+          close={setVisible6}
+          val2={val2}
+          examinfo={examinfo}
+          result={propval}
+        />
+      </Dialog>
+      
 
       
 
@@ -482,7 +526,7 @@ const ExamReportDetail = () => {
                         {tableList?.map((item) => (
                           <Row
                             key={item?.student_id}
-                            item={item}
+                            item={item?.student_id}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] "
                           >
                             <Cell className="  ">
@@ -499,6 +543,19 @@ const ExamReportDetail = () => {
                             <Cell>
                               <div className="gap-2 flex">
                                 <TableBtn
+                                  clickFunction={() => {
+                                    // if (clazz == 'None')
+                                    //   return toast.error('Select Exam Group');
+                                    // else if (sectionzz == undefined)
+                                    //   return toast.error('Select Session');
+                                    setVal2(item);
+
+                                    setVisible6(true);
+                                  }}
+                                  text={'Select Remarks'}
+                                  color={'bg-primary'}
+                                />
+                                 <TableBtn
                                   clickFunction={() => {
                                     // if (clazz == 'None')
                                     //   return toast.error('Select Exam Group');
@@ -525,6 +582,7 @@ const ExamReportDetail = () => {
                                   text={'View / Print'}
                                   color={'bg-primary'}
                                 />
+                                
                               </div>
                             </Cell>
                           </Row>

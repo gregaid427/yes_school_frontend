@@ -274,7 +274,7 @@ const SearchExpense = () => {
                     </div>
                   </div>
                   <label
-                    className="pt-4 block text-sm font-medium text-ash dark:text-white"
+                    className="pt-4 block text-sm font-medium cursor-pointer text-ash dark:text-white"
            // style={{ color: '#A9B5B3' }}
                     onClick={(e) => {
                       handleDownloadPdf();

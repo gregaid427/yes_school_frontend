@@ -176,6 +176,121 @@ export const CreateExamGroupAction = createAsyncThunk(
     }
   },
 );
+export const CreateExamRemarksAction = createAsyncThunk(
+  'create/ExamRemarksGroup',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/examremarksgroup`,
+        payload,axiosFile
+      );
+    if (data?.success == 1) {   toast.dismiss(toastId);
+        toast.success('Created Successfully');
+      }
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const UpdateExamRemarksAction = createAsyncThunk(
+  'create/updateRemarksGroup',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/examremarksgroup`,
+        payload,axiosFile
+      );
+    if (data?.success == 1) {   toast.dismiss(toastId);
+        toast.success('Updated Successfully');
+      }
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const GetExamRemarksAction = createAsyncThunk(
+  'create/getRemarksGroup',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+       toast.dismiss();
+
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',     
+      });
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/exam/examremarksgroup`,
+        payload,axiosFile
+      );
+   
+
+      if (data?.success == 0) {
+        toast.error(data?.message);
+
+        // toast.error(data.message);
+      }
+          if (data) {
+        toast.dismiss(toastId);
+   
+      }
+      return data;
+    } catch (error) {
+      console.log(error)
+                ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 export const FetchExamGroupAction = createAsyncThunk(
   'get/ExamGroup',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -1126,6 +1241,9 @@ const ExamSlices = createSlice({
     resetsubmitresult(state) {
       state.submitResult = null;
     },
+    resetexamremarksgroup(state) {
+      state.GetExamRemark = null;
+    },
     resetExamCart(state) {
       state.UpdateExamCartegory = null;
     },
@@ -1548,6 +1666,50 @@ const ExamSlices = createSlice({
       state.createxamgroup = undefined;
     });
 
+    builder.addCase(CreateExamRemarksAction.pending, (state, action) => {
+      state.GetExamRemarkloading = true;
+      state.GetExamRemark = false;
+    });
+    builder.addCase(CreateExamRemarksAction.fulfilled, (state, action) => {
+      state.GetExamRemark = action?.payload;
+      state.GetExamRemarkloading = false;
+      state.GetExamRemarkerror = undefined;
+    });
+    builder.addCase(CreateExamRemarksAction.rejected, (state, action) => {
+      state.GetExamRemarkloading = false;
+      state.GetExamRemarkperror = action.payload;
+      state.GetExamRemark = undefined;
+    });
+
+   builder.addCase(UpdateExamRemarksAction.pending, (state, action) => {
+      state.GetExamRemarkloading = true;
+      state.GetExamRemark = false;
+    });
+    builder.addCase(UpdateExamRemarksAction.fulfilled, (state, action) => {
+      state.GetExamRemark = action?.payload;
+      state.GetExamRemarkloading = false;
+      state.GetExamRemarkerror = undefined;
+    });
+    builder.addCase(UpdateExamRemarksAction.rejected, (state, action) => {
+      state.GetExamRemarkloading = false;
+      state.GetExamRemarkperror = action.payload;
+      state.GetExamRemark = undefined;
+    });
+    builder.addCase(GetExamRemarksAction.pending, (state, action) => {
+      state.GetExamRemarkloading = true;
+      state.GetExamRemark = false;
+    });
+    builder.addCase(GetExamRemarksAction.fulfilled, (state, action) => {
+      state.GetExamRemark = action?.payload;
+      state.GetExamRemarkloading = false;
+      state.GetExamRemarkerror = undefined;
+    });
+    builder.addCase(GetExamRemarksAction.rejected, (state, action) => {
+      state.GetExamRemarkloading = false;
+      state.GetExamRemarkperror = action.payload;
+      state.GetExamRemark = undefined;
+    });
+
     builder.addCase(FetchExamGroupAction.pending, (state, action) => {
       state.examgrouploading = true;
       state.examgroup = false;
@@ -1623,6 +1785,7 @@ export const {
   resetExamCart,
   resetcreateGetGradeGroup,
   ExamResultGrade,
+  resetexamremarksgroup,
   ResetClassReport,ResetGenerateAllReport,ResetClassReport1,
   resetfetchExambyCode,
   resetClassReport1

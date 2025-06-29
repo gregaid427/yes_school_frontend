@@ -146,6 +146,7 @@ import SearchStudentsModalExam from './pages/SearchStudentsModalExam';
 import ExamGradeAlt from './pages/exam/ExamGradeAlt';
 import ExamRemarks from './pages/exam/ExamRemarks';
 import Backup from './pages/Backup';
+import ExamRemarksGroup from './pages/exam/ExamRemarksGroup';
 
 function App() {
   const navigate = useNavigate();
@@ -154,27 +155,30 @@ function App() {
   // const { pathname } = useLocation();
   const dispatch = useDispatch();
   const clad = useSelector((state) => state?.classes);
-
-  const {
-
-    fetchAllClass,
-    fetchSection
-  } = clad;
+  const session = useSelector((state) => state?.session);
+  const user = useSelector((state) => state?.user);
+  const { allschool } = user;
+  const { fetchsessionactive } = session;
+  const { fetchAllClass, fetchSection } = clad;
   // useEffect(() => {
   //   window.scrollTo(0, 0);
   // }, [pathname]);
-  if(fetchAllClass?.success == undefined) dispatch(fetchAllClassAction())
 
- if(fetchSection?.success == undefined)  dispatch(fetchAllSectionAction())
- 
+  useEffect(() => {
+    if (fetchAllClass?.success == undefined) dispatch(fetchAllClassAction());
 
-  const {  auth,setAuth } = useAuth();
+    if (fetchSection?.success == undefined) dispatch(fetchAllSectionAction());
+
+    if (fetchsessionactive?.success == undefined)
+      dispatch(fetchActivesessionAction());
+  }, []);
+
+  const { auth, setAuth } = useAuth();
   // const { setAuth } = useContext(AuthContext);
   useEffect(() => {
     //check token exist in cookies
     let myArray = Cookies.get('VyQHVzZXIuY29tIiwia');
- 
-    
+
     if (myArray != undefined) {
       let tokenArray = myArray.split('{|-');
       console.log('token exist');
@@ -232,14 +236,9 @@ function App() {
       dispatch(setRoleCode(data[0]?.rolecode));
       dispatch(setUserId(data[0]?.userId));
 
-
       setTimeout(() => setLoading(false), 100);
       // if(pathname.includes('auth')) return  navigate('/dashboard');
       // if(pathname.includes('')) return  navigate('/dashboard');
-   
-   
-
-   
     }
     if (fetchuserbyid?.success == 0) {
       setTimeout(() => setLoading(false), 0);
@@ -300,7 +299,6 @@ function App() {
               }
             />{' '}
           </Route>
-          
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/fees/searchcollectfee"
@@ -334,8 +332,6 @@ function App() {
               }
             />{' '}
           </Route>
-          
-         
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/settings/preferencelist"
@@ -347,7 +343,6 @@ function App() {
               }
             />{' '}
           </Route>
-          
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/settings/backup"
@@ -358,9 +353,8 @@ function App() {
                 </>
               }
             />{' '}
-                      </Route>
-
-            <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/settings/std"
               element={
@@ -417,6 +411,17 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
+              path="/settings/remarksgroup"
+              element={
+                <>
+                  <PageTitle title="Examination" />
+                  <ExamRemarksGroup />
+                </>
+              }
+            />{' '}
+          </Route>
+          <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
+            <Route
               path="/settings/scholarship"
               element={
                 <>
@@ -436,7 +441,6 @@ function App() {
                 </>
               }
             />{' '}
-            
           </Route>
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
@@ -448,7 +452,6 @@ function App() {
                 </>
               }
             />{' '}
-            
           </Route>
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
@@ -460,11 +463,11 @@ function App() {
                 </>
               }
             />{' '}
-          </Route>\
-          
+          </Route>
+          \
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
-              path='/settings/managefee'
+              path="/settings/managefee"
               element={
                 <>
                   <PageTitle title="Fees" />
@@ -506,7 +509,6 @@ function App() {
               }
             />{' '}
           </Route>
-          
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/settings/feeitems"
@@ -538,7 +540,6 @@ function App() {
               }
             />{' '}
           </Route>
-          
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/settings/sessionclassreport"
@@ -649,7 +650,6 @@ function App() {
               }
             />{' '}
           </Route>
-          
           <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
             <Route
               path="/student/search"
@@ -705,8 +705,6 @@ function App() {
               }
             />{' '}
           </Route>{' '}
-          
-      
           <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
             <Route
               path="/student/cartegory"
@@ -728,7 +726,6 @@ function App() {
                 </>
               }
             />{' '}
-            
           </Route>{' '}
           <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
             <Route
@@ -740,9 +737,7 @@ function App() {
                 </>
               }
             />{' '}
-            
           </Route>{' '}
-          
           <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
             <Route
               path="/student/singlestudent"
@@ -754,7 +749,6 @@ function App() {
               }
             />{' '}
           </Route>{' '}
-        
           <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
             <Route
               path="/student/details"
@@ -865,7 +859,6 @@ function App() {
               }
             />{' '}
           </Route>{' '}
-          
           <Route element={<RequireAuth allowedRoles={['6']} code={code} />}>
             <Route
               path="/settings/stdguardian"
@@ -898,9 +891,7 @@ function App() {
                 </>
               }
             />{' '}
-                      </Route>{' '}
-
-        
+          </Route>{' '}
           <Route element={<RequireAuth allowedRoles={['6']} code={code} />}>
             <Route
               path="/settings/graduated"
@@ -958,7 +949,7 @@ function App() {
           </Route>{' '}
           <Route element={<RequireAuth allowedRoles={['4']} code={code} />}>
             <Route
-              path='/fees/Bulkbill'
+              path="/fees/Bulkbill"
               element={
                 <>
                   <PageTitle title="Finance" />
@@ -969,7 +960,7 @@ function App() {
           </Route>{' '}
           <Route element={<RequireAuth allowedRoles={['4']} code={code} />}>
             <Route
-              path='/fees/bulkbilldownload'
+              path="/fees/bulkbilldownload"
               element={
                 <>
                   <PageTitle title="Finance" />
@@ -1000,7 +991,6 @@ function App() {
               }
             />{' '}
           </Route>
-          
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/settings/accountrecords"
@@ -1045,7 +1035,6 @@ function App() {
               }
             />{' '}
           </Route>
-          
           <Route element={<RequireAuth allowedRoles={['5']} code={code} />}>
             <Route
               path="/fees/Assignfees"
@@ -1088,7 +1077,6 @@ function App() {
                   <ExamGroup />
                 </>
               }
-              
             />{' '}
           </Route>{' '}
           <Route element={<RequireAuth allowedRoles={['2']} code={code} />}>
@@ -1190,7 +1178,6 @@ function App() {
               }
             />{' '}
           </Route>
-         
           <Route element={<RequireAuth allowedRoles={['2']} code={code} />}>
             <Route
               path="/exam/examlist"
@@ -1268,65 +1255,55 @@ function App() {
               }
             />{' '}
           </Route>
-        
-            <Route
-              path="/attendance/list"
-              element={
-                <>
-                  <PageTitle title="Attendance" />
-                  {/* <AttendanceList /> */}
-                  <AttendanceList />
-                </>
-              }
-            />{' '}
-         
-      
-            <Route
-              path="/attendance/search"
-              element={
-                <>
-                  <PageTitle title="Attendance" />
-                  {/* <SearchchAttendance /> */}
-                  <SearchAttendance />
-                </>
-              }
-            />{' '}
-       
-
-            <Route
-              path="/attendance/searchdetail"
-              element={
-                <>
-                  <PageTitle title="Attendance" />
-                  {/* <SearchchAttendance /> */}
-                  <SearchDetail />
-                </>
-              }
-            />{' '}
-      
-       
-            <Route
-              path="/attendance/updatedetail"
-              element={
-                <>
-                  <PageTitle title="Attendance" />
-                  {/* <SearchchAttendance /> */}
-                  <UpdateDetail />
-                </>
-              }
-            />{' '}
-        
-        
-            <Route
-              path="/attendance/markattendance"
-              element={
-                <>
-                  <PageTitle title="Attendance" />
-                  <MarkAttendance />
-                </>
-              }
-            />{' '}
-       
+          <Route
+            path="/attendance/list"
+            element={
+              <>
+                <PageTitle title="Attendance" />
+                {/* <AttendanceList /> */}
+                <AttendanceList />
+              </>
+            }
+          />{' '}
+          <Route
+            path="/attendance/search"
+            element={
+              <>
+                <PageTitle title="Attendance" />
+                {/* <SearchchAttendance /> */}
+                <SearchAttendance />
+              </>
+            }
+          />{' '}
+          <Route
+            path="/attendance/searchdetail"
+            element={
+              <>
+                <PageTitle title="Attendance" />
+                {/* <SearchchAttendance /> */}
+                <SearchDetail />
+              </>
+            }
+          />{' '}
+          <Route
+            path="/attendance/updatedetail"
+            element={
+              <>
+                <PageTitle title="Attendance" />
+                {/* <SearchchAttendance /> */}
+                <UpdateDetail />
+              </>
+            }
+          />{' '}
+          <Route
+            path="/attendance/markattendance"
+            element={
+              <>
+                <PageTitle title="Attendance" />
+                <MarkAttendance />
+              </>
+            }
+          />{' '}
           <Route element={<RequireAuth allowedRoles={['0']} code={code} />}>
             <Route
               path="/profile"
@@ -1338,9 +1315,6 @@ function App() {
               }
             />{' '}
           </Route>
-       
-         
-        
           <Route element={<RequireAuth allowedRoles={['1']} code={code} />}>
             <Route
               path="/student/info"
@@ -1385,7 +1359,6 @@ function App() {
               }
             />{' '}
           </Route>
-         
           <Route element={<RequireAuth allowedRoles={['6']} />}>
             <Route
               path="/newstaff"
@@ -1418,8 +1391,7 @@ function App() {
                 </>
               }
             />{' '}
-                      </Route>
-
+          </Route>
           <Route element={<RequireAuth allowedRoles={['6']} />}>
             <Route
               path="/settings/users"

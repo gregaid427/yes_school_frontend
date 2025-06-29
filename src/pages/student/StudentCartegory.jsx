@@ -251,7 +251,7 @@ const StudentsCartegory = () => {
                 <div className=" flex w-7/12 gap-3">
                   <div className="sm:w-2/5 ">
                     <label
-                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                      className="pt-2 block text-sm font-medium cursor-pointer text-ash dark:text-white"
                       // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadPdf();
@@ -263,13 +263,14 @@ const StudentsCartegory = () => {
 
                   <div className="w-full sm:w-2/5">
                     <label
-                      className="pt-2 block text-sm font-medium text-ash dark:text-white"
+                      className="pt-2 block text-sm font-medium cursor-pointer text-ash dark:text-white"
                       // style={{ color: '#A9B5B3' }}
                       onClick={(e) => {
                         handleDownloadCSV();
                       }}
                     >
                       Download Page (Excel)
+                      
                     </label>
                   </div>
                 </div>

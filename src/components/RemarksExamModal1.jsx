@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import {
   CreateExamAction,
   FetchexamSubjectAction,
+  GetExamRemarksAction,
   resetcreateexam,
   ResetTeacherRemark,
   TeacherRemarkAction,
@@ -13,8 +14,9 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 import TableBtn from './Svgs/TableBtn';
+import SelectGroupTwo from './Forms/SelectGroup/SelectGroupTwo';
 
-const RemarksExamModal = (props) => {
+const RemarksExamModal1 = (props) => {
   console.log(props);
 
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ const RemarksExamModal = (props) => {
   const sub = useSelector((state) => state?.subject);
   const { fetchAllSubject, CreateSubject } = sub;
   const exam = useSelector((state) => state?.exam);
-  const { createexam, FetchexamSubject, TeacherRemark } = exam;
+  const { createexam, FetchexamSubject, TeacherRemark  } = exam;
 
   const [pagesval, setpagesval] = useState(30);
 
@@ -46,42 +48,12 @@ const RemarksExamModal = (props) => {
   const [sessionz, setsession] = useState('NONE');
   const [detail, setDetail] = useState('');
 
-  useEffect(
-    (props) => {
-      if (fetchsessionactive?.success == 1) {
-        let data = fetchsessionactive?.data[0];
-        setsession(data?.sessionname);
-      }
-    },
-    [fetchsessionactive],
-  );
-  console.log(FetchexamSubject);
 
-  useEffect(() => {
-    if (FetchexamSubject?.success == 1) {
-      let data = FetchexamSubject?.data;
-      setSubjectval(data);
-      console.log(data);
-    }
-  }, [FetchexamSubject]);
-
-  useEffect(
-    (props) => {
-      if (fetchAllSubject?.success == 1) {
-        let data = fetchAllSubject?.data;
-        setSubject(data);
-      }
-    },
-    [fetchAllSubject],
-  );
-  console.log(sessionz);
-
-  useEffect(() => {
+console.log(props)
+ useEffect(() => {
     if (TeacherRemark?.success == 1) {
-      let data = TeacherRemark?.data;
-      props.close(false);
-      console.log(data);
-      dispatch(ResetTeacherRemark());
+        props.close(false)   
+        dispatch(ResetTeacherRemark())  
     }
   }, [TeacherRemark]);
 
@@ -90,7 +62,7 @@ const RemarksExamModal = (props) => {
       examgroup: props.examinfo?.examgroup,
       session: props.examinfo?.session,
       id: props.val2?.student_id,
-      remark: detail,
+      remark: subjectval,
     };
 
     dispatch(TeacherRemarkAction(data));
@@ -152,7 +124,7 @@ const RemarksExamModal = (props) => {
                   />
                 </div>
                 <div className="relative">
-                  <textarea
+                  {/* <textarea
                     className="w-full dark:bg-form-input rounded border border-stroke  py-2  px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark  dark:text-white dark:focus:border-primary"
                     name="bio"
                     id="bio"
@@ -160,19 +132,22 @@ const RemarksExamModal = (props) => {
                     placeholder=""
                     // defaultValue={data?.gAddress}
                     onChange={(e) => setDetail(e.target.value.trim())}
-                  ></textarea>
+                  ></textarea> */}
                 </div>
 
+                <label
+                  className="my-auto w-2/5 block text-sm font-medium text-black dark:text-white"
+                  htmlFor=""
+                >
+                  Select Remarks
+                </label>
+                <SelectGroupTwo
+                  values={props.result}
+                  setSelectedOption={(val) => setSubjectval(val)}
+                  selectedOption={subjectval}
+                />
 
-
- {/* <SelectGroupTwo
-                        values={['-']}
-                        setSelectedOption={(val) => setpagesval(val)}
-                        selectedOption={pagesval}
-                      />     */}
-
-
-                <div className="flex justify-end mt-8.5 gap-4.5">
+                <div className="flex w-6/12 justify-end mt-8.5 gap-4.5">
                   <button
                     className="flex w-6/12 justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                     type=""
@@ -203,4 +178,4 @@ const RemarksExamModal = (props) => {
   );
 };
 
-export default RemarksExamModal;
+export default RemarksExamModal1;

@@ -116,6 +116,9 @@ const SearchAttendance = () => {
       let data = GetSesionRecords?.data;
       setdata(data);
     }
+    console.log(GetRecordByDate)
+        console.log(GetRecordByDate)
+
   }, [GetRecordByDate, GetSesionRecords]);
   console.log(ids);
   useEffect(() => {
@@ -330,7 +333,7 @@ const SearchAttendance = () => {
                 </div>
               </div>
               <div className="flex ml-3 w-6/12">
-                <div className={' w-3/6 flex flex-col  '}>
+                {/* <div className={' w-3/6 flex flex-col  '}>
                   <label
                     className="mb-2 block text-sm font-medium text-black dark:text-white"
                     htmlFor=""
@@ -344,9 +347,9 @@ const SearchAttendance = () => {
                   >
                     Current Session
                   </button>
-                </div>
+                </div> */}
 
-                <div className={' w-3/6 flex flex-col  '}>
+                <div className={' w-full flex flex-col  '}>
                   <label
                     className="mb-2  text-sm font-medium text-black dark:text-black"
                     htmlFor="phoneNumber"

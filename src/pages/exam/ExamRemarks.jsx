@@ -123,15 +123,15 @@ const ExamRemarks = () => {
       Table: `
       --data-table-library_grid-template-columns:  80%   20%;
     `,
-    //       Row: `
-//   &:nth-of-type(odd) {
-//     background-color: #24303F;
-//   }
+      //       Row: `
+      //   &:nth-of-type(odd) {
+      //     background-color: #24303F;
+      //   }
 
-//   &:nth-of-type(even) {
-//     background-color: #202B38;
-//   }
-// `,
+      //   &:nth-of-type(even) {
+      //     background-color: #202B38;
+      //   }
+      // `,
     },
   ]);
 
@@ -174,8 +174,6 @@ const ExamRemarks = () => {
   }, []);
 
   const [classdata, setClassdata] = useState([]);
-
- 
 
   return loader ? (
     <Loader />
@@ -307,19 +305,21 @@ const ExamRemarks = () => {
                         </HeaderRow>
                       </Header>
 
-  
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                         {tableList?.map((item) => (
-                          <Row key={item.id}
+                          <Row
+                            key={item.id}
                             item={item}
                             className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] "
-                          
                           >
-                                                      <Cell className="  ">{item.title}{" "} {item.section ? ("(" +item.section +")" ) : ''}</Cell>
+                            <Cell className="  ">
+                              {item.title}{' '}
+                              {item.section ? '(' + item.section + ')' : ''}
+                            </Cell>
 
                             <Cell className="  ">
                               {/* {item.section ? item.section : '-'} */}
-                            {/* <Cell className="  ">
+                              {/* <Cell className="  ">
                               {item?.val == (item?.section == null ? '-' : item?.section)? (
                                 <TableBtn
                                   clickFunction={() => {
@@ -341,16 +341,14 @@ const ExamRemarks = () => {
                               )}
                             </Cell> */}
 
-                          
                               <div className="gap-2 flex">
-                              
-                                 <TableBtn
+                                <TableBtn
                                   clickFunction={() => {
-                                 console.log('itemmmmmmmmmm')
-                                 console.log(item)
+                                    console.log('itemmmmmmmmmm');
+                                    console.log(item);
 
-                                    navigate("/exam/reportdetail", {
-                                      state: { action: 1, value: item},
+                                    navigate('/exam/reportdetail', {
+                                      state: { action: 1, value: item },
                                     });
                                   }}
                                   text={'Add Remarks'}
@@ -433,7 +431,6 @@ const ExamRemarks = () => {
                         </HeaderRow>
                       </Header>
 
-  
                       <Body className="dark:border-strokedark dark:bg-boxdark  text-black  border-stroke bg-white dark:text-white flex dark:hover:bg-black hover:bg-[#EFF4FB] ">
                         {tableList?.map((item) => (
                           <Row

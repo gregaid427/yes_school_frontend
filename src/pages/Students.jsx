@@ -29,10 +29,12 @@ import {
   deleteSingleStudentAction,
   fetchBulkStudent,
   fetchCustomStudentsClassAction,
+  FetchDetailAction,
   fetchSingleStudent,
   fetchstdCartegoryAction,
   fetchStudentsClassAction,
   resetFetchCustom,
+  resetFetchDetail,
 } from '../redux/slices/studentSlice';
 import Loader from '../common/Loader';
 import StudentModal from '../components/StudentModal';
@@ -45,11 +47,12 @@ import AttendanceModal from '../components/AttendanceModal';
 import DeleteModal from '../components/DeleteModal';
 import { fetchAllClassAction } from '../redux/slices/classSlice';
 import GlobalSearchInput from '../components/GlobalSearchInput';
+import toast from 'react-hot-toast';
 
 const Student = () => {
   ///////////////////////////////////
   const location = useLocation();
-useEffect(() => {
+  useEffect(() => {
     dispatch(fetchstdCartegoryAction());
   }, []);
   const [visible, setVisible] = useState(false);
@@ -69,14 +72,14 @@ useEffect(() => {
   const [nodes, setdata] = useState([]);
   const [classs, setClasss] = useState();
   const [CSVTemplate, setCSVTemplate] = useState([]);
-  const [clazz, setclazz] = useState();
+  const [CSVTemplate1, setCSVTemplate1] = useState([]);
+  const [clazz, setclazz] = useState('-');
   const [sectionzz, setsectionzz] = useState();
   const [id, setid] = useState();
   const dispatch = useDispatch();
   const student = useSelector((state) => state?.student);
   const classes = useSelector((state) => state?.classes);
   const [classinfo, setclassinfo] = useState();
-
 
   const {
     loading,
@@ -87,6 +90,7 @@ useEffect(() => {
     fetchStudentcustomloading,
     fetchcustomloading,
     singleStudent,
+    FetchDetail,
     deleteSingleStudent,
   } = student;
 
@@ -112,8 +116,7 @@ useEffect(() => {
         });
         setCSVTemplate(absent);
       }
-      dispatch(resetFetchCustom())
-
+      dispatch(resetFetchCustom());
     }
 
     // if (fetchAllClass?.success == 1) {
@@ -129,6 +132,51 @@ useEffect(() => {
   }, [fetchAllClassloading, fetchcustomloading]);
 
   useEffect(() => {
+    if (FetchDetail?.success == 1) {
+      let data = FetchDetail?.data;
+
+       let absent = [];
+      for (const val of data) {
+       // console.log(val)
+        let jj = val?.Guardianz == null ? "" : val?.Guardianz
+                let hh = val?.Guardianz == null ? "" : " "
+
+        let vv =  val?.Guardian == null ? "" : val?.Guardian
+               //  let jj = val?.Guardianz == null ? "" : val?.Guardianz + " "+ val?.Guardian == null ? "" : val?.Guardian
+
+        console.log(jj+hh+vv)
+
+        absent.push({
+          ID: val?.StudentId,
+          Student: val?.name,
+          Class: val?.class,
+          Guardian_1: jj+hh+vv,
+                    'Contact_1.': val?.Contact1 == null ? "" :val?.Contact1,
+          'Contact_2.': val?.Contact2 == null ? "" :val?.Contact2,
+          Guardian_2: val?.Guardian_2 == null ? "" :val?.Guardian_2,
+
+          Contact_1: val?.Contact_1 == null ? "" : val?.Contact_1,
+          Contact_2: val?.Contact_2 == null ? "" : val?.Contact_2,
+          'Acct_bal.': val?.acct_bal == null ? "" : val?.acct_bal,
+        });
+        setCSVTemplate1(absent);
+        // }
+        dispatch(resetFetchDetail());
+      }
+    }
+    // if (fetchAllClass?.success == 1) {
+    //   let i = 0;
+    //   let arr = []
+    //   while (i < classes?.fetchAllClass?.data.length) {
+    //     arr.push(classes?.fetchAllClass?.data[i].title);
+    //     i++;
+    //   }
+    //   setClasss(arr);
+    // //  setclazz(arr[0])
+    // }
+  }, [FetchDetail]);
+
+  useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
     if (fetchStudentcustom?.success == 1) {
@@ -139,20 +187,19 @@ useEffect(() => {
 
   useEffect(() => {
     setdata();
-
   }, []);
 
   useEffect(() => {
     setTimeout(() => setLoader(false), 1000);
 
     if (deleteSingleStudent?.success == 1) {
-    setVisible(false)
+      setVisible(false);
     }
   }, [deleteSingleStudent]);
 
   useEffect(() => {
     setdata([]);
- //   dispatch(fetchAllClassAction())
+    //   dispatch(fetchAllClassAction())
   }, []);
 
   useEffect(() => {
@@ -163,7 +210,6 @@ useEffect(() => {
       setdata(data);
     }
   }, [fetchStudent]);
- 
 
   // useEffect(() => {
 
@@ -227,11 +273,25 @@ useEffect(() => {
 
   const handleviewbtn = (value) => {
     navigate('/student/editinfo', { state: { action: 1, value: value } });
-    dispatch(fetchUserdataAction({ role: 'student', id: value.student_id, userid:value.userId }));
+    dispatch(
+      fetchUserdataAction({
+        role: 'student',
+        id: value.student_id,
+        userid: value.userId,
+      }),
+    );
   };
   const handleEditbtn = (value) => {
-    dispatch(fetchUserdataAction({ role: 'student', id: value.student_id, userid:value.userId }));
-        navigate('/student/editinfo', { state: { action: 2, value: value , clas: clazz, section: sectionzz } });
+    dispatch(
+      fetchUserdataAction({
+        role: 'student',
+        id: value.student_id,
+        userid: value.userId,
+      }),
+    );
+    navigate('/student/editinfo', {
+      state: { action: 2, value: value, clas: clazz, section: sectionzz },
+    });
   };
   const handledeletbtn = () => {
     let data = {
@@ -272,7 +332,12 @@ useEffect(() => {
     const csv = generateCsv(csvConfig)(CSVTemplate);
     download(csvConfig)(csv);
   };
+  const handleDownloadCSV2 = async () => {
+    const csv = generateCsv(csvConfig)(CSVTemplate1);
+    download(csvConfig)(csv);
+  };
   function handleGetClassData() {
+   // if (clazz == '-') return toast.error('Select a Class');
 
     let data = {
       class: clazz,
@@ -287,21 +352,36 @@ useEffect(() => {
       dispatch(fetchCustomStudentsClassAction(data));
     }
   }
-  useEffect(() => {
-    console.log(location?.state)
-    console.log('i just ran')
+  function handleGetClassData1() {
+    if (clazz == '-') return toast.error('Select a Class');
 
+    let data = {
+      class: clazz,
+      section: sectionzz,
+    };
+    if (sectionzz == 'All Sections') {
+      //  setclazz(clazz)
+      dispatch(FetchDetailAction(data));
+    }
+    if (sectionzz != 'All Sections') {
+      setsectionzz(sectionzz);
+      dispatch(FetchDetailAction(data));
+    }
+  }
+  useEffect(() => {
+    console.log(location?.state);
+    console.log('i just ran');
 
     if (location?.state == undefined) {
-      console.log('undefined')
+      console.log('undefined');
     } else {
-      const { clas,sect } = location?.state;
-     console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj')
+      const { clas, sect } = location?.state;
+      console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
       let data = {
         class: clas,
         section: sect,
       };
-      setclazz(clas)
+      setclazz(clas);
 
       console.log(data);
       if (sect == 'All Sections') {
@@ -311,7 +391,7 @@ useEffect(() => {
       if (sect != 'All Sections') {
         setsectionzz(sect);
         dispatch(fetchCustomStudentsClassAction(data));
-      }     
+      }
     }
   }, [location?.state]);
 
@@ -351,11 +431,15 @@ useEffect(() => {
                     </label>
 
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <ClassSelect setsectionprop={setclazz} clazz={clazz} selectinfo={setclassinfo} />
+                      <ClassSelect
+                        setsectionprop={setclazz}
+                        clazz={clazz}
+                        selectinfo={setclassinfo}
+                      />
                     </div>
                   </div>
                   <label
-                    className="pt-4 block text-sm font-medium  dark:text-white"
+                    className="pt-4  block text-sm font-medium cursor-pointer dark:text-white"
                     // style={{ color: '#A9B5B3' }}
                     onClick={(e) => {
                       handleDownloadPdf();
@@ -373,11 +457,14 @@ useEffect(() => {
                     Section{' '}
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
-                    <SectionSelect1 setsectionprop={setsectionzz} default={sectionzz} />
+                    <SectionSelect1
+                      setsectionprop={setsectionzz}
+                      default={sectionzz}
+                    />
                   </div>
                   <label
-                    className="pt-4 block text-sm font-medium text-ash dark:text-white"
-           // style={{ color: '#A9B5B3' }}
+                    className="pt-4 block text-sm cursor-pointer font-medium text-ash dark:text-white"
+                    // style={{ color: '#A9B5B3' }}
                     onClick={(e) => {
                       handleDownloadCSV();
                     }}
@@ -394,13 +481,25 @@ useEffect(() => {
                   </label>
                   <div className="relative sm:w-1/5 z-20 bg-white dark:bg-form-input">
                     <button
-                      onClick={() => handleGetClassData()}
+                      onClick={() => {
+                        handleGetClassData1();
+                        handleGetClassData();
+                      }}
                       className="btn h-10    flex justify-center rounded  bg-black py-2 px-3 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
                       Search
                     </button>
                   </div>
+                  <label
+                    className="pt-4 block text-sm cursor-pointer font-medium text-ash dark:text-white"
+                    // style={{ color: '#A9B5B3' }}
+                    onClick={(e) => {
+                      handleDownloadCSV2();
+                    }}
+                  >
+                    Download Guardian Info
+                  </label>
                 </div>
                 {/* <div className="w-full sm:w-1/3 flex  justify-end align-top  ">
                     <button onClick={(e)=>{handleDownloadPdf()}}
@@ -418,12 +517,11 @@ useEffect(() => {
                     className="mb-1 w-2/2 pt-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor=" "
                   >
-                    Search By ID / Firstname / LastName 
+                    Search By ID / Firstname / LastName
                   </label>
-                 
                 </div>
 
-               <GlobalSearchInput globalResult={setdata}/>
+                <GlobalSearchInput globalResult={setdata} />
                 {/* <button onClick={() => toPDF()}>Download PDF</button> */}
               </div>
             </div>
