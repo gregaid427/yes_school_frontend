@@ -9,8 +9,6 @@ import WarnToast from '../../components/Toasts/Warning';
 import ErrorAltToast from '../../components/Toasts/ErrorAlt';
 import axiosFile from '../../components/axiosFile';
 
-
-
 export const CreateUserAction = createAsyncThunk(
   'new/user',
   async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -21,17 +19,17 @@ export const CreateUserAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/`,
-        payload,axiosFile
+        payload,
+        axiosFile,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -51,17 +49,17 @@ export const CreateGuardianAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/guardian`,
-        payload,axiosFile
+        payload,
+        axiosFile,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -81,20 +79,25 @@ export const loginUserAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/login`,
-        payload,axiosFile
+        payload,
+        axiosFile,
       );
       console.log(data);
 
-      if (data?.success == 0 || data == undefined || data?.success== 1 || data?.success== 6) {
-            toast.dismiss(toastId);
-
+      if (
+        data?.success == 0 ||
+        data == undefined ||
+        data?.success == 1 ||
+        data?.success == 6
+      ) {
+        toast.dismiss(toastId);
       }
-   
+
       return data;
     } catch (error) {
       console.log(error);
       ErrorAltToast('Error', error);
-     //toast.dismiss();
+      //toast.dismiss();
 
       // console.log(error);
       // console.log(error?.response);
@@ -117,12 +120,12 @@ export const fetchAllstaffAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/users/staff`,
-        axiosFile,payload,
+        axiosFile,
+        payload,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
@@ -145,12 +148,12 @@ export const LoginLogAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/users/loginlog`,
-        axiosFile,payload,
+        axiosFile,
+        payload,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
@@ -173,17 +176,17 @@ export const passwordsendmail = createAsyncThunk(
 
       const { data } = await axios.post(
         `https://api-optimum.seedogh.com/api/users/mailPasswordreset`,
-        payload,axiosFile
+        payload,
+        axiosFile,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -203,17 +206,17 @@ export const passwordResetAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `https://api-optimum.seedogh.com/api/users/resetPassword`,
-        payload,axiosFile
+        payload,
+        axiosFile,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -233,17 +236,17 @@ export const verifyuser = createAsyncThunk(
 
       const { data } = await axios.post(
         `https://api-optimum.seedogh.com/api/users/verify`,
-        payload,axiosFile
+        payload,
+        axiosFile,
       );
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -263,9 +266,11 @@ export const CreatesStaffAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/newstaff`,
-        payload,axiosFile
+        payload,
+        axiosFile,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('New Staff Created Successfully');
       }
 
@@ -275,14 +280,13 @@ export const CreatesStaffAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -302,9 +306,11 @@ export const UpdateStaffAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/updatestaff`,
-        payload,axiosFile
+        payload,
+        axiosFile,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Updated Successfully');
       }
 
@@ -314,14 +320,13 @@ export const UpdateStaffAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -341,10 +346,10 @@ export const deleteStaffAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/deletestaff/${payload}`,
-        axiosFile
-
+        axiosFile,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Staff Deleted Successfully');
       }
 
@@ -354,14 +359,13 @@ export const deleteStaffAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -380,10 +384,10 @@ export const inactiveStaffAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/inactivestaff/${payload}`,
-        axiosFile
-
+        axiosFile,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Staff Marked Inactive Successfully');
       }
 
@@ -393,14 +397,13 @@ export const inactiveStaffAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -418,10 +421,12 @@ export const inactiveStudentAction = createAsyncThunk(
       });
 
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/users/inactivestudent`,         payload,axiosFile
-
+        `${import.meta.env.VITE_APP_BASE_URL}/users/inactivestudent`,
+        payload,
+        axiosFile,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Student Marked Inactive Successfully');
       }
 
@@ -431,14 +436,13 @@ export const inactiveStudentAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -457,10 +461,10 @@ export const activeStaffAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/activestaff/${payload}`,
-        axiosFile
-
+        axiosFile,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Staff Marked Active Successfully');
       }
 
@@ -470,14 +474,13 @@ export const activeStaffAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -495,10 +498,12 @@ export const activeStudentAction = createAsyncThunk(
       });
 
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/users/activestudent`,         payload,axiosFile
-
+        `${import.meta.env.VITE_APP_BASE_URL}/users/activestudent`,
+        payload,
+        axiosFile,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Student Marked Active Successfully');
       }
 
@@ -508,14 +513,13 @@ export const activeStudentAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -534,8 +538,8 @@ export const fetchschoolinfoAction = createAsyncThunk(
 
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_BASE_URL}/users/school/`,
-        axiosFile,payload,
-
+        axiosFile,
+        payload,
       );
 
       if (data == null) {
@@ -544,7 +548,7 @@ export const fetchschoolinfoAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-  
+
       return data;
     } catch (error) {
       console.log(error);
@@ -566,7 +570,8 @@ export const fetchuserbyidAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/userid/`,
-        payload,axiosFile
+        payload,
+        axiosFile,
       );
 
       if (data == null) {
@@ -575,7 +580,7 @@ export const fetchuserbyidAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-      
+
       return data;
     } catch (error) {
       console.log(error);
@@ -597,9 +602,11 @@ export const updateschoolinfoAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/school/update`,
-        payload,axiosFile
+        payload,
+        axiosFile,
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Information Updated Successfully');
       }
 
@@ -609,14 +616,13 @@ export const updateschoolinfoAction = createAsyncThunk(
       if (data?.success == 0) {
         toast.error(data.message);
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -635,21 +641,229 @@ export const fetchUserdataAction = createAsyncThunk(
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/users/userdata`,
-        payload,axiosFile
+        payload,
+        axiosFile,
       );
 
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         setTimeout(() => toast.dismiss(), 2000);
       }
 
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const emptyDBAction = createAsyncThunk(
+  'emptydb',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/emptydb`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
+        toast.success('Emptied Successfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Emptying Db');
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const backupDBAction = createAsyncThunk(
+  'backupdb',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/backupdb`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
+        toast.success('Backup Successful');
+      }
+
+      if (data == null) {
+        toast.error('Error Backing Up');
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const createDBAction = createAsyncThunk(
+  'createdb',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/createdb`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
+        toast.success('Created Successfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Creating Db');
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const DBStatusAction = createAsyncThunk(
+  'statusdb',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/dbstatus`,
+        payload,
+      );
+     
+
+      if (!data) {
+        toast.error('Error Loading Status');
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const UploadDBAction = createAsyncThunk(
+  'upload',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/uploaddb`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
+        toast.success('Uploaded Successfully');
+      }
+
+      if (data == null) {
+        toast.error('Error Uploading');
+      }
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
+
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+export const deleteDBAction = createAsyncThunk(
+  'deletedb',
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const toastId = toast.loading('Loading...', {
+        position: 'bottom-right',
+      });
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/users/deletedb`,
+        payload,
+      );
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
+        toast.success('Deleted Successfully');
+      }
+
+   
+      if (data) {
+        toast.dismiss(toastId);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -675,21 +889,21 @@ export const SchoollogoAction = createAsyncThunk(
           },
         },
       );
-    if (data?.success == 1) {   toast.dismiss(toastId);
+      if (data?.success == 1) {
+        toast.dismiss(toastId);
         toast.success('Logo Uploaded Successfully');
       }
 
       if (data == null) {
         toast.error('Error Uploading Logo');
       }
-       if (data) {
+      if (data) {
         toast.dismiss(toastId);
-   
       }
       return data;
     } catch (error) {
       console.log(error);
-            ErrorToast('Error', error);
+      ErrorToast('Error', error);
 
       if (!error?.response) {
         throw error;
@@ -704,7 +918,6 @@ const initialState = {
   fetchuserbyid: {},
   loginUser: {},
   userToken: {},
-
 };
 
 const UsersSlices = createSlice({
@@ -745,7 +958,6 @@ const UsersSlices = createSlice({
     setUserToken(state, data) {
       state.userToken = data;
     },
-    
 
     resetAllUserData(state) {
       (state.UserData = []), (state.fetchuserbyid = {}), (state.loginUser = {});
@@ -766,8 +978,101 @@ const UsersSlices = createSlice({
       state.CreateUser = undefined;
     });
 
+    builder.addCase(deleteDBAction.pending, (state, action) => {
+      state.deleteDBloading = true;
+      state.deleteDB = false;
+    });
+    builder.addCase(deleteDBAction.fulfilled, (state, action) => {
+      state.deleteDB = action?.payload;
+      state.deleteDBloading = false;
+      state.deleteDBerror = undefined;
+    });
+    builder.addCase(deleteDBAction.rejected, (state, action) => {
+      state.deleteDBloading = false;
+      state.deleteDBerror = action.payload;
+      state.deleteDB = undefined;
+    });
 
-    
+
+ builder.addCase(DBStatusAction.pending, (state, action) => {
+      state.DBStatusloading = true;
+      state.DBStatus = false;
+    });
+    builder.addCase(DBStatusAction.fulfilled, (state, action) => {
+      state.DBStatus = action?.payload;
+      state.DBStatusloading = false;
+      state.DBStatuserror = undefined;
+    });
+    builder.addCase(DBStatusAction.rejected, (state, action) => {
+      state.DBStatusloading = false;
+      state.DBStatuserror = action.payload;
+      state.DBStatus = undefined;
+    });
+
+
+
+
+    builder.addCase(createDBAction.pending, (state, action) => {
+      state.createDBloading = true;
+      state.createDB = false;
+    });
+    builder.addCase(createDBAction.fulfilled, (state, action) => {
+      state.createDB = action?.payload;
+      state.createDBloading = false;
+      state.createDBerror = undefined;
+    });
+    builder.addCase(createDBAction.rejected, (state, action) => {
+      state.createDBloading = false;
+      state.createDBberror = action.payload;
+      state.createDB = undefined;
+    });
+
+
+    builder.addCase(UploadDBAction.pending, (state, action) => {
+      state.UploadyDbloading = true;
+      state.UploadyDb = false;
+    });
+    builder.addCase(UploadDBAction.fulfilled, (state, action) => {
+      state.UploadyDb = action?.payload;
+      state.UploadyDbloading = false;
+      state.UploadyDberror = undefined;
+    });
+    builder.addCase(UploadDBAction.rejected, (state, action) => {
+      state.UploadyDbloading = false;
+      state.UploadyDberror = action.payload;
+      state.UploadyDb = undefined;
+    });
+
+
+     builder.addCase(emptyDBAction.pending, (state, action) => {
+      state.emptyDbloading = true;
+      state.emptyDb = false;
+    });
+    builder.addCase(emptyDBAction.fulfilled, (state, action) => {
+      state.emptyDb = action?.payload;
+      state.emptyDbloading = false;
+      state.emptyDberror = undefined;
+    });
+    builder.addCase(emptyDBAction.rejected, (state, action) => {
+      state.emptyDbloading = false;
+      state.emptyDberror = action.payload;
+      state.emptyDb = undefined;
+    });
+
+     builder.addCase(backupDBAction.pending, (state, action) => {
+      state.backupDBbloading = true;
+      state.backupDB = false;
+    });
+    builder.addCase(backupDBAction.fulfilled, (state, action) => {
+      state.backupDB = action?.payload;
+      state.backupDBbloading = false;
+      state.backupDBerror = undefined;
+    });
+    builder.addCase(backupDBAction.rejected, (state, action) => {
+      state.backupDBbloading = false;
+      state.backupDBerror = action.payload;
+      state.backupDB = undefined;
+    });
 
     builder.addCase(LoginLogAction.pending, (state, action) => {
       state.LoginLogloading = true;
@@ -783,7 +1088,6 @@ const UsersSlices = createSlice({
       state.LoginLogerror = action.payload;
       state.LoginLog = undefined;
     });
-    
 
     builder.addCase(updateschoolinfoAction.pending, (state, action) => {
       state.updateschoolinfoloading = true;
@@ -969,7 +1273,6 @@ const UsersSlices = createSlice({
       state.allstaff = undefined;
     });
 
-    
     builder.addCase(activeStudentAction.pending, (state, action) => {
       state.activeStudentloading = true;
       state.activeStudent = undefined;
@@ -999,7 +1302,6 @@ const UsersSlices = createSlice({
       state.activeStudenterror = action.payload;
       state.activeStudent = undefined;
     });
-
 
     builder.addCase(activeStaffAction.pending, (state, action) => {
       state.allStaffloading = true;
@@ -1071,7 +1373,7 @@ export const {
   setRoleCode,
   setUsername,
   resetschoolinfo,
-  setUserToken
+  setUserToken,
 } = UsersSlices.actions;
 
 export default UsersSlices.reducer;

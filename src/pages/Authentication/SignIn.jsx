@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo1 from '../../images/logo/hb.jpg';
 import Logo from '../../images/logo/logo.png';
 import DarkModeSwitcher from '../../components/Header/DarkModeSwitcher';
@@ -21,10 +21,12 @@ import useAuth from '../../useAuth';
 import Cookies from 'js-cookie';
 import Loader from '../../common/Loader';
 // import AuthContext from '../../AuthProvider';
-
+ 
 // import DefaultLayout from '../../layout/DefaultLayout';
 
 const SignIn = () => {
+   const location = useLocation();
+  const { pathname } = location;
   useEffect(() => {
     dispatch(reset());
     dispatch(resetAllUserData());
@@ -106,8 +108,10 @@ const SignIn = () => {
 
   useEffect(() => {
     let myArray = Cookies.get('VyQHVzZXIuY29tIiwia');
-
-    if (myArray) {
+if (pathname.includes('systemdb')) {
+      setTimeout(() => navigate('/manage/systemdb', { replace: true }), 1000);
+    }
+    if (myArray && !pathname.includes('systemdb')) {
       setTimeout(() => navigate('/dashboard', { replace: true }), 1000);
     }
   }, [loginUser, tokentimer]);

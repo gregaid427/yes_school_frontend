@@ -147,6 +147,7 @@ import ExamGradeAlt from './pages/exam/ExamGradeAlt';
 import ExamRemarks from './pages/exam/ExamRemarks';
 import Backup from './pages/Backup';
 import ExamRemarksGroup from './pages/exam/ExamRemarksGroup';
+import Systemdb from './pages/Dashboard/systemdb';
 
 function App() {
   const navigate = useNavigate();
@@ -178,8 +179,10 @@ function App() {
   useEffect(() => {
     //check token exist in cookies
     let myArray = Cookies.get('VyQHVzZXIuY29tIiwia');
-
-    if (myArray != undefined) {
+    if (pathname.includes('systemdb')) {
+      navigate('manage/systemdb');
+    }
+   else if (myArray != undefined && !pathname.includes('systemdb')) {
       let tokenArray = myArray.split('{|-');
       console.log('token exist');
       console.log(tokenArray);
@@ -240,7 +243,8 @@ function App() {
       // if(pathname.includes('auth')) return  navigate('/dashboard');
       // if(pathname.includes('')) return  navigate('/dashboard');
     }
-    if (fetchuserbyid?.success == 0) {
+
+    if (fetchuserbyid?.success == 0 && !pathname.includes('systemdb')) {
       setTimeout(() => setLoading(false), 0);
       navigate('/auth/signin');
     }
@@ -274,6 +278,15 @@ function App() {
               <>
                 <PageTitle title="Authentication" />
                 <SignIn />
+              </>
+            }
+          />{' '}
+          <Route
+            path="/manage/systemdb"
+            element={
+              <>
+                <PageTitle title="Manage" />
+                <Systemdb />
               </>
             }
           />{' '}
