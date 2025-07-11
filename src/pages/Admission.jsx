@@ -109,7 +109,7 @@ const Admission = () => {
   const [gAddress2, setgAddress2] = useState('');
   const [gsex2, setgsex2] = useState('Male');
   const [gsex1, setgsex1] = useState('Male');
-  const [cartegory, setCartegory] = useState('GENERAL');
+  const [cartegory, setCartegory] = useState('-');
   const [gRelation1, setRelation1] = useState('Mother');
   const [gRelation2, setRelation2] = useState('Mother');
   const [religion, setreligion] = useState('Christianity');

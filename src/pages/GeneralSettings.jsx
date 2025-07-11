@@ -384,7 +384,7 @@ console.log(userThree)
                           <SessionSelect setsectionprop={setSessionoption} selectinfo={setclassinfo} />
                         </div>
                       </div>
-                      <div className="w-full sm:w-1/2">
+                      {/* <div className="w-full sm:w-1/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="fullName"
@@ -412,7 +412,7 @@ console.log(userThree)
                             selectedOption={startmonth}
                           />
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 

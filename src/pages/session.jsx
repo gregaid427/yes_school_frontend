@@ -332,7 +332,7 @@ const Session = () => {
                           <SessionSelect1 setsectionprop={setSessionoption}  selectinfo={setSelectedInfo}/>
                         </div>
                       </div>
-                      <div className="w-full ">
+                      {/* <div className="w-full ">
                         <label
                           className="mb-2 block text-sm font-medium text-black dark:text-white"
                           htmlFor="fullName"
@@ -360,7 +360,7 @@ const Session = () => {
                             selectedOption={startmonth}
                           />
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 

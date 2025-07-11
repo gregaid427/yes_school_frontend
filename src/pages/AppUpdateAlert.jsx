@@ -515,7 +515,7 @@ const AppUpdateAlert = (props) => {
                         </div>
                       </div> */}
                         {/* <div style={{ display: !isChecked ? 'none' : 'block' }}> */}{' '}
-                        <label
+                        {/* <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="fullName"
                         >
@@ -540,7 +540,7 @@ const AppUpdateAlert = (props) => {
                             setSelectedOption={setStartMonth}
                             selectedOption={startmonth}
                           />
-                        </div>
+                        </div> */}
                       </div>
                       {/* </div> */}
                     </div>
